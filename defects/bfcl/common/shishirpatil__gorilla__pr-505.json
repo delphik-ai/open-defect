@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-505",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "[BFCL] Improved tree-sitter java, javascript installation",
+  "summary": "CharlieJCJ simplified BFCL tree-sitter Java/JavaScript installation and tested end-to-end generation after the prior setup path was fragile.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/505",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/505"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-07-06T21:31:53.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/_benchmark-shared/counted/fixed/pr-505.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
+  }
+}

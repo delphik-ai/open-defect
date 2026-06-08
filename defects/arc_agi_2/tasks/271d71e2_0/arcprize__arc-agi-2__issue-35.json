@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__issue-35",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "271d71e2_0"
+  ],
+  "resolution": "fixed",
+  "title": "evaluation/271d71e2 example 2 output seems to have a mistake",
+  "summary": "ARC-AGI-2 issue reports evaluation task 271d71e2 example 2 has the middle rectangle moved one unit too far right; maintainer says it was fixed on GitHub.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/issues/35",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/issues/35"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-31T03:09:43.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/arcprize__arc-agi-2/benchmarks/arc_agi_2/tasks/271d71e2_0/counted/fixed/issue-35.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

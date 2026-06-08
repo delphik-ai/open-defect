@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__issue-45",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "291dc1e1_0"
+  ],
+  "resolution": "found",
+  "title": "Puzzle 291dc1e1 has too many possible solutions",
+  "summary": "ARC-AGI-2 issue argues puzzle 291dc1e1 has several plausible transformations from the single asymmetric example, making the intended answer ambiguous.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/issues/45",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/issues/45"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-04-21T12:38:26.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/arcprize__arc-agi-2/benchmarks/arc_agi_2/tasks/291dc1e1_0/counted/found/issue-45.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

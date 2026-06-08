@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1085",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-irrelevance-232"
+  ],
+  "resolution": "fixed",
+  "title": "Update irrelevance_232 question",
+  "summary": "Merged BFCL PR changes irrelevance_232 from a hotel request to a yoga-retreat request, fixing question wording in an irrelevance task.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1085",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1085"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-06-29T00:37:23.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/bfcl-irrelevance-232/counted/fixed/pr-1085.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__pr-23",
+  "benchmark_name": "gso",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "fix: setuptools 82+ and HF Hub Xet compatibility",
+  "summary": "GSO evaluation failed on recent systems because setuptools 82 removed pkg_resources and HuggingFace Hub Xet downloads errored; PR pins setuptools below 82 and disables Xet, recovering 20 instances.",
+  "canonical_source_url": "https://github.com/gso-bench/gso/pull/23",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/pull/23"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-12T00:41:58.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/gso-bench__gso/benchmarks/gso/tasks/_benchmark-shared/counted/fixed/pr-23.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bigcodebench-hard-complete__bigcode-project__bigcodebench__pr-25",
+  "benchmark_name": "bigcodebench-hard-complete",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Update on v0.1.8",
+  "summary": "BigCodeBench v0.1.8 update includes evaluation time-limit changes and generation/evaluate fixes after timeout/setup issues.",
+  "canonical_source_url": "https://github.com/bigcode-project/bigcodebench/pull/25",
+  "evidence_urls": [
+    "https://github.com/bigcode-project/bigcodebench/pull/25"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-07-16T09:29:25.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/bigcode-project__bigcodebench/benchmarks/bigcodebench-hard-complete/tasks/_benchmark-shared/counted/fixed/pr-25.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

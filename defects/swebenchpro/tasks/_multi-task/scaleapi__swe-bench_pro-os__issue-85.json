@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-85",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_internetarchive__openlibrary-1351c59fd43689753de1fca32c78d539a116ffc1-v29f82c9cf21d57b242f8d8b0e541525d259e2d63",
+    "instance_internetarchive__openlibrary-fdbc0d8f418333c7e575c40b661b582c301ef7ac-v13642507b4fc1f8d234172bf8129942da2c2ca26",
+    "instance_internetarchive__openlibrary-b112069e31e0553b2d374abb5f9c5e05e8f3dbbe-ve8c8d62a2b60610a3c4631f5f23ed866bada9818",
+    "instance_internetarchive__openlibrary-1894cb48d6e7fb498295a5d3ed0596f6f603b784-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4",
+    "instance_internetarchive__openlibrary-43f9e7e0d56a4f1d487533543c17040a029ac501-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4",
+    "instance_internetarchive__openlibrary-08ac40d050a64e1d2646ece4959af0c42bf6b7b5-v0f5aece3601a5b4419f7ccec1dbda2071be28ee4"
+  ],
+  "resolution": "found",
+  "title": "Date-dependent P2P test names become stale over time (6 openlibrary instances)",
+  "summary": "SWE-bench Pro issue shows six OpenLibrary instances have date-dependent P2P test names that became stale across years, causing false failures.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/85",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/85"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-25T21:04:04.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 6,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/_multi-task/counted/found/issue-85.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z",
+    "github_updated_at": "2026-03-25T21:14:27.000Z"
+  }
+}

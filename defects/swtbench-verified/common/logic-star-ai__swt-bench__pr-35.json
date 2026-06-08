@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swtbench-verified__logic-star-ai__swt-bench__pr-35",
+  "benchmark_name": "swtbench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Fix copying too large files into docker containers",
+  "summary": "SWT-bench PR fixes a harness bug where copying large files into Docker containers via command-line hacks could fail during execution.",
+  "canonical_source_url": "https://github.com/logic-star-ai/swt-bench/pull/35",
+  "evidence_urls": [
+    "https://github.com/logic-star-ai/swt-bench/pull/35"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-13T14:16:14.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/logic-star-ai__swt-bench/benchmarks/swtbench-verified/tasks/_benchmark-shared/counted/fixed/pr-35.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-246",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-algorithmic-letter-jumble-hard0292e21f-seed45-0",
+    "reasoning-gym-algorithmic-letter-jumble-hard0292e21f-seed45-1",
+    "reasoning-gym-algorithmic-letter-jumble-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Dynamic Scoring for Letter Jumble",
+  "summary": "Letter Jumble exact matching returned far too-low scores for plausible answers such as word-order/near-answer cases; PR adds per-word dynamic scoring.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/246",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/246"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-01T15:53:26.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 3,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/open-thought__reasoning-gym/benchmarks/reasoning-gym-hard/tasks/_multi-task/counted/fixed/pr-246.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

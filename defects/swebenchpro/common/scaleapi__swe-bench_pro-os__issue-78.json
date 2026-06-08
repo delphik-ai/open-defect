@@ -1,0 +1,30 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-78",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "API rate limit errors silently counted as benchmark failures in SWE-bench Pro evaluation",
+  "summary": "Live issue audits SWE-bench Pro trajectories and finds API rate-limit exceptions silently counted as benchmark failures.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/78",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/78"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-10T13:35:06.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/_benchmark-shared/counted/found/issue-78.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z",
+    "github_updated_at": "2026-03-11T06:05:55.000Z"
+  }
+}

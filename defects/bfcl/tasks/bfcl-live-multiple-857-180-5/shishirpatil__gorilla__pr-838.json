@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-838",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-live-multiple-857-180-5"
+  ],
+  "resolution": "fixed",
+  "title": "Check and fix some parameter type errors in possible answers",
+  "summary": "BFCL possible answers used parameter values with types inconsistent with function descriptions, causing valid model outputs to be marked invalid.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/838",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/838"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-12-17T08:43:22.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/bfcl-live-multiple-857-180-5/counted/fixed/pr-838.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

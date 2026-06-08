@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-377",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "BFCL April 19th Release (Dataset & Pipeline)",
+  "summary": "HuanzhiMao released BFCL executable-category dataset and pipeline fixes, including prompt/function-doc updates and checker changes.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/377",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/377"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-04-21T00:25:40.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/_benchmark-shared/counted/fixed/pr-377.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
+  }
+}

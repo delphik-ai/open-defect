@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-50",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "caffe-cifar-10",
+    "fix-code-vulnerability",
+    "fix-git",
+    "regex-log"
+  ],
+  "resolution": "fixing",
+  "title": "A few task fixes",
+  "summary": "Task/verifier/oracle fixes.",
+  "defect_type_main": "Task/verifier/oracle fixes",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/50",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/pull/50"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-04T08:35:57.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 4,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/harbor-framework__terminal-bench-2/benchmarks/terminal-bench/tasks/_multi-task/counted/fixing/pr-50.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "llm_indexed",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
+  }
+}

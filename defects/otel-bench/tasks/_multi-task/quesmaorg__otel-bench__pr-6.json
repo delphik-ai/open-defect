@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "otel-bench__quesmaorg__otel-bench__pr-6",
+  "benchmark_name": "otel-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "cpp-distributed-context-propagation",
+    "go-distributed-context-propagation",
+    "java-distributed-context-propagation",
+    "php-distributed-context-propagation",
+    "python-distributed-context-propagation"
+  ],
+  "resolution": "fixed",
+  "title": "Adding solution to failing tasks #1",
+  "summary": "otel-bench PR title says it adds solutions to failing tasks, which is evidence of benchmark tasks missing working oracle solutions.",
+  "canonical_source_url": "https://github.com/QuesmaOrg/otel-bench/pull/6",
+  "evidence_urls": [
+    "https://github.com/QuesmaOrg/otel-bench/pull/6"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-01-21T10:53:55.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 5,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/quesmaorg__otel-bench/benchmarks/otel-bench/tasks/_multi-task/counted/fixed/pr-6.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

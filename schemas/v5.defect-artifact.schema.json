@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/delphik/open-defects/schemas/v5.defect-artifact.schema.json",
+  "title": "Delphik v5 Defect Artifact",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "id",
+    "benchmark_name",
+    "scope",
+    "task_names",
+    "resolution",
+    "title",
+    "summary",
+    "canonical_source_url",
+    "evidence_urls",
+    "audit_level",
+    "first_reported_at",
+    "last_reviewed_at",
+    "decision_note"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "v5.defect-artifact.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]+__[a-z0-9._-]+__[a-z0-9._-]+__(issue|pr)-[0-9]+(__[a-z0-9][a-z0-9-]*)?$"
+    },
+    "benchmark_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "enum": ["task_specific", "benchmark_level"]
+    },
+    "task_names": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "resolution": {
+      "enum": ["found", "fixing", "fixed"]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "defect_type_main": {
+      "type": "string"
+    },
+    "defect_type_sub": {
+      "type": "string"
+    },
+    "canonical_source_url": {
+      "type": "string",
+      "pattern": "^https://github\\.com/[^/]+/[^/]+/(issues|pull)/[0-9]+"
+    },
+    "evidence_urls": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^https://github\\.com/"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "audit_level": {
+      "enum": ["L1", "L2", "L3"]
+    },
+    "first_reported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision_note": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

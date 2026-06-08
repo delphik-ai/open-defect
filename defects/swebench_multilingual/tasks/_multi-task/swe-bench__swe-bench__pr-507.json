@@ -1,0 +1,51 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench_multilingual__swe-bench__swe-bench__pr-507",
+  "benchmark_name": "swebench_multilingual",
+  "scope": "task_specific",
+  "task_names": [
+    "apache__lucene-13170",
+    "micropython__micropython-10095",
+    "micropython__micropython-12158",
+    "micropython__micropython-13039",
+    "micropython__micropython-13569",
+    "micropython__micropython-15898",
+    "tokio-rs__axum-1119",
+    "tokio-rs__axum-1730",
+    "tokio-rs__axum-1934",
+    "tokio-rs__axum-2096",
+    "tokio-rs__axum-682",
+    "tokio-rs__axum-691",
+    "tokio-rs__axum-734",
+    "tokio-rs__tokio-4384",
+    "tokio-rs__tokio-4867",
+    "tokio-rs__tokio-6551",
+    "tokio-rs__tokio-6603",
+    "tokio-rs__tokio-6724",
+    "tokio-rs__tokio-6752",
+    "tokio-rs__tokio-6838",
+    "tokio-rs__tokio-7139"
+  ],
+  "resolution": "fixed",
+  "title": "Fix multilingual instance build errors",
+  "summary": "Fixes multiple SWE-bench Multilingual Docker image build errors by pinning Rust/Cargo fixture state and other constants; prerequisite to rebuilding images and preventing git-log leakage.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/507",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/507"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-12-21T20:30:58.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 21,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench_multilingual/tasks/_multi-task/counted/fixed/pr-507.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

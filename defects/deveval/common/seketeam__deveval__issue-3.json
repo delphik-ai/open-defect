@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deveval__seketeam__deveval__issue-3",
+  "benchmark_name": "deveval",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "AttributeError: 'Distribution' object has no attribute 'tests_require'. Did you mean: 'extras_require'?",
+  "summary": "DevEval setup failed with AttributeError: Distribution has no tests_require, and commenters asked for a Docker environment, suggesting reproducibility/dependency setup fragility.",
+  "canonical_source_url": "https://github.com/seketeam/DevEval/issues/3",
+  "evidence_urls": [
+    "https://github.com/seketeam/DevEval/issues/3"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-27T02:38:48.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/seketeam__deveval/benchmarks/deveval/tasks/_benchmark-shared/counted/fixing/issue-3.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-28",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "crack-7z-hash"
+  ],
+  "resolution": "fixing",
+  "title": "oracle update for crack-7z-hash",
+  "summary": "Oracle/verifier defect.",
+  "defect_type_main": "Oracle/verifier defect",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/28",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/pull/28"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-01-09T22:02:07.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/harbor-framework__terminal-bench-2/benchmarks/terminal-bench/tasks/crack-7z-hash/counted/fixing/pr-28.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "llm_indexed",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
+  }
+}

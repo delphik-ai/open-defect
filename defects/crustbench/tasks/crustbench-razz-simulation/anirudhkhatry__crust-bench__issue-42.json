@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "crustbench__anirudhkhatry__crust-bench__issue-42",
+  "benchmark_name": "crustbench",
+  "scope": "task_specific",
+  "task_names": [
+    "crustbench-razz-simulation"
+  ],
+  "resolution": "found",
+  "title": "razz_simulation: C and Rust tests are not equivalent",
+  "summary": "CRUST-bench report shows razz_simulation C tests seed srand48 but Rust tests do not, while expecting identical random outputs.",
+  "canonical_source_url": "https://github.com/anirudhkhatry/CRUST-bench/issues/42",
+  "evidence_urls": [
+    "https://github.com/anirudhkhatry/CRUST-bench/issues/42"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-01T00:49:16.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/anirudhkhatry__crust-bench/benchmarks/crustbench/tasks/crustbench-razz-simulation/counted/found/issue-42.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

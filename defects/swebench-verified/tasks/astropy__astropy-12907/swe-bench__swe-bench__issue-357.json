@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-357",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-12907"
+  ],
+  "resolution": "found",
+  "title": "Failure in parsing test output for`astropy__astropy-12907`",
+  "summary": "Gold evaluation for astropy__astropy-12907 resolves false because START/END markers stream to stderr while pytest output is stdout, so get_logs_eval parses incorrectly.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/357",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/357"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-05T23:05:00.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-12907/counted/found/issue-357.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

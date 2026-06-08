@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bigcodebench-hard-complete__bigcode-project__bigcodebench__pr-77",
+  "benchmark_name": "bigcodebench-hard-complete",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Specify a unique cache directory before each code execution",
+  "summary": "BigCodeBench PR sets a unique cache directory for each code execution to avoid libraries such as Matplotlib competing for the same files and causing evaluation errors.",
+  "canonical_source_url": "https://github.com/bigcode-project/bigcodebench/pull/77",
+  "evidence_urls": [
+    "https://github.com/bigcode-project/bigcodebench/pull/77"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-02-11T01:18:21.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/bigcode-project__bigcodebench/benchmarks/bigcodebench-hard-complete/tasks/_benchmark-shared/counted/fixed/pr-77.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

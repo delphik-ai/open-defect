@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__pr-24",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Fix eval script to correctly find dockerhub images",
+  "summary": "PR fixed SWE-bench Pro eval script Docker Hub image URI derivation so gold patches could run successfully on a subset.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/pull/24",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/24"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-10-02T21:41:27.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/_benchmark-shared/counted/fixed/pr-24.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

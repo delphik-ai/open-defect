@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "quixbugs__jkoppel__quixbugs__pr-15",
+  "benchmark_name": "quixbugs",
+  "scope": "task_specific",
+  "task_names": [
+    "quixbugs-java-shunting_yard"
+  ],
+  "resolution": "fixed",
+  "title": "Bugfix on correct version of SHUNTING_YARD",
+  "summary": "martinezmatias fixed QuixBugs correct_java_programs/SHUNTING_YARD because the correct version used the wrong queue method.",
+  "canonical_source_url": "https://github.com/jkoppel/QuixBugs/pull/15",
+  "evidence_urls": [
+    "https://github.com/jkoppel/QuixBugs/pull/15"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2018-02-15T13:42:44.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/jkoppel__quixbugs/benchmarks/quixbugs/tasks/quixbugs-java-shunting_yard/counted/fixed/pr-15.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
+  }
+}

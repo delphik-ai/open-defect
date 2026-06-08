@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bixbench__future-house__bixbench__pr-44",
+  "benchmark_name": "bixbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Fix range verifier grading for out-of-range predictions",
+  "summary": "Live PR fixes BixBench range_verifier where out-of-range predictions raised UnboundLocalError instead of receiving incorrect grade.",
+  "canonical_source_url": "https://github.com/Future-House/BixBench/pull/44",
+  "evidence_urls": [
+    "https://github.com/Future-House/BixBench/pull/44"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-23T16:18:37.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/future-house__bixbench/benchmarks/bixbench/tasks/_benchmark-shared/counted/fixing/pr-44.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

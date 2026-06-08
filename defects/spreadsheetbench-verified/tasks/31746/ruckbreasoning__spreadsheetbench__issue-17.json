@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-17",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "31746"
+  ],
+  "resolution": "found",
+  "title": "more broken files in 912 dataset",
+  "summary": "SpreadsheetBench 912 dataset contains xlsx files that Excel/open_spreadsheet cannot open without recovery.",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/17",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/17"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-10-22T08:55:18.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/ruckbreasoning__spreadsheetbench/benchmarks/spreadsheetbench-verified/tasks/31746/counted/found/issue-17.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

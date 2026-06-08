@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-43",
+  "benchmark_name": "cooperbench",
+  "scope": "task_specific",
+  "task_names": [
+    "cb-datasets-t7309-f1-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix datasets task 7309: pin pyarrow < 20.0 for geoparquet compatibility",
+  "summary": "CooperBench datasets task 7309 pinned pyarrow 20, which changed GeoParquet string dtype behavior and broke all feature pairs on a pre-existing test; PR pins pyarrow below 20.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/43",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/43"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-16T00:21:33.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/cooperbench__cooperbench/benchmarks/cooperbench/tasks/cb-datasets-t7309-f1-2/counted/fixed/pr-43.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

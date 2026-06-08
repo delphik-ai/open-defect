@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+.env
+.env.*
+!.env.example
+private/
+supabase/.temp/
+
+# Local scratch output
+data/*
+!data/.gitkeep
+!data/github-fetch-state.json
+tmp/
+.tmp/
+.playwright-mcp/
+
+# Logs and scratch
+*.log

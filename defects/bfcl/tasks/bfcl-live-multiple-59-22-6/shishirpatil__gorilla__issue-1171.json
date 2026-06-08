@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1171",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-live-multiple-59-22-6"
+  ],
+  "resolution": "found",
+  "title": "[BFCL] wrong data",
+  "summary": "BFCL issue reports wrong ground-truth data for live_multiple_59-22-6 and proposes exact corrected sizes list.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1171",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1171"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-09T15:13:11.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/bfcl-live-multiple-59-22-6/counted/found/issue-1171.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

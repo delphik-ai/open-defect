@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__pr-106",
+  "benchmark_name": "ade-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "ade-bench-airbnb001",
+    "ade-bench-airbnb002",
+    "ade-bench-airbnb008"
+  ],
+  "resolution": "fixed",
+  "title": "fix(airbnb): use --full-refresh in test_setup for incremental models",
+  "summary": "Live ADE-bench PR fixes Airbnb tasks where dbt test_setup reran incremental models without --full-refresh, duplicating latest rows and producing NULL metrics that failed equality tests.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/106",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/106"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-04T15:39:22.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 3,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/dbt-labs__ade-bench/benchmarks/ade-bench/tasks/_multi-task/counted/fixed/pr-106.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

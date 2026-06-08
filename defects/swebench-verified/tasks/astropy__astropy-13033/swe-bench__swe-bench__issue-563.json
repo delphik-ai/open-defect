@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-563",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-13033"
+  ],
+  "resolution": "found",
+  "title": "Inconsistency between PR description and gold tests in `astropy__astropy-13033`",
+  "summary": "SWE-bench astropy__astropy-13033 PR description asks for missing-column information but gold tests require an exact list-formatted error string never specified to the model.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/563",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/563"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-04-16T08:20:12.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-13033/counted/found/issue-563.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

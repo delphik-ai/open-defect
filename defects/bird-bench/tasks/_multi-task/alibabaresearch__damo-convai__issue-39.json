@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bird-bench__alibabaresearch__damo-convai__issue-39",
+  "benchmark_name": "bird-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "financial__118",
+    "financial__181"
+  ],
+  "resolution": "found",
+  "title": "Panel of BIRD Annotation Issues.",
+  "summary": "DAMO-ConvAI BIRD annotation panel contains concrete dataset defects: missing databases, SQL typos, schema mismatches, and corrupted databases.",
+  "canonical_source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39",
+  "evidence_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2023-06-11T16:03:26.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 2,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/alibabaresearch__damo-convai/benchmarks/bird-bench/tasks/_multi-task/counted/found/issue-39.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

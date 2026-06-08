@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__pr-218",
+  "benchmark_name": "swesmith",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "fix: add missing jinja2 dependency",
+  "summary": "SWE-smith PR adds missing jinja2 dependency used during issue generation.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/pull/218",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/218"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-12T14:40:53.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-smith/benchmarks/swesmith/tasks/_benchmark-shared/counted/fixed/pr-218.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

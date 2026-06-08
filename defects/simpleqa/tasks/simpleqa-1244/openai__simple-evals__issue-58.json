@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "simpleqa__openai__simple-evals__issue-58",
+  "benchmark_name": "simpleqa",
+  "scope": "task_specific",
+  "task_names": [
+    "simpleqa-1244"
+  ],
+  "resolution": "found",
+  "title": "Two incorrect answers",
+  "summary": "Live issue reports two incorrect answers in OpenAI simple-evals with full metadata/problem payloads.",
+  "canonical_source_url": "https://github.com/openai/simple-evals/issues/58",
+  "evidence_urls": [
+    "https://github.com/openai/simple-evals/issues/58"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-04-07T22:02:39.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/openai__simple-evals/benchmarks/simpleqa/tasks/simpleqa-1244/counted/found/issue-58.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

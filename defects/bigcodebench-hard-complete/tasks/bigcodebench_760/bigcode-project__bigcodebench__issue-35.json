@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bigcodebench-hard-complete__bigcode-project__bigcodebench__issue-35",
+  "benchmark_name": "bigcodebench-hard-complete",
+  "scope": "task_specific",
+  "task_names": [
+    "bigcodebench_760"
+  ],
+  "resolution": "fixed",
+  "title": "🐛 [TaskRepair] - 760 Imports",
+  "summary": "BigCodeBench maintainer issue repairs task BigCodeBench/760 imports, changing datetime import behavior.",
+  "canonical_source_url": "https://github.com/bigcode-project/bigcodebench/issues/35",
+  "evidence_urls": [
+    "https://github.com/bigcode-project/bigcodebench/issues/35"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-07-30T21:44:48.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/bigcode-project__bigcodebench/benchmarks/bigcodebench-hard-complete/tasks/bigcodebench_760/counted/fixed/issue-35.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

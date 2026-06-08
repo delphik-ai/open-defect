@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "otel-bench__quesmaorg__otel-bench__pr-16",
+  "benchmark_name": "otel-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "go-workflow-tracing"
+  ],
+  "resolution": "fixed",
+  "title": "Adding solution to go-workflow-tracing and minor fixes",
+  "summary": "Merged PR fixes go-workflow-tracing test output expectations for a current Harbor task.",
+  "defect_type_main": "Test/oracle bug",
+  "defect_type_sub": "test expectation",
+  "canonical_source_url": "https://github.com/QuesmaOrg/otel-bench/pull/16",
+  "evidence_urls": [
+    "https://github.com/QuesmaOrg/otel-bench/pull/16"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-01-26T10:15:11.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/quesmaorg__otel-bench/benchmarks/otel-bench/tasks/go-workflow-tracing/counted/fixed/pr-16.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "llm_indexed",
+    "legacy_audit_level_inferred": true,
+    "github_updated_at": "2026-01-26T10:15:35.000Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "strongreject__dsbowen__strong_reject__issue-19",
+  "benchmark_name": "strongreject",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "StrongReject Rubric fails when all models fail",
+  "summary": "StrongREJECT rubric fails when all models fail because missing judge-output columns are not filled before dataset creation.",
+  "canonical_source_url": "https://github.com/dsbowen/strong_reject/issues/19",
+  "evidence_urls": [
+    "https://github.com/dsbowen/strong_reject/issues/19"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-12-12T21:21:38.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/dsbowen__strong_reject/benchmarks/strongreject/tasks/_benchmark-shared/counted/found/issue-19.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

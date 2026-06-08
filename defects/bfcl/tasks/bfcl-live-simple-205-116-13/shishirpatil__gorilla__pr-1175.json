@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1175",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-live-simple-205-116-13"
+  ],
+  "resolution": "fixed",
+  "title": "[BFCL] Fix wrong date answer in live_simple_205-116-13",
+  "summary": "BFCL live_simple_205-116-13 asked for upcoming Saturday from Tuesday April 25 2023, but possible answer still expected April 27 instead of April 29, marking correct model outputs invalid.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1175",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1175"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-11T17:18:43.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/bfcl-live-simple-205-116-13/counted/fixed/pr-1175.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

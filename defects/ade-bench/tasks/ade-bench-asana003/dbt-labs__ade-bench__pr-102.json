@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__pr-102",
+  "benchmark_name": "ade-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "ade-bench-asana003"
+  ],
+  "resolution": "fixed",
+  "title": "fix(asana003): correct task_id typo",
+  "summary": "ADE-bench PR fixes asana003 task.yaml task_id incorrectly set to asana002.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/102",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/102"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-04T15:30:53.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/dbt-labs__ade-bench/benchmarks/ade-bench/tasks/ade-bench-asana003/counted/fixed/pr-102.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

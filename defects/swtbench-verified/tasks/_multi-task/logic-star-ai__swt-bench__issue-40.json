@@ -1,0 +1,44 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swtbench-verified__logic-star-ai__swt-bench__issue-40",
+  "benchmark_name": "swtbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-8872",
+    "pylint-dev__pylint-7277",
+    "pylint-dev__pylint-6386",
+    "pylint-dev__pylint-6903",
+    "pylint-dev__pylint-7080",
+    "sphinx-doc__sphinx-8459",
+    "sphinx-doc__sphinx-8475",
+    "sphinx-doc__sphinx-8548",
+    "sphinx-doc__sphinx-8551",
+    "sphinx-doc__sphinx-8593",
+    "sphinx-doc__sphinx-8595",
+    "sphinx-doc__sphinx-8621",
+    "sphinx-doc__sphinx-8638",
+    "sphinx-doc__sphinx-8721"
+  ],
+  "resolution": "found",
+  "title": "Gold Patch Failures/Errors (SWT-Bench Verified)",
+  "summary": "Live issue reports SWT-Bench Verified gold patches leave 12 unresolved and 2 errored, with maintainer confirming at least the Sphinx bug.",
+  "canonical_source_url": "https://github.com/logic-star-ai/swt-bench/issues/40",
+  "evidence_urls": [
+    "https://github.com/logic-star-ai/swt-bench/issues/40"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-12-16T03:35:15.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 14,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/logic-star-ai__swt-bench/benchmarks/swtbench-verified/tasks/_multi-task/counted/found/issue-40.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

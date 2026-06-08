@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__pr-36",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "271d71e2_0"
+  ],
+  "resolution": "fixed",
+  "title": "evaluation/271d71e2: in training example 2, shift middle rectangle.",
+  "summary": "ARC-AGI-2 PR fixes evaluation task 271d71e2 by shifting the middle rectangle in training example 2 so the boundary/bar relationship matches the rule.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/36",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/pull/36"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-31T03:21:42.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/arcprize__arc-agi-2/benchmarks/arc_agi_2/tasks/271d71e2_0/counted/fixed/pr-36.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gpqa-diamond__idavidrein__gpqa__issue-28",
+  "benchmark_name": "gpqa-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Few shot examples are not filtered out of evaluation test examples",
+  "summary": "GPQA 5-shot evaluation appears not to filter few-shot examples out of evaluation examples, causing shot/test collisions.",
+  "canonical_source_url": "https://github.com/idavidrein/gpqa/issues/28",
+  "evidence_urls": [
+    "https://github.com/idavidrein/gpqa/issues/28"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-10-17T17:38:58.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/idavidrein__gpqa/benchmarks/gpqa-diamond/tasks/_benchmark-shared/counted/found/issue-28.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

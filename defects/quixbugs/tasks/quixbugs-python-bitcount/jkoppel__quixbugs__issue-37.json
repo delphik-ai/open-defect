@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "quixbugs__jkoppel__quixbugs__issue-37",
+  "benchmark_name": "quixbugs",
+  "scope": "task_specific",
+  "task_names": [
+    "quixbugs-python-bitcount"
+  ],
+  "resolution": "found",
+  "title": "Infinite loop on bitcount not handled by tester.py",
+  "summary": "QuixBugs tester.py hangs indefinitely on bitcount.py because the buggy implementation loops forever; maintainers later agreed silent failure should be handled with a timeout.",
+  "canonical_source_url": "https://github.com/jkoppel/QuixBugs/issues/37",
+  "evidence_urls": [
+    "https://github.com/jkoppel/QuixBugs/issues/37"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2021-12-15T21:43:32.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/jkoppel__quixbugs/benchmarks/quixbugs/tasks/quixbugs-python-bitcount/counted/found/issue-37.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
+  }
+}

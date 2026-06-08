@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-38",
+  "benchmark_name": "cooperbench",
+  "scope": "task_specific",
+  "task_names": [
+    "cb-chi-t56-f1-5",
+    "cb-chi-t56-f1-3",
+    "cb-chi-t56-f1-2",
+    "cb-chi-t56-f1-4"
+  ],
+  "resolution": "fixed",
+  "title": "Fix chi task56 combined.patch: Allow header duplication bug",
+  "summary": "Live PR fixes CooperBench go_chi task56 combined.patch bugs that made oracle score 0 for feature pairs involving feature 1.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/38",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/38"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-11T23:35:44.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 4,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/cooperbench__cooperbench/benchmarks/cooperbench/tasks/_multi-task/counted/fixed/pr-38.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

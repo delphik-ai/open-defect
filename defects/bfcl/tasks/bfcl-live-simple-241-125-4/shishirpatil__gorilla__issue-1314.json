@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1314",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-live-simple-241-125-4"
+  ],
+  "resolution": "fixing",
+  "title": "[BFCL] Ground truth rejects valid enum values in live_parallel and live_simple",
+  "summary": "BFCL live categories reject valid enum/default values across nine entries, including units, weather units, Spotify search format, and date defaults.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1314",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1314"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-18T10:36:54.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/shishirpatil__gorilla/benchmarks/bfcl/tasks/bfcl-live-simple-241-125-4/counted/fixing/issue-1314.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "labbench__future-house__lab-bench__pr-3",
+  "benchmark_name": "labbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Mirroring tag fixes",
+  "summary": "LAB-Bench PR mirrored tag fixes from a private repo across public benchmark JSONL files.",
+  "canonical_source_url": "https://github.com/Future-House/LAB-Bench/pull/3",
+  "evidence_urls": [
+    "https://github.com/Future-House/LAB-Bench/pull/3"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-08-20T20:13:39.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/future-house__lab-bench/benchmarks/labbench/tasks/_benchmark-shared/counted/fixed/pr-3.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

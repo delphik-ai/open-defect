@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-584",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-8872"
+  ],
+  "resolution": "fixing",
+  "title": "[BUG] Gold patch for `astropy__astropy-8872` does not resolve — pytest collection error from setuptools-vendored `distutils`",
+  "summary": "Live issue reports astropy__astropy-8872 gold patch is marked unresolved because pytest collection aborts on setuptools/distutils warnings before tests run.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/584",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/584"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-22T06:46:27.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-8872/counted/fixing/issue-584.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

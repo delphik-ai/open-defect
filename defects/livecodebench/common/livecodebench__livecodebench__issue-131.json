@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "livecodebench__livecodebench__livecodebench__issue-131",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "ValueError: Couldn't find cache for livecodebench/code_generation_lite for config 'default-version_tag=release_latest' Available configs in the cache: ['release_latest-version_tag=release_v5']",
+  "summary": "LiveCodeBench evaluation cannot find the requested cached code_generation_lite config when following README-style release_v5 setup.",
+  "canonical_source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/131",
+  "evidence_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/131"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-10-30T09:11:35.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/livecodebench__livecodebench/benchmarks/livecodebench/tasks/_benchmark-shared/counted/found/issue-131.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

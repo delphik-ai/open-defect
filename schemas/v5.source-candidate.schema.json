@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/delphik/open-defects/schemas/v5.source-candidate.schema.json",
+  "title": "Delphik v5 Source Candidate",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "source_url",
+    "repo",
+    "source_type",
+    "github_number",
+    "title",
+    "body",
+    "comments",
+    "linked_pr_diff",
+    "github_state",
+    "candidate_benchmark_names",
+    "github_created_at",
+    "github_updated_at",
+    "terminal_status",
+    "audit_level",
+    "decision_note",
+    "reviewed_at",
+    "checked_urls"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "v5.source-candidate.1"
+    },
+    "source_url": {
+      "type": "string",
+      "pattern": "^https://github\\.com/[^/]+/[^/]+/(issues|pull)/[0-9]+"
+    },
+    "repo": {
+      "type": "string",
+      "pattern": "^[^/]+/[^/]+$"
+    },
+    "source_type": {
+      "enum": ["github_issue", "github_pr"]
+    },
+    "github_number": {
+      "type": "integer"
+    },
+    "title": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "comments": {
+      "type": "array"
+    },
+    "linked_pr_diff": {
+      "type": ["string", "null"]
+    },
+    "github_state": {
+      "type": "string"
+    },
+    "candidate_benchmark_names": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "github_created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "github_updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "terminal_status": {
+      "enum": ["confirmed", "duplicate_evidence", "unverified", "out_of_scope", "rejected"]
+    },
+    "linked_defect_id": {
+      "type": "string"
+    },
+    "audit_level": {
+      "enum": ["L1", "L2", "L3"]
+    },
+    "decision_note": {
+      "type": "string"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "checked_urls": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^https://"
+      },
+      "minItems": 1
+    }
+  }
+}

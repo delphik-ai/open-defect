@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-223",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-7606"
+  ],
+  "resolution": "fixed",
+  "title": "nonexistent PASS_TO_PASS test in dataset for astropy__astropy-7606",
+  "summary": "SWE-bench Verified astropy__astropy-7606 contained nonexistent PASS_TO_PASS test, making gold/valid patches score unresolved until dataset update.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/223",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/223"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-09-25T04:39:25.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-7606/counted/fixed/issue-223.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

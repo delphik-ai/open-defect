@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-24",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "263-1"
+  ],
+  "resolution": "found",
+  "title": "Incorrect answer position for 263-1",
+  "summary": "Live issue reports SpreadsheetBench item 263-1 answer position is incorrect.",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/24",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/24"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-11-03T04:40:31.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/ruckbreasoning__spreadsheetbench/benchmarks/spreadsheetbench-verified/tasks/263-1/counted/found/issue-24.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

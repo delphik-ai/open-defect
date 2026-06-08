@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "simpleqa__openai__simple-evals__pr-26",
+  "benchmark_name": "simpleqa",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Update SimpleQAEval to use direct CSV URL instead of blobfile",
+  "summary": "simple-evals SimpleQA data loading used blobfile/Azure access; PR switches to a direct public CSV URL to avoid auth friction.",
+  "canonical_source_url": "https://github.com/openai/simple-evals/pull/26",
+  "evidence_urls": [
+    "https://github.com/openai/simple-evals/pull/26"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-10-31T02:13:22.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/openai__simple-evals/benchmarks/simpleqa/tasks/_benchmark-shared/counted/fixed/pr-26.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

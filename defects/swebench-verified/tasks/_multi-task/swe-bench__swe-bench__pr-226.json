@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-226",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "scikit-learn__scikit-learn-25102",
+    "scikit-learn__scikit-learn-25232",
+    "scikit-learn__scikit-learn-25747",
+    "scikit-learn__scikit-learn-25931",
+    "scikit-learn__scikit-learn-25973",
+    "scikit-learn__scikit-learn-26194",
+    "scikit-learn__scikit-learn-26323"
+  ],
+  "resolution": "fixed",
+  "title": "fix docker building issues with sklearn",
+  "summary": "PR fixes Docker build issues for seven scikit-learn SWE-bench instances by tightening dependency constraints.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/226",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/226"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-10-01T08:52:35.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 7,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/_multi-task/counted/fixed/pr-226.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

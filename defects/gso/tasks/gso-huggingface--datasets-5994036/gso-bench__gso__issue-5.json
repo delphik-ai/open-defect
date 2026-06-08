@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__issue-5",
+  "benchmark_name": "gso",
+  "scope": "task_specific",
+  "task_names": [
+    "gso-huggingface--datasets-5994036"
+  ],
+  "resolution": "fixed",
+  "title": "[BUG] PyArrow dependency failure for datasets tasks",
+  "summary": "PyArrow 21 removed PyExtensionType, causing datasets-based GSO tasks such as huggingface__datasets-5994036 to error during evaluation.",
+  "canonical_source_url": "https://github.com/gso-bench/gso/issues/5",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/issues/5"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-08-28T21:43:08.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/gso-bench__gso/benchmarks/gso/tasks/gso-huggingface--datasets-5994036/counted/fixed/issue-5.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

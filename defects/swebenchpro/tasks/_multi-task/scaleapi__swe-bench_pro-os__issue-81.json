@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-81",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_ansible__ansible-de5858f48dc9e1ce9117034e0d7e76806f420ca8-v1055803c3a812189a1133297f7f5468579283f86",
+    "instance_future-architect__vuls-bff6b7552370b55ff76d474860eead4ab5de785a-v1151a6325649aaf997cd541ebe533b53fddf1b07"
+  ],
+  "resolution": "found",
+  "title": "wrong test names in fail_to_pass in HF dataset",
+  "summary": "Live issue lists SWE-bench Pro fail_to_pass test names that do not match actual runner names.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/81",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/81"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-03-20T09:37:40.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 2,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/_multi-task/counted/found/issue-81.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

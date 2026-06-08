@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swtbench-verified__logic-star-ai__swt-bench__pr-34",
+  "benchmark_name": "swtbench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Allow filtering of instances to official SWT during evaluation.",
+  "summary": "Merged PR fixes SWTBench evaluation/report comparability by filtering full SWE predictions down to the official SWT subset.",
+  "defect_type_main": "Evaluation",
+  "defect_type_sub": "scoring bug / subset filtering",
+  "canonical_source_url": "https://github.com/logic-star-ai/swt-bench/pull/34",
+  "evidence_urls": [
+    "https://github.com/logic-star-ai/swt-bench/pull/34"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-12T16:50:04.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/logic-star-ai__swt-bench/benchmarks/swtbench-verified/tasks/_benchmark-shared/counted/fixed/pr-34.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "llm_indexed",
+    "legacy_audit_level_inferred": true,
+    "github_updated_at": "2025-09-13T10:05:02.000Z"
+  }
+}

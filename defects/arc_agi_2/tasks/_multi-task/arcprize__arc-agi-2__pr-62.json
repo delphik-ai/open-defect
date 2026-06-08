@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__pr-62",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "88e364bc_0",
+    "88e364bc_1"
+  ],
+  "resolution": "fixing",
+  "title": "fix 88e364bc: Move star till the end",
+  "summary": "ARC-AGI-2 PR changes evaluation JSON outputs because existing expected cells were wrong for task 88e364bc.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/62",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/pull/62"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-17T06:39:18.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 2,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/arcprize__arc-agi-2/benchmarks/arc_agi_2/tasks/_multi-task/counted/fixing/pr-62.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

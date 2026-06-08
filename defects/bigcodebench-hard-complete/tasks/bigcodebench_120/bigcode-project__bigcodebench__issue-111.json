@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bigcodebench-hard-complete__bigcode-project__bigcodebench__issue-111",
+  "benchmark_name": "bigcodebench-hard-complete",
+  "scope": "task_specific",
+  "task_names": [
+    "bigcodebench_120"
+  ],
+  "resolution": "found",
+  "title": "🐛 [TaskRemoval/TaskRepair] - <120> <Unexpected test cases>",
+  "summary": "BigCodeBench task 120 expected date-series length 9 for Jan 1 through Jan 10, which the reporter flags as an unexpected/incorrect test case.",
+  "canonical_source_url": "https://github.com/bigcode-project/bigcodebench/issues/111",
+  "evidence_urls": [
+    "https://github.com/bigcode-project/bigcodebench/issues/111"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-08-08T20:20:11.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/bigcode-project__bigcodebench/benchmarks/bigcodebench-hard-complete/tasks/bigcodebench_120/counted/found/issue-111.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

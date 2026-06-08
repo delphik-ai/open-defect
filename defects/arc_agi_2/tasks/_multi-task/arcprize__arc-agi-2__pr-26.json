@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__pr-26",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "cb2d8a2c_0",
+    "cb2d8a2c_1"
+  ],
+  "resolution": "fixed",
+  "title": "cb2d8a2c test 1 output - replace blue with red",
+  "summary": "ARC-AGI-2 PR fixes task cb2d8a2c test 1 output by replacing an inconsistent blue shape with red.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/26",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/pull/26"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-27T13:11:17.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 2,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/arcprize__arc-agi-2/benchmarks/arc_agi_2/tasks/_multi-task/counted/fixed/pr-26.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

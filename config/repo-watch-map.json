@@ -1,0 +1,192 @@
+{
+  "abundant-ai/swe-gen-js": [
+    "swe-gen-js"
+  ],
+  "aider-ai/polyglot-benchmark": [
+    "aider-polyglot"
+  ],
+  "alibaba/terminal-bench-pro": [
+    "terminal-bench-pro"
+  ],
+  "alibabaresearch/damo-convai": [
+    "bird-bench"
+  ],
+  "anirudhkhatry/crust-bench": [
+    "crustbench"
+  ],
+  "anjiang-wei/satbench": [
+    "satbench"
+  ],
+  "arcprize/arc-agi-2": [
+    "arc_agi_2"
+  ],
+  "bigcode-project/bigcodebench": [
+    "bigcodebench-hard-complete"
+  ],
+  "bigcode-project/octopack": [
+    "humanevalfix"
+  ],
+  "camel-ai/seta-env": [
+    "seta-env"
+  ],
+  "christine8888/replicationbench-release": [
+    "replicationbench"
+  ],
+  "cooperbench/cooperbench": [
+    "cooperbench"
+  ],
+  "dbt-labs/ade-bench": [
+    "ade-bench"
+  ],
+  "dsbowen/strong_reject": [
+    "strongreject"
+  ],
+  "envcommons/dabstep": [
+    "dabstep"
+  ],
+  "estelyang/qcircuitbench": [
+    "qcircuitbench"
+  ],
+  "evo-eval/evoeval": [
+    "evoeval"
+  ],
+  "facebookresearch/mlgym": [
+    "mlgym-bench"
+  ],
+  "factory-ai/legacy-bench": [
+    "legacy-bench"
+  ],
+  "future-house/bixbench": [
+    "bixbench",
+    "bixbench-cli"
+  ],
+  "future-house/lab-bench": [
+    "labbench"
+  ],
+  "google-deepmind/code_contests": [
+    "code-contests"
+  ],
+  "gso-bench/gso": [
+    "gso"
+  ],
+  "harbor-framework/terminal-bench-2": [
+    "terminal-bench"
+  ],
+  "idavidrein/gpqa": [
+    "gpqa-diamond"
+  ],
+  "jkoppel/quixbugs": [
+    "quixbugs"
+  ],
+  "libercoders/featurebench": [
+    "featurebench",
+    "featurebench-lite",
+    "featurebench-lite-modal",
+    "featurebench-modal"
+  ],
+  "linhaowei1/kumo": [
+    "kumo"
+  ],
+  "linhaowei1/sld": [
+    "sldbench"
+  ],
+  "lithiumda/codepde": [
+    "codepde"
+  ],
+  "livecodebench/livecodebench": [
+    "livecodebench"
+  ],
+  "logic-star-ai/swt-bench": [
+    "swtbench-verified"
+  ],
+  "lupantech/ineqmath": [
+    "ineqmath"
+  ],
+  "ml-dev-bench/ml-dev-bench": [
+    "ml-dev-bench"
+  ],
+  "open-compass/lawbench": [
+    "lawbench"
+  ],
+  "open-thought/reasoning-gym": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "open-thoughts/openthoughts-tblite": [
+    "openthoughts-tblite"
+  ],
+  "openai/frontier-evals": [
+    "swe-lancer-diamond"
+  ],
+  "openai/simple-evals": [
+    "simpleqa"
+  ],
+  "oripress/algotune": [
+    "algotune"
+  ],
+  "patrickhua/researchcodebench": [
+    "researchcodebench"
+  ],
+  "princeton-nlp/usaco": [
+    "usaco"
+  ],
+  "quesmaorg/binaryaudit": [
+    "binary-audit"
+  ],
+  "quesmaorg/compilebench": [
+    "compilebench"
+  ],
+  "quesmaorg/otel-bench": [
+    "otel-bench"
+  ],
+  "ruckbreasoning/spreadsheetbench": [
+    "spreadsheetbench-verified"
+  ],
+  "sakshi113/mmau": [
+    "mmau"
+  ],
+  "scaleapi/swe-atlas": [
+    "scale-ai__swe-atlas-qna",
+    "scale-ai__swe-atlas-tw"
+  ],
+  "scaleapi/swe-bench_pro-os": [
+    "swebenchpro"
+  ],
+  "seketeam/deveval": [
+    "deveval"
+  ],
+  "shishirpatil/gorilla": [
+    "bfcl"
+  ],
+  "stanfordmlgroup/medagentbench": [
+    "medagentbench"
+  ],
+  "swe-bench/swe-bench": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "swe-bench/swe-smith": [
+    "swesmith"
+  ],
+  "tencent-hunyuan/autocodebenchmark": [
+    "autocodebench"
+  ],
+  "the-finai/pixiu": [
+    "pixiu"
+  ],
+  "tinlaboratory/rexbench": [
+    "rexbench"
+  ],
+  "ucsb-mlsec/terminal-bench-env": [
+    "termigen-environments"
+  ],
+  "vals-ai/finance-agent": [
+    "financeagent"
+  ],
+  "xlang-ai/ds-1000": [
+    "ds-1000"
+  ],
+  "xlang-ai/spider2": [
+    "spider2-dbt"
+  ]
+}

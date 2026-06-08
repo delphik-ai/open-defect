@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "livecodebench__livecodebench__livecodebench__issue-108",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "datasets 4.0 trust_remote_code removal breaks LiveCodeBench loading",
+  "summary": "Open issue reports LiveCodeBench code_generation loading breaks with datasets 4.0; linked PR #110 changes the dataset loading path and remains open.",
+  "canonical_source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/108",
+  "evidence_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/108"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-07-11T19:27:15.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/livecodebench__livecodebench/benchmarks/livecodebench/tasks/_benchmark-shared/counted/fixing/issue-108.md",
+    "badge_bucket": "fixing",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "llm_indexed",
+    "legacy_audit_level_inferred": true,
+    "github_updated_at": "2025-11-30T23:42:19.000Z"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-342",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-8707"
+  ],
+  "resolution": "fixed",
+  "title": "Failure In Setting Up the Test Cases In Task `astropy__astropy-8707`",
+  "summary": "SWE-bench astropy__astropy-8707 is marked unresolved because tests error during setup rather than evaluating patches; later v5 Dockerfiles pin pytest and setuptools to compatible versions.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/342",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/342"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-02-27T17:16:31.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-8707/counted/fixed/issue-342.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

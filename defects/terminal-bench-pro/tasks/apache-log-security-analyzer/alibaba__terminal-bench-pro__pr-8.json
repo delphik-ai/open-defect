@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench-pro__alibaba__terminal-bench-pro__pr-8",
+  "benchmark_name": "terminal-bench-pro",
+  "scope": "task_specific",
+  "task_names": [
+    "apache-log-security-analyzer"
+  ],
+  "resolution": "fixed",
+  "title": "data: replace apache-log-security-analyzer with git-bundle-ml-pipeline-reconstructor",
+  "summary": "terminal-bench-pro PR removes apache-log-security-analyzer due to quality issues and replaces it with a task with clearer requirements and better tests.",
+  "canonical_source_url": "https://github.com/alibaba/terminal-bench-pro/pull/8",
+  "evidence_urls": [
+    "https://github.com/alibaba/terminal-bench-pro/pull/8"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-12T07:06:09.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/alibaba__terminal-bench-pro/benchmarks/terminal-bench-pro/tasks/apache-log-security-analyzer/counted/fixed/pr-8.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

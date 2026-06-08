@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-3",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "fix: use correct default agent name in runner.py",
+  "summary": "CooperBench PR fixes the default agent name mismatch: runner defaults used mini_swe while the adapter registered mini_swe_agent, causing Unknown agent failures with defaults.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/3",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/3"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-01-31T20:33:58.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/cooperbench__cooperbench/benchmarks/cooperbench/tasks/_benchmark-shared/counted/fixed/pr-3.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-275",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Incorrect unit tests in `FAIL_TO_PASS` and `PASS_TO_PASS`",
+  "summary": "SWE-bench FAIL_TO_PASS and PASS_TO_PASS fields for Django can contain docstrings rather than full test identifiers due to parser limitations; commenter says more than half of test names in Lite/Verified are wrong and over 100 patches may be mislabeled.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/275",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/275"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-12-17T22:11:06.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/_benchmark-shared/counted/found/issue-275.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

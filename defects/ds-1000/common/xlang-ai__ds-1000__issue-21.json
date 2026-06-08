@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ds-1000__xlang-ai__ds-1000__issue-21",
+  "benchmark_name": "ds-1000",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "AttributeError: Can't pickle local object 'check_correctness.<locals>.unsafe_execute'",
+  "summary": "DS-1000 check_correctness fails under Python 3.12 because unsafe_execute is a local function that cannot be pickled.",
+  "canonical_source_url": "https://github.com/xlang-ai/DS-1000/issues/21",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/DS-1000/issues/21"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-06-09T18:26:31.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/xlang-ai__ds-1000/benchmarks/ds-1000/tasks/_benchmark-shared/counted/found/issue-21.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

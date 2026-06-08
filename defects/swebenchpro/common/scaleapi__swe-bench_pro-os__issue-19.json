@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-19",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Jest parser is not correctly implemented",
+  "summary": "SWE-bench Pro Jest parser was incorrectly implemented and included tests that should not have been in FAIL_TO_PASS.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/19",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/19"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-25T08:55:30.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/_benchmark-shared/counted/found/issue-19.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

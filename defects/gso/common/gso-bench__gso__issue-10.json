@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__issue-10",
+  "benchmark_name": "gso",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "[BUG] load_gso_dataset drops keys w/ `gt_`; breaks after #2",
+  "summary": "GSO load_gso_dataset dropped keys containing gt_, breaking dataset loading after gt_diff and gt_commit_message were added.",
+  "canonical_source_url": "https://github.com/gso-bench/gso/issues/10",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/issues/10"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-08-29T23:57:37.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/gso-bench__gso/benchmarks/gso/tasks/_benchmark-shared/counted/fixed/issue-10.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
+  }
+}

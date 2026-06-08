@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-484",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-7606",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "psf__requests-1724",
+    "psf__requests-1766",
+    "psf__requests-1921",
+    "psf__requests-2317"
+  ],
+  "resolution": "fixed",
+  "title": "[Dataset & Code Fix] Resolve gold patch validation failures caused by environment and dependency mismatches (Astropy & PSF Requests)",
+  "summary": "Live issue reports SWE-bench Verified gold-patch validation failures caused by stale dependencies and external-service assumptions; commenters reproduce and discuss fixes.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/484",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/484"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-10-16T23:32:15.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 7,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/_multi-task/counted/fixed/issue-484.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

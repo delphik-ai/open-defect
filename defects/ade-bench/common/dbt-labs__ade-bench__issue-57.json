@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__issue-57",
+  "benchmark_name": "ade-bench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Tasks should be \"indeterminate\" if the API response has any errors",
+  "summary": "ADE-bench issue argues API errors should make tasks indeterminate instead of pass/fail, to avoid false benchmark signal when model API calls fail.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/issues/57",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/issues/57"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-12-01T15:33:24.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/dbt-labs__ade-bench/benchmarks/ade-bench/tasks/_benchmark-shared/counted/found/issue-57.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

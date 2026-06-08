@@ -1,0 +1,14 @@
+{
+  "name": "delphik-open-defects",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "fetch:threads": "node scripts/fetch-threads.mjs",
+    "prepare:candidates": "node scripts/prepare-candidates.mjs",
+    "apply:candidates": "node scripts/apply-candidates.mjs",
+    "sync:db": "node scripts/sync-db.mjs",
+    "update:fetch-state": "node scripts/update-fetch-state.mjs",
+    "validate": "node scripts/validate-artifacts.mjs"
+  }
+}

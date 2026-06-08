@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "humanevalfix__bigcode-project__octopack__issue-31",
+  "benchmark_name": "humanevalfix",
+  "scope": "task_specific",
+  "task_names": [
+    "python-64"
+  ],
+  "resolution": "found",
+  "title": "Leftover comment in HumanEvalPack python/64",
+  "summary": "HumanEvalPack python/64 appears to include a leftover FIX comment in both prompt and declaration; maintainer invited a PR to correct it.",
+  "canonical_source_url": "https://github.com/bigcode-project/octopack/issues/31",
+  "evidence_urls": [
+    "https://github.com/bigcode-project/octopack/issues/31"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-29T15:27:50.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/bigcode-project__octopack/benchmarks/humanevalfix/tasks/python-64/counted/found/issue-31.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-156",
+  "benchmark_name": "spider2-dbt",
+  "scope": "task_specific",
+  "task_names": [
+    "airbnb002"
+  ],
+  "resolution": "found",
+  "title": "Missing gold truth for dbt questions",
+  "summary": "Spider2 still has missing gold truth for dbt questions, plus an orphan gold folder and a broken conditional_tabs case.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/156",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/156"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-11-23T09:13:54.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/xlang-ai__spider2/benchmarks/spider2-dbt/tasks/airbnb002/counted/found/issue-156.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z",
+    "github_updated_at": "2025-11-26T13:07:43.000Z"
+  }
+}

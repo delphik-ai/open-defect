@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "openthoughts-tblite__open-thoughts__openthoughts-tblite__issue-2",
+  "benchmark_name": "openthoughts-tblite",
+  "scope": "task_specific",
+  "task_names": [
+    "git-repo-forensics"
+  ],
+  "resolution": "found",
+  "title": "Bug with git-repo-forensics",
+  "summary": "git-repo-forensics task appears to ask agents to uncover git artifacts, but Dockerfile/data folder do not include git metadata in /workdir/data.",
+  "canonical_source_url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/2",
+  "evidence_urls": [
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/2"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-04-01T22:15:35.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/open-thoughts__openthoughts-tblite/benchmarks/openthoughts-tblite/tasks/git-repo-forensics/counted/found/issue-2.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}

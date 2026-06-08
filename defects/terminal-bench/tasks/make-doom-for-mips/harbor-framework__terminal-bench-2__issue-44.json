@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__issue-44",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "make-doom-for-mips"
+  ],
+  "resolution": "found",
+  "title": "`caffe-cifar-10` and `make-doom-for-mips` tasks appear infeasible under current resource constraints",
+  "summary": "Not counted for terminal-bench@2.0 health: covered_by_terminal_bench_2_pr_50.",
+  "defect_type_main": "not_counted",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/44",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/44"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-24T14:55:09.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/harbor-framework__terminal-bench-2/benchmarks/terminal-bench/tasks/make-doom-for-mips/counted/found/issue-44.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "llm_indexed",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
+  }
+}

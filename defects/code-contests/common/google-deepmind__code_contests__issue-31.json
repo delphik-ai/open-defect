@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "code-contests__google-deepmind__code_contests__issue-31",
+  "benchmark_name": "code-contests",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Executing and evaluating solutions 3x Compilation failure with many python versions",
+  "summary": "Python solutions in code_contests failed compilation under the sandbox because arch_prctl was blocked; commenters discussed allowing the syscall or using Python 3.10.",
+  "canonical_source_url": "https://github.com/google-deepmind/code_contests/issues/31",
+  "evidence_urls": [
+    "https://github.com/google-deepmind/code_contests/issues/31"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2023-03-16T16:02:11.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 0,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/google-deepmind__code_contests/benchmarks/code-contests/tasks/_benchmark-shared/counted/found/issue-31.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

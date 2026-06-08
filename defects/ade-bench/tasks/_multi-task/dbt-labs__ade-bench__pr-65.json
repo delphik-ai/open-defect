@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__pr-65",
+  "benchmark_name": "ade-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "ade-bench-airbnb006",
+    "ade-bench-asana002",
+    "ade-bench-asana005",
+    "ade-bench-asana005-hard"
+  ],
+  "resolution": "fixed",
+  "title": "Fix failing fusion tests, improve Snowflake setup guide, add quickstart to top of readme",
+  "summary": "ADE-bench PR fixes/disables Fusion tests that failed because of overeager static analysis and missing raw_code, preventing invalid hard failures in benchmark runs.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/65",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/65"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-12-04T03:16:46.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 4,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/dbt-labs__ade-bench/benchmarks/ade-bench/tasks/_multi-task/counted/fixed/pr-65.md",
+    "badge_bucket": "fixed",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

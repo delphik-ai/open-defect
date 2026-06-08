@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__issue-100",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "task_specific",
+  "task_names": [
+    "16912-manager-0"
+  ],
+  "resolution": "found",
+  "title": "Overly-strict test in swelancer sample 16912_4",
+  "summary": "Frontier Evals issue shows SWELancer sample 16912_4 instructions allow either consistent “format” or “e.g.” wording, but tests only accept changing bank account page to “e.g.”.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/issues/100",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/issues/100"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-12-31T03:40:15.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 1,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/openai__frontier-evals/benchmarks/swe-lancer-diamond/tasks/16912-manager-0/counted/found/issue-100.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
+  }
+}

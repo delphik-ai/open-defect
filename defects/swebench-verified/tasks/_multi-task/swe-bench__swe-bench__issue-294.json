@@ -1,0 +1,45 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-294",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "resolution": "found",
+  "title": "How stable is run_evaluation.py with gold patch for SWE-bench_Verified?",
+  "summary": "Issue reports SWE-bench Verified gold-patch evaluation leaving 14-15 of 500 tasks unresolved across repeated runs.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/294",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/294"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-01-20T21:09:58.000Z",
+  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "affected_task_count": 15,
+  "migration": {
+    "source": "v5-health-sync",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/_multi-task/counted/found/issue-294.md",
+    "badge_bucket": "found",
+    "source_channel": "github_crawl",
+    "routing_status": "already_upstream",
+    "confidence": "imported",
+    "legacy_audit_level_inferred": true,
+    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
+  }
+}
