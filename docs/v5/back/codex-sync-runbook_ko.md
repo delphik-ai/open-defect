@@ -64,10 +64,17 @@ GitHub issue/PR 후보를 읽고, benchmark defect artifact를 정확히 갱신�
 4. 각 candidates/<run_id>/<source_key>.json 을 읽고 하나씩 판정한다.
 
    4.1 benchmark를 정한다.
+   이 단계는 confirmed/duplicate_evidence 이전의 필수 gate다.
+   `candidate_benchmark_names`는 repo 기반 후보 목록일 뿐이고, benchmark 귀속 증거가 아니다.
+   같은 GitHub repo가 여러 benchmark seed/split/version/variant를 담으면 thread/source/task evidence로 정확한 variant를 먼저 확정한다.
    - candidate_benchmark_names 안에서 thread/source/task evidence와 맞는 benchmark 하나를 고른다.
+   - multi-benchmark repo에서는 title/body/comment에 나온 benchmark 이름, task id, dataset path, config, PR diff, task table 중 하나 이상으로 current benchmark variant 귀속을 확인한다.
    - SWE-bench repo는 Verified/Lite/Multimodal/Pro 구분을 확인한다.
    - Terminal-Bench 계열은 TB1/TB2/TB2.1 구분을 확인한다.
+   - Spider2 repo는 Spider2-DBT와 Spider2-Snow/Snowflake를 구분한다.
+   - 같은 GitHub repo라도 benchmark variant가 다르면 out_of_scope다. 예: `xlang-ai/spider2` 후보 중 Spider2-Snow/Snowflake credential 문제는 `spider2-dbt`로 count하지 않는다.
    - 현재 benchmark seed/split/version 밖이면 terminal_status=out_of_scope.
+   - variant 귀속을 확정할 수 없으면 confirmed나 duplicate_evidence로 끝낼 수 없다. 필요한 source/task evidence를 더 읽고, 그래도 확정할 수 없으면 unverified 또는 out_of_scope로 끝낸다.
 
    4.2 필요한 audit_level을 먼저 고른다.
    이 단계에서는 최종 판정을 쓰지 않는다. 어떤 evidence를 추가로 읽거나 실행해야 하는지 정한다.
@@ -451,6 +458,7 @@ L1로 confirmed 또는 duplicate_evidence가 가능한 조건:
 - PR 자체가 작고 명확한 benchmark defect fix다.
 - issue가 merged PR과 명확히 linked되어 있고 root cause가 같은지 thread 안에서 확인된다.
 - benchmark seed/split/version 귀속이 thread만으로 명확하다.
+- shared repo라도 current benchmark variant 귀속이 thread 안에서 명시적으로 확인된다.
 
 L1에서 해야 할 일:
 
@@ -461,7 +469,7 @@ L1에서 해야 할 일:
 
 L1로 끝내면 안 되는 경우:
 
-- shared repo라서 benchmark variant가 애매하다.
+- shared repo에서 current benchmark variant 귀속이 thread만으로 명확하지 않다.
 - task_specific인데 current task row 이름을 thread만으로 확정할 수 없다.
 - PR diff/source를 읽지 않으면 benchmark defect인지 알 수 없다.
 - multi-task fanout이나 큰 health count 변경이 있다.
@@ -478,6 +486,7 @@ L2가 필요한 조건:
 - PR diff를 읽어야 benchmark defect fix인지 알 수 있다.
 - SWE-bench처럼 한 repo에 여러 seed/split/version이 섞인다.
 - Terminal-Bench처럼 TB1/TB2/TB2.1 scope가 섞일 수 있다.
+- Spider2처럼 같은 repo 안에서 DBT/Snow 등 benchmark variant가 섞일 수 있다.
 
 L2에서 해야 할 일:
 
@@ -487,7 +496,8 @@ L2에서 해야 할 일:
 4. task_specific이면 affected current task name을 `task_names`에 정확히 넣는다.
 5. 같은 benchmark/task/root cause의 existing defect artifact를 비교한다.
 6. 읽은 source/task/PR URL을 `checked_urls`에 넣는다.
-7. 왜 confirmed, duplicate_evidence, unverified, out_of_scope, rejected인지 `decision_note`에 쓴다.
+7. multi-benchmark repo이면 current benchmark variant로 귀속한 근거를 `decision_note`에 적는다.
+8. 왜 confirmed, duplicate_evidence, unverified, out_of_scope, rejected인지 `decision_note`에 쓴다.
 
 L2로 끝내면 안 되는 경우:
 

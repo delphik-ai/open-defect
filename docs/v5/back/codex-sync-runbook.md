@@ -61,10 +61,17 @@ Run steps:
 4. Read each candidates/<run_id>/<source_key>.json and decide it one by one.
 
    4.1 Decide benchmark attribution.
+   This step is a required gate before confirmed or duplicate_evidence.
+   `candidate_benchmark_names` is a repo-derived candidate list, not benchmark attribution evidence.
+   If one GitHub repo contains multiple benchmark seeds/splits/versions/variants, first prove the exact current variant from thread/source/task evidence.
    - Pick one benchmark from candidate_benchmark_names that matches the thread/source/task evidence.
+   - For multi-benchmark repos, verify current benchmark variant attribution from at least one of: benchmark name in title/body/comment, task id, dataset path, config, PR diff, or task table.
    - For the SWE-bench repo, distinguish Verified/Lite/Multimodal/Pro.
    - For Terminal-Bench repos, distinguish TB1/TB2/TB2.1.
+   - For the Spider2 repo, distinguish Spider2-DBT from Spider2-Snow/Snowflake.
+   - If a GitHub repo is shared by multiple benchmark variants, count only the current variant. Example: Spider2-Snow/Snowflake credential issues from `xlang-ai/spider2` are not `spider2-dbt` defects.
    - If the thread is outside the current benchmark seed/split/version, set terminal_status=out_of_scope.
+   - If variant attribution cannot be proven, the candidate cannot end as confirmed or duplicate_evidence. Read more source/task evidence; if still unresolved, end as unverified or out_of_scope.
 
    4.2 Choose the required audit_level first.
    Do not write the final decision at this step. Decide what extra evidence must be read or reproduced.
@@ -448,6 +455,7 @@ L1 can end as confirmed or duplicate_evidence only when:
 - the PR itself is a small, clear benchmark defect fix;
 - the issue is clearly linked to a merged PR with the same root cause;
 - benchmark seed/split/version attribution is clear from the thread alone.
+- for shared repos, current benchmark variant attribution is explicitly clear from the thread.
 
 L1 checklist:
 
@@ -458,7 +466,7 @@ L1 checklist:
 
 Do not stop at L1 when:
 
-- shared repo benchmark variant is ambiguous;
+- shared repo current benchmark variant attribution is not clear from the thread alone;
 - task_specific scope needs current task row names that the thread does not prove;
 - PR diff/source is needed to decide whether this is a benchmark defect;
 - the candidate has multi-task fanout or large health count impact.
@@ -475,6 +483,7 @@ L2 is required when:
 - PR diff is needed to decide whether it fixes a benchmark defect;
 - one repo contains multiple benchmark seeds/splits/versions;
 - Terminal-Bench-style benchmark versions can be confused.
+- Spider2-style benchmark variants such as DBT and Snow/Snowflake can be confused.
 
 L2 checklist:
 
@@ -484,7 +493,8 @@ L2 checklist:
 4. If task_specific, write exact affected current task names in `task_names`.
 5. Compare existing defect artifacts for the same benchmark/task/root cause.
 6. Put read source/task/PR URLs in `checked_urls`.
-7. Explain final status in `decision_note`.
+7. For multi-benchmark repos, write the current benchmark variant attribution evidence in `decision_note`.
+8. Explain final status in `decision_note`.
 
 Do not stop at L2 when:
 

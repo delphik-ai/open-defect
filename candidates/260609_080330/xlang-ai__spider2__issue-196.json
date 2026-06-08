@@ -22,18 +22,12 @@
   "candidate_benchmark_names": [
     "spider2-dbt"
   ],
-  "terminal_status": "duplicate_evidence",
-  "benchmark_name": "spider2-dbt",
+  "terminal_status": "out_of_scope",
   "audit_level": "L2",
-  "scope": "benchmark_level",
-  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-184",
-  "task_names": [],
-  "resolution": "found",
-  "summary": "Spider2-Snow evaluation credentials use a Snowflake account that returns account-suspended errors for warehouse-backed queries, blocking current evaluation runs that need compute.",
   "checked_urls": [
     "https://github.com/xlang-ai/Spider2/issues/196",
     "https://github.com/xlang-ai/Spider2/issues/184"
   ],
-  "decision_note": "Issue #196 explicitly says it is the same suspension as #184 and adds diagnostics showing metadata-only queries work while warehouse-compute queries fail with Snowflake 000666. It is duplicate/follow-up evidence for the canonical spider2-dbt credential defect in issue #184.",
+  "decision_note": "Issue #196 explicitly says it is the same Spider2-Snow/Snowflake account suspension as #184 and adds diagnostics for warehouse-compute failures. Since Spider2-Snow is outside the current spider2-dbt benchmark seed/scope, this follow-up is also out_of_scope rather than duplicate evidence for an in-scope artifact.",
   "reviewed_at": "2026-06-08T23:06:36Z"
 }

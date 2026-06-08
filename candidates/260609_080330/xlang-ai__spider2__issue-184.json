@@ -22,20 +22,12 @@
   "candidate_benchmark_names": [
     "spider2-dbt"
   ],
-  "terminal_status": "confirmed",
-  "benchmark_name": "spider2-dbt",
+  "terminal_status": "out_of_scope",
   "audit_level": "L2",
-  "scope": "benchmark_level",
-  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-184",
-  "task_names": [],
-  "resolution": "found",
-  "summary": "Spider2-Snow evaluation credentials use a Snowflake account that returns account-suspended errors for warehouse-backed queries, blocking current evaluation runs that need compute.",
-  "defect_type_main": "Environment & dependencies",
-  "defect_type_sub": "External service credential issue",
   "checked_urls": [
     "https://github.com/xlang-ai/Spider2/issues/184",
     "https://github.com/xlang-ai/Spider2/issues/196"
   ],
-  "decision_note": "Issue #184 reports the shipped Spider2-Snow Snowflake account RSRSBDK-YDB67606 failing with Snowflake 000666 account-suspended errors, and #196 independently reports the same account/role still blocking warehouse-compute queries two months later. Existing spider2-dbt artifacts do not cover this credential/account-level root cause, so this is a new benchmark-level defect.",
+  "decision_note": "Issue #184 is a Spider2-Snow/Snowflake credential account suspension report, not a Spider2-DBT defect. The watched GitHub repo maps broadly to spider2-dbt, but this thread is for a different Spider2 variant and is therefore outside the current benchmark seed/scope.",
   "reviewed_at": "2026-06-08T23:06:36Z"
 }
