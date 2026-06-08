@@ -167,17 +167,15 @@ Run steps:
    - benchmark_level confirmed candidates have empty task_names and live under defects/<benchmark_name>/common/.
    - first_reported_at is GitHub created_at.
 
-8. Update the GitHub fetch cursor.
-   Command:
-   npm run update:fetch-state -- --run=<run_id> --state-file=data/github-fetch-state.json
+8. Commit artifact changes and push to the public GitHub repo.
+   Do not update the fetch cursor in this step.
 
-9. Commit the changes and push to the public GitHub repo.
    Commands:
-   git add candidates data defects
+   git add candidates defects
    git commit -m "Update open defect artifacts <run_id>"
    git push
 
-10. Sync the DB from the public artifacts.
+9. Sync the DB from the public artifacts.
    Commands:
    npm run sync:db -- --target=dev
    npm run sync:db -- --target=prod
@@ -196,23 +194,41 @@ Run steps:
    - open_defect_artifact_tasks
    - open_benchmark_health
 
+10. Update the GitHub fetch cursor only after both dev and prod DB sync succeed.
+   If DB sync fails, do not run this step.
+
+   Commands:
+   npm run update:fetch-state -- --run=<run_id> --state-file=data/github-fetch-state.json
+   git add data/github-fetch-state.json
+   git commit -m "Update GitHub fetch cursor <run_id>"
+   git push
+
 11. Write a short final note in Korean.
    - run_id
    - candidate count
    - confirmed / duplicate_evidence / unverified / out_of_scope / rejected counts
    - created/updated defect artifact count
-   - git commit/push status
+   - artifact commit/push status
    - DB sync status
+   - fetch cursor commit/push status
    - important decisions and remaining risks
 ```
 
+## Pipeline Commands
+
+`package.json` commands and implementation files:
+
+- `npm run fetch:threads` -> `scripts/fetch-threads.mjs`
+- `npm run prepare:candidates` -> `scripts/prepare-candidates.mjs`
+- `npm run apply:candidates` -> `scripts/apply-candidates.mjs`
+- `npm run validate` -> `scripts/validate-artifacts.mjs`
+- `npm run sync:db` -> `scripts/sync-db.mjs`
+- `npm run update:fetch-state` -> `scripts/update-fetch-state.mjs`
+
 ## Artifact Schema
 
-JSON schemas and validation script:
+JSON schemas and validation:
 
-- `scripts/fetch-threads.mjs`
-- `scripts/prepare-candidates.mjs`
-- `scripts/update-fetch-state.mjs`
 - `schemas/v5.source-candidate.schema.json`
 - `schemas/v5.defect-artifact.schema.json`
 - `scripts/validate-artifacts.mjs`

@@ -170,17 +170,15 @@ GitHub issue/PR 후보를 읽고, benchmark defect artifact를 정확히 갱신�
    - benchmark_level confirmed는 task_names가 비어 있고 defects/<benchmark_name>/common/ 아래에 있다.
    - first_reported_at은 GitHub created_at이다.
 
-8. GitHub fetch cursor를 갱신한다.
-   명령:
-   npm run update:fetch-state -- --run=<run_id> --state-file=data/github-fetch-state.json
+8. artifact 변경사항을 commit하고 public GitHub repo에 push한다.
+   이 단계에서는 fetch cursor를 갱신하지 않는다.
 
-9. 변경사항을 commit하고 public GitHub repo에 push한다.
    명령:
-   git add candidates data defects
+   git add candidates defects
    git commit -m "Update open defect artifacts <run_id>"
    git push
 
-10. DB를 공개 artifact 기준으로 동기화한다.
+9. DB를 공개 artifact 기준으로 동기화한다.
    명령:
    npm run sync:db -- --target=dev
    npm run sync:db -- --target=prod
@@ -199,23 +197,41 @@ GitHub issue/PR 후보를 읽고, benchmark defect artifact를 정확히 갱신�
    - open_defect_artifact_tasks
    - open_benchmark_health
 
+10. dev/prod DB sync가 모두 성공한 뒤에만 GitHub fetch cursor를 갱신한다.
+   DB sync가 실패하면 이 단계를 실행하지 않는다.
+
+   명령:
+   npm run update:fetch-state -- --run=<run_id> --state-file=data/github-fetch-state.json
+   git add data/github-fetch-state.json
+   git commit -m "Update GitHub fetch cursor <run_id>"
+   git push
+
 11. 최종 보고를 한국어로 짧게 작성한다.
    - run_id
    - candidate 수
    - confirmed / duplicate_evidence / unverified / out_of_scope / rejected 개수
    - 생성/수정한 defect artifact 수
-   - git commit/push 여부
+   - artifact commit/push 여부
    - DB sync 여부
+   - fetch cursor commit/push 여부
    - 주요 판단과 남은 리스크
 ```
 
+## Pipeline Commands
+
+`package.json` 명령과 실행 파일:
+
+- `npm run fetch:threads` -> `scripts/fetch-threads.mjs`
+- `npm run prepare:candidates` -> `scripts/prepare-candidates.mjs`
+- `npm run apply:candidates` -> `scripts/apply-candidates.mjs`
+- `npm run validate` -> `scripts/validate-artifacts.mjs`
+- `npm run sync:db` -> `scripts/sync-db.mjs`
+- `npm run update:fetch-state` -> `scripts/update-fetch-state.mjs`
+
 ## Artifact Schema
 
-JSON Schema와 검증 스크립트:
+JSON Schema와 검증:
 
-- `scripts/fetch-threads.mjs`
-- `scripts/prepare-candidates.mjs`
-- `scripts/update-fetch-state.mjs`
 - `schemas/v5.source-candidate.schema.json`
 - `schemas/v5.defect-artifact.schema.json`
 - `scripts/validate-artifacts.mjs`
