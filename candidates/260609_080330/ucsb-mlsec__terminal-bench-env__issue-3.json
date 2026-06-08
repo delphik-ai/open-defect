@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/3",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 3,
+  "title": "Enterprise Evaluation Report: Data Anomalies and Quality Concerns",
+  "body": "@rucnyz @kaijiezhu11\n\nOur engineering team recently completed a technical evaluation of this project for potential adoption in our enterprise stack. I'm sharing our findings here as a courtesy to both the maintainers and other teams who may be considering similar adoption.\n\nDuring our standard vetting process, we identified several concerns. First, the ratio of stars to forks, watchers, and community contributions is far outside the range we typically see in healthy projects at this maturity level. Second, a significant portion of accounts that starred the repository exhibit characteristics inconsistent with active developer profiles.\n\nFrom a code quality standpoint, we encountered multiple runtime errors during integration testing. The documentation does not align with the actual API surface, and there is minimal test coverage. Our security review also flagged several areas that would require remediation before any production use.\n\nOn the community health side, open issues receive little to no response from maintainers, there are virtually no merged pull requests from external contributors, and there is no visible roadmap or release cadence.\n\nBased on these findings, our architecture review board has declined to approve this project for adoption. We have selected an alternative solution with stronger community fundamentals and verifiable usage in production environments.\n\nWe would welcome a response from the maintainers addressing these observations, particularly regarding the star activity patterns.",
+  "comments": [
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/3#issuecomment-3922776380",
+      "user": "kaijiezhu11",
+      "created_at": "2026-02-18T19:34:18Z",
+      "updated_at": "2026-02-18T19:34:18Z",
+      "body": "Hi @rifacnt17, thank you for the detailed feedback.\n\nRegarding your point about the documentation not aligning with the 'actual API surface,' could you please clarify which specific API interface or function you are referring to?\n\nSince this project is primarily Docker environments, we are a bit confused about which API surface you evaluated."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-16T19:30:43Z",
+  "github_updated_at": "2026-06-03T10:48:33Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/3"
+  ],
+  "decision_note": "Issue broadly alleges runtime errors, API/documentation mismatch, and quality concerns, but provides no reproducible task, command, file path, or concrete evidence. Maintainer asked for specifics, and the thread does not verify a benchmark defect.",
+  "reviewed_at": "2026-06-08T23:06:36Z"
+}

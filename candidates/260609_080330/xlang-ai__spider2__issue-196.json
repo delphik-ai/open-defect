@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/196",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 196,
+  "title": "Spider2-Snow credential account suspended — same as #184, still blocking evaluation (2026-06)",
+  "body": "Hi Spider2 team,\n\nI'm running into the same suspension that was reported in #184 (still open). Just want to surface this is still happening 2+ months later, share some additional diagnostics, and ask what the recommended path forward is for current users.\n\n## Symptom\n\nUsing the credentials shipped with Spider2-Snow (account `RSRSBDK-YDB67606`, role `PARTICIPANT`):\nSnowflake error 000666 (57014): Your account is suspended due to lack of payment method.\n\n\n## What I observed (might help with diagnosis)\n\nThe suspension is selective, not total — which suggests it's a **warehouse-compute credit exhaustion** rather than a full account block:\n\n| Query type | Result |\n| --- | --- |\n| `SELECT 1` | ✅ works |\n| `SELECT COUNT(*) FROM <db>.<schema>.<table>` (no filter) | ✅ works (served from metadata, no warehouse) |\n| `SELECT COUNT_IF(<col> > N) FROM ...` | ❌ fails with above error |\n| Anything with `WHERE` / `GROUP BY` / `JOIN` / `FLATTEN` | ❌ fails |\n\nSo the catalog is alive and reachable, but warehouse compute is blocked across every shared dataset (PATENTS, GITHUB_REPOS, TCGA_*, THELOOK_ECOMMERCE, ETHEREUM_BLOCKCHAIN, ...). This is consistent with the credit pool on the sponsored account being exhausted.\n\n## Questions\n\n1. Could you confirm what's actually going on with the account — is it credit exhaustion, a billing/payment issue on the sponsored account, or something else?\n2. Any rough ETA on a fix?\n\nHappy to share the suspension log lines or the probe-script if useful for repro.\n\nThanks for maintaining Spider2 — the benchmark itself is great, just need to know how to keep evaluating against it.\n",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/196#issuecomment-4647182410",
+      "user": "httdty",
+      "created_at": "2026-06-08T09:18:04Z",
+      "updated_at": "2026-06-08T09:18:04Z",
+      "body": "+1"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-06T07:15:07Z",
+  "github_updated_at": "2026-06-08T09:18:04Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-184",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Spider2-Snow evaluation credentials use a Snowflake account that returns account-suspended errors for warehouse-backed queries, blocking current evaluation runs that need compute.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/196",
+    "https://github.com/xlang-ai/Spider2/issues/184"
+  ],
+  "decision_note": "Issue #196 explicitly says it is the same suspension as #184 and adds diagnostics showing metadata-only queries work while warehouse-compute queries fail with Snowflake 000666. It is duplicate/follow-up evidence for the canonical spider2-dbt credential defect in issue #184.",
+  "reviewed_at": "2026-06-08T23:06:36Z"
+}

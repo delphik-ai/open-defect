@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/595",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 595,
+  "title": "Technical review request: evidence boundary for coding-agent success claims",
+  "body": "Hi SWE-bench maintainers, I built a small open-source claim-vs-evidence gate for supplied coding-agent run records:\nhttps://github.com/1966536805l-crypto/openmako-evidence-court\n\nI’m asking for technical boundary feedback, not endorsement or a share.\n\nFrom a benchmark-maintainer perspective: before an agent claims an issue is solved, what minimum artifact set should support that claim: issue id, patch files, allowed/protected scope, eval command, eval output, final claim, or something else?\n\n30-second review request:\nhttps://github.com/1966536805l-crypto/openmako-evidence-court/blob/main/docs/TECHNICAL_REVIEW_REQUEST.md\n\nMachine-readable check:\n\n```bash\nmako evidence-court --input examples/evidence-court/bad-run.json --json | diff -u examples/evidence-court/bad-run.report.json -\n```\n\nBoundary: this does not replace SWE-bench scoring, does not prove tests actually ran outside the supplied record, and does not natively ingest CI/vendor logs.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-03T11:49:12Z",
+  "github_updated_at": "2026-06-03T11:49:12Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/595"
+  ],
+  "decision_note": "Issue requests maintainer feedback on evidence boundaries for external coding-agent success claims. It explicitly does not report a SWE-bench scoring or task defect.",
+  "reviewed_at": "2026-06-08T23:06:36Z"
+}

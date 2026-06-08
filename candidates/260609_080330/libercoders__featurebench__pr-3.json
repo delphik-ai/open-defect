@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiberCoders/FeatureBench/pull/3",
+  "repo": "libercoders/featurebench",
+  "source_type": "github_pr",
+  "github_number": 3,
+  "title": "Collect mini-swe-agent trajectory file after runs",
+  "body": "Currently, when running mini-swe-agent, the trajectory files are not saved, which makes it impossible to collect information such as token usage and step counts. OpenHands already preserves this information, and this change adds the same support.",
+  "comments": [
+    {
+      "url": "https://github.com/LiberCoders/FeatureBench/pull/3#issuecomment-4646527940",
+      "user": "potatoQi",
+      "created_at": "2026-06-08T07:53:02Z",
+      "updated_at": "2026-06-08T07:53:02Z",
+      "body": "Thanks! Merged."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/featurebench/infer/agents/mini_swe_agent.py b/featurebench/infer/agents/mini_swe_agent.py\nindex 251f8b0..945d17f 100644\n--- a/featurebench/infer/agents/mini_swe_agent.py\n+++ b/featurebench/infer/agents/mini_swe_agent.py\n@@ -109,6 +109,14 @@ def post_run_hook(self, container, log_file) -> bool:\n             )\n         except Exception:\n             pass\n+        try:\n+            self.cm.copy_from_container(\n+                container,\n+                \"/root/.config/mini-swe-agent/last_mini_run.traj.json\",\n+                log_dir / \"traj.json\",\n+            )\n+        except Exception:\n+            pass\n         return True\n \n     def failure_hook(self, container, log_file: Path) -> None:\n@@ -122,6 +130,14 @@ def failure_hook(self, container, log_file: Path) -> None:\n             )\n         except Exception:\n             pass\n+        try:\n+            self.cm.copy_from_container(\n+                container,\n+                \"/root/.config/mini-swe-agent/last_mini_run.traj.json\",\n+                log_dir / \"traj.json\",\n+            )\n+        except Exception:\n+            pass\n \n     def get_run_command(self, instruction: str) -> str:\n         \"\"\"Get the command to run mini-swe-agent.\"\"\"\n",
+  "github_state": "closed",
+  "github_created_at": "2026-06-07T06:51:10Z",
+  "github_updated_at": "2026-06-08T07:53:02Z",
+  "candidate_benchmark_names": [
+    "featurebench",
+    "featurebench-lite",
+    "featurebench-lite-modal",
+    "featurebench-modal"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/LiberCoders/FeatureBench/pull/3"
+  ],
+  "decision_note": "PR adds mini-swe-agent trajectory collection for usage and step-count observability. The thread and diff do not show a scoring, dataset, task, or evaluator defect in FeatureBench.",
+  "reviewed_at": "2026-06-08T23:06:36Z"
+}

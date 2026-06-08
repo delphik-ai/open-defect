@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/1",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 1,
+  "title": "Release TermiGen Environments dataset on Hugging Face",
+  "body": "Hi @kaijiezhu11 🤗\n\nI'm Niels and work as part of the open-source team at Hugging Face. I discovered your work through Hugging Face's daily papers as yours got featured: https://huggingface.co/papers/2602.07274.\nThe paper page lets people discuss about your paper and lets them find artifacts about it (your models and dataset for instance), you can also claim the paper as yours which will show up on your public profile at HF, add Github and project page URLs.\n\nIt's great to see that you've already hosted the **TermiGen-32B** model on the Hub! \n\nWould you also like to host the datasets you've released (the 3,500+ verified Docker environments and trajectories) on https://huggingface.co/datasets?\nI see you're currently providing them as a ZIP archive on GitHub. Hosting on Hugging Face will give you more visibility/enable better discoverability, and will also allow people to do:\n\n```python\nfrom datasets import load_dataset\n\ndataset = load_dataset(\"ucsb-mlsec/termigen-environments\")\n```\n\nIf you're down, leaving a guide here: https://huggingface.co/docs/datasets/loading.\nBesides that, there's the [dataset viewer](https://huggingface.co/docs/hub/en/datasets-viewer) which allows people to quickly explore the content of the data in the browser.\n\nAfter uploaded, we can also link the dataset to the paper page (read [here](https://huggingface.co/docs/hub/en/model-cards#linking-a-paper)) so people can discover your work.\n\nLet me know if you're interested/need any guidance.\n\nKind regards,\n\nNiels",
+  "comments": [
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/1#issuecomment-3881563988",
+      "user": "kaijiezhu11",
+      "created_at": "2026-02-11T01:03:24Z",
+      "updated_at": "2026-02-11T01:03:59Z",
+      "body": "Hi Niels, thanks for the invite!\n\nWe actually considered hosting it on Hugging Face, but since each task contains multiple files (dockerfile, data, etc, not solely text descriptions), we were wondering if there is a better way to structure the dataset rather than just pushing a raw zip file?\n\nWe'd love to make sure the Dataset Viewer works properly so people can actually explore the file structures. Do you have any recommended format or schema for this type of data?"
+    },
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/1#issuecomment-3919420945",
+      "user": "NielsRogge",
+      "created_at": "2026-02-18T08:33:43Z",
+      "updated_at": "2026-02-18T08:33:43Z",
+      "body": "Good question, so far the hub doesn't really support environments like yours. You are using the [Harbor format](https://harborframework.com/docs/tasks) right? I guess for now Github is the best place for that."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-02-10T09:57:05Z",
+  "github_updated_at": "2026-06-03T13:46:32Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/1"
+  ],
+  "decision_note": "Issue discusses whether to host the TermiGen environments dataset on Hugging Face and notes GitHub may be best for Harbor-style environments. It is distribution discussion, not a benchmark defect.",
+  "reviewed_at": "2026-06-08T23:06:36Z"
+}

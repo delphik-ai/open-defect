@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-184",
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Spider 2 Snow credential account - Your account is suspended due to lack of payment method.",
+  "summary": "Spider2-Snow evaluation credentials use a Snowflake account that returns account-suspended errors for warehouse-backed queries, blocking current evaluation runs that need compute.",
+  "defect_type_main": "Environment & dependencies",
+  "defect_type_sub": "External service credential issue",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/184",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/184",
+    "https://github.com/xlang-ai/Spider2/issues/196"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-04-03T15:33:01Z",
+  "last_reviewed_at": "2026-06-08T23:06:36Z",
+  "decision_note": "Issue #184 reports the shipped Spider2-Snow Snowflake account RSRSBDK-YDB67606 failing with Snowflake 000666 account-suspended errors, and #196 independently reports the same account/role still blocking warehouse-compute queries two months later. Existing spider2-dbt artifacts do not cover this credential/account-level root cause, so this is a new benchmark-level defect."
+}
