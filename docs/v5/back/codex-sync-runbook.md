@@ -14,6 +14,9 @@ Record only public GitHub evidence needed by the artifact.
 Goal:
 Read GitHub issue/PR candidates and update benchmark defect artifacts accurately.
 
+Detailed rules:
+Follow this prompt, and use the sections below for details: Artifact Schema for schema/path rules, Repo Watch Map for repo-to-benchmark attribution, Audit Levels for evidence depth, and Counting Rules for health counts.
+
 Run steps:
 
 1. Create a KST run_id.
@@ -405,84 +408,30 @@ The mapping key is GitHub repo `owner/repo`. The script normalizes it to lowerca
 The mapping value is an array of candidate benchmark names.
 Codex reads thread/source/task evidence and decides the final `benchmark_name`.
 
-## Candidate Fetch
-
-`scripts/fetch-threads.mjs` reads repos from `config/repo-watch-map.json` and calls the GitHub Issues API.
-The fetch cursor is GitHub `updated_at`.
-It fetches GitHub issues/PRs created or updated after the local cursor file `data/github-fetch-state.json.last_synced_at`.
-`scripts/prepare-candidates.mjs` computes source_key and candidate file paths from raw thread source_url.
-
-Daily fetch command:
-
-```bash
-npm run fetch:threads -- --run=<run_id> --state-file=data/github-fetch-state.json
-```
-
-First run command:
-
-```bash
-npm run fetch:threads -- --run=<run_id> --since=<ISO8601>
-```
-
-Backfill command:
-
-```bash
-npm run fetch:threads -- --run=<run_id> --full-backfill
-```
-
-Fetch behavior:
-
-- watched repos: `config/repo-watch-map.json`
-- GitHub endpoint: `/repos/<owner>/<repo>/issues?state=all&sort=updated&direction=asc&since=<cursor>`
-- Fetches GitHub issues and PRs. GitHub REST API identifies PRs through the issue payload's `pull_request` field.
-- Fetches issue/PR comments.
-- Fetches PR diff. Large diffs fall back to changed-file summary.
-- Raw thread output: `data/raw/<run_id>/threads.json`
-- Next cursor output: `data/raw/<run_id>/next-fetch-state.json`
-- After validation, `npm run update:fetch-state` stores cursor in `data/github-fetch-state.json`.
-- `data/github-fetch-state.json` is committed.
-- `data/raw/<run_id>/` is scratch output and is ignored by `.gitignore`.
-- Committed daily artifacts live in `candidates/` and `defects/`.
-
-Prepare command:
-
-```bash
-npm run prepare:candidates -- --run=<run_id> --input=data/raw/<run_id>/threads.json
-```
-
-Update cursor command:
-
-```bash
-npm run update:fetch-state -- --run=<run_id> --state-file=data/github-fetch-state.json
-```
-
 ## Audit Levels
 
-`audit_level` means the audit level actually completed, not the level that looked necessary.
-Confirmed or duplicate_evidence candidates must complete the selected audit before step 5 writes the candidate JSON.
+`audit_level` is the depth of evidence actually checked to decide the final status, not the strength of the conclusion.
+It applies to confirmed / duplicate_evidence / unverified / out_of_scope / rejected.
+Before step 5 writes the candidate JSON, complete the selected audit level and record evidence in `checked_urls` and `decision_note`.
 
 ### L1 — Thread Read
 
 Read only the GitHub issue/PR thread.
 
-L1 can end as confirmed or duplicate_evidence only when:
+L1 is enough when:
 
-- thread body/comments contain clear maintainer acknowledgement, reproduced note, duplicate marker, or linked fix PR;
-- the PR itself is a small, clear benchmark defect fix;
-- the issue is clearly linked to a merged PR with the same root cause;
-- benchmark seed/split/version attribution is clear from the thread alone.
-- for shared repos, current benchmark variant attribution is explicitly clear from the thread.
+- thread body/comments are enough to decide final status, benchmark attribution, duplicate status, and resolution;
+- for shared repos, current benchmark variant attribution is also clear from the thread.
 
 L1 checklist:
 
 1. Read candidate `body`, `comments`, and linked PR summary.
-2. Identify defect claim, benchmark attribution, duplicate status, and resolution evidence.
+2. Identify defect status, benchmark attribution, duplicate status, and resolution evidence.
 3. Put read GitHub URLs in `checked_urls`.
-4. Write maintainer/social proof or linked PR rationale in `decision_note`.
+4. Explain why the final status is confirmed, duplicate_evidence, unverified, out_of_scope, or rejected in `decision_note`.
 
 Do not stop at L1 when:
 
-- shared repo current benchmark variant attribution is not clear from the thread alone;
 - task_specific scope needs current task row names that the thread does not prove;
 - PR diff/source is needed to decide whether this is a benchmark defect;
 - the candidate has multi-task fanout or large health count impact.
@@ -493,13 +442,10 @@ Read PR diff, source, task artifact, or benchmark task table. Do not execute rep
 
 L2 is required when:
 
-- thread/social proof is weak;
+- thread-only evidence is insufficient for defect status, benchmark attribution, duplicate status, or resolution;
 - a task-specific claim must be linked to current benchmark tasks;
-- task id, instance id, failing test, gold patch, expected output, or dataset row is mentioned;
-- PR diff is needed to decide whether it fixes a benchmark defect;
-- one repo contains multiple benchmark seeds/splits/versions;
-- Terminal-Bench-style benchmark versions can be confused.
-- Spider2-style benchmark variants such as DBT and Snow/Snowflake can be confused.
+- PR diff/source is needed to decide whether it is a benchmark defect fix, enhancement, or maintenance change;
+- one repo may contain multiple benchmark seeds/splits/versions/variants.
 
 L2 checklist:
 
@@ -524,12 +470,9 @@ Use actual execution or equivalent reproduction evidence.
 
 L3 is required when:
 
-- one thread claims impact across many tasks;
-- Docker/build/env/setup defect is central;
-- evaluator/parser/scorer behavior must be checked against actual tasks;
-- L2 artifact evidence is still uncertain;
-- an open issue may already be fixed in practice;
-- the candidate would substantially change public health count.
+- L2 evidence is still uncertain for defect status, scope, resolution, or fanout;
+- Docker/build/env/evaluator/parser behavior must be checked through execution or equivalent reproduction evidence;
+- the candidate would substantially change public health count and L2 evidence cannot prove affected tasks.
 
 L3 checklist:
 
@@ -537,8 +480,6 @@ L3 checklist:
 2. Record which task/root cause the reproduction confirms in `decision_note`.
 3. Put reproduction evidence URLs or local command summary in `checked_urls` or `decision_note`.
 4. If reproduction fails, do not end as confirmed. Use unverified/out_of_scope/rejected.
-
-To end as confirmed/duplicate, actually complete the selected audit level and record evidence in `checked_urls` and `decision_note`.
 
 ## Counting Rules
 
