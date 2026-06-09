@@ -6,6 +6,7 @@ node_modules/
 private/
 supabase/.temp/
 docs/v5/back/*_ko.md
+*_ko.md
 
 # Local scratch output
 data/*

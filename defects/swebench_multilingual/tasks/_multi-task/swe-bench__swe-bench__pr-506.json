@@ -38,10 +38,10 @@
   "evidence_urls": [
     "https://github.com/SWE-bench/SWE-bench/pull/506"
   ],
-  "audit_level": "L2",
+  "audit_level": "L3",
   "first_reported_at": "2025-12-20T12:37:11.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-06-09T01:56:28Z",
+  "decision_note": "L3 reproduced the PR's claimed Java log parser race-condition defect with a pre/post regression test. At base commit 6551c55bb4075b8dcc35369ec8d331580dda47b9, PR-added tests/test_log_parsers_java.py produced 2 failed and 4 passed cases: the Gradle interleaved log parser returned 1 parsed result instead of 3, and the Maven parser returned 2 instead of 3. At PR head de9157dfeff6b1928ca8ef583aa8549484f23cca, the same test file passed 6/6. Local logs: /tmp/swebench-l3-results/pr506-base.log and /tmp/swebench-l3-results/pr506-head.log.",
   "affected_task_count": 26,
   "migration": {
     "source": "v5-health-sync",

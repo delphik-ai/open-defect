@@ -7,6 +7,8 @@
     "fetch:threads": "node scripts/fetch-threads.mjs",
     "prepare:candidates": "node scripts/prepare-candidates.mjs",
     "apply:candidates": "node scripts/apply-candidates.mjs",
+    "l3:preflight": "node scripts/l3-harbor-preflight.mjs",
+    "l3:harbor": "node scripts/run-l3-harbor.mjs",
     "sync:db": "node scripts/sync-db.mjs",
     "update:fetch-state": "node scripts/update-fetch-state.mjs",
     "validate": "node scripts/validate-artifacts.mjs"

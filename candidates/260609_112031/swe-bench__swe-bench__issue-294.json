@@ -1,0 +1,58 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/294",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 294,
+  "title": "How stable is run_evaluation.py with gold patch for SWE-bench_Verified?",
+  "body": "### Describe the issue\n\nI have run the evaluation script with `--predictions_path gold` on the 500 tasks in SWE-bench_Verified and 14 of them are failing.\n\nI'm using the current main branch of swebench: c63a11369d6e2d5c2d11d8cdd50d2e39f93d9f3d\n\nThis is the exact command:\n\n    python -m swebench.harness.run_evaluation --predictions_path gold --max_workers 25 --run_id validate-gold-verified --dataset_name princeton-nlp/SWE-bench_Verified --cache_level instance\n\nThose are the unresolved task ids:\n\n```json\n    \"unresolved_ids\": [\n        \"astropy__astropy-7166\",\n        \"astropy__astropy-7336\",\n        \"astropy__astropy-7606\",\n        \"astropy__astropy-7671\",\n        \"astropy__astropy-8707\",\n        \"astropy__astropy-8872\",\n        \"django__django-10097\",\n        \"matplotlib__matplotlib-20488\",\n        \"psf__requests-2317\",\n        \"pylint-dev__pylint-6528\",\n        \"pylint-dev__pylint-7080\",\n        \"pylint-dev__pylint-7277\",\n        \"sphinx-doc__sphinx-10323\",\n        \"sphinx-doc__sphinx-10435\"\n    ],\n```\nThen, I ran it a second time, and got 15 unresolved tasks:\n\n```json\n    \"unresolved_ids\": [\n        \"astropy__astropy-7166\",\n        \"astropy__astropy-7336\",\n        \"astropy__astropy-7606\",\n        \"astropy__astropy-7671\",\n        \"astropy__astropy-8707\",\n        \"astropy__astropy-8872\",\n        \"django__django-10097\",\n        \"matplotlib__matplotlib-20488\",\n        \"psf__requests-1766\",\n        \"psf__requests-2317\",\n        \"pylint-dev__pylint-6528\",\n        \"pylint-dev__pylint-7080\",\n        \"pylint-dev__pylint-7277\",\n        \"sphinx-doc__sphinx-10323\",\n        \"sphinx-doc__sphinx-10435\"\n    ],\n```\n\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [
+    {
+      "user": "MarcCote",
+      "body": "This might be related to #225, #167, #246, #267, and #274",
+      "created_at": "2025-01-20T21:10:50Z",
+      "html_url": "https://github.com/SWE-bench/SWE-bench/issues/294#issuecomment-2603233716"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-01-20T21:09:58Z",
+  "github_updated_at": "2025-01-20T21:45:36Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L3",
+  "reviewed_at": "2026-06-09T05:50:12Z",
+  "decision_note": "L3 reproduction completed with preflight passing: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Command: npm run l3:harbor -- --defect=tmp/l3-issue294-all.json --harbor-root=<harbor-terminal-bench-root> --output-dir=tmp/l3-harbor/issue294-all/terminal-bench --job-name=l3-swebench-verified-issue294-all-timeout02b --all-tasks --n-concurrent=2 --verifier-timeout-multiplier=0.2. The source names a finite 15-task union across two gold runs, so all 15 are the affected set for this stability defect. Root cause is not that exactly the same task subset deterministically fails every run; it is that SWE-bench Verified gold evaluation is not stable/reliable for the listed task set. Related issues support this root cause: #267 reports a 5-task gold-patch failure subset, #354 reports Verified/full dataset discrepancy and maintainer says fixes may not have propagated to Verified, and #484 documents dependency/external-service causes for Astropy and PSF Requests. This audit confirms that the current public adapter/HF artifact can still reproduce the stability defect at least once: 6 of 15 reported FAILED in one full L3 run. Harbor reward is not used as the resolved signal for this adapter; reward only shows parser execution. The audited signal is the verifier stdout `SWEBench results` line. Results in tmp/l3-harbor-jobs/l3-swebench-verified-issue294-all-timeout02b: FAILED for astropy__astropy-7606, astropy__astropy-8707, astropy__astropy-8872, django__django-10097, psf__requests-1766, psf__requests-2317; PASSED in this run for astropy__astropy-7166, astropy__astropy-7336, astropy__astropy-7671, matplotlib__matplotlib-20488, pylint-dev__pylint-6528, pylint-dev__pylint-7080, pylint-dev__pylint-7277, sphinx-doc__sphinx-10323, sphinx-doc__sphinx-10435. Passing once does not remove those tasks from a stochastic stability report. psf__requests-2317 reached a visible test failure and then hung in the external-service-heavy requests suite for over 16 minutes; its verifier exec was manually stopped so the queue could finish, and the SWE-bench parser still reported FAILED. Upstream commit 50b9f47 on origin/fix/verified-dataset claims Verified dataset fixes and 500/500 gold pass, but it is not on origin/main in the checked repo; the current public adapter/HF artifact still reproduces the defect.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/294",
+    "https://github.com/SWE-bench/SWE-bench/issues/267",
+    "https://github.com/SWE-bench/SWE-bench/issues/354",
+    "https://github.com/SWE-bench/SWE-bench/issues/484",
+    "https://github.com/SWE-bench/SWE-bench/commit/50b9f47a7cacd7084ae900b27840a3c7b1c8ca24"
+  ],
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "resolution": "found",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "summary": "SWE-bench Verified gold-patch evaluation is unstable across the 15 task ids reported in issue #294; L3 reproduced the defect with 6 failures in one full run.",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294"
+}

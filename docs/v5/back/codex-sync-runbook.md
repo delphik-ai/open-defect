@@ -77,10 +77,9 @@ Run steps:
    - If variant attribution cannot be proven, the candidate cannot end as confirmed or duplicate_evidence. Read more source/task evidence; if still unresolved, end as unverified or out_of_scope.
 
    4.2 Choose the required audit_level first.
-   Do not write the final decision at this step. Decide what extra evidence must be read or reproduced.
-   - L1: GitHub thread alone is enough to decide defect validity, benchmark attribution, duplicate status, and resolution.
-   - L2: PR diff, source file, task artifact, or benchmark task table must be read.
-   - L3: reproduction is required, such as Docker/build/env/eval/parser behavior, multi-task fanout, large public health count changes, or uncertainty after L2.
+   Use the Audit Levels section below. Decide the required level before writing terminal_status.
+   Social proof means at least one of: merged upstream fix, maintainer acknowledgement, maintainer-authored fix PR, added upstream regression test, or clear upstream source/dataset diff.
+   A high-fanout claim without social proof requires L3; without L3 reproduction it must end as unverified.
 
    4.3 Decide scope and candidate task_names.
    - task_specific: maps to at least one current benchmark task row. Write affected task names in `task_names`.
@@ -106,6 +105,7 @@ Run steps:
    After the audit, set exactly one terminal_status.
    - confirmed: no existing canonical with the same root cause, current benchmark defect, and required L1/L2/L3 audit passed.
    - duplicate_evidence: existing canonical defect has the same root cause, and this thread is duplicate/fix/follow-up evidence.
+   - not_present: plausible or historical defect claim, but the audited current benchmark artifact no longer contains the claimed root cause.
    - unverified: looks like a defect claim, but Delphik cannot verify it after the required audit.
    - out_of_scope: may be a real bug, but belongs to another benchmark seed/split/version.
    - rejected: outside benchmark defect scope.
@@ -114,7 +114,7 @@ Run steps:
    Do not use duplicate_evidence merely because it looks similar.
    Both require completed audit evidence.
 
-   Final status values: confirmed / duplicate_evidence / unverified / out_of_scope / rejected.
+   Final status values: confirmed / duplicate_evidence / not_present / unverified / out_of_scope / rejected.
 
    4.6 Decide resolution.
    - found: defect is still open.
@@ -139,8 +139,8 @@ Run steps:
    - resolution
    - summary
 
-   For unverified / out_of_scope / rejected candidates, write only the required final fields for that status.
-   terminal_status is one of confirmed / duplicate_evidence / unverified / out_of_scope / rejected.
+   For not_present / unverified / out_of_scope / rejected candidates, write only the required final fields for that status.
+   terminal_status is one of confirmed / duplicate_evidence / not_present / unverified / out_of_scope / rejected.
 
 6. Update defects artifacts.
 
@@ -153,7 +153,7 @@ Run steps:
    Output:
    - confirmed candidate: creates `defects/<benchmark_name>/common/<defect_key>.json` or `defects/<benchmark_name>/tasks/<task_path_key>/<defect_key>.json`
    - duplicate_evidence candidate: updates evidence in an existing canonical defect artifact
-   - unverified / out_of_scope / rejected candidate: no defect artifact changes
+   - not_present / unverified / out_of_scope / rejected candidate: no defect artifact changes
 
    Codex does not manually create canonical defect files or calculate path/id/key values in step 6.
    Path/id/key/evidence update rules are owned by `scripts/apply-candidates.mjs` and `scripts/validate-artifacts.mjs`.
@@ -209,7 +209,7 @@ Run steps:
 11. Write a short final note in Korean.
    - run_id
    - candidate count
-   - confirmed / duplicate_evidence / unverified / out_of_scope / rejected counts
+   - confirmed / duplicate_evidence / not_present / unverified / out_of_scope / rejected counts
    - created/updated defect artifact count
    - artifact commit/push status
    - DB sync status
@@ -298,6 +298,7 @@ At the end of a run, `terminal_status` must be exactly one of these.
 |---|---|
 | `confirmed` | new canonical defect |
 | `duplicate_evidence` | evidence URL for an existing canonical defect |
+| `not_present` | historical/plausible defect, but root cause is absent from the current artifact |
 | `unverified` | not verified after the required audit |
 | `out_of_scope` | belongs to another benchmark seed/split/version |
 | `rejected` | outside benchmark defect scope |
@@ -308,11 +309,12 @@ Candidate final field rules:
 |---|---|
 | `confirmed` | `terminal_status`, `benchmark_name`, `audit_level`, `scope`, `linked_defect_id`, `task_names`, `resolution`, `summary`, `decision_note`, `reviewed_at`, `checked_urls` |
 | `duplicate_evidence` | `terminal_status`, `benchmark_name`, `audit_level`, `scope`, `linked_defect_id`, `task_names`, `resolution`, `summary`, `decision_note`, `reviewed_at`, `checked_urls` |
+| `not_present` | `terminal_status`, `audit_level`, `decision_note`, `reviewed_at`, `checked_urls` |
 | `unverified` | `terminal_status`, `audit_level`, `decision_note`, `reviewed_at`, `checked_urls` |
 | `out_of_scope` | `terminal_status`, `audit_level`, `decision_note`, `reviewed_at`, `checked_urls` |
 | `rejected` | `terminal_status`, `audit_level`, `decision_note`, `reviewed_at`, `checked_urls` |
 
-Committed candidate `terminal_status` enum: `confirmed`, `duplicate_evidence`, `unverified`, `out_of_scope`, `rejected`.
+Committed candidate `terminal_status` enum: `confirmed`, `duplicate_evidence`, `not_present`, `unverified`, `out_of_scope`, `rejected`.
 
 `task_names` rules:
 
@@ -410,76 +412,37 @@ Codex reads thread/source/task evidence and decides the final `benchmark_name`.
 
 ## Audit Levels
 
-`audit_level` is the depth of evidence actually checked to decide the final status, not the strength of the conclusion.
-It applies to confirmed / duplicate_evidence / unverified / out_of_scope / rejected.
-Before step 5 writes the candidate JSON, complete the selected audit level and record evidence in `checked_urls` and `decision_note`.
+`audit_level` is the evidence actually checked before final status.
 
-### L1 — Thread Read
+- L1: thread-only. Use only when body/comments prove benchmark attribution, defect status, duplicate status, scope, and resolution.
+- L2: source-read. Use when thread is insufficient but social proof plus PR diff/source/task artifact/task table proves the claim. Multi-task is allowed at L2 only with social proof.
+- L3: reproduction. Required when social proof is missing for a high-fanout claim, or when Docker/build/env/eval/parser behavior cannot be trusted from source-read alone.
 
-Read only the GitHub issue/PR thread.
+L3 rules:
 
-L1 is enough when:
+- Run `npm run l3:preflight` before any Harbor L3 audit. If it fails, L3 is not started.
+- Reproduce the claimed defect behavior, not just oracle pass/fail.
+- Inspect the task verifier/config/root-cause artifact that decides pass/fail; explain why the observed run passed or failed.
+- If the claim names a root-cause signature, inspect that signature directly in logs or artifacts. Examples: `_FailedTest`, missing P2P entries, wrong test ids, stale schema rows, external-service timeout, parser mismatch.
+- For SWE-bench-derived Harbor adapters, use the verifier stdout `SWEBench results` line as the resolved signal; Harbor reward may only mean the parser ran.
+- For SWE-bench-derived custom tasks, generate verifier scripts from `make_test_spec(...).eval_script` or an equivalent official harness script. Adapter command-string/list bugs are not L3 evidence.
+- For stochastic/flakiness claims, a single run only proves reproducibility-at-least-once. Mark deterministic behavior only after repeated runs show the same result.
+- For fixed PRs, compare pre-fix failure with post-fix success when feasible.
+- If the source names a finite affected task list of 20 or fewer, run every named task.
+- For larger affected sets, test deterministic sample 5 by SHA-256 sorting of `seed + task_name`; default seed is defect id.
+- If L3 does not reproduce the claim, final status is unverified/not_present/out_of_scope/rejected, not confirmed.
+- `decision_note` must state the preflight result, exact reproduction command, sampled task names, observed failure/success, and whether the observed result matches the claim.
 
-- thread body/comments are enough to decide final status, benchmark attribution, duplicate status, and resolution;
-- for shared repos, current benchmark variant attribution is also clear from the thread.
+Harbor:
 
-L1 checklist:
-
-1. Read candidate `body`, `comments`, and linked PR summary.
-2. Identify defect status, benchmark attribution, duplicate status, and resolution evidence.
-3. Put read GitHub URLs in `checked_urls`.
-4. Explain why the final status is confirmed, duplicate_evidence, unverified, out_of_scope, or rejected in `decision_note`.
-
-Do not stop at L1 when:
-
-- task_specific scope needs current task row names that the thread does not prove;
-- PR diff/source is needed to decide whether this is a benchmark defect;
-- the candidate affects at least 2 tasks or would change public health counts.
-
-### L2 — Source / Task Artifact Read
-
-Read PR diff, source, task artifact, benchmark task table, Dockerfile, image metadata, or environment artifact. Do not run the benchmark or container.
-
-L2 is required when:
-
-- thread-only evidence is insufficient for defect status, benchmark attribution, duplicate status, or resolution;
-- a task-specific claim affects 1 or 2 current benchmark tasks;
-- PR diff/source is needed to decide whether it is a benchmark defect fix, enhancement, or maintenance change;
-- one repo may contain multiple benchmark seeds/splits/versions/variants.
-
-L2 checklist:
-
-1. Read thread body/comments.
-2. If PR, read diff/files or linked fix PR.
-3. Read current benchmark task table, public task artifact, Dockerfile/image metadata, or environment artifact as needed.
-4. If task_specific, write exact affected current task names in `task_names`.
-5. Compare existing defect artifacts for the same benchmark/task/root cause.
-6. Put read source/task/PR URLs in `checked_urls`.
-7. For multi-benchmark repos, write the current benchmark variant attribution evidence in `decision_note`.
-8. Explain final status in `decision_note`.
-
-Do not stop at L2 when:
-
-- the candidate affects at least 3 tasks;
-- build/env/Docker/evaluator/parser behavior is uncertain without execution;
-- source-read evidence conflicts with thread claims.
-
-### L3 — Reproduction
-
-Use actual execution or equivalent reproduction evidence.
-
-L3 is required when:
-
-- L2 evidence is still uncertain for defect status, scope, resolution, or fanout;
-- Docker/build/env/evaluator/parser behavior must be checked by actually running the relevant Docker or benchmark command;
-- the candidate would substantially change public health count and L2 evidence cannot prove affected tasks.
-
-L3 checklist:
-
-1. Run the relevant Docker/Harbor command, benchmark command, local fixture, or upstream test command.
-2. Record which task/root cause the reproduction confirms in `decision_note`.
-3. Put reproduction evidence URLs or local command summary in `checked_urls` or `decision_note`.
-4. If reproduction fails, do not end as confirmed. Use unverified/out_of_scope/rejected.
+- Check the official Harbor registry/docs/GitHub before declaring an adapter or dataset unavailable.
+- If a public Harbor registry dataset exists, use `harbor run -d <dataset[@version]> -a <agent> -m <model>`.
+- Use local `-p` only when the needed benchmark/variant/task is not in the registry, or when L3 needs a custom pre/post reproduction fixture.
+- If a Harbor run fails because of missing local prerequisites such as `git-lfs`, install/fix the prerequisite, clear the bad task cache, and rerun before deciding terminal_status.
+- Put benchmark-specific legacy adapter commands in `scripts/run-l3-harbor.mjs`.
+- `scripts/run-l3-harbor.mjs` is only a helper; Codex must still verify that the run observes the claimed defect behavior.
+- If an adapter emits legacy Terminal-Bench tasks, migrate them before running Harbor and add task package names before building the dataset.
+- A failed adapter setup, missing credential, missing official dataset artifact, or Docker build failure is not L3 reproduction. Record the blocker in `decision_note` and leave the candidate unverified unless another valid audit level proves it.
 
 ## Counting Rules
 

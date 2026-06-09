@@ -1,0 +1,27 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/dbt-labs/ade-bench/pull/108",
+  "repo": "dbt-labs/ade-bench",
+  "source_type": "github_pr",
+  "github_number": 108,
+  "title": "fix(asana): add column_types for solution seeds on Snowflake",
+  "body": "## Problem\nSolution seed CSV files in asana tasks have numeric values (0/1) for columns that the dbt models output as BOOLEAN or TIMESTAMP_NTZ. Snowflake infers these as NUMBER(38,0) when loading seeds, causing type mismatch errors in equality tests:\n\n```\nSQL compilation error:\n    inconsistent data type for result columns for set operator input branches,\n    expected TIMESTAMP_NTZ(0), got NUMBER(38,0)\n    expected BOOLEAN, got NUMBER(38,0)\n```\n\n## Solution\nAdd explicit `+column_types` definitions in dbt_project.yml for the solution seeds:\n- `solution__asana__task`: BOOLEAN columns (is_completed, is_liked, is_currently_assigned, has_been_assigned, is_subtask) and TIMESTAMP columns (completed_at, created_at, due_date, etc.)\n- `solution__asana__project`: BOOLEAN columns (is_archived, is_public) and TIMESTAMP columns (created_at, due_date, last_modified_at)\n- `solution__asana__tag`: TIMESTAMP column (created_at)\n- `solution__int_asana__task_story`: TIMESTAMP column (created_at)\n\n## Affected Tasks\n- asana001\n- asana002\n- asana003\n- asana004\n- asana005",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/shared/projects/dbt/asana/dbt_project.yml b/shared/projects/dbt/asana/dbt_project.yml\nindex 46b96fb6..913584d1 100644\n--- a/shared/projects/dbt/asana/dbt_project.yml\n+++ b/shared/projects/dbt/asana/dbt_project.yml\n@@ -39,6 +39,38 @@ vars:\n \n seeds:\n   +quote_columns: \"{{ true if target.type == 'redshift' else false }}\"\n+  asana:\n+    # Solution seed column types for Snowflake compatibility\n+    # Snowflake infers 0/1 as NUMBER(38,0) but models output BOOLEAN/TIMESTAMP\n+    solution__asana__task:\n+      +column_types:\n+        is_completed: boolean\n+        is_liked: boolean\n+        is_currently_assigned: boolean\n+        has_been_assigned: boolean\n+        is_subtask: boolean\n+        completed_at: timestamp\n+        created_at: timestamp\n+        due_date: timestamp\n+        modified_at: timestamp\n+        start_date: timestamp\n+        last_assigned_at: timestamp\n+        first_assigned_at: timestamp\n+        parent_due_date: timestamp\n+        parent_created_at: timestamp\n+    solution__asana__project:\n+      +column_types:\n+        is_archived: boolean\n+        is_public: boolean\n+        created_at: timestamp\n+        due_date: timestamp\n+        last_modified_at: timestamp\n+    solution__asana__tag:\n+      +column_types:\n+        created_at: timestamp\n+    solution__int_asana__task_story:\n+      +column_types:\n+        created_at: timestamp\n   main:\n     +all_varchar: true\n     +column_types:\n",
+  "github_state": "open",
+  "github_created_at": "2026-02-04T15:42:39Z",
+  "github_updated_at": "2026-02-04T15:42:39Z",
+  "candidate_benchmark_names": [
+    "ade-bench"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "reviewed_at": "2026-06-09T03:58:00Z",
+  "decision_note": "L3 reproduction was required but blocked. Command attempted: local Harbor adapter discovery under <harbor-terminal-bench-root>/adapters; no ADE-bench adapter is present. The checked ADE-bench docs/config show Snowflake execution requires SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD, SNOWFLAKE_WAREHOUSE, and SNOWFLAKE_ROLE. Expected claim behavior: Snowflake Asana seed column_types failure. Observed result: no credentialed Snowflake Harbor/Docker run could be executed in this environment, and the PR is open/draft with no comments, merge, maintainer acknowledgement, or regression-test social proof. Conclusion: claim remains unverified and is not counted.",
+  "checked_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/108",
+    "https://github.com/dbt-labs/ade-bench/pull/108/files",
+    "https://github.com/dbt-labs/ade-bench"
+  ],
+  "task_names": []
+}

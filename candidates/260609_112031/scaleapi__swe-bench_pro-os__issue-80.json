@@ -1,8 +1,29 @@
 {
-  "schema_version": "v5.defect-artifact.1",
-  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-80",
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/80",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_issue",
+  "github_number": 80,
+  "title": "Bad dockerfile for element-hq",
+  "body": "instance docker file of element-hq repository are not even executable.\n\n```\nRUN cat <<'EOFBUILD' > /build.sh\nxxx\nEOF\n```\n\nthe heredoc for creating /build.sh is not even closed...",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-03-19T06:29:59Z",
+  "github_updated_at": "2026-03-19T06:29:59Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L3",
+  "reviewed_at": "2026-06-09T02:30:00Z",
+  "decision_note": "L3 source-file reproduction confirmed the claimed high-fanout Dockerfile defect. Deterministic sample 5 element-hq Dockerfiles each have one EOFBUILD heredoc opener and zero standalone EOFBUILD closers, making generated image builds invalid. Local reproduction used a scratch clone of scaleapi/SWE-bench_Pro-os.",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/80"
+  ],
   "benchmark_name": "swebenchpro",
   "scope": "task_specific",
+  "linked_defect_id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-80",
   "task_names": [
     "instance_element-hq__element-web-44b98896a79ede48f5ad7ff22619a39d5f6ff03c-vnan",
     "instance_element-hq__element-web-a692fe21811f88d92e8f7047fc615e4f1f986b0f-vnan",
@@ -59,25 +80,5 @@
     "instance_element-hq__element-web-ce554276db97b9969073369fefa4950ca8e54f84-vnan"
   ],
   "resolution": "found",
-  "title": "Bad dockerfile for element-hq",
-  "summary": "SWE-bench Pro element-hq instance Dockerfiles have unclosed EOFBUILD heredocs, making generated image builds invalid.",
-  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/80",
-  "evidence_urls": [
-    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/80"
-  ],
-  "audit_level": "L3",
-  "first_reported_at": "2026-03-19T06:29:59.000Z",
-  "last_reviewed_at": "2026-06-09T02:30:00Z",
-  "decision_note": "L3 source-file reproduction confirmed the claimed Dockerfile defect on deterministic sample 5. The sampled element-hq Dockerfiles under dockerfiles/instance_dockerfile each contain one RUN cat <<'EOFBUILD' > /build.sh opener and zero standalone EOFBUILD closers: instance_element-hq__element-web-1077729a19c0ce902e713cf6fab42c91fb7907f1-vnan, instance_element-hq__element-web-27139ca68eb075a4438c18fca184887002a4ffbc-vnan, instance_element-hq__element-web-53b42e321777a598aaf2bb3eab22d710569f83a8-vnan, instance_element-hq__element-web-6205c70462e0ce2e1e77afb3a70b55d0fdfe1b31-vnan, and instance_element-hq__element-web-923ad4323b2006b2b180544429455ffe7d4a6cc3-vnan. Local reproduction used a scratch clone of scaleapi/SWE-bench_Pro-os.",
-  "affected_task_count": 53,
-  "migration": {
-    "source": "v5-health-sync",
-    "source_path": "repos/scaleapi__swe-bench_pro-os/benchmarks/swebenchpro/tasks/_multi-task/counted/found/issue-80.md",
-    "badge_bucket": "found",
-    "source_channel": "github_crawl",
-    "routing_status": "already_upstream",
-    "confidence": "imported",
-    "legacy_audit_level_inferred": true,
-    "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
-  }
+  "summary": "SWE-bench Pro element-hq instance Dockerfiles have unclosed EOFBUILD heredocs, making generated image builds invalid."
 }

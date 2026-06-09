@@ -75,7 +75,7 @@
       "format": "date-time"
     },
     "terminal_status": {
-      "enum": ["confirmed", "duplicate_evidence", "unverified", "out_of_scope", "rejected"]
+      "enum": ["confirmed", "duplicate_evidence", "not_present", "unverified", "out_of_scope", "rejected"]
     },
     "linked_defect_id": {
       "type": "string"

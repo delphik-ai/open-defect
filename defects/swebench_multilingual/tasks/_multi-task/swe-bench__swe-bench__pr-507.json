@@ -33,10 +33,10 @@
   "evidence_urls": [
     "https://github.com/SWE-bench/SWE-bench/pull/507"
   ],
-  "audit_level": "L2",
+  "audit_level": "L3",
   "first_reported_at": "2025-12-21T20:30:58.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-06-09T01:56:28Z",
+  "decision_note": "L3 reproduced the PR's claimed SWE-bench Multilingual image rebuild defect with SWE-bench harness force_rebuild. Harbor adapter oracle runs against existing DockerHub images were only smoke tests and passed, which matches the PR comment that prebuilt images already worked. With force_rebuild at base commit 6551c55bb4075b8dcc35369ec8d331580dda47b9, micropython__micropython-10095 failed eval image setup_repo.sh with non-zero code 2 and tokio-rs__tokio-6724 failed setup_repo.sh with non-zero code 101. At PR head 1873c8e27d354bb6cb533ff0255ba5d8a38c639d, both sampled tasks rebuilt and resolved with 0 errors. Local reports/logs: /tmp/swebench-l3/gold.pr507-base-micropython.json, /tmp/swebench-l3/gold.pr507-head-micropython.json, tmp/l3-swebench-harness/pr507-base-tokio-6724/output.log, tmp/l3-swebench-harness/pr507-head-tokio-6724/output.log.",
   "affected_task_count": 21,
   "migration": {
     "source": "v5-health-sync",

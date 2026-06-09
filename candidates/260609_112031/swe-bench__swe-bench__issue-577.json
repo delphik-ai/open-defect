@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/577",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 577,
+  "title": "Django test-loader bug causes systematic eval_brittle failures for ~15 django__django-16xxx/17xxx tasks",
+  "body": "## Summary\n\nWe observed a systematic evaluation harness bug affecting approximately 15 Django tasks in SWE-bench Verified (all `django__django-16xxx` and `django__django-17xxx` cohort). In these tasks, agents produce correct fixes — the `fail_to_pass` tests pass — but the `pass_to_pass` suite collapses entirely, resulting in a reward of 0.\n\nThis was identified via our post-hoc trajectory judge (3× independent Claude Sonnet 4.6 judges per episode), which consistently assigns `primary_blame = eval_brittle` and `outcome = should_have_been_rewarded`.\n\n## Root cause\n\nThe SWE-bench evaluator resolves Django test class paths to bare *functions* rather than `unittest.TestCase` methods, causing all tests in the affected modules to be reported as `_FailedTest`. The agent's code change is never at fault.\n\nRepresentative judge hypothesis (verbatim, multiple tasks):\n\n> \"The SWEBench evaluator resolves the test ID path through the imported `floatformat` *function* in the test module rather than the `SimpleTestCase` subclass, causing `_FailedTest` errors for all pass_to_pass entries.\"\n\n> \"The SWEBench evaluator for this task is invoking tests with malformed identifiers (resolving to bare functions rather than `TestCase` methods), causing all pass_to_pass tests to report `_FailedTest`.\"\n\n## Affected tasks (15 confirmed)\n\n- `django__django-16485`\n- `django__django-16493`\n- `django__django-16527`\n- `django__django-16560`\n- `django__django-16569`\n- `django__django-16595`\n- `django__django-16612`\n- `django__django-16631`\n- `django__django-16642`\n- `django__django-16661`\n- `django__django-16667`\n- `django__django-16801`\n- `django__django-16899`\n- `django__django-16901`\n- `django__django-17029`\n- `django__django-17087`\n\n## Additional eval_brittle patterns observed\n\nBeyond the Django test-loader bug, we also found:\n\n| Pattern | Tasks | Example |\n|---------|-------|---------|\n| Pre-existing / flaky `pass_to_pass` failures | 4 | `sympy__sympy-19346` (`test_covar_deriv` in unrelated diffgeom module) |\n| Pytest version incompatibility | 2 | `astropy__astropy-8707` (pytest 7.4.0 raises `PytestRemovedIn8Warning` as error, crashes test setup) |\n| Timeout / test suite too slow | 2 | `django__django-13821` (3600s hard wall on full SQLite backend suite) |\n| Test name mismatch | 1 | `matplotlib__matplotlib-25479` (agent writes semantically correct test under different name than hard-coded pass criterion) |\n\n## Impact\n\nAcross 468 judged episodes on SWE-bench Verified (Sonnet 4.6 + GPT-5.4), our judge found **41 `eval_brittle` cases** where the agent fix was correct but scored 0 due to harness issues — roughly **~8% of all judged failures**. The Django test-loader bug alone accounts for ~15 tasks (~36% of all `eval_brittle`).\n\n## Context\n\nDiscovered during CUBE benchmark evaluation runs. Judge methodology: Opus 4.7 pre-judge + 3× independent Sonnet 4.6 per-episode judges with structured output (`outcome`, `primary_blame`, `hypothesis`, `evidence` with verbatim quotes).\n\ncc @recursix",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-05-07T02:37:57Z",
+  "github_updated_at": "2026-05-07T02:37:57Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "reviewed_at": "2026-06-09T03:50:00Z",
+  "decision_note": "L3 sample audit completed. Command: cd tmp/l3-harbor/swebench-verified-260609-harbor && harbor add --scan . --to . && harbor run -p . -a oracle -e docker -o tmp/l3-harbor-jobs -n 1 --job-name l3-swebench-verified-260609-uvpath -y. Adapter/setup: Generated SWE-bench Verified tasks with the local swebench Terminal-Bench adapter, migrated them with `harbor task migrate`, added task package names with `harbor task update --scan --org delphik`, set Harbor task workdir to /testbed, and patched verifier PATH to include /root/.local/bin so the adapter parser can run `uv`. The issue claims a Django test-loader root cause where pass_to_pass collapses into `_FailedTest`. Deterministic sample used seed swebench-verified__swe-bench__swe-bench__issue-577 and selected django__django-16493, django__django-16527, django__django-16560, django__django-16667, and django__django-16899. Observed stdout in tmp/l3-harbor-jobs/l3-swebench-verified-260609-uvpath: all five sampled Django tasks reported `SWEBench results` PASSED, and grep over verifier logs found no `_FailedTest` signature for the sample. This does not exhaustively disprove the 16 listed tasks or any stochastic/trajectory-specific version of the claim; it only means the required root-cause signature was not reproduced in the sampled Harbor oracle run. Conclusion: candidate remains unverified and is not counted.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/577"
+  ],
+  "task_names": []
+}

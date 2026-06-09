@@ -9,6 +9,7 @@ const candidatesDir = path.join(root, 'candidates')
 const candidateStatuses = new Set([
   'confirmed',
   'duplicate_evidence',
+  'not_present',
   'unverified',
   'out_of_scope',
   'rejected',
