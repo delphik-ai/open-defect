@@ -434,16 +434,16 @@ Do not stop at L1 when:
 
 - task_specific scope needs current task row names that the thread does not prove;
 - PR diff/source is needed to decide whether this is a benchmark defect;
-- the candidate has multi-task fanout or large health count impact.
+- the candidate affects at least 2 tasks or would change public health counts.
 
 ### L2 — Source / Task Artifact Read
 
-Read PR diff, source, task artifact, or benchmark task table. Do not execute reproduction.
+Read PR diff, source, task artifact, benchmark task table, Dockerfile, image metadata, or environment artifact. Do not run the benchmark or container.
 
 L2 is required when:
 
 - thread-only evidence is insufficient for defect status, benchmark attribution, duplicate status, or resolution;
-- a task-specific claim must be linked to current benchmark tasks;
+- a task-specific claim affects 1 or 2 current benchmark tasks;
 - PR diff/source is needed to decide whether it is a benchmark defect fix, enhancement, or maintenance change;
 - one repo may contain multiple benchmark seeds/splits/versions/variants.
 
@@ -451,7 +451,7 @@ L2 checklist:
 
 1. Read thread body/comments.
 2. If PR, read diff/files or linked fix PR.
-3. Read current benchmark task table or public task artifact.
+3. Read current benchmark task table, public task artifact, Dockerfile/image metadata, or environment artifact as needed.
 4. If task_specific, write exact affected current task names in `task_names`.
 5. Compare existing defect artifacts for the same benchmark/task/root cause.
 6. Put read source/task/PR URLs in `checked_urls`.
@@ -460,7 +460,7 @@ L2 checklist:
 
 Do not stop at L2 when:
 
-- task fanout is large and source-read cannot verify the task list;
+- the candidate affects at least 3 tasks;
 - build/env/Docker/evaluator/parser behavior is uncertain without execution;
 - source-read evidence conflicts with thread claims.
 
@@ -471,12 +471,12 @@ Use actual execution or equivalent reproduction evidence.
 L3 is required when:
 
 - L2 evidence is still uncertain for defect status, scope, resolution, or fanout;
-- Docker/build/env/evaluator/parser behavior must be checked through execution or equivalent reproduction evidence;
+- Docker/build/env/evaluator/parser behavior must be checked by actually running the relevant Docker or benchmark command;
 - the candidate would substantially change public health count and L2 evidence cannot prove affected tasks.
 
 L3 checklist:
 
-1. Run or inspect reproduction command, Docker/Harbor run, local fixture, upstream test command, or equivalent evidence.
+1. Run the relevant Docker/Harbor command, benchmark command, local fixture, or upstream test command.
 2. Record which task/root cause the reproduction confirms in `decision_note`.
 3. Put reproduction evidence URLs or local command summary in `checked_urls` or `decision_note`.
 4. If reproduction fails, do not end as confirmed. Use unverified/out_of_scope/rejected.
