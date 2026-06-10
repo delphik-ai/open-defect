@@ -27,24 +27,11 @@
   "candidate_benchmark_names": [
     "evoeval"
   ],
-  "terminal_status": "confirmed",
+  "terminal_status": "unverified",
   "audit_level": "L2",
-  "reviewed_at": "2026-06-09T02:30:00Z",
-  "decision_note": "L2 social-proof audit confirmed the candidate. The issue reports concrete EvoEval difficult-subset task bugs, and a repo member comment acknowledges several claims: task 23 whitespace, task 3 ambiguity, task 32 ground-truth method issue, and task 73 ground-truth solution issue. Local source read loaded EvoEval_difficult and confirmed these task ids exist.",
+  "reviewed_at": "2026-06-10T00:00:00.000+09:00",
+  "decision_note": "Repo member comments acknowledge several reported EvoEval issues, so this remains a plausible defect candidate. It is not counted as a public multi-task defect until L3 reproduction verifies the affected task IDs and scoring impact under the current benchmark artifact.",
   "checked_urls": [
     "https://github.com/evo-eval/evoeval/issues/2"
-  ],
-  "benchmark_name": "evoeval",
-  "scope": "task_specific",
-  "linked_defect_id": "evoeval__evo-eval__evoeval__issue-2",
-  "task_names": [
-    "1",
-    "22",
-    "23",
-    "3",
-    "32",
-    "73"
-  ],
-  "resolution": "found",
-  "summary": "EvoEval difficult-subset tasks have confirmed spec/test/reference-solution issues."
+  ]
 }
