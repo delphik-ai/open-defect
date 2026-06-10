@@ -14,15 +14,15 @@
   "candidate_benchmark_names": [
     "swebenchpro"
   ],
-  "terminal_status": "unverified",
+  "terminal_status": "out_of_scope",
   "audit_level": "L3",
   "reviewed_at": "2026-06-10T00:00:00.000+09:00",
-  "decision_note": "L3 review found no maintainer acknowledgement, labels, comments, or linked fix PR. The claimed EOFBUILD heredoc mismatch is real in all 53 public element-hq instance Dockerfiles, and Docker rejects the pattern with 'unterminated heredoc'. However, SWE-bench Pro's README recommends the prebuilt DockerHub images for evaluation, the affected sample image manifest exists, and the current eval script uses DockerHub images rather than rebuilding these Dockerfiles. Because benchmark scoring impact is not established, this is treated as an unverified reproducibility-artifact issue rather than a counted benchmark defect.",
+  "decision_note": "L3 review found no maintainer acknowledgement, labels, comments, or linked fix PR. The claimed EOFBUILD heredoc mismatch is real in all 53 public element-hq instance Dockerfiles, and Docker rejects the pattern with 'unterminated heredoc'. However, SWE-bench Pro's README recommends the prebuilt DockerHub images for evaluation, the affected sample image manifest exists, and the current eval script uses DockerHub images rather than rebuilding these Dockerfiles. This is a reproducibility artifact issue, not a verified current benchmark scoring defect, so it is outside the counted defect scope.",
   "checked_urls": [
     "https://github.com/scaleapi/SWE-bench_Pro-os/issues/80",
     "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/README.md",
     "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/swe_bench_pro_eval.py",
     "https://hub.docker.com/r/jefzda/sweap-images"
   ],
-  "scope": "task_specific"
+  "scope": "out_of_scope"
 }
