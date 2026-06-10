@@ -13,8 +13,8 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-09-25T08:55:30.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-06-10T05:15:00.000Z",
+  "decision_note": "L2 source audit. The issue shows a Jest parser assigning failing MatrixClientPeg tests to the preceding pillify file, which can corrupt FAIL_TO_PASS attribution. Maintainer jeff-da replied that the engineering team reviewed it and that those tests should not have been included in F2P, so this is counted as a current SWE-bench Pro evaluator/parser defect. No L3 rerun was needed because the thread has maintainer acknowledgement.",
   "affected_task_count": 0,
   "migration": {
     "source": "v5-health-sync",

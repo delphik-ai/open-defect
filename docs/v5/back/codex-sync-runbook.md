@@ -180,16 +180,19 @@ Run steps:
 
 9. Sync the DB from the public artifacts.
    Commands:
-   npm run sync:db -- --target=dev
-   npm run sync:db -- --target=prod
+   npm run sync:db -- --env-file=<dev_env_file>
+   npm run sync:db -- --env-file=<prod_env_file>
 
-   `sync:db` loads `.env.dev` or `.env.prod` when present. Otherwise the same
-   command can run with `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SECRET_KEY`
-   already set in the environment.
+   Use the exact env file for the DB that serves the target website.
+   For Vercel production, pull production env from the `post` project first:
+   `vercel env pull <prod_env_file> --environment=production --yes`.
+   Delete temporary env files after sync.
 
    Input:
    defects/<benchmark_name>/common/<defect_key>.json
    defects/<benchmark_name>/tasks/<task_path_key>/<defect_key>.json
+
+   `audit_queue/` is not counted. It preserves re-audit inputs only.
 
    Output:
    - open_defect_sync_runs

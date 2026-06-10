@@ -6,17 +6,18 @@
   "task_names": [
     "astropy__astropy-8872"
   ],
-  "resolution": "fixing",
+  "resolution": "found",
   "title": "[BUG] Gold patch for `astropy__astropy-8872` does not resolve — pytest collection error from setuptools-vendored `distutils`",
-  "summary": "Live issue reports astropy__astropy-8872 gold patch is marked unresolved because pytest collection aborts on setuptools/distutils warnings before tests run.",
+  "summary": "SWE-bench Verified astropy__astropy-8872 gold patch is marked unresolved because pytest collection aborts on setuptools-vendored distutils DeprecationWarning before any required tests run.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/584",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/issues/584"
+    "https://github.com/SWE-bench/SWE-bench/issues/584",
+    "https://github.com/SWE-bench/SWE-bench/issues/343"
   ],
-  "audit_level": "L2",
+  "audit_level": "L3",
   "first_reported_at": "2026-05-22T06:46:27.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-06-10T07:10:00.000Z",
+  "decision_note": "L3 Harbor audit against current swebench-verified@1.0. Command: harbor run -d swebench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 1 --job-name l3-swebench-verified-issue584-oracle -i astropy__astropy-8872 -y --no-delete --timeout-multiplier 1. Result: oracle/gold completed with no exceptions but reward 0.0. The verifier report shows patch_successfully_applied=true and resolved=false. test-stdout.txt shows pytest collection aborting on astropy/units/tests/test_quantity.py because LooseVersion triggers setuptools/_distutils/version.py DeprecationWarning under setuptools 68.0.0, matching issue #584. Issue #343 is the older broad report for the same astropy__astropy-8872 collection-failure root cause and is retained as supporting evidence, not counted separately.",
   "affected_task_count": 1,
   "migration": {
     "source": "v5-health-sync",

