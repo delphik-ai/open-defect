@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-41",
+  "benchmark_name": "cooperbench",
+  "scope": "task_specific",
+  "task_names": [
+    "cb-react-hook-form-t153-f2-3",
+    "cb-react-hook-form-t153-f2-6",
+    "cb-react-hook-form-t153-f2-5",
+    "cb-react-hook-form-t153-f1-2",
+    "cb-react-hook-form-t153-f2-4"
+  ],
+  "resolution": "fixed",
+  "title": "Fix react-hook-form task 153: handleSubmit 3rd arg type mismatch with test",
+  "summary": "Live PR fixes CooperBench react-hook-form task153 where combined.patch API shape disagreed with tests and all onFinally tests failed.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/41",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/41"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-03-16T00:03:24.000Z",
+  "last_reviewed_at": "2026-06-10T12:18:49.864Z",
+  "decision_note": "L3 Docker reproduction confirmed CooperBench PR #41. Built tmp/CooperBench-audit/dataset/react_hook_form_task/task153/Dockerfile as delphik/cooperbench-react-hook-form-task153:l3. Ran feature2/tests.patch plus the parent combined.patch from 6690bd1^ and the fixed combined.patch from 6690bd1. Parent exited 1: the handleSubmit onFinally tests failed because onFinallyCallback was called 0 times in three cases. Head exited 0: the same handleSubmit test suite reported 20 passed. Logs: tmp/cooper-pr41-l3/logs/parent.log and tmp/cooper-pr41-l3/logs/head.log.",
+  "affected_task_count": 5
+}

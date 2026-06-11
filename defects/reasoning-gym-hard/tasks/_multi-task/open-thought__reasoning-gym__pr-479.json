@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-479",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-countdown-hard0292e21f-seed45-0",
+    "reasoning-gym-games-countdown-hard0292e21f-seed45-1",
+    "reasoning-gym-games-countdown-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "corrected countdown issue",
+  "summary": "Merged PR fixes both countdown scoring bugs from #478 and adds unit tests.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/479",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/479"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-06-25T15:02:42.000Z",
+  "last_reviewed_at": "2026-06-10T10:55:00Z",
+  "decision_note": "L3 Docker regression audit. Preflight passed: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction used local upstream clone tmp/reasoning-gym-audit and Docker image delphik/reasoning-gym-audit:py311 built from tmp/reasoning-gym-audit.Dockerfile. Command: node tmp/run-reasoning-gym-pr-regression.mjs 479. The runner fetched PR #479, checked out the PR head and its parent, overlaid the PR head regression test files onto both revisions, then ran pytest inside Docker with pip install -e '.[test]'. Parent with PR head regression tests failed because invalid Countdown expressions using missing duplicate numbers/non-integer expressions scored 1.0; PR head passed 9 tests. This directly reproduces the Countdown scorer accepting invalid answers. Logs: tmp/reasoning-gym-regression/pr-479-parent.log and tmp/reasoning-gym-regression/pr-479-head.log. This confirms the migrated multi-task artifact as a task-impacting benchmark defect for the listed hard task rows.",
+  "affected_task_count": 3
+}

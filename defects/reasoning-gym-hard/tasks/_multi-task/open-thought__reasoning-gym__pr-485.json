@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-485",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-arithmetic-basic-arithmetic-hard0292e21f-seed45-0",
+    "reasoning-gym-arithmetic-basic-arithmetic-hard0292e21f-seed45-1",
+    "reasoning-gym-arithmetic-basic-arithmetic-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "[fix #484] resolve basic_arithmetic fails when size is large",
+  "summary": "Merged PR fixes reasoning-gym basic_arithmetic division-by-zero task generation and adds tests.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/485",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/485",
+    "https://github.com/open-thought/reasoning-gym/issues/484"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-07-06T01:13:20.000Z",
+  "last_reviewed_at": "2026-06-10T10:47:12.739Z",
+  "decision_note": "L3 reproduced issue #484 with a Docker parent/head large-generation probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent bf451d519791fe47d6dd8a6fbb602f386b3739c6 and PR head b99ffd4d8497a4d32a6a1122ffbc5ed502f53933 were installed with pip install -e . and run with BasicArithmeticDatasetConfig(size=100000, seed=123, min_terms=2, max_terms=6, min_digits=1, max_digits=3). Parent failed during iteration with ZeroDivisionError: integer division or modulo by zero in eval_floordiv; PR head generated all 100000 items. Logs: tmp/reasoning-gym-regression/pr-485-parent-custom.log and tmp/reasoning-gym-regression/pr-485-head-custom.log.",
+  "affected_task_count": 3
+}

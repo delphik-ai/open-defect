@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "quixbugs__jkoppel__quixbugs__pr-13",
+  "benchmark_name": "quixbugs",
+  "scope": "task_specific",
+  "task_names": [
+    "quixbugs-java-pascal",
+    "quixbugs-python-pascal"
+  ],
+  "resolution": "fixed",
+  "title": "Inconsistent output",
+  "summary": "martinezmatias fixed an inconsistent QuixBugs pascal JSON testcase whose first expected output had the wrong list shape.",
+  "canonical_source_url": "https://github.com/jkoppel/QuixBugs/pull/13",
+  "evidence_urls": [
+    "https://github.com/jkoppel/QuixBugs/pull/13"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2018-02-15T13:16:12.000Z",
+  "last_reviewed_at": "2026-06-10T15:18:00Z",
+  "decision_note": "L3 runtime probe confirmed the pascal oracle testcase shape defect with the correct Python implementation. Command used tmp/QuixBugs-audit/correct_python_programs/pascal.py and git-showed json_testcases/pascal.json at PR parent c2cdf9f^ and fixed commit c2cdf9f. For line 1, parent expected [1] while correct Python returned [[1]], so the benchmark oracle used the wrong output shape. At the fixed commit, expected is [[1]] and correct Python returns [[1]]. This directly confirms the JSON testcase expected-output defect for the shared Java/Python QuixBugs task variants.",
+  "affected_task_count": 2
+}

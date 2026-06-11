@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-80",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-tsumego-hard0292e21f-seed45-0",
+    "reasoning-gym-games-tsumego-hard0292e21f-seed45-1",
+    "reasoning-gym-games-tsumego-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Add GO hints, legend, disallow numeric answer, store expected string …",
+  "summary": "Reasoning-gym PR updates Tsumego with hints, legend, disallowed numeric answer, and expected string storage to make the task answer format scorable.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/80",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/80"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-07T14:18:25.000Z",
+  "last_reviewed_at": "2026-06-10T10:55:00Z",
+  "decision_note": "L3 Docker regression audit. Preflight passed: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction used local upstream clone tmp/reasoning-gym-audit and Docker image delphik/reasoning-gym-audit:py311 built from tmp/reasoning-gym-audit.Dockerfile. Command: node tmp/run-reasoning-gym-pr-regression.mjs 80. The runner fetched PR #80, checked out the PR head and its parent, overlaid the PR head regression test files onto both revisions, then ran pytest inside Docker with pip install -e '.[test]'. Parent with PR head regression test failed because Tsumego score_answer returned 0.01 instead of the expected partial score 0.05; PR head passed 12 tests. This directly reproduces the Tsumego answer-format/scoring defect fixed by the PR. Logs: tmp/reasoning-gym-regression/pr-80-parent.log and tmp/reasoning-gym-regression/pr-80-head.log. This confirms the migrated multi-task artifact as a task-impacting benchmark defect for the listed hard task rows.",
+  "affected_task_count": 3
+}

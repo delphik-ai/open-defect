@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-94",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-arithmetic-prime-factorization-hard0292e21f-seed45-0",
+    "reasoning-gym-arithmetic-prime-factorization-hard0292e21f-seed45-1",
+    "reasoning-gym-arithmetic-prime-factorization-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "fix(env): Prime Factorization scoring",
+  "summary": "Live PR fixes Reasoning Gym prime factorization scoring behavior, but author is a project member.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/94",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/94"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-09T10:15:24.000Z",
+  "last_reviewed_at": "2026-06-10T10:55:00Z",
+  "decision_note": "L3 Docker regression audit. Preflight passed: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction used local upstream clone tmp/reasoning-gym-audit and Docker image delphik/reasoning-gym-audit:py311 built from tmp/reasoning-gym-audit.Dockerfile. Command: node tmp/run-reasoning-gym-pr-regression.mjs 94. The runner fetched PR #94, checked out the PR head and its parent, overlaid the PR head regression test files onto both revisions, then ran pytest inside Docker with pip install -e '.[test]'. Parent with PR head regression test failed because PrimeFactorization score_answer returned 0.01 instead of 1.0 for a correctly formatted answer without spaces; PR head passed 6 tests. This directly reproduces the scorer normalization defect. Logs: tmp/reasoning-gym-regression/pr-94-parent.log and tmp/reasoning-gym-regression/pr-94-head.log. This confirms the migrated multi-task artifact as a task-impacting benchmark defect for the listed hard task rows.",
+  "affected_task_count": 3
+}

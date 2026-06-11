@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__pr-34",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "8e5c0c38_0",
+    "8e5c0c38_1"
+  ],
+  "resolution": "fixed",
+  "title": "8e5c0c38 test 1 - correct application of rule",
+  "summary": "ARC-AGI-2 PR corrects evaluation task 8e5c0c38 test output where the least-pixel-removal symmetry rule was applied incorrectly.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/34",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/pull/34"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-29T08:18:20.000Z",
+  "last_reviewed_at": "2026-06-10T15:33:00Z",
+  "decision_note": "L2 ARC-AGI-2 dataset JSON audit with social proof for 8e5c0c38. Parsed data/evaluation/8e5c0c38.json at dc08f3d^ and dc08f3d in tmp/ARC-AGI-2-audit and compared the task JSON programmatically. Diff result: 5 scalar cell/value change(s), 0 array length/row change(s); sample paths: test[0].output[17][6]:1->4; test[0].output[18][8]:4->1; test[0].output[19][1]:1->4; test[0].output[20][8]:4->1; test[0].output[21][6]:1->4. The upstream merged/follow-up commit changes the evaluation JSON after the report, confirming a historical task oracle defect fixed in current main. Counted under the runbook L2 rule because the GitHub source has maintainer confirmation or a merged dataset JSON fix, and the changed file is the current benchmark task artifact itself. This is not a Docker/Harbor runtime defect; it is a benchmark oracle/task JSON correction.",
+  "affected_task_count": 2
+}

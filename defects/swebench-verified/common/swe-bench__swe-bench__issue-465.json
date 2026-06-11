@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-465",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Repo State Loopholes During Agentic Evaluation",
+  "summary": "SWE-bench Verified evaluation images leaked future repository state through git history/tags, letting agents recover solution details; upstream adapted the harness and rebuilt images.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/465",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/465",
+    "https://github.com/SWE-bench/SWE-bench/issues/465#issuecomment-3758899116"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-09-03T15:34:35.000Z",
+  "last_reviewed_at": "2026-06-10T09:58:00Z",
+  "decision_note": "L2 source-read audit. Issue #465 documents repo-state leakage where agents can inspect future commits/tags inside evaluation images and recover solution details. Maintainers acknowledged the benchmark-level vulnerability, pointed to harness/image fixes, and closed the issue after the image rebuild work. This is counted as a fixed benchmark-level defect, not as task-specific, because the affected task list in the legacy migration was example evidence rather than a bounded set of defective task records.",
+  "affected_task_count": 0
+}

@@ -1,0 +1,809 @@
+{
+  "schema_version": "v5.l3-not-confirmed.1",
+  "created_at": "2026-06-10T14:20:00Z",
+  "items": [
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "arc_agi_2__arcprize__arc-agi-2__pr-20",
+        "benchmark_name": "arc_agi_2",
+        "scope": "task_specific",
+        "task_names": [
+          "446ef5d2_0",
+          "446ef5d2_1"
+        ],
+        "resolution": "fixed",
+        "title": "446ef5d2 test1: Removed red L-shape. Added blue column.",
+        "summary": "ARC-AGI-2 evaluation task 446ef5d2 was described as unsolvable; PR adjusts test input/output and later comment says fixed elsewhere.",
+        "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/20",
+        "evidence_urls": [
+          "https://github.com/arcprize/ARC-AGI-2/pull/20"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-03-25T20:46:32.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 evaluation task 446ef5d2 was described as unsolvable; PR adjusts test input/output and later comment says fixed elsewhere. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 2
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T12:35:00Z",
+          "level": "L3",
+          "result": "not_confirmed",
+          "note": "L3 artifact audit for ARC-AGI-2. PR #20 is closed and unmerged. Local audit fetched pull/20/head as pr-20 and compared data/evaluation/446ef5d2.json against current main; the PR head differs substantially from main (1 insertion, 166 deletions), and the current main history has later task update bebec78 rather than the PR commit 64ed63f. Because the submitted fix was not merged and the current canonical task does not match the PR head, this artifact is not restored as a counted defect without a separate accepted upstream fix/root-cause confirmation."
+        }
+      ],
+      "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-20.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "quixbugs__jkoppel__quixbugs__pr-35",
+        "benchmark_name": "quixbugs",
+        "scope": "task_specific",
+        "task_names": [
+          "quixbugs-java-detect_cycle",
+          "quixbugs-python-detect_cycle"
+        ],
+        "resolution": "fixed",
+        "title": "add a new JUnit test cases for detect_cycle",
+        "summary": "bzq360 added a missing detect_cycle test case where an input node links into a cycle but is not itself in the cycle.",
+        "canonical_source_url": "https://github.com/jkoppel/QuixBugs/pull/35",
+        "evidence_urls": [
+          "https://github.com/jkoppel/QuixBugs/pull/35"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2020-09-06T12:33:19.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: bzq360 added a missing detect_cycle test case where an input node links into a cycle but is not itself in the cycle. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 2
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:12:00Z",
+          "level": "L3",
+          "result": "not_confirmed",
+          "note": "L3 source audit for QuixBugs. PR #35 is merged and adds a missing detect_cycle testcase. It improves benchmark coverage, but the thread does not show an existing expected output that was wrong, an impossible task, or a false failure in the current benchmark artifact. Because this is test coverage expansion rather than a confirmed defect in existing task scoring, it remains uncounted."
+        }
+      ],
+      "original_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-35.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "quixbugs__jkoppel__quixbugs__pr-43",
+        "benchmark_name": "quixbugs",
+        "scope": "task_specific",
+        "task_names": [
+          "quixbugs-java-depth_first_search",
+          "quixbugs-java-shortest_path_length",
+          "quixbugs-java-sqrt"
+        ],
+        "resolution": "fixed",
+        "title": "Fix inconsistent buggy and correct source files",
+        "summary": "h4iku fixed inconsistent QuixBugs buggy and correct Java source files for DEPTH_FIRST_SEARCH, SHORTEST_PATH_LENGTH, and SQRT.",
+        "canonical_source_url": "https://github.com/jkoppel/QuixBugs/pull/43",
+        "evidence_urls": [
+          "https://github.com/jkoppel/QuixBugs/pull/43"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2022-08-05T21:05:17.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: h4iku fixed inconsistent QuixBugs buggy and correct Java source files for DEPTH_FIRST_SEARCH, SHORTEST_PATH_LENGTH, and SQRT. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:12:00Z",
+          "level": "L3",
+          "result": "not_confirmed",
+          "note": "L3 source audit for QuixBugs. PR #43 is merged and makes buggy/correct Java source files more consistent for DEPTH_FIRST_SEARCH, SHORTEST_PATH_LENGTH, and SQRT. The reviewer explicitly said node-based tests should be unaffected and return values are not affected. This may be useful cleanup, but the audit did not establish a task-scoring defect or false oracle result, so it remains uncounted pending a stronger task-impact argument."
+        }
+      ],
+      "original_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-43.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-144",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-arithmetic-chain-sum-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-chain-sum-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-chain-sum-hard0292e21f-seed45-2",
+          "reasoning-gym-arithmetic-decimal-chain-sum-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-decimal-chain-sum-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-decimal-chain-sum-hard0292e21f-seed45-2",
+          "reasoning-gym-arithmetic-fraction-simplification-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-fraction-simplification-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-fraction-simplification-hard0292e21f-seed45-2",
+          "reasoning-gym-arithmetic-gcd-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-gcd-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-gcd-hard0292e21f-seed45-2",
+          "reasoning-gym-arithmetic-gsm-symbolic-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-gsm-symbolic-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-gsm-symbolic-hard0292e21f-seed45-2",
+          "reasoning-gym-arithmetic-products-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-products-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-products-hard0292e21f-seed45-2",
+          "reasoning-gym-logic-aiw-hard0292e21f-seed45-0",
+          "reasoning-gym-logic-aiw-hard0292e21f-seed45-1",
+          "reasoning-gym-logic-aiw-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Added fixes for arithmetic environments",
+        "summary": "Reasoning-gym PR fixes arithmetic templates and fraction_simplification scoring where correct fraction formats were mishandled and scored near zero.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/144",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/144"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-16T15:42:16.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes arithmetic templates and fraction_simplification scoring where correct fraction formats were mishandled and scored near zero. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 21
+      },
+      "audit_attempts": [
+        {
+          "at": "2026-06-10T11:16:00Z",
+          "method": "Docker custom root-cause probe",
+          "note": "Compared PR #144 first-parent base 3f98afe and final head d0200d1 inside Docker image delphik/reasoning-gym-audit:py311. Probe instantiated FractionSimplificationDataset with latex_frac style and called score_answer on the oracle answer. Parent and head both returned SCORE 1.0, so the claimed scorer failure was not reproduced by this probe. Logs: tmp/reasoning-gym-regression/pr-144-parent-custom.log and pr-144-head-custom.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-144.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-151",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-code-bf-hard0292e21f-seed45-0",
+          "reasoning-gym-code-bf-hard0292e21f-seed45-1",
+          "reasoning-gym-code-bf-hard0292e21f-seed45-2",
+          "reasoning-gym-games-mini-sudoku-hard0292e21f-seed45-0",
+          "reasoning-gym-games-mini-sudoku-hard0292e21f-seed45-1",
+          "reasoning-gym-games-mini-sudoku-hard0292e21f-seed45-2",
+          "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-0",
+          "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-1",
+          "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Tweaks to prompt formats and scoring for some datasets",
+        "summary": "Reasoning-gym PR notes mini Sudoku sometimes generated multiple-solution puzzles while also improving prompt/scoring for affected datasets.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/151",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/151"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-17T19:17:56.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR notes mini Sudoku sometimes generated multiple-solution puzzles while also improving prompt/scoring for affected datasets. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 9
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T10:59:44.440Z",
+          "level": "L3",
+          "result": "not_confirmed",
+          "note": "Ran tmp/probe-reasoning-gym-pr151-scoring.py in delphik/reasoning-gym-audit:py311 against parent 79c5e53ef0cc6044a5aa0d6f81e7d86316733e59 and PR head eb708e88b345c2a36b744b95a545937cf20934a6. BF verbose-correct answer scored 0.01 on parent but 4.86 on head, so the PR did not cleanly fix scoring within a 0..1 reward range. MiniSudoku verbose answer already scored 0.5536 on parent and 0.4895 on head, so MiniSudoku scoring defect was not reproduced. FamilyRelationships change is prompt-only. This multi-task artifact remains uncounted pending further review. Logs: tmp/reasoning-gym-regression/pr-151-parent-custom-v2.log and tmp/reasoning-gym-regression/pr-151-head-custom-v2.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-151.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-166",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-algorithmic-caesar-cipher-hard0292e21f-seed45-0",
+          "reasoning-gym-algorithmic-caesar-cipher-hard0292e21f-seed45-1",
+          "reasoning-gym-algorithmic-caesar-cipher-hard0292e21f-seed45-2",
+          "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-0",
+          "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-1",
+          "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-2",
+          "reasoning-gym-geometry-advanced-geometry-hard0292e21f-seed45-0",
+          "reasoning-gym-geometry-advanced-geometry-hard0292e21f-seed45-1",
+          "reasoning-gym-geometry-advanced-geometry-hard0292e21f-seed45-2",
+          "reasoning-gym-geometry-simple-geometry-hard0292e21f-seed45-0",
+          "reasoning-gym-geometry-simple-geometry-hard0292e21f-seed45-1",
+          "reasoning-gym-geometry-simple-geometry-hard0292e21f-seed45-2",
+          "reasoning-gym-logic-zebra-puzzles-hard0292e21f-seed45-0",
+          "reasoning-gym-logic-zebra-puzzles-hard0292e21f-seed45-1",
+          "reasoning-gym-logic-zebra-puzzles-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Fix/envs",
+        "summary": "Reasoning-gym PR fixes question templates and score_answer functions for several datasets after initial evaluations found answer-format problems.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/166",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/166"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-19T21:31:48.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes question templates and score_answer functions for several datasets after initial evaluations found answer-format problems. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 15
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T10:57:18.682Z",
+          "level": "L3",
+          "result": "not_confirmed",
+          "note": "Ran tmp/probe-reasoning-gym-pr166-scores.py in delphik/reasoning-gym-audit:py311 against parent 667d088f552693f9544b8648074177b77833c4bf and PR head a4419d6e4bb4e46a9e00d74639b629478a8d9808. Parent oracle scoring was already 1.0 for caesar_cipher, color_cube_rotation, advanced_geometry, simple_geometry, and zebra_puzzles; head failed the probe because color_cube_rotation oracle answer scored 0.01. This does not confirm a fixed task-impacting defect for the multi-task artifact. Logs: tmp/reasoning-gym-regression/pr-166-parent-custom.log and tmp/reasoning-gym-regression/pr-166-head-custom.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-166.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-175",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-algorithmic-word-ladder-hard0292e21f-seed45-0",
+          "reasoning-gym-algorithmic-word-ladder-hard0292e21f-seed45-1",
+          "reasoning-gym-algorithmic-word-ladder-hard0292e21f-seed45-2",
+          "reasoning-gym-arithmetic-basic-arithmetic-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-basic-arithmetic-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-basic-arithmetic-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Add score_answer function to handle comma-formatted numbers",
+        "summary": "Reasoning-gym PR adds score_answer handling for comma-formatted numeric answers so otherwise correct arithmetic/model outputs are not rejected by strict formatting.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/175",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/175"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-20T19:15:09.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR adds score_answer handling for comma-formatted numeric answers so otherwise correct arithmetic/model outputs are not rejected by strict formatting. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 6
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T12:22:00Z",
+          "level": "L3",
+          "result": "not_confirmed",
+          "note": "Ran tmp/probe-reasoning-gym-pr175.py in delphik/reasoning-gym-audit:py311 against first-parent base e25973b1187225a7a88f872caf61787d008ed293 and PR head acde58a200c5b4561ad679ec06c340d07d83a8cf. For BasicArithmeticDataset seed 45, five large-integer oracle answers scored 1.0 exactly but comma-formatted equivalents scored 0.01 on both parent and head; head only removed the prompt instruction that told models not to use commas. WordLadder scoring stayed 1.0 for exact and lower/spaced answers on both parent and head, and its diff was type-hint-only. The artifact task mapping to word_ladder/basic_arithmetic is therefore not confirmed as a fixed benchmark defect. Logs: tmp/reasoning-gym-regression/pr175-e25973b1187225a7a88f872caf61787d008ed293.json and tmp/reasoning-gym-regression/pr175-acde58a200c5b4561ad679ec06c340d07d83a8cf.json."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-175.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-193",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-arc-arc-1d-hard0292e21f-seed45-0",
+          "reasoning-gym-arc-arc-1d-hard0292e21f-seed45-1",
+          "reasoning-gym-arc-arc-1d-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Fix index out of range for arc_1d dataset",
+        "summary": "Reasoning-gym PR fixes an index-out-of-range failure in the arc_1d dataset and adds tests.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/193",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/193",
+          "https://github.com/open-thought/reasoning-gym/issues/190"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-23T11:53:39.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Issue https://github.com/open-thought/reasoning-gym/issues/190 was closed by merged PR #193; the issue describes a task-impacting benchmark dataset/scorer/generator defect and the PR is the canonical upstream fix. Converted the existing common PR artifact to task_specific so the hard benchmark task links are preserved without double-counting the issue as a separate defect.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "at": "2026-06-10T11:08:00Z",
+          "method": "Docker parent/head regression probe",
+          "note": "Ran node tmp/run-reasoning-gym-pr-regression.mjs 193 with PR head test overlaid onto parent/head. Parent passed 15 tests and head passed 15 tests. Additional Docker custom generation probe on parent generated 5 seeds x 1000 Arc1D samples without reproducing the reported IndexError. Not counted until a stronger reproduction is found. Logs: tmp/reasoning-gym-regression/pr-193-parent.log and pr-193-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-193.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-246",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-algorithmic-letter-jumble-hard0292e21f-seed45-0",
+          "reasoning-gym-algorithmic-letter-jumble-hard0292e21f-seed45-1",
+          "reasoning-gym-algorithmic-letter-jumble-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Dynamic Scoring for Letter Jumble",
+        "summary": "Letter Jumble exact matching returned far too-low scores for plausible answers such as word-order/near-answer cases; PR adds per-word dynamic scoring.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/246",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/246"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-03-01T15:53:26.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Letter Jumble exact matching returned far too-low scores for plausible answers such as word-order/near-answer cases; PR adds per-word dynamic scoring. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #246 tests (tests/test_letter_jumble.py) onto parent 9c581f1be11fe5a67d78dc9ac3c95c0926061f0a and head 7ac7b481d4986df379d977b836a395216b951974; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-246-parent.log and tmp/reasoning-gym-regression/pr-246-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-246.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed_refinement",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-277",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-code-codeio-hard0292e21f-seed45-0",
+          "reasoning-gym-code-codeio-hard0292e21f-seed45-1",
+          "reasoning-gym-code-codeio-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Tolerant scoring for CodeI/O based on edit distances",
+        "summary": "Code/I-O scoring switched from brittle exact JSON comparison toward tree/edit-distance similarity for numeric and string values, reducing false low scores.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/277",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/277"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-03-06T20:57:15.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Code/I-O scoring switched from brittle exact JSON comparison toward tree/edit-distance similarity for numeric and string values, reducing false low scores. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "skipped_no_tests",
+          "note": "Regression batch found no tests changed in PR #277; no L3 parent/head execution evidence was produced. Custom root-cause probe is still required before counting."
+        },
+        {
+          "attempted_at": "2026-06-10T11:21:25.500Z",
+          "level": "L3",
+          "result": "not_confirmed_refinement",
+          "note": "Ran tmp/probe-reasoning-gym-pr277-codeio.py in delphik/reasoning-gym-audit:py311 against parent 862617b7e0ee4de4414cc3a3f81da470cf6f56c6 and PR head 27e605dcfbec472bf7d9cf0f0018e59205c079b9. Parent already scored exact JSON 1.0 and extra-text correct JSON 0.549. Head increased same-key wrong JSON from 0.1 to 0.524. This looks like scoring refinement rather than a confirmed task-impacting benchmark defect. Logs: tmp/reasoning-gym-regression/pr-277-parent-custom.log and tmp/reasoning-gym-regression/pr-277-head-custom.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-277.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-32",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-games-countdown-hard0292e21f-seed45-0",
+          "reasoning-gym-games-countdown-hard0292e21f-seed45-1",
+          "reasoning-gym-games-countdown-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Feat/countdown scoring",
+        "summary": "Reasoning-gym PR implements Countdown score_answer to evaluate whether a submitted expression reaches the target and to handle malformed strings gracefully.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/32",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/32"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-01-31T07:08:20.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR implements Countdown score_answer to evaluate whether a submitted expression reaches the target and to handle malformed strings gracefully. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #32 tests (tests/test_countdown.py) onto parent 4fea3c3378f90e2298c56a3b85ae8c8b87dec626 and head 37375f08a95a41cd9e804b185cb1522a66041b37; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-32-parent.log and tmp/reasoning-gym-regression/pr-32-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-32.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-405",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-code-codeio-hard0292e21f-seed45-0",
+          "reasoning-gym-code-codeio-hard0292e21f-seed45-1",
+          "reasoning-gym-code-codeio-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "fix(env): Unify CodeIO datasets",
+        "summary": "reasoning-gym PR unifies CodeIO datasets and fixes execution handling so imports at the top of snippets are available during exec; maintainer also filters samples needing extra packages.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/405",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/405"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-04-01T22:09:37.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR unifies CodeIO datasets and fixes execution handling so imports at the top of snippets are available during exec; maintainer also filters samples needing extra packages. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #405 tests (tests/test_codeio.py) onto parent bc8780c5aacb92db3507eb6d9a6cc22cc9098821 and head 87ee04beefc8b148db48633cb7e10ae03eda613b; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-405-parent.log and tmp/reasoning-gym-regression/pr-405-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-405.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed_for_attributed_tasks",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-420",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-games-tower-of-hanoi-hard0292e21f-seed45-0",
+          "reasoning-gym-games-tower-of-hanoi-hard0292e21f-seed45-1",
+          "reasoning-gym-games-tower-of-hanoi-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "fix boxnet scoring function",
+        "summary": "reasoning-gym PR fixes BoxNet scoring so invalid starting positions do not throw and crash training, and adds a Tower of Hanoi malformed-response guard.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/420",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/420"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-04-14T19:12:44.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR fixes BoxNet scoring so invalid starting positions do not throw and crash training, and adds a Tower of Hanoi malformed-response guard. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "skipped_no_tests",
+          "note": "Regression batch found no tests changed in PR #420; no L3 parent/head execution evidence was produced. Custom root-cause probe is still required before counting."
+        },
+        {
+          "attempted_at": "2026-06-10T11:09:47.219Z",
+          "level": "L3",
+          "result": "not_confirmed_for_attributed_tasks",
+          "note": "Ran tmp/probe-reasoning-gym-pr420-hanoi.py in delphik/reasoning-gym-audit:py311 against parent 71787c6a0e2fc46b67fcb7c50af7ad0aa43b6439 and PR head 3366f7db91957576985f753dd88ca6950d7d90ed. The attributed artifact task_names are Tower of Hanoi only. Malformed answer \"Move disk X from peg 1 to peg 2\" scored 0.0 on both parent and head, so the Tower of Hanoi defect was not reproduced. The PR body/title mainly claims BoxNet invalid starting-position crash, which is not represented in this artifact task_names. Logs: tmp/reasoning-gym-regression/pr-420-parent-hanoi.log and tmp/reasoning-gym-regression/pr-420-head-hanoi.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-420.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-430",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-arithmetic-decimal-arithmetic-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-decimal-arithmetic-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-decimal-arithmetic-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "fix decimal arithmetic curriculum to respect constraints",
+        "summary": "reasoning-gym PR fixes decimal arithmetic curriculum levels whose constraints were incompatible with the dataset validation check.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/430",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/430"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-05-06T17:09:03.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR fixes decimal arithmetic curriculum levels whose constraints were incompatible with the dataset validation check. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #430 tests (tests/test_decimal_arithmetic.py) onto parent 475904a74d4cf976d6891152e535993f7afd16bd and head d7ece6b3168c864fcfa25c887902c6d6fb06724f; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-430-parent.log and tmp/reasoning-gym-regression/pr-430-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-430.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_with_issue_example",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-462",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-arithmetic-power-function-hard0292e21f-seed45-0",
+          "reasoning-gym-arithmetic-power-function-hard0292e21f-seed45-1",
+          "reasoning-gym-arithmetic-power-function-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "fix: Rounding issues in score_answer and add unit tests",
+        "summary": "Merged PR fixes PowerFunction score_answer rounding/significant-figure issues and adds tests for #428.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/462",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/462",
+          "https://github.com/open-thought/reasoning-gym/issues/428"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-06-08T06:51:33.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Issue https://github.com/open-thought/reasoning-gym/issues/428 was closed by merged PR #462; the issue describes a task-impacting benchmark dataset/scorer/generator defect and the PR is the canonical upstream fix. Converted the existing common PR artifact to task_specific so the hard benchmark task links are preserved without double-counting the issue as a separate defect.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T10:47:12.740Z",
+          "level": "L3",
+          "result": "not_reproduced_with_issue_example",
+          "note": "Ran tmp/probe-reasoning-gym-power-function.py in delphik/reasoning-gym-audit:py311 against parent be2babea9c0a1e1c1ecebacdc0cca0f7782926b2 and PR head 21f72fe0f43b77b25172b568a92fa1a01e910601. The issue example answer 1.000e+00 vs oracle 1.0 scored 1.0 on both parent and head, so this attempt does not confirm a task-impacting defect. Logs: tmp/reasoning-gym-regression/pr-462-parent-custom.log and tmp/reasoning-gym-regression/pr-462-head-custom.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-462.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_counted_prompt_only",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-511",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-algorithmic-spiral-matrix-hard0292e21f-seed45-0",
+          "reasoning-gym-algorithmic-spiral-matrix-hard0292e21f-seed45-1",
+          "reasoning-gym-algorithmic-spiral-matrix-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Update spiral_matrix.py",
+        "summary": "reasoning-gym spiral_matrix prompt was clarified to specify row/column traversal and add a layer-by-layer hint.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/511",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/511"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-10-06T10:31:58.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym spiral_matrix prompt was clarified to specify row/column traversal and add a layer-by-layer hint. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "skipped_no_tests",
+          "note": "Regression batch found no tests changed in PR #511; no L3 parent/head execution evidence was produced. Custom root-cause probe is still required before counting."
+        },
+        {
+          "attempted_at": "2026-06-10T11:23:42.914Z",
+          "level": "L3",
+          "result": "not_counted_prompt_only",
+          "note": "Inspected PR #511 diff between parent bcc68c5fee1e4f65953e6ca7894559b657ec1b80 and head 326e999cad936b3664ca6f13f7351eb82c333069. The only code change rewrites SpiralMatrix QUESTION_TEMPLATE instructions and adds a hint; no generator, gold answer, scorer, or environment behavior changes were present. This is not counted as a confirmed benchmark defect without additional evidence that the previous prompt made the task invalid."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-511.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_counted_fail_fast_only",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-515",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-games-maze-hard0292e21f-seed45-0",
+          "reasoning-gym-games-maze-hard0292e21f-seed45-1",
+          "reasoning-gym-games-maze-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Add assertion for maze constraints and limit _random_floor_cell attempts",
+        "summary": "Live PR adds maze constraints and bounded retries to prevent invalid maze layouts with no valid start/goal placement.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/515",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/515"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2026-01-05T01:30:16.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR adds maze constraints and bounded retries to prevent invalid maze layouts with no valid start/goal placement. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "skipped_no_tests",
+          "note": "Regression batch found no tests changed in PR #515; no L3 parent/head execution evidence was produced. Custom root-cause probe is still required before counting."
+        },
+        {
+          "attempted_at": "2026-06-10T11:15:06.621Z",
+          "level": "L3",
+          "result": "not_counted_fail_fast_only",
+          "note": "Ran tmp/probe-reasoning-gym-pr515-maze.py in delphik/reasoning-gym-audit:py311 against parent 7d68a6cc70d930e60a4e795fdf3ff43507c22e8b and PR head 353020c436b268d643fa451c30b76a8f017ad730 using the PR body reproduction config: create_dataset(\"maze\", size=6, min_dist=2, max_dist=10, min_grid_size=3, max_grid_size=12, seed=1). Parent timed out after 5 seconds (status 124), confirming the infinite loop/stall. PR head no longer hangs but raises RuntimeError: Could not find suitable path cell after 1000 attempts. Because the attributed hard maze tasks are still not shown to generate/score correctly under the reproduced config, this is not restored as a fixed counted defect. Logs: tmp/reasoning-gym-regression/pr-515-parent-custom.log and tmp/reasoning-gym-regression/pr-515-head-custom.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-515.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-82",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-logic-syllogism-hard0292e21f-seed45-0",
+          "reasoning-gym-logic-syllogism-hard0292e21f-seed45-1",
+          "reasoning-gym-logic-syllogism-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Fix syllogisms",
+        "summary": "Reasoning-gym PR fixes syllogisms and substantially updates tests, indicating a repaired dataset/scorer defect despite sparse PR text.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/82",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/82"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-07T19:36:52.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes syllogisms and substantially updates tests, indicating a repaired dataset/scorer defect despite sparse PR text. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #82 tests (tests/test_syllogisms.py) onto parent 95c27884f7a9c1edcf7951ee102837c569eeccdb and head 83a2793f7199188afaca5520583a5613cfe3a9f3; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-82-parent.log and tmp/reasoning-gym-regression/pr-82-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-82.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-92",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-algebra-polynomial-equations-hard0292e21f-seed45-0",
+          "reasoning-gym-algebra-polynomial-equations-hard0292e21f-seed45-1",
+          "reasoning-gym-algebra-polynomial-equations-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Add score_answer() for PolynomialEquationsDataset",
+        "summary": "Live PR implements greedy matching score_answer for PolynomialEquationsDataset and closes #44.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/92",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/92"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-09T05:45:24.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR implements greedy matching score_answer for PolynomialEquationsDataset and closes #44. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #92 tests (tests/test_polynomial_equations.py) onto parent 8c6c7f9ca7e518e9e7cd0d6516a7aed9785223f7 and head 40e5a7cffa00e921c63c4e5e5b4a1098ecb0f1b6; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-92-parent.log and tmp/reasoning-gym-regression/pr-92-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-92.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    },
+    {
+      "archived_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-93",
+        "benchmark_name": "reasoning-gym-hard",
+        "scope": "task_specific",
+        "task_names": [
+          "reasoning-gym-algorithmic-word-ladder-hard0292e21f-seed45-0",
+          "reasoning-gym-algorithmic-word-ladder-hard0292e21f-seed45-1",
+          "reasoning-gym-algorithmic-word-ladder-hard0292e21f-seed45-2"
+        ],
+        "resolution": "fixed",
+        "title": "Add score_answer method to word_ladder",
+        "summary": "Reasoning-gym PR adds a WordLadder score_answer method so alternate valid word ladders can be accepted rather than exact-matching one generated sequence.",
+        "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/93",
+        "evidence_urls": [
+          "https://github.com/open-thought/reasoning-gym/pull/93",
+          "https://github.com/open-thought/reasoning-gym/issues/83"
+        ],
+        "audit_level": "L2",
+        "first_reported_at": "2025-02-09T05:59:29.000Z",
+        "last_reviewed_at": "2026-06-10T10:26:00Z",
+        "decision_note": "L2 source-read audit. Issue https://github.com/open-thought/reasoning-gym/issues/83 was closed by merged PR #93; the issue describes a task-impacting benchmark dataset/scorer/generator defect and the PR is the canonical upstream fix. Converted the existing common PR artifact to task_specific so the hard benchmark task links are preserved without double-counting the issue as a separate defect.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T11:08:18.499Z",
+          "level": "L3",
+          "result": "not_reproduced_by_pr_tests",
+          "note": "Regression batch overlaid PR #93 tests (tests/test_word_ladder.py) onto parent bfc7c5a9379e32a9931464b419f1e5fc9ab81102 and head 4ac77af1e68e0e2d471957463fafa1aa7a6f8d22; both exited status 0/0, so this test-based attempt did not reproduce the claimed defect. Logs: tmp/reasoning-gym-regression/pr-93-parent.log and tmp/reasoning-gym-regression/pr-93-head.log."
+        }
+      ],
+      "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-93.json",
+      "reason": "L3 audit did not establish a countable benchmark defect under the current policy."
+    }
+  ],
+  "updated_at": "2026-06-10T14:20:00Z"
+}

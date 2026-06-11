@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-514",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-countdown-hard0292e21f-seed45-0",
+    "reasoning-gym-games-countdown-hard0292e21f-seed45-1",
+    "reasoning-gym-games-countdown-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix(reasoning_gym/games/countdown):  Resolve SymPy parsing conflict for 10+ input numbers",
+  "summary": "Reasoning Gym PR fixes countdown validation/generation failing for 10+ input numbers because SymPy symbol replacement created phantom numbers.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/514",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/514"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-11-30T13:43:58.000Z",
+  "last_reviewed_at": "2026-06-10T10:48:30.093Z",
+  "decision_note": "L3 reproduced the countdown 10+ numbers symbol replacement defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent de2e89d21d6616439f94d7e59e69b811a751a5bc and PR head 05e279c18d5819ece761a0788612903ca9bb85b8 were installed with pip install -e . and run with CountdownConfig(min_numbers=11, max_numbers=11, shuffle=False, size=5, seed=42). Parent failed on item 0: metadata target was 269 but eval(metadata.expression) was 496, with expression containing the wrong substituted number 320. PR head passed 5/5 items with target equal to evaluated expression. Logs: tmp/reasoning-gym-regression/pr-514-parent-custom.log and tmp/reasoning-gym-regression/pr-514-head-custom.log.",
+  "affected_task_count": 3
+}

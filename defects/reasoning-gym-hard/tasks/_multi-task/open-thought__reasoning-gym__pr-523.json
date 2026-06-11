@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-523",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-graphs-shortest-path-hard0292e21f-seed45-0",
+    "reasoning-gym-graphs-shortest-path-hard0292e21f-seed45-1",
+    "reasoning-gym-graphs-shortest-path-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix misleading instruction in shortest_path prompt",
+  "summary": "Fix shortest_path misleading instruction.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/523",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/523",
+    "https://github.com/open-thought/reasoning-gym/issues/522"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-03-25T12:02:23Z",
+  "last_reviewed_at": "2026-06-10T11:25:14.674Z",
+  "decision_note": "L3 reproduced the shortest_path prompt/gold mismatch with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 9a91d92ca6419f2cae94273e977a09d118f58703 and PR head 9886b582b272708d8053c73e5f83ec0c5da73f12 were installed with pip install -e . and run over 20 ShortestPathDataset(seed=42) examples. Parent had BAD_PROMPT 20/20: each prompt asked for the length of the shortest path while the gold answer was directions or infeasible. PR head had BAD_PROMPT 0/20 and preserved direction/infeasible gold answers. Logs: tmp/reasoning-gym-regression/pr-523-parent-custom.log and tmp/reasoning-gym-regression/pr-523-head-custom.log.",
+  "affected_task_count": 3
+}

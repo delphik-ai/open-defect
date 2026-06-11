@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "quixbugs__jkoppel__quixbugs__pr-11",
+  "benchmark_name": "quixbugs",
+  "scope": "task_specific",
+  "task_names": [
+    "quixbugs-java-knapsack",
+    "quixbugs-python-knapsack"
+  ],
+  "resolution": "fixed",
+  "title": "Json test case error of knapsack",
+  "summary": "SophieHYe flagged a QuixBugs knapsack JSON expected-output error where correct Python and Java produced 1300 instead of 1652.",
+  "canonical_source_url": "https://github.com/jkoppel/QuixBugs/pull/11",
+  "evidence_urls": [
+    "https://github.com/jkoppel/QuixBugs/pull/11"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2018-02-04T11:49:42.000Z",
+  "last_reviewed_at": "2026-06-10T15:18:00Z",
+  "decision_note": "L3 runtime probe confirmed the knapsack oracle testcase defect with the correct Python implementation. Command used tmp/QuixBugs-audit/correct_python_programs/knapsack.py and git-showed json_testcases/knapsack.json at PR parent e7d9872^ and fixed commit e7d9872. For line 9, parent expected 1652 while correct Python returned 1735, so the benchmark oracle rejected the correct output. At the fixed commit, expected is 1735 and correct Python returns 1735. This directly confirms the JSON testcase expected-output defect for the shared Java/Python QuixBugs task variants.",
+  "affected_task_count": 2
+}

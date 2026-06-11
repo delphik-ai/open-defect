@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__pr-31",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "6e4f6532_0",
+    "6e4f6532_1"
+  ],
+  "resolution": "fixed",
+  "title": "6e4f6532 example 1 extra pixel + test 1 shape mismatch (supercedes pull 30)",
+  "summary": "PR fixes ARC-AGI-2 task 6e4f6532 by correcting an extra pixel in example 1 and a shape mismatch in test 1.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/31",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/pull/31"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-27T22:37:26.000Z",
+  "last_reviewed_at": "2026-06-10T15:33:00Z",
+  "decision_note": "L2 ARC-AGI-2 dataset JSON audit with social proof for 6e4f6532. Parsed data/evaluation/6e4f6532.json at 8cb4173^ and 1f097f0 in tmp/ARC-AGI-2-audit and compared the task JSON programmatically. Diff result: 10 scalar cell/value change(s), 0 array length/row change(s); sample paths: test[0].output[18][6]:8->7; test[0].output[19][5]:1->7; test[0].output[20][5]:7->1; test[0].output[20][6]:7->8; test[0].output[21][10]:7->8; test[0].output[21][11]:7->8; test[0].output[22][10]:7->8; test[0].output[22][11]:7->8. The upstream merged/follow-up commit changes the evaluation JSON after the report, confirming a historical task oracle defect fixed in current main. Counted under the runbook L2 rule because the GitHub source has maintainer confirmation or a merged dataset JSON fix, and the changed file is the current benchmark task artifact itself. This is not a Docker/Harbor runtime defect; it is a benchmark oracle/task JSON correction.",
+  "affected_task_count": 2
+}

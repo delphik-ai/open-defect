@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-330",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-arithmetic-dice-hard0292e21f-seed45-0",
+    "reasoning-gym-arithmetic-dice-hard0292e21f-seed45-1",
+    "reasoning-gym-arithmetic-dice-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix Dice",
+  "summary": "Dice answer checking was broken because removing an unused variable changed tuple destructuring into the wrong object; PR restores probability handling and adds metadata.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/330",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/330"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-10T23:47:00.000Z",
+  "last_reviewed_at": "2026-06-10T11:17:52.590Z",
+  "decision_note": "L3 reproduced the Dice answer-format/scoring defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 770255b608b1eeb6778bf6bada7b9e869c8091d3 and PR head 3df32949a282e1d117dbdc035e4052bd2611e3a0 were installed with pip install -e . and run over 100 DiceDataset(seed=42) examples. Parent generated malformed gold answers such as (13, 20)/0.65 and gave canonical correct fraction answers 0/100 full credit; PR head generated canonical answers such as 13/20 and gave canonical correct fractions 100/100 full credit. Logs: tmp/reasoning-gym-regression/pr-330-parent-custom-v2.log and tmp/reasoning-gym-regression/pr-330-head-custom-v2.log.",
+  "affected_task_count": 3
+}

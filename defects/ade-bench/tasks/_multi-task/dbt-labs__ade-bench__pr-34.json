@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__pr-34",
+  "benchmark_name": "ade-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "ade-bench-quickbooks001",
+    "ade-bench-quickbooks002",
+    "ade-bench-quickbooks003",
+    "ade-bench-quickbooks004"
+  ],
+  "resolution": "fixed",
+  "title": "Run `dbt deps` in setup for quickbooks tasks.",
+  "summary": "ADE-Bench quickbooks tasks needed dbt deps in setup so dependencies are installed before runs.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/34",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/34"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-11-02T03:37:15.000Z",
+  "last_reviewed_at": "2026-06-10T12:58:37.845Z",
+  "decision_note": "L3 ADE-Bench runtime reproduction for PR #34. Prepared git worktrees at parent b9ee228^ and fixed b9ee228, linked release DuckDB files, and ran ADE CLI with the solution agent on Docker-backed duckdb/dbt tasks. Parent run: `uv run ade run quickbooks001 --db duckdb --project-type dbt --agent oracle --n-concurrent-trials 1 --run-id l3-pr34-parent-quickbooks001 --output-path tmp/ade-pr34-logs/parent-output` failed with dbt compilation error `stg_quickbooks__deposit_line_tmp` not found. Parent rest run: `uv run ade run quickbooks002 quickbooks003 quickbooks004 --db duckdb --project-type dbt --agent oracle --n-concurrent-trials 1 --run-id l3-pr34-parent-rest --output-path tmp/ade-pr34-logs/parent-rest-output` failed 3/3 with compile_error. Fixed run: `uv run ade run quickbooks001 quickbooks002 quickbooks003 quickbooks004 --db duckdb --project-type dbt --agent oracle --n-concurrent-trials 1 --run-id l3-pr34-head-all --output-path tmp/ade-pr34-logs/head-all-output` passed 4/4: quickbooks001 7/7, quickbooks002 9/9, quickbooks003 15/15, quickbooks004 49/49 result rows. The PR adds `dbt deps` before `dbt run` in tasks/quickbooks001-004/setup.sh, and the parent/head execution split confirms the missing dependency setup was a task-impacting benchmark defect fixed by PR #34.",
+  "affected_task_count": 4
+}

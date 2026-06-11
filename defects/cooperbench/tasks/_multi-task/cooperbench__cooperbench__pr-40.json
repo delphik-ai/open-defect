@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-40",
+  "benchmark_name": "cooperbench",
+  "scope": "task_specific",
+  "task_names": [
+    "cb-dspy-t8635-f1-3",
+    "cb-dspy-t8635-f1-2",
+    "cb-dspy-t8635-f1-4",
+    "cb-dspy-t8635-f1-6",
+    "cb-dspy-t8635-f1-5"
+  ],
+  "resolution": "fixed",
+  "title": "Fix dspy task 8635: change min_instr_chars default from 30 to 0",
+  "summary": "Fixes CooperBench dspy task 8635 where combined.patch default min_instr_chars=30 made a pre-existing tests1 assertion fail, while tests2.patch already corrected it.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/40",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/40"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-03-16T00:02:17.000Z",
+  "last_reviewed_at": "2026-06-10T12:12:26.629Z",
+  "decision_note": "L3 Docker reproduction confirmed CooperBench PR #40. Built tmp/CooperBench-audit/dataset/dspy_task/task8635/Dockerfile as delphik/cooperbench-dspy-task8635:l3. Ran the same runner with feature1/tests.patch plus the parent combined.patch from 6b4282e^ and the fixed combined.patch from 6b4282e. Parent exited 1: tests/propose/test_grounded_proposer.py::test_propose_instructions_for_program[None] failed because pred_instructions was the default \"Given the fields `question`, produce the fields `answer`.\" instead of \"instruction\", matching the min_instr_chars=30 root cause. Head exited 0: base tests reported 7 passed and feature1 secondary tests reported 9 passed. Logs: tmp/cooper-pr40-l3/logs/parent.log and tmp/cooper-pr40-l3/logs/head.log.",
+  "affected_task_count": 5
+}

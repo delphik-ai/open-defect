@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-661",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-irrelevance-196",
+    "bfcl-live-multiple-59-22-6"
+  ],
+  "resolution": "fixed",
+  "title": "[BFCL-v2] Dataset and Possible Answer Fix",
+  "summary": "BFCL v2/v3 live datasets and possible answers required broad fixes across hundreds of entries, including ambiguous ground truths noted in review.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/661",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/661"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2024-09-27T07:42:07.000Z",
+  "last_reviewed_at": "2026-06-10T15:42:00Z",
+  "decision_note": "L2 social-proof audit. The linked BFCL PR is merged and its title/body explicitly identifies dataset, possible-answer, or ground-truth fixes that affect leaderboard/evaluation behavior. The changed files are BFCL data or data/possible_answer artifacts, not model/runtime code. task_names are limited to current Delphik benchmark rows mapped from the affected entries, so this is conservative rather than full PR fanout. Counted under the runbook L2 rule for merged upstream benchmark-artifact fixes with clear task-impacting evidence.",
+  "affected_task_count": 2
+}

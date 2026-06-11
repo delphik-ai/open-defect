@@ -30,9 +30,9 @@
   },
   "items": [
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #5 is valid broad evidence that ADE oracle failures existed, but the concrete counted fixes are the merged ADE PR artifacts for dbt deps, setup, Airbnb relationship/full-refresh, and Fusion/DuckDB cases. Keeping the broad issue separately would double-count the same failures.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__issue-5.json",
       "task_count": 20,
       "artifact": {
@@ -84,12 +84,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live ADE-bench PR adds missing field parameters to Airbnb relationship tests because dbt generated invalid SQL without them. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-105.json",
       "task_count": 9,
       "artifact": {
@@ -130,12 +131,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-105.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ADE-bench disables dbt-fusion+duckdb variants on six tasks because an upstream duckdb-driver bug made always-pass CI fail. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-150.json",
       "task_count": 8,
       "artifact": {
@@ -175,12 +178,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-150.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ADE-bench PR adds missing test_setup commands to seven tasks because dbt models were not built before grading SQL tests, causing unfair failures. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-111.json",
       "task_count": 7,
       "artifact": {
@@ -219,12 +224,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-111.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ADE-Bench quickbooks tasks needed dbt deps in setup so dependencies are installed before runs. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-34.json",
       "task_count": 4,
       "artifact": {
@@ -260,12 +267,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-34.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ADE-bench PR fixes/disables Fusion tests that failed because of overeager static analysis and missing raw_code, preventing invalid hard failures in benchmark runs. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-65.json",
       "task_count": 4,
       "artifact": {
@@ -301,12 +310,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-65.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live ADE-bench PR fixes Airbnb tasks where dbt test_setup reran incremental models without --full-refresh, duplicating latest rows and producing NULL metrics that failed equality tests. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-106.json",
       "task_count": 3,
       "artifact": {
@@ -341,12 +352,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-106.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "L3 Harbor audit ran all three migrated tasks with oracle and all returned reward 1.0. The PR itself says the grading problem is masked by issue #106, so this is not counted as a current or fixed task-impacting defect under the present artifact policy.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-145.json",
       "task_count": 3,
       "artifact": {
@@ -381,10 +394,30 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T09:53:00Z",
+        "audit_level": "L3",
+        "verdict": "not_present",
+        "linked_defect_id": null,
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d ade-bench@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-ade-pr145-all -i ade-bench-airbnb001 -i ade-bench-airbnb002 -i ade-bench-airbnb008 -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-ade-pr145-all",
+        "results": {
+          "reward_1": [
+            "ade-bench-airbnb001",
+            "ade-bench-airbnb002",
+            "ade-bench-airbnb008"
+          ]
+        },
+        "decision_note": "PR #145 source says prior #106 full-refresh workaround masks the grading failure. Harbor oracle on current ade-bench@1.0 completed all three affected tasks with reward 1, so it is not restored as a current counted scoring defect."
+      },
+      "reviewed_at": "2026-06-10T10:37:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-151.json",
@@ -421,12 +454,36 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T09:53:00Z",
+        "audit_level": "L3",
+        "verdict": "confirmed",
+        "linked_defect_id": "ade-bench__dbt-labs__ade-bench__pr-151",
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d ade-bench@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-ade-pr151-all -i ade-bench-ana-eng004 -i ade-bench-ana-eng006 -i ade-bench-f1002 -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-ade-pr151-all",
+        "results": {
+          "reward_1": [
+            "ade-bench-ana-eng004",
+            "ade-bench-ana-eng006",
+            "ade-bench-f1002"
+          ],
+          "source_diff": [
+            "tasks/analytics_engineering004/task.yaml",
+            "tasks/analytics_engineering006/task.yaml",
+            "shared/projects/dbt/f1/models/stats/__stats.yml"
+          ]
+        },
+        "decision_note": "PR #151 is a direct task-spec/gold mismatch fix. Harbor oracle reward 1 only shows the gold solution can pass; it does not refute that current prompts/stats omit required gold choices. The PR body and diff update task.yaml/__stats.yml for all three affected tasks, so this remains a current fixing task defect."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream thread has explicit fixed/updated evidence and the title/body/source diff identify a task-impacting benchmark defect: Reporter argues ARC challenge 16de56c4 test case expected output is inconsistent with the training rule; maintainer caught the tweet and updated the task. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-1.json",
       "task_count": 2,
       "artifact": {
@@ -460,12 +517,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-1.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #10 was closed with a maintainer fixed acknowledgement and is not a current defect. It is not restored as an active multi-task artifact; ARC fixed puzzle evidence is represented by concrete fixed issue/PR artifacts where the task update source is clear.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-10.json",
       "task_count": 2,
       "artifact": {
@@ -499,12 +558,23 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:08:00Z",
+        "audit_level": "L2",
+        "verdict": "fixed_not_current",
+        "linked_defect_id": null,
+        "evidence": [
+          "https://github.com/arcprize/ARC-AGI-2/issues/10#issuecomment-2752708837"
+        ],
+        "decision_note": "Issue #10 has direct maintainer/contributor acknowledgement and was closed after a Fixed! comment. It is not restored as a current found/fixing defect."
+      },
+      "reviewed_at": "2026-06-10T10:37:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream thread has explicit fixed/updated evidence and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 issue reports puzzle d8e07eb2 changes the highlighted shape into a different shape; maintainer says it was fixed and then updated again. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-11.json",
       "task_count": 2,
       "artifact": {
@@ -538,12 +608,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-11.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #15 reports the same f931b4a8 incorrect example that merged PR #25 fixes; PR #25 is the counted canonical artifact.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-15.json",
       "task_count": 2,
       "artifact": {
@@ -577,12 +649,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream thread has explicit fixed/updated evidence and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 issue reports puzzle 247ef758 accepts a recolored-border solution despite no example suggesting border recoloring; maintainer says the task was updated. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-22.json",
       "task_count": 2,
       "artifact": {
@@ -616,12 +689,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-22.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 evaluation task 446ef5d2 was described as unsolvable; PR adjusts test input/output and later comment says fixed elsewhere. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-20.json",
       "task_count": 2,
       "artifact": {
@@ -655,12 +730,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-20.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 PR fixes evaluation task f931b4a8 example 3, which had a random color switch and missing tiling relative to the rule used by examples and tests. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-25.json",
       "task_count": 2,
       "artifact": {
@@ -694,12 +771,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-25.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 PR fixes task cb2d8a2c test 1 output by replacing an inconsistent blue shape with red. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-26.json",
       "task_count": 2,
       "artifact": {
@@ -733,12 +812,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-26.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 PR fixes evaluation task a25697e4 where example 1’s mirrored shape has a one-pixel offset error. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-29.json",
       "task_count": 2,
       "artifact": {
@@ -772,12 +853,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-29.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: PR fixes ARC-AGI-2 task 6e4f6532 by correcting an extra pixel in example 1 and a shape mismatch in test 1. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-31.json",
       "task_count": 2,
       "artifact": {
@@ -811,12 +894,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-31.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: ARC-AGI-2 PR corrects evaluation task 8e5c0c38 test output where the least-pixel-removal symmetry rule was applied incorrectly. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-34.json",
       "task_count": 2,
       "artifact": {
@@ -850,10 +935,12 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-34.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-52.json",
@@ -889,10 +976,21 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:08:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "arc_agi_2__arcprize__arc-agi-2__pr-52",
+        "evidence": [
+          "https://github.com/arcprize/ARC-AGI-2/pull/52",
+          "https://github.com/arcprize/ARC-AGI-2/pull/52/files"
+        ],
+        "decision_note": "PR #52 directly edits data/evaluation/581f7754.json and lists the exact changed output cells. No Harbor registry exists for ARC-AGI-2, so the dataset diff is the reproduction evidence. The PR is open, so this is a current fixing artifact."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-62.json",
@@ -928,12 +1026,23 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:08:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "arc_agi_2__arcprize__arc-agi-2__pr-62",
+        "evidence": [
+          "https://github.com/arcprize/ARC-AGI-2/pull/62",
+          "https://github.com/arcprize/ARC-AGI-2/pull/62/files"
+        ],
+        "decision_note": "PR #62 directly edits data/evaluation/88e364bc.json and lists the exact changed output cells. No Harbor registry exists for ARC-AGI-2, so the dataset diff is the reproduction evidence. The PR is open, so this is a current fixing artifact."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: BFCL PR fixed 24 dataset and possible-answer entries across simple, multiple, parallel, and parallel-multiple categories. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-600.json",
       "task_count": 6,
       "artifact": {
@@ -971,12 +1080,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-600.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #1133 is a broad BFCL cleanup report with maintainer acknowledgement that a patch will be prepared, but this thread itself does not provide a concrete merged fix source for the migrated task subset. Concrete BFCL merged PRs are counted separately.",
       "original_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__issue-1133.json",
       "task_count": 2,
       "artifact": {
@@ -1010,12 +1121,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: BFCL PR moved formatting/function docs to the system prompt and also fixed six named dataset issues. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-593.json",
       "task_count": 2,
       "artifact": {
@@ -1049,12 +1161,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-593.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: BFCL v2/v3 live datasets and possible answers required broad fixes across hundreds of entries, including ambiguous ground truths noted in review. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-661.json",
       "task_count": 2,
       "artifact": {
@@ -1088,12 +1202,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-661.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: BFCL possible answers contained scalar values where lists were required, producing invalid-value errors for otherwise valid outputs. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-786.json",
       "task_count": 2,
       "artifact": {
@@ -1127,12 +1243,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-786.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: PR fixes several BFCL dataset ground truth errors across exec_parallel, java, live_multiple, and parallel categories. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-846.json",
       "task_count": 2,
       "artifact": {
@@ -1166,10 +1284,12 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-846.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/bird-bench/tasks/_multi-task/alibabaresearch__damo-convai__issue-39.json",
@@ -1205,12 +1325,35 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:12:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "bird-bench__alibabaresearch__damo-convai__issue-39",
+        "commands": [
+          "npm run l3:preflight",
+          "harbor download bird-bench@parity -o tmp/harbor-probe/bird-bench_parity (blocked by harbor-datasets checkout commit 82d1fb0c144d28b1fd9852006cee0a39e74bd4a8)"
+        ],
+        "evidence": [
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2008123992",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2010914378",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2019106671",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2488216215"
+        ],
+        "results": {
+          "counted_tasks": [
+            "financial__118",
+            "financial__181"
+          ]
+        },
+        "decision_note": "BIRD Harbor registry download was blocked by a missing harbor-datasets checkout commit, so Docker execution was not available. The issue thread contains direct source-level SQL defects for question_id 118 and 181 in db_id financial. #118 counts rows instead of computing the amount percentage described by evidence; #181 joins client/account through district_id instead of disp, associating clients with other clients accounts. BIRD maintainers acknowledge ongoing analysis of reported annotation issues in the same thread. Restored as source-audited current dataset defects."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: CooperBench outlines task1706 installed transformers/tokenizers without pins; latest releases broke GPT2Tokenizer setup and caused 8 of 9 tests to error on every run. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-39.json",
       "task_count": 28,
       "artifact": {
@@ -1270,12 +1413,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-39.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live CooperBench PR fixes dspy task8563 feature test patches that still expected old ToolCalls list format, causing oracle tests for features 2-6 to fail. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-42.json",
       "task_count": 15,
       "artifact": {
@@ -1322,12 +1467,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-42.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #44 gives a plausible CooperBench parameter-name mismatch, but it has no comment, linked PR, or merged fix source in the thread. Under the current runbook, this high-fanout issue-only fixed claim is not counted without L3 or explicit social proof.",
       "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__issue-44.json",
       "task_count": 9,
       "artifact": {
@@ -1368,12 +1515,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Fixes CooperBench dspy task 8635 where combined.patch default min_instr_chars=30 made a pre-existing tests1 assertion fail, while tests2.patch already corrected it. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-40.json",
       "task_count": 5,
       "artifact": {
@@ -1410,12 +1558,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-40.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR fixes CooperBench react-hook-form task153 where combined.patch API shape disagreed with tests and all onFinally tests failed. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-41.json",
       "task_count": 5,
       "artifact": {
@@ -1452,12 +1602,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-41.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR fixes CooperBench go_chi task56 combined.patch bugs that made oracle score 0 for feature pairs involving feature 1. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-38.json",
       "task_count": 4,
       "artifact": {
@@ -1493,10 +1645,12 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-38.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/evoeval/tasks/_multi-task/evo-eval__evoeval__issue-2.json",
@@ -1536,12 +1690,44 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T09:58:00Z",
+        "audit_level": "L3",
+        "verdict": "confirmed",
+        "linked_defect_id": "evoeval__evo-eval__evoeval__issue-2",
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d evoeval@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-evoeval-issue2-all -i 1 -i 22 -i 23 -i 3 -i 32 -i 73 -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-evoeval-issue2-all",
+        "results": {
+          "reward_1": [
+            "1",
+            "22",
+            "23",
+            "3",
+            "32",
+            "73"
+          ],
+          "counted_tasks": [
+            "22",
+            "23",
+            "3",
+            "32",
+            "73"
+          ],
+          "excluded_tasks": [
+            "1"
+          ]
+        },
+        "decision_note": "Harbor oracle passed all six tasks, which does not refute a wrong-expected-output/GT defect. The decisive evidence is maintainer confirmation in issue #2: #22 should not count booleans as ints, #23 should count all whitespace, #3 is a fair ambiguous interpretation, #32 has a GT method problem, and #73 reference solution is incorrect. #1 is described as misleading/confusing rather than clearly wrong under later problem text, so it is excluded from the counted artifact."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: otel-bench PR title says it adds solutions to failing tasks, which is evidence of benchmark tasks missing working oracle solutions. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/otel-bench/tasks/_multi-task/quesmaorg__otel-bench__pr-6.json",
       "task_count": 5,
       "artifact": {
@@ -1578,12 +1764,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/otel-bench/tasks/_multi-task/quesmaorg__otel-bench__pr-6.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: h4iku fixed inconsistent QuixBugs buggy and correct Java source files for DEPTH_FIRST_SEARCH, SHORTEST_PATH_LENGTH, and SQRT. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-43.json",
       "task_count": 3,
       "artifact": {
@@ -1618,12 +1806,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-43.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: SophieHYe flagged a QuixBugs knapsack JSON expected-output error where correct Python and Java produced 1300 instead of 1652. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-11.json",
       "task_count": 2,
       "artifact": {
@@ -1657,12 +1847,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-11.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: martinezmatias fixed an inconsistent QuixBugs pascal JSON testcase whose first expected output had the wrong list shape. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-13.json",
       "task_count": 2,
       "artifact": {
@@ -1696,12 +1888,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-13.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: bzq360 added a missing detect_cycle test case where an input node links into a cycle but is not itself in the cycle. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-35.json",
       "task_count": 2,
       "artifact": {
@@ -1735,12 +1929,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.481Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-35.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes arithmetic templates and fraction_simplification scoring where correct fraction formats were mishandled and scored near zero. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-144.json",
       "task_count": 21,
       "artifact": {
@@ -1793,12 +1989,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-144.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes question templates and score_answer functions for several datasets after initial evaluations found answer-format problems. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-166.json",
       "task_count": 15,
       "artifact": {
@@ -1845,12 +2043,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-166.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR notes mini Sudoku sometimes generated multiple-solution puzzles while also improving prompt/scoring for affected datasets. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-151.json",
       "task_count": 9,
       "artifact": {
@@ -1891,12 +2091,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-151.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes Sudoku generation to ensure unique puzzles and adds scoring, eliminating ambiguous multi-solution Sudoku tasks. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-161.json",
       "task_count": 6,
       "artifact": {
@@ -1934,12 +2136,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-161.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR adds score_answer handling for comma-formatted numeric answers so otherwise correct arithmetic/model outputs are not rejected by strict formatting. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-175.json",
       "task_count": 6,
       "artifact": {
@@ -1977,12 +2181,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-175.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR adds collision data and fixes basic_arithmetic empty-list generation plus gsm_symbolic rounding errors while auditing dataset collisions. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-406.json",
       "task_count": 6,
       "artifact": {
@@ -2020,12 +2226,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-406.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence but PR #159 is the counted canonical artifact for the same task family/root cause; the issue is not counted separately.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-153.json",
       "task_count": 3,
       "artifact": {
@@ -2060,12 +2268,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #193 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-193.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-190.json",
       "task_count": 3,
       "artifact": {
@@ -2100,12 +2309,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #232 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-232.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-211.json",
       "task_count": 3,
       "artifact": {
@@ -2140,12 +2350,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #212 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-212.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-213.json",
       "task_count": 3,
       "artifact": {
@@ -2180,12 +2391,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #215 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-215.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-214.json",
       "task_count": 3,
       "artifact": {
@@ -2220,12 +2432,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #251 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-251.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-245.json",
       "task_count": 3,
       "artifact": {
@@ -2260,12 +2473,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #50 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-50.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-37.json",
       "task_count": 3,
       "artifact": {
@@ -2300,12 +2514,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #380 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-380.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-377.json",
       "task_count": 3,
       "artifact": {
@@ -2340,12 +2555,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #462 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-462.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-428.json",
       "task_count": 3,
       "artifact": {
@@ -2380,12 +2596,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence but PR #94 is the counted canonical artifact for the same task family/root cause; the issue is not counted separately.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-429.json",
       "task_count": 3,
       "artifact": {
@@ -2420,12 +2637,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence but PR #92 is the counted canonical artifact for the same task family/root cause; the issue is not counted separately.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-44.json",
       "task_count": 3,
       "artifact": {
@@ -2460,12 +2678,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence but PR #479 is the counted canonical artifact for the same task family/root cause; the issue is not counted separately.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-478.json",
       "task_count": 3,
       "artifact": {
@@ -2500,12 +2719,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #485 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-485.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-484.json",
       "task_count": 3,
       "artifact": {
@@ -2540,12 +2760,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence but CodeIO PR artifacts #277/#332/#405 is the counted canonical artifact for the same task family/root cause; the issue is not counted separately.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-512.json",
       "task_count": 3,
       "artifact": {
@@ -2580,12 +2801,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #524 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-524.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-521.json",
       "task_count": 3,
       "artifact": {
@@ -2620,12 +2842,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #523 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-523.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-522.json",
       "task_count": 3,
       "artifact": {
@@ -2660,12 +2883,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue is valid evidence, but merged PR #93 is the counted canonical artifact at defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-93.json. Keeping the issue separately would double-count the same root cause.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__issue-83.json",
       "task_count": 3,
       "artifact": {
@@ -2700,12 +2924,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR resolves mini Sudoku generation of non-unique puzzles, choosing unique generation over accepting multiple possible solutions in scoring. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-159.json",
       "task_count": 3,
       "artifact": {
@@ -2740,12 +2965,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-159.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR says propositional_logic was broken and refactors prompt, parsing, trivial-solution checks, and scoring to accept all valid logic solutions. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-179.json",
       "task_count": 3,
       "artifact": {
@@ -2780,12 +3007,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-179.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Color Cube Rotation scoring was broken according to o3 evals; PR fixes comparison to entry answer and adds scoring tests. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-219.json",
       "task_count": 3,
       "artifact": {
@@ -2820,12 +3049,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-219.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Graph Color prompt example used invalid/unhelpful JSON-style keys; PR fixes the example template to quote vertex keys. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-237.json",
       "task_count": 3,
       "artifact": {
@@ -2860,12 +3091,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-237.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Letter Jumble exact matching returned far too-low scores for plausible answers such as word-order/near-answer cases; PR adds per-word dynamic scoring. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-246.json",
       "task_count": 3,
       "artifact": {
@@ -2900,12 +3133,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-246.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Word-sequence-reversal prompt omitted the required comma-separated format, causing an objectively correct answer without commas to score 0.01; PR adds explicit format instructions. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-252.json",
       "task_count": 3,
       "artifact": {
@@ -2940,12 +3175,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-252.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Family_relationships was using the base score_answer, causing inaccurate scoring; PR implements a task-specific scorer. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-260.json",
       "task_count": 3,
       "artifact": {
@@ -2980,12 +3217,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-260.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Code/I-O scoring switched from brittle exact JSON comparison toward tree/edit-distance similarity for numeric and string values, reducing false low scores. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-277.json",
       "task_count": 3,
       "artifact": {
@@ -3020,12 +3259,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-277.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR implements Countdown score_answer to evaluate whether a submitted expression reaches the target and to handle malformed strings gracefully. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-32.json",
       "task_count": 3,
       "artifact": {
@@ -3060,12 +3301,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-32.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Dice answer checking was broken because removing an unused variable changed tuple destructuring into the wrong object; PR restores probability handling and adds metadata. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-330.json",
       "task_count": 3,
       "artifact": {
@@ -3100,12 +3343,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-330.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: CodeI/O PR explicitly fixes a numeric answer scoring bug while adding manually reviewed samples. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-332.json",
       "task_count": 3,
       "artifact": {
@@ -3140,12 +3385,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-332.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Advanced geometry scoring compared rational orthocenter coordinates as strings; PR converted parsed answer and expected coordinates to floats. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-339.json",
       "task_count": 3,
       "artifact": {
@@ -3180,12 +3427,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-339.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: PR fixes figlet-font curriculum imports and interval metadata after the earlier version was not mergeable/working. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-383.json",
       "task_count": 3,
       "artifact": {
@@ -3220,12 +3469,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-383.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: PR removes a stale sat_utils qualifier from zebra clue generation, allowing the generator to use the full available clue set instead of failing on the old reference. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-386.json",
       "task_count": 3,
       "artifact": {
@@ -3260,12 +3511,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-386.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR unifies CodeIO datasets and fixes execution handling so imports at the top of snippets are available during exec; maintainer also filters samples needing extra packages. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-405.json",
       "task_count": 3,
       "artifact": {
@@ -3300,12 +3553,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-405.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR fixes BoxNet scoring so invalid starting positions do not throw and crash training, and adds a Tower of Hanoi malformed-response guard. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-420.json",
       "task_count": 3,
       "artifact": {
@@ -3340,12 +3595,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-420.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym PR fixes decimal arithmetic curriculum levels whose constraints were incompatible with the dataset validation check. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-430.json",
       "task_count": 3,
       "artifact": {
@@ -3380,12 +3637,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-430.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Merged PR fixes color_cubes answer strings by returning enum .value instead of the enum object. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-464.json",
       "task_count": 3,
       "artifact": {
@@ -3420,12 +3679,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-464.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Merged PR fixes both countdown scoring bugs from #478 and adds unit tests. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-479.json",
       "task_count": 3,
       "artifact": {
@@ -3460,12 +3721,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-479.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: reasoning-gym spiral_matrix prompt was clarified to specify row/column traversal and add a layer-by-layer hint. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-511.json",
       "task_count": 3,
       "artifact": {
@@ -3500,12 +3763,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-511.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning Gym PR fixes countdown validation/generation failing for 10+ input numbers because SymPy symbol replacement created phantom numbers. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-514.json",
       "task_count": 3,
       "artifact": {
@@ -3540,12 +3805,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-514.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR adds maze constraints and bounded retries to prevent invalid maze layouts with no valid start/goal placement. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-515.json",
       "task_count": 3,
       "artifact": {
@@ -3580,12 +3847,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-515.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR updates Tsumego with hints, legend, disallowed numeric answer, and expected string storage to make the task answer format scorable. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-80.json",
       "task_count": 3,
       "artifact": {
@@ -3620,12 +3889,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-80.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Reasoning-gym PR fixes syllogisms and substantially updates tests, indicating a repaired dataset/scorer defect despite sparse PR text. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-82.json",
       "task_count": 3,
       "artifact": {
@@ -3660,12 +3931,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-82.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR implements greedy matching score_answer for PolynomialEquationsDataset and closes #44. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-92.json",
       "task_count": 3,
       "artifact": {
@@ -3700,12 +3973,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-92.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Upstream PR is merged and the title/body/source diff identify a task-impacting benchmark defect: Live PR fixes Reasoning Gym prime factorization scoring behavior, but author is a project member. Counted as fixed because the source is an upstream fix or maintainer fixed acknowledgement, so L3 reproduction is not required by the runbook social-proof rule.",
       "original_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-94.json",
       "task_count": 3,
       "artifact": {
@@ -3740,12 +4015,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T10:26:00Z",
+      "restored_path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-94.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "L3 checked the current Harbor verified subset. Oracle passed 5/5 and a no-op agent returned reward 0 on 5/5, so the migrated claim that input files already satisfy evaluation was not reproduced for the current verified artifact subset.",
       "original_path": "defects/spreadsheetbench-verified/tasks/_multi-task/ruckbreasoning__spreadsheetbench__issue-7.json",
       "task_count": 5,
       "artifact": {
@@ -3782,12 +4059,42 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:05:00Z",
+        "audit_level": "L3",
+        "verdict": "not_present",
+        "linked_defect_id": null,
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d spreadsheetbench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-spreadsheet-issue7-all -i 32023 -i 73-45 -i 13-1 -i 57590 -i 10747 -y --no-delete --timeout-multiplier 1",
+          "harbor run -d spreadsheetbench-verified@1.0 -a nop -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-spreadsheet-issue7-nop-all -i 32023 -i 73-45 -i 13-1 -i 57590 -i 10747 -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-spreadsheet-issue7-nop-all",
+        "results": {
+          "oracle_reward_1": [
+            "32023",
+            "73-45",
+            "13-1",
+            "57590",
+            "10747"
+          ],
+          "nop_reward_0": [
+            "32023",
+            "73-45",
+            "13-1",
+            "57590",
+            "10747"
+          ]
+        },
+        "decision_note": "Issue #7 claims some inputs already pass without changes. Current spreadsheetbench-verified@1.0 did not reproduce that for the five queued tasks: oracle passed 5/5, but nop/no-op failed 5/5. Because no-op is the correct reproduction probe for this claim, the queued subset is not restored as a current counted defect."
+      },
+      "reviewed_at": "2026-06-10T10:37:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #170 is valid Sphinx tox/environment evidence, but the counted canonical fixed artifact is merged PR #205, which has maintainer reproduction and the actual fix. Keeping #170 separately would double-count the same Sphinx tox family.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-170.json",
       "task_count": 44,
       "artifact": {
@@ -3863,12 +4170,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #228 remains open and the thread narrows the observed behavior to SWE-agent pre-install/log command interaction rather than a confirmed fixed SWE-bench Verified task artifact defect. It is not counted as fixed historical without a merged fix or current L3 reproduction.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-228.json",
       "task_count": 44,
       "artifact": {
@@ -3944,12 +4252,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. Issue #455 reports that rebuilding Sphinx eval images from scratch resolves docutils 0.22 instead of the older compatible version, causing gold-patch pass rate to fall versus prebuilt images. Maintainer aorwall replied that this is fixed in v5 Dockerfiles by pinning undeclared transitive dependencies, including docutils, in 46 environment YAML files. Counted as fixed historical because it is a benchmark image/environment reproducibility defect with explicit upstream fix acknowledgement.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-455.json",
       "task_count": 44,
       "artifact": {
@@ -4025,12 +4334,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-455.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. PR #205 is merged and reports that rebuilt Sphinx images started failing because newly resolved tox versions changed behavior; it pins tox for Sphinx images. Maintainer carlosejimenez replied that they reproduced the failure and that the changes work. This is counted as a fixed task-impacting image/environment defect for the Sphinx Verified task set. Issue #170 is treated as duplicate evidence for the same Sphinx tox/environment family.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-205.json",
       "task_count": 44,
       "artifact": {
@@ -4106,12 +4417,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-205.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #286 reports external qhull download failures while building Matplotlib images and a user-side workaround, but the thread does not provide a merged upstream fix or maintainer confirmation that this is fixed in the benchmark artifacts. It is not counted as a fixed historical defect.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-286.json",
       "task_count": 34,
       "artifact": {
@@ -4177,12 +4490,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. PR #221 is merged and explicitly fixes #210 by making matplotlib pre_install tzdata installation noninteractive. The PR body names matplotlib instance pre_install timeout as the defect and a maintainer merged it with thanks for the catch. This is counted as a fixed task-impacting build/setup defect for the Matplotlib Verified task set.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-221.json",
       "task_count": 34,
       "artifact": {
@@ -4248,12 +4562,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-221.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. PR #129 is merged and explicitly fixes #127 by pinning/patching Astropy setup requirements after setuptools 70.0.0 broke Astropy installation. The changed SWE-bench harness constants are benchmark environment metadata used across the affected Astropy instances, so this is a fixed task-impacting environment defect. No current Harbor rerun is needed for fixed historical counting because the merged PR and linked issue provide direct upstream fix evidence.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-129.json",
       "task_count": 22,
       "artifact": {
@@ -4307,10 +4623,12 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:30:00.067Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-129.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-354.json",
@@ -4364,12 +4682,50 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T08:58:00Z",
+        "audit_level": "L3",
+        "verdict": "duplicate_evidence",
+        "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d swebench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-swv-issue354-all -i <20 issue #354 task names> -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-swv-issue354-all",
+        "results": {
+          "reward_0": [
+            "astropy__astropy-7606",
+            "astropy__astropy-8707",
+            "astropy__astropy-8872",
+            "django__django-10097",
+            "psf__requests-1766",
+            "sphinx-doc__sphinx-8595",
+            "sphinx-doc__sphinx-9711"
+          ],
+          "reward_1": [
+            "matplotlib__matplotlib-20488",
+            "pydata__xarray-2905",
+            "pydata__xarray-3305",
+            "pydata__xarray-3993",
+            "pydata__xarray-4094",
+            "pydata__xarray-4695",
+            "pydata__xarray-6721",
+            "pydata__xarray-6744",
+            "pydata__xarray-6938",
+            "pydata__xarray-6992",
+            "sphinx-doc__sphinx-10323",
+            "sphinx-doc__sphinx-10435",
+            "sympy__sympy-13852"
+          ]
+        },
+        "decision_note": "Issue #354 was fully L3-audited across all 20 named tasks on current swebench-verified@1.0. It is duplicate evidence for canonical swebench-verified__swe-bench__swe-bench__issue-294, which already includes #354 as evidence. The audit added one newly reproduced task, sphinx-doc__sphinx-9711, to the canonical task set instead of creating a second overlapping counted artifact."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored_scope_changed",
+      "counted": true,
+      "reason": "L2 source-read audit. Issue #465 documents repo-state leakage where agents can inspect future commits/tags inside evaluation images and recover solution details. Maintainers acknowledged the benchmark-level vulnerability, pointed to harness/image fixes, and closed the issue after the image rebuild work. This is counted as a fixed benchmark-level defect, not as task-specific, because the affected task list in the legacy migration was example evidence rather than a bounded set of defective task records.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-465.json",
       "task_count": 19,
       "artifact": {
@@ -4420,12 +4776,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/common/swe-bench__swe-bench__issue-465.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. PR #184 is merged and states that Docker builds for astropy/astropy 1.3 and pydata/xarray 0.12 stopped working because of unpinned updated dependencies. A maintainer comment says gold-patch validation with these fixes resolved the original dependency issues. The artifact is counted as fixed because the PR directly changes benchmark environment/build metadata for the listed Astropy and xarray tasks.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-184.json",
       "task_count": 17,
       "artifact": {
@@ -4474,12 +4832,14 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:59.425Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-184.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #484 is related evidence for the current SWE-bench Verified gold/oracle instability counted under canonical issue #294. It is not counted separately as fixed historical because the current Harbor audits still reproduce related failures and the canonical active artifact owns the task set.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-484.json",
       "task_count": 7,
       "artifact": {
@@ -4518,12 +4878,13 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
-      "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "queue_status": "audited_counted_restored",
+      "counted": true,
+      "reason": "L2 source-read audit. PR #226 is merged and explicitly fixes #218 by tightening dependency constraints for seven named scikit-learn instances whose Docker builds were broken. The PR body lists the exact affected task names and a maintainer merged it. This is counted as a fixed task-impacting image/build defect.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-226.json",
       "task_count": 7,
       "artifact": {
@@ -4562,10 +4923,12 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z",
+      "restored_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-226.json"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_duplicate_evidence",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-267.json",
@@ -4602,12 +4965,29 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T08:28:44Z",
+        "audit_level": "L3",
+        "verdict": "duplicate_evidence",
+        "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d swebench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 1 --job-name l3-queue-swv-issue267-all -i astropy__astropy-7606 -i django__django-10097 -i matplotlib__matplotlib-20488 -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-swv-issue267-all",
+        "results": {
+          "astropy__astropy-7606": "reward 0.0; SWEBench FAILED after oracle/gold patch",
+          "django__django-10097": "reward 0.0; SWEBench FAILED after oracle/gold patch; verifier output includes many TemplateDoesNotExist failures",
+          "matplotlib__matplotlib-20488": "reward 1.0; SWEBench PASSED after oracle/gold patch; not counted as a current defect for this claim"
+        },
+        "decision_note": "Issue #267 was L3-audited against current swebench-verified@1.0. Two of the queued tasks still reproduce gold/oracle failure, while matplotlib__matplotlib-20488 passes by SWE-bench scoring. The root cause/evidence is already covered by canonical defect swebench-verified__swe-bench__swe-bench__issue-294, whose evidence_urls and decision_note include #267. Keeping #267 out of counted defects avoids double-counting the same SWE-bench Verified gold-patch instability."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "Issue #518 has maintainer acknowledgement of a Sphinx test reset problem, but the thread only says it can be fixed in the v5 job and does not identify a merged fix or current artifact state. It is not counted as fixed historical until a concrete fix source or L3 result is attached.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-518.json",
       "task_count": 3,
       "artifact": {
@@ -4642,10 +5022,11 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "reviewed_at": "2026-06-10T09:58:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-289.json",
@@ -4681,10 +5062,26 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T08:36:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-289",
+        "evidence": [
+          "GitHub issue #289 reports [100%] captured into PASS_TO_PASS for pytest-dev__pytest-5262 and pytest-dev__pytest-7521.",
+          "Maintainer john-b-yang commented that this is a legitimate issue.",
+          "Current Harbor registry swebench-verified@1.0 task configs still contain \"[100%]\" in PASS_TO_PASS for both tasks."
+        ],
+        "checked_paths": [
+          "tmp/harbor-swebench-verified-download/swebench-verified/pytest-dev__pytest-5262/tests/config.json",
+          "tmp/harbor-swebench-verified-download/swebench-verified/pytest-dev__pytest-7521/tests/config.json"
+        ],
+        "decision_note": "This is a dataset/evaluator input defect, not a gold-patch execution failure. L2 is sufficient because the source thread has maintainer acknowledgement and the current Harbor registry task configs directly show the invalid PASS_TO_PASS entry [100%] for both affected tasks."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/swtbench-verified/tasks/_multi-task/logic-star-ai__swt-bench__issue-40.json",
@@ -4732,12 +5129,44 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T09:23:00Z",
+        "audit_level": "L3",
+        "verdict": "confirmed",
+        "linked_defect_id": "swtbench-verified__logic-star-ai__swt-bench__issue-40",
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d swtbench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-swt-issue40-all -i <14 issue #40 task names> -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-swt-issue40-all",
+        "results": {
+          "reward_0": [
+            "pylint-dev__pylint-6386",
+            "pylint-dev__pylint-6903",
+            "pylint-dev__pylint-7080",
+            "sphinx-doc__sphinx-8459",
+            "sphinx-doc__sphinx-8475",
+            "sphinx-doc__sphinx-8548",
+            "sphinx-doc__sphinx-8551",
+            "sphinx-doc__sphinx-8593",
+            "sphinx-doc__sphinx-8595",
+            "sphinx-doc__sphinx-8621",
+            "sphinx-doc__sphinx-8638",
+            "sphinx-doc__sphinx-8721"
+          ],
+          "reward_1": [
+            "astropy__astropy-8872",
+            "pylint-dev__pylint-7277"
+          ]
+        },
+        "decision_note": "Full L3 audit reproduced 12 of the 14 reported SWT-Bench Verified gold/oracle failures on current swtbench-verified@1.0. Only the reproduced reward-0 tasks are restored to counted defects."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_not_counted",
       "counted": false,
-      "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
+      "reason": "L3 Harbor audit ran the three migrated Matplotlib tasks and all returned reward 1.0. The stuck/failing behavior was not reproduced on the current swtbench-verified@1.0 registry tasks, so this artifact is not counted.",
       "original_path": "defects/swtbench-verified/tasks/_multi-task/logic-star-ai__swt-bench__issue-41.json",
       "task_count": 3,
       "artifact": {
@@ -4772,10 +5201,31 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:29:58.845Z"
         }
-      }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T09:47:00Z",
+        "audit_level": "L3",
+        "verdict": "not_present",
+        "linked_defect_id": null,
+        "commands": [
+          "npm run l3:preflight",
+          "harbor run -d swtbench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-swt-issue41-all -i matplotlib__matplotlib-26291 -i matplotlib__matplotlib-23314 -i matplotlib__matplotlib-24149 -y --no-delete --timeout-multiplier 1"
+        ],
+        "job_path": "tmp/l3-harbor-jobs/l3-queue-swt-issue41-all",
+        "results": {
+          "reward_1": [
+            "matplotlib__matplotlib-26291",
+            "matplotlib__matplotlib-23314",
+            "matplotlib__matplotlib-24149"
+          ],
+          "runtime": "3/3 completed in 23m23s with no exceptions"
+        },
+        "decision_note": "Issue #41 claimed matplotlib SWT-Bench tasks hang or cannot build. Full L3 audit on current swtbench-verified@1.0 completed all three reported tasks with reward 1 and no exceptions in 23m23s, so the current public Harbor dataset does not reproduce the claim. Kept out of counted defects."
+      },
+      "reviewed_at": "2026-06-10T10:37:00Z"
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-31.json",
@@ -4814,10 +5264,29 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:18:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__pr-31",
+        "evidence": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/31",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/31/files"
+        ],
+        "results": {
+          "counted_tasks": [
+            "custom-memory-heap-crash",
+            "qemu-alpine-ssh",
+            "qemu-startup",
+            "schemelike-metacircular-eval"
+          ]
+        },
+        "decision_note": "PR #31 directly fixes Modal execution failures/timeouts in four Terminal-Bench-2 tasks. The defect is environment-specific to Modal/oracle execution; no public terminal-bench-2 Harbor registry was available, so source PR diff and author reproduction notes are used as evidence."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-50.json",
@@ -4856,10 +5325,29 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:18:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__pr-50",
+        "evidence": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/50",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/50/files"
+        ],
+        "results": {
+          "counted_tasks": [
+            "caffe-cifar-10",
+            "fix-code-vulnerability",
+            "fix-git",
+            "regex-log"
+          ]
+        },
+        "decision_note": "PR #50 directly fixes multiple Terminal-Bench-2 task artifacts: resource budget, hidden patch files, missing vulnerability tests, and incorrect regex oracle/test behavior. No public terminal-bench-2 Harbor registry was available, so source PR diff is used as evidence."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-27.json",
@@ -4897,10 +5385,28 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:18:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__pr-27",
+        "evidence": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/27",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/27/files"
+        ],
+        "results": {
+          "counted_tasks": [
+            "filter-js-from-html",
+            "gpt2-codegolf",
+            "mteb-leaderboard"
+          ]
+        },
+        "decision_note": "PR #27 directly fixes task resource/dependency issues: memory/swap mismatch for filter-js-from-html and gpt2-codegolf, and missing pillow dependency for mteb-leaderboard. No public terminal-bench-2 Harbor registry was available, so source PR diff is used as reproduction evidence."
       }
     },
     {
-      "queue_status": "needs_l3_or_social_proof_reaudit",
+      "queue_status": "audited_counted_restored",
       "counted": false,
       "reason": "Removed from counted defects because it was a multi-task L2 legacy migration artifact without completed L3 reproduction or explicit social proof under the current counting policy. This is not a negative finding on the underlying claim.",
       "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-37.json",
@@ -4937,6 +5443,23 @@
           "legacy_audit_level_inferred": true,
           "legacy_record_updated_at": "2026-06-05T06:31:43.329Z"
         }
+      },
+      "audit_result": {
+        "audited_at": "2026-06-10T10:18:00Z",
+        "audit_level": "L2",
+        "verdict": "confirmed",
+        "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__pr-37",
+        "evidence": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/37",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/37/files"
+        ],
+        "results": {
+          "counted_tasks": [
+            "polyglot-c-py",
+            "polyglot-rust-c"
+          ]
+        },
+        "decision_note": "PR #37 directly fixes tests that failed when compiled artifacts remained from prior runs and records oracle reward 1.0 for both tasks after the fix. No public terminal-bench-2 Harbor registry was available, so source PR diff and test plan are used as evidence."
       }
     }
   ]

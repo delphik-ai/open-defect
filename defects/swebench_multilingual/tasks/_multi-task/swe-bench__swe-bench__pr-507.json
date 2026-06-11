@@ -33,10 +33,10 @@
   "evidence_urls": [
     "https://github.com/SWE-bench/SWE-bench/pull/507"
   ],
-  "audit_level": "L3",
+  "audit_level": "L2",
   "first_reported_at": "2025-12-21T20:30:58.000Z",
-  "last_reviewed_at": "2026-06-09T01:56:28Z",
-  "decision_note": "L3 reproduced the PR's claimed SWE-bench Multilingual image rebuild defect with SWE-bench harness force_rebuild. Harbor adapter oracle runs against existing DockerHub images were only smoke tests and passed, which matches the PR comment that prebuilt images already worked. With force_rebuild at base commit 6551c55bb4075b8dcc35369ec8d331580dda47b9, micropython__micropython-10095 failed eval image setup_repo.sh with non-zero code 2 and tokio-rs__tokio-6724 failed setup_repo.sh with non-zero code 101. At PR head 1873c8e27d354bb6cb533ff0255ba5d8a38c639d, both sampled tasks rebuilt and resolved with 0 errors. Local reports/logs: /tmp/swebench-l3/gold.pr507-base-micropython.json, /tmp/swebench-l3/gold.pr507-head-micropython.json, tmp/l3-swebench-harness/pr507-base-tokio-6724/output.log, tmp/l3-swebench-harness/pr507-head-tokio-6724/output.log.",
+  "last_reviewed_at": "2026-06-10T15:55:00Z",
+  "decision_note": "L2 social-proof audit with partial runtime probe. PR #507 is merged and explicitly says several SWE-bench Multilingual Docker images fail to rebuild, lists the fixed instances, and includes maintainer review/merge. The PR comment clarifies existing DockerHub images worked and the defect affects rebuilds needed for future image updates. Local force_rebuild probes confirmed the root cause on two representative tasks: at base commit 6551c55bb4075b8dcc35369ec8d331580dda47b9, micropython__micropython-10095 failed setup_repo.sh with exit 2 and tokio-rs__tokio-6724 failed setup_repo.sh with exit 101; at PR head 1873c8e27d354bb6cb533ff0255ba5d8a38c639d both rebuilt and evaluated with 0 errors. This is counted as L2 rather than L3 because the affected set is >20 and the local runtime sample did not cover the runbook sample size of 5.",
   "affected_task_count": 21,
   "migration": {
     "source": "v5-health-sync",

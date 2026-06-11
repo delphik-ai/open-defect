@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-232",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-tsumego-hard0292e21f-seed45-0",
+    "reasoning-gym-games-tsumego-hard0292e21f-seed45-1",
+    "reasoning-gym-games-tsumego-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix & simplify score_answer() of TsumegoDataset",
+  "summary": "Tsumego score_answer was simplified to compare against the oracle answer string instead of metadata solution tuple parsing, fixing scoring behavior.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/232",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/232",
+    "https://github.com/open-thought/reasoning-gym/issues/211"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-26T18:04:57.000Z",
+  "last_reviewed_at": "2026-06-10T10:55:00Z",
+  "decision_note": "L3 Docker regression audit. Preflight passed: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction used local upstream clone tmp/reasoning-gym-audit and Docker image delphik/reasoning-gym-audit:py311 built from tmp/reasoning-gym-audit.Dockerfile. Command: node tmp/run-reasoning-gym-pr-regression.mjs 232. The runner fetched PR #232, checked out the PR head and its parent, overlaid the PR head regression test files onto both revisions, then ran pytest inside Docker with pip install -e '.[test]'. Parent with PR head regression test failed: Tsumego score_answer returned 0.05 for the oracle answer H5 instead of 1.0; PR head passed 13 tests. This directly reproduces the Tsumego scoring defect. Logs: tmp/reasoning-gym-regression/pr-232-parent.log and tmp/reasoning-gym-regression/pr-232-head.log. This confirms the migrated multi-task artifact as a task-impacting benchmark defect for the listed hard task rows.",
+  "affected_task_count": 3
+}

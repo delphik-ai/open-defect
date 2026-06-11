@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-339",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-geometry-advanced-geometry-hard0292e21f-seed45-0",
+    "reasoning-gym-geometry-advanced-geometry-hard0292e21f-seed45-1",
+    "reasoning-gym-geometry-advanced-geometry-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Minor fix to advanced geometry",
+  "summary": "Advanced geometry scoring compared rational orthocenter coordinates as strings; PR converted parsed answer and expected coordinates to floats.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/339",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/339"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-11T17:05:16.000Z",
+  "last_reviewed_at": "2026-06-10T11:27:05.801Z",
+  "decision_note": "L3 reproduced the advanced_geometry orthocenter scorer defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 4109b5b72cfe9975cbebc3a8ee08f465fe40f14b and PR head 58d7a40e8408466d5ed61356db1490ce175d081a were installed with pip install -e . and run over 50 AdvancedGeometryDataset(seed=42, task_types=[\"orthocenter\"]) examples. Parent gave full credit to 44/50 oracle formatted answers and 0.05 to 6/50 due string/sympy/rounding comparison; PR head gave full credit to 50/50. Logs: tmp/reasoning-gym-regression/pr-339-parent-custom.log and tmp/reasoning-gym-regression/pr-339-head-custom.log.",
+  "affected_task_count": 3
+}

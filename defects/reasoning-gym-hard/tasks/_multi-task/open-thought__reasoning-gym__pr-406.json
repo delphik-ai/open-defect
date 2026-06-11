@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-406",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-arithmetic-gsm-symbolic-hard0292e21f-seed45-0",
+    "reasoning-gym-arithmetic-gsm-symbolic-hard0292e21f-seed45-1",
+    "reasoning-gym-arithmetic-gsm-symbolic-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Data collisions notebooks and data",
+  "summary": "Reasoning-gym PR fixes gsm_symbolic generator #27 floating-point rounding failures; basic_arithmetic links are excluded because this PR head still fails large-generation with a later ZeroDivisionError fixed separately by PR #485.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/406",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/406"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-04-02T05:51:35.000Z",
+  "last_reviewed_at": "2026-06-10T11:02:22.117Z",
+  "decision_note": "L3 reproduced the gsm_symbolic generator #27 rounding defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 43c739cb3eb75836027277739465e38fd39680c6 and PR head 38d6a61fdcd1a44556f4a3cd11238cc4053e8d36 were installed with pip install -e . and run with tmp/probe-reasoning-gym-pr406-gsm27.py over 1000 generate_27 samples. Parent failed immediately with ValueError: Number 14883.749999999998 requires 12 decimals but only 2 allowed; PR head generated 1000 samples with GSM27_NON_ROUNDED_COUNT 0. A separate basic_arithmetic large-generation probe showed parent fails with IndexError but PR head still fails with ZeroDivisionError, so basic_arithmetic task links were removed and are covered by PR #485. Logs: tmp/reasoning-gym-regression/pr-406-parent-gsm27.log, tmp/reasoning-gym-regression/pr-406-head-gsm27.log, tmp/reasoning-gym-regression/pr-406-parent-custom.log, tmp/reasoning-gym-regression/pr-406-head-custom.log.",
+  "affected_task_count": 3
+}

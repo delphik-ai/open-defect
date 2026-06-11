@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "evoeval__evo-eval__evoeval__issue-2",
+  "benchmark_name": "evoeval",
+  "scope": "task_specific",
+  "task_names": [
+    "22",
+    "23",
+    "3",
+    "32",
+    "73"
+  ],
+  "resolution": "found",
+  "title": "Potential test case bugs in the EvoEval difficult subset",
+  "summary": "EvoEval issue #2 identifies incorrect expected outputs, ambiguous specs, and incorrect reference logic; maintainer confirmed five counted task defects.",
+  "canonical_source_url": "https://github.com/evo-eval/evoeval/issues/2",
+  "evidence_urls": [
+    "https://github.com/evo-eval/evoeval/issues/2",
+    "https://github.com/evo-eval/evoeval/issues/2#issuecomment-2947883295"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-05-25T20:12:10.000Z",
+  "last_reviewed_at": "2026-06-10T15:25:00Z",
+  "decision_note": "L2 social-proof audit. Harbor oracle on current evoeval@1.0 returned reward 1 for the affected tasks, but that does not prove or disprove wrong-expected-output/root-solution defects because oracle follows the benchmark artifact. The decisive public evidence is maintainer confirmation in issue #2 comment 2947883295: #22 should not count booleans as ints, #23 should count all whitespace, #32 has a ground-truth method problem, and #73 has an incorrect reference solution. The maintainer also accepted #3 as a fair ambiguous interpretation that should be clarified. #1 and #14 remain excluded because the maintainer did not confirm them as wrong under the current task text.",
+  "affected_task_count": 5
+}

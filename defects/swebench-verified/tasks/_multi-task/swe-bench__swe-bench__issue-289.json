@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-289",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "pytest-dev__pytest-5262",
+    "pytest-dev__pytest-7521"
+  ],
+  "resolution": "found",
+  "title": "Tests incorrectly named [100%] in SWE-bench-Verified instances pytest-5262 and pytest-7521",
+  "summary": "SWE-bench Verified PASS_TO_PASS contains the pytest progress marker [100%] as a test name for two pytest tasks.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/289",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/289",
+    "https://github.com/SWE-bench/SWE-bench/issues/289#issuecomment-2693424652"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-01-16T00:02:10.000Z",
+  "last_reviewed_at": "2026-06-10T15:47:00Z",
+  "decision_note": "L3 audit for SWE-bench Verified issue #289. Maintainer comment says this is a legitimate issue. Loaded current HuggingFace dataset princeton-nlp/SWE-bench_Verified test split and verified both pytest-dev__pytest-5262 and pytest-dev__pytest-7521 still include the invalid pytest progress marker \"[100%]\" in PASS_TO_PASS. Generated both tasks through the local SWE-bench Harbor adapter and ran harbor oracle on all 2 tasks: 2/2 reward 1.0, 0 exceptions, result at tmp/l3-harbor-jobs/l3-swebench-issue289-all/result.json. Harbor confirms execution health; the dataset-root-cause check confirms the benchmark metadata defect remains present. Counted as found.",
+  "affected_task_count": 2
+}

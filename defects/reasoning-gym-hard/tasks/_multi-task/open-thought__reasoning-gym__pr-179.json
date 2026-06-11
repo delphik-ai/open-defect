@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-179",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-logic-propositional-logic-hard0292e21f-seed45-0",
+    "reasoning-gym-logic-propositional-logic-hard0292e21f-seed45-1",
+    "reasoning-gym-logic-propositional-logic-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix/prop logix",
+  "summary": "Reasoning-gym PR says propositional_logic was broken and refactors prompt, parsing, trivial-solution checks, and scoring to accept all valid logic solutions.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/179",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/179"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-21T00:31:42.000Z",
+  "last_reviewed_at": "2026-06-10T10:55:00Z",
+  "decision_note": "L3 Docker regression audit. Preflight passed: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction used local upstream clone tmp/reasoning-gym-audit and Docker image delphik/reasoning-gym-audit:py311 built from tmp/reasoning-gym-audit.Dockerfile. Command: node tmp/run-reasoning-gym-pr-regression.mjs 179. The runner fetched PR #179, checked out the PR head and its parent, overlaid the PR head regression test files onto both revisions, then ran pytest inside Docker with pip install -e '.[test]'. Parent with PR head regression test failed during tests/test_propositional_logic.py collection with NameError: Dict is not defined; PR head passed 7 tests. This supports the PR claim that propositional_logic was broken and fixed/refactored. Logs: tmp/reasoning-gym-regression/pr-179-parent.log and tmp/reasoning-gym-regression/pr-179-head.log. This confirms the migrated multi-task artifact as a task-impacting benchmark defect for the listed hard task rows.",
+  "affected_task_count": 3
+}

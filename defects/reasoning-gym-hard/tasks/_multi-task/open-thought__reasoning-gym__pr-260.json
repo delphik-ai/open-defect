@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-260",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-0",
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-1",
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix/family relationship - minor",
+  "summary": "Family_relationships was using the base score_answer, causing inaccurate scoring; PR implements a task-specific scorer.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/260",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/260"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-04T08:46:52.000Z",
+  "last_reviewed_at": "2026-06-10T15:05:00Z",
+  "decision_note": "L3 Docker probe confirmed family_relationships scorer defect. Reproduction used local open-thought/reasoning-gym parent/head checkouts inside delphik/reasoning-gym-audit:py311 and tmp/probe-reasoning-gym-pr212-237-252-260.py family_score. Parent result tmp/reasoning-gym-regression/pr260-parent-family_score.json had no task-specific score_answer; exact answer scored 1.0, uppercase correct answer scored 0.01, and a verbose sentence received an arbitrary partial score 0.285714. PR head tmp/reasoning-gym-regression/pr260-head-family_score.json had a custom scorer; exact and uppercase correct answers scored 1.0 and verbose wrapper scored 0.01. This confirms the pre-fix base scorer produced inaccurate grading for the task.",
+  "affected_task_count": 3
+}

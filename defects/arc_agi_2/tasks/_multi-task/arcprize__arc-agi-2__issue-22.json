@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__issue-22",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "247ef758_0",
+    "247ef758_1"
+  ],
+  "resolution": "fixed",
+  "title": "Error in puzzle 247ef758",
+  "summary": "ARC-AGI-2 issue reports puzzle 247ef758 accepts a recolored-border solution despite no example suggesting border recoloring; maintainer says the task was updated.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/issues/22",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/issues/22"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-26T10:36:28.000Z",
+  "last_reviewed_at": "2026-06-10T15:33:00Z",
+  "decision_note": "L2 ARC-AGI-2 dataset JSON audit with social proof for 247ef758. Parsed data/evaluation/247ef758.json at 8b454b5^ and 8b454b5 in tmp/ARC-AGI-2-audit and compared the task JSON programmatically. Diff result: 2 scalar cell/value change(s), 0 array length/row change(s); sample paths: test[0].input[7][5]:9->4; test[0].input[7][19]:9->4. The upstream merged/follow-up commit changes the evaluation JSON after the report, confirming a historical task oracle defect fixed in current main. Counted under the runbook L2 rule because the GitHub source has maintainer confirmation or a merged dataset JSON fix, and the changed file is the current benchmark task artifact itself. This is not a Docker/Harbor runtime defect; it is a benchmark oracle/task JSON correction.",
+  "affected_task_count": 2
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-237",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-algorithmic-graph-color-hard0292e21f-seed45-0",
+    "reasoning-gym-algorithmic-graph-color-hard0292e21f-seed45-1",
+    "reasoning-gym-algorithmic-graph-color-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix graph color example template",
+  "summary": "Graph Color prompt example used invalid/unhelpful JSON-style keys; PR fixes the example template to quote vertex keys.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/237",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/237"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-27T12:43:38.000Z",
+  "last_reviewed_at": "2026-06-10T15:05:00Z",
+  "decision_note": "L3 Docker probe confirmed graph_colour prompt-format defect. Reproduction used local open-thought/reasoning-gym parent/head checkouts inside delphik/reasoning-gym-audit:py311 and tmp/probe-reasoning-gym-pr212-237-252-260.py graph_prompt. Parent result tmp/reasoning-gym-regression/pr237-parent-graph_prompt.json showed the prompt example used invalid Python-style dict keys `{0: 1, 1: 2, 2: 3}` and no valid JSON example; PR head tmp/reasoning-gym-regression/pr237-head-graph_prompt.json showed quoted JSON keys `{\"0\": 1, \"1\": 2, \"2\": 3}`. This confirms the prompt gave a misleading answer format for a strict scorer.",
+  "affected_task_count": 3
+}

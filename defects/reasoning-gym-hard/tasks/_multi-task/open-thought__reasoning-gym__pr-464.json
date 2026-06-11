@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-464",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-0",
+    "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-1",
+    "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "fix color_cubes answer strings, update gallery with latest envs",
+  "summary": "Merged PR fixes color_cubes answer strings by returning enum .value instead of the enum object.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/464",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/464"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-06-08T10:58:37.000Z",
+  "last_reviewed_at": "2026-06-10T11:22:50.301Z",
+  "decision_note": "L3 reproduced the color_cube_rotation answer string defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 602e4be0a2459ec824b187380ecf0b1f7314d6cb and PR head e4043e4e7fea48c61ab6968b6384eff82b8678fd were installed with pip install -e . and run over 20 ColorCubeRotationDataset(seed=42) examples. Parent emitted Color enum answers such as <Color.ORANGE: 'orange'> and str(answer) scored 0.01 for all sampled examples; PR head emitted plain strings such as orange and str(answer) scored 1.0 for all sampled examples. Logs: tmp/reasoning-gym-regression/pr-464-parent-custom.log and tmp/reasoning-gym-regression/pr-464-head-custom.log.",
+  "affected_task_count": 3
+}

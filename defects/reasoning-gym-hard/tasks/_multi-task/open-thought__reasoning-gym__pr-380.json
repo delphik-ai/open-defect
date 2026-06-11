@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-380",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-algorithmic-number-sorting-hard0292e21f-seed45-0",
+    "reasoning-gym-algorithmic-number-sorting-hard0292e21f-seed45-1",
+    "reasoning-gym-algorithmic-number-sorting-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "fix: add score_answer() to number_sorting",
+  "summary": "Adds score_answer() for number_sorting and tests, addressing missing scoring logic needed to evaluate dataset answers.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/380",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/380",
+    "https://github.com/open-thought/reasoning-gym/issues/377"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-16T23:47:46.000Z",
+  "last_reviewed_at": "2026-06-10T10:44:54.706Z",
+  "decision_note": "L3 reproduced issue #377 with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent c760da6b1bc1aced03e2f5dc2f9118ea8451bbed and PR head 84fa5734a9f1ebebf2d72e09b335250cfdebd361 were installed with pip install -e . and tested with the issue-provided number_sorting eval example. The answer ['-97.8', '-95.7', '-92.85', '-83.6', '-16.5', '61.5', '71.08'] scored 0.0 on parent and 1.0 on PR head. Logs: tmp/reasoning-gym-regression/pr-380-parent-custom.log and tmp/reasoning-gym-regression/pr-380-head-custom.log.",
+  "affected_task_count": 3
+}

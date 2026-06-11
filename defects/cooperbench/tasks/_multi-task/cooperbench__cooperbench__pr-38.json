@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-38",
+  "benchmark_name": "cooperbench",
+  "scope": "task_specific",
+  "task_names": [
+    "cb-chi-t56-f1-5",
+    "cb-chi-t56-f1-3",
+    "cb-chi-t56-f1-2",
+    "cb-chi-t56-f1-4"
+  ],
+  "resolution": "fixed",
+  "title": "Fix chi task56 combined.patch: Allow header duplication bug",
+  "summary": "Live PR fixes CooperBench go_chi task56 combined.patch bugs that made oracle score 0 for feature pairs involving feature 1.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/38",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/38"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-03-11T23:35:44.000Z",
+  "last_reviewed_at": "2026-06-10T12:15:14.131Z",
+  "decision_note": "L3 Docker reproduction confirmed CooperBench PR #38. Built tmp/CooperBench-audit/dataset/go_chi_task/task56/Dockerfile as delphik/cooperbench-go-chi-task56:l3. Ran feature1/tests.patch plus the parent combined.patch from 1e95393^ and the fixed combined.patch from 1e95393. Parent exited 1: TestMethodNotAllowed failed because Allow was emitted as a single \"GET, HEAD\" header value, and TestSetAllowHeader failed with repeated Allow methods. Head exited 0: github.com/go-chi/chi/v5 and github.com/go-chi/chi/v5/middleware both reported ok. Logs: tmp/cooper-pr38-l3/logs/parent.log and tmp/cooper-pr38-l3/logs/head.log.",
+  "affected_task_count": 4
+}

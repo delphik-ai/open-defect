@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__issue-11",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "d8e07eb2_0",
+    "d8e07eb2_1"
+  ],
+  "resolution": "fixed",
+  "title": "Mistake in puzzle d8e07eb2 [Not fixed on wesbsite]",
+  "summary": "ARC-AGI-2 issue reports puzzle d8e07eb2 changes the highlighted shape into a different shape; maintainer says it was fixed and then updated again.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/issues/11",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/issues/11"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-03-25T09:27:09.000Z",
+  "last_reviewed_at": "2026-06-10T15:33:00Z",
+  "decision_note": "L2 ARC-AGI-2 dataset JSON audit with social proof for d8e07eb2. Parsed data/evaluation/d8e07eb2.json at bebec78^ and 14fba87 in tmp/ARC-AGI-2-audit and compared the task JSON programmatically. Diff result: 9 scalar cell/value change(s), 0 array length/row change(s); sample paths: train[0].output[1][7]:2->1; train[0].output[1][8]:2->1; train[0].output[1][9]:3->1; train[0].output[2][7]:2->3; train[0].output[2][8]:2->1; train[0].output[2][9]:2->3; train[0].output[3][7]:3->1; train[0].output[3][8]:2->1. The upstream merged/follow-up commit changes the evaluation JSON after the report, confirming a historical task oracle defect fixed in current main. Counted under the runbook L2 rule because the GitHub source has maintainer confirmation or a merged dataset JSON fix, and the changed file is the current benchmark task artifact itself. This is not a Docker/Harbor runtime defect; it is a benchmark oracle/task JSON correction.",
+  "affected_task_count": 2
+}

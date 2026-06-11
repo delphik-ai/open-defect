@@ -1,0 +1,2088 @@
+{
+  "schema_version": "v5.pending-l3-multitask.1",
+  "created_at": "2026-06-10T11:02:00Z",
+  "items": [
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-105.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "ade-bench__dbt-labs__ade-bench__pr-105",
+        "benchmark_name": "ade-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "ade-bench-airbnb001",
+          "ade-bench-airbnb002",
+          "ade-bench-airbnb003",
+          "ade-bench-airbnb004",
+          "ade-bench-airbnb005",
+          "ade-bench-airbnb006",
+          "ade-bench-airbnb007",
+          "ade-bench-airbnb008",
+          "ade-bench-airbnb009"
+        ],
+        "resolution": "fixed",
+        "title": "fix(airbnb): add missing field parameter to relationship tests",
+        "summary": "Live ADE-bench PR adds missing field parameters to Airbnb relationship tests because dbt generated invalid SQL without them.",
+        "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/105",
+        "evidence_urls": [
+          "https://github.com/dbt-labs/ade-bench/pull/105"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-02-04T15:39:06.000Z",
+        "last_reviewed_at": "2026-06-10T12:58:00Z",
+        "decision_note": "L3-equivalent ADE-Bench artifact audit. PR #105 is merged and changes shared dbt schema files shared/projects/dbt/airbnb/models/schema.yml and shared/migrations/airbnb__duckdb_to_snowflake_dbtf/schema.yml. The PR body states missing field: LISTING_ID caused invalid SQL in relationship tests across airbnb tasks. Local audit cloned dbt-labs/ade-bench in tmp/ade-bench-audit and confirmed merged commit 47a3e1b changes the shared schema used by the affected airbnb tasks. Fixed in current main.",
+        "affected_task_count": 9
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:13:01.014Z",
+          "result": "not_reproduced_parent_passed_duckdb_dbt",
+          "method": "ade_cli_parent_all_affected_tasks_duckdb_dbt",
+          "commands": [
+            "git worktree add --detach tmp/ade-l3-pr105-parent 11bf397^",
+            "uv run ade run airbnb001 airbnb002 airbnb003 airbnb004 airbnb005 airbnb006 airbnb007 airbnb008 airbnb009 --db duckdb --project-type dbt --agent sage --n-concurrent-trials 1 --run-id l3-pr105-parent-all --output-path tmp/ade-pr105-logs/parent-output"
+          ],
+          "logs": [
+            "tmp/ade-pr105-logs/parent-all.log",
+            "tmp/ade-pr105-logs/parent-output/l3-pr105-parent-all/results.json"
+          ],
+          "notes": "Parent commit 11bf397^ passed all nine affected airbnb tasks under the executable local DuckDB/dbt ADE path: 66/66 result rows passed. The PR also changes Snowflake/dbt-fusion migration schema, but without that credentialed environment the L3 audit cannot confirm a current task-impacting defect from local execution. The artifact remains uncounted pending Snowflake/dbt-fusion reproduction or stronger runtime evidence."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-106.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "ade-bench__dbt-labs__ade-bench__pr-106",
+        "benchmark_name": "ade-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "ade-bench-airbnb001",
+          "ade-bench-airbnb002",
+          "ade-bench-airbnb008"
+        ],
+        "resolution": "fixed",
+        "title": "fix(airbnb): use --full-refresh in test_setup for incremental models",
+        "summary": "Live ADE-bench PR fixes Airbnb tasks where dbt test_setup reran incremental models without --full-refresh, duplicating latest rows and producing NULL metrics that failed equality tests.",
+        "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/106",
+        "evidence_urls": [
+          "https://github.com/dbt-labs/ade-bench/pull/106"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-02-04T15:39:22.000Z",
+        "last_reviewed_at": "2026-06-10T12:58:00Z",
+        "decision_note": "L3-equivalent ADE-Bench artifact audit. PR #106 is merged and changes tasks/airbnb001/task.yaml, tasks/airbnb002/task.yaml, and tasks/airbnb008/task.yaml so test_setup runs dbt run --full-refresh. The PR body includes reproduction: repeated dbt run caused incremental MoM/WoW equality failures, while --full-refresh made the affected tasks pass. Local audit cloned dbt-labs/ade-bench in tmp/ade-bench-audit and confirmed merged commits df4c4cf/19056bf edit those task.yaml files. Fixed in current main.",
+        "affected_task_count": 3
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:01:33.367Z",
+          "result": "not_reproduced_parent_passed",
+          "method": "ade_cli_parent_all_affected_tasks",
+          "commands": [
+            "git worktree add --detach tmp/ade-l3-pr106-parent 8567219^",
+            "uv run ade run airbnb001 airbnb002 airbnb008 --db duckdb --project-type dbt --agent sage --n-concurrent-trials 1 --run-id l3-pr106-parent-all --output-path tmp/ade-pr106-logs/parent-output"
+          ],
+          "logs": [
+            "tmp/ade-pr106-logs/parent-all.log",
+            "tmp/ade-pr106-logs/parent-output/l3-pr106-parent-all/results.json"
+          ],
+          "notes": "Current ADE release DuckDB plus parent commit 8567219^ passed all affected tasks: airbnb001 11/11, airbnb002 12/12, airbnb008 5/5. Because the claimed repeated dbt run / missing --full-refresh defect did not reproduce in parent, PR #106 remains uncounted pending further evidence."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-111.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "ade-bench__dbt-labs__ade-bench__pr-111",
+        "benchmark_name": "ade-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "ade-bench-airbnb004",
+          "ade-bench-airbnb005",
+          "ade-bench-airbnb009",
+          "ade-bench-f1004",
+          "ade-bench-f1005",
+          "ade-bench-f1006",
+          "ade-bench-f1007"
+        ],
+        "resolution": "fixed",
+        "title": "Add missing test_setup commands to 7 tasks",
+        "summary": "ADE-bench PR adds missing test_setup commands to seven tasks because dbt models were not built before grading SQL tests, causing unfair failures.",
+        "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/111",
+        "evidence_urls": [
+          "https://github.com/dbt-labs/ade-bench/pull/111"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-02-05T00:47:29.000Z",
+        "last_reviewed_at": "2026-06-10T12:58:00Z",
+        "decision_note": "L3-equivalent ADE-Bench artifact audit. PR #111 is merged and changes seven task.yaml files to add missing test_setup commands; the PR body states grading SQL ran before dbt models were built, causing unfair failures. Local audit cloned dbt-labs/ade-bench in tmp/ade-bench-audit and confirmed merged commits edit tasks/airbnb004, airbnb005, airbnb009, f1004, f1005, f1006, and f1007 task.yaml files. Fixed in current main.",
+        "affected_task_count": 7
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:07:36.283Z",
+          "result": "not_reproduced_parent_passed",
+          "method": "ade_cli_parent_all_affected_tasks",
+          "commands": [
+            "git worktree add --detach tmp/ade-l3-pr111-parent b8189af^",
+            "uv run ade run airbnb004 airbnb005 airbnb009 f1004 f1005 f1006 f1007 --db duckdb --project-type dbt --agent sage --n-concurrent-trials 1 --run-id l3-pr111-parent-all --output-path tmp/ade-pr111-logs/parent-output"
+          ],
+          "logs": [
+            "tmp/ade-pr111-logs/parent-all.log",
+            "tmp/ade-pr111-logs/parent-output/l3-pr111-parent-all/results.json"
+          ],
+          "notes": "Current ADE release DuckDB plus parent commit b8189af^ passed all selected affected tasks and prompt variants: airbnb004, airbnb005, airbnb009, f1004, f1005, f1005.medium, f1006, f1006.hard, f1007, f1007.hard, f1007.medium all passed. Because the missing test_setup claim did not reproduce in parent, PR #111 remains uncounted pending further evidence."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-65.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "ade-bench__dbt-labs__ade-bench__pr-65",
+        "benchmark_name": "ade-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "ade-bench-airbnb006",
+          "ade-bench-asana002",
+          "ade-bench-asana005",
+          "ade-bench-asana005-hard"
+        ],
+        "resolution": "fixed",
+        "title": "Fix failing fusion tests, improve Snowflake setup guide, add quickstart to top of readme",
+        "summary": "ADE-bench PR fixes/disables Fusion tests that failed because of overeager static analysis and missing raw_code, preventing invalid hard failures in benchmark runs.",
+        "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/65",
+        "evidence_urls": [
+          "https://github.com/dbt-labs/ade-bench/pull/65"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2025-12-04T03:16:46.000Z",
+        "last_reviewed_at": "2026-06-10T12:58:00Z",
+        "decision_note": "L3-equivalent ADE-Bench artifact audit. PR #65 is merged and changes task artifacts including tasks/airbnb006/task.yaml, tasks/asana002/setup.sh, and tasks/asana005/setup.sh, alongside Snowflake schema/docs updates. The benchmark-facing changes disable/fix failing Fusion/Snowflake setup behavior for the listed task variants. Local audit cloned dbt-labs/ade-bench in tmp/ade-bench-audit and confirmed the merged PR modifies those task files. Fixed in current main.",
+        "affected_task_count": 4
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:20:54.643Z",
+          "result": "not_reproduced_parent_passed_duckdb_dbt",
+          "method": "ade_cli_parent_executable_local_tasks_duckdb_dbt",
+          "commands": [
+            "git worktree add --detach tmp/ade-l3-pr65-parent f06ca8e^",
+            "uv run ade run airbnb006 asana002 asana005 --db duckdb --project-type dbt --agent sage --n-concurrent-trials 1 --run-id l3-pr65-parent-duckdb-dbt --output-path tmp/ade-pr65-logs/parent-output"
+          ],
+          "logs": [
+            "tmp/ade-pr65-logs/parent-duckdb-dbt.log",
+            "tmp/ade-pr65-logs/parent-output/l3-pr65-parent-duckdb-dbt/results.json"
+          ],
+          "notes": "Executable local DuckDB/dbt parent path passed all available affected trials: airbnb006 8/8, asana002 4/4, asana005 9/9, asana005.hard 9/9. PR #65 also changes Snowflake/dbt-fusion setup/docs, but without credentialed Snowflake/dbt-fusion reproduction this cannot be restored as a counted current defect."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/bird-bench/tasks/_multi-task/alibabaresearch__damo-convai__issue-39.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "bird-bench__alibabaresearch__damo-convai__issue-39",
+        "benchmark_name": "bird-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "financial__118",
+          "financial__181"
+        ],
+        "resolution": "found",
+        "title": "Panel of BIRD annotation issues affecting financial questions 118 and 181",
+        "summary": "BIRD issue #39 contains task-specific reports for incorrect gold SQL in financial question_id 118 and 181.",
+        "canonical_source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39",
+        "evidence_urls": [
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2008123992",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2010914378",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2019106671",
+          "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/39#issuecomment-2488216215"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2023-06-11T16:03:26.000Z",
+        "last_reviewed_at": "2026-06-10T13:30:00Z",
+        "decision_note": "L3-equivalent BIRD source SQL audit. Issue #39 is the official BIRD annotation-error collection thread. The thread contains direct task-specific reports for financial question_id 118 and 181: question 118 gold SQL counts status rows / COUNT(amount) while the evidence asks for a percentage over total amount; question 181 joins client and account through district_id instead of disp, pairing unrelated clients/accounts. The same reporter explains this shared financial client-account join root cause across multiple questions. Harbor execution was previously attempted for BIRD but blocked by public registry/LFS checkout issues, so the audit relies on source SQL/root-cause evidence from the official thread. Counted as found because no linked upstream fix for these exact question ids was verified in the current artifact audit.",
+        "affected_task_count": 2
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:26:53.041Z",
+          "result": "blocked_harbor_registry_checkout_failed",
+          "method": "harbor_download_bird_bench_parity",
+          "commands": [
+            "harbor download bird-bench@parity -o tmp/bird-bench-parity --overwrite"
+          ],
+          "notes": "Harbor registry download failed before task artifacts were available: git checkout 82d1fb0c144d28b1fd9852006cee0a39e74bd4a8 returned exit 128. The GitHub issue thread contains source reports and maintainer discussion, but without executable BIRD task/DB artifacts this L3 audit cannot confirm the financial__118/181 SQL defects. Artifact remains uncounted pending a working BIRD dataset checkout or direct dev.json+financial.sqlite reproduction."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-39.json",
+      "reason": "Still uncounted after L3 Docker attempt: parent reproduces the transformers/tokenizers breakage, but the fixed Dockerfile/runner did not produce a clean passing run under the current dependency ecosystem, so fixed-state task impact is not fully confirmed.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "cooperbench__cooperbench__cooperbench__pr-39",
+        "benchmark_name": "cooperbench",
+        "scope": "task_specific",
+        "task_names": [
+          "cb-outlines-t1706-f3-4",
+          "cb-outlines-t1706-f4-5",
+          "cb-outlines-t1706-f1-6",
+          "cb-outlines-t1706-f2-6",
+          "cb-outlines-t1706-f2-7",
+          "cb-outlines-t1706-f1-7",
+          "cb-outlines-t1706-f3-5",
+          "cb-outlines-t1706-f3-8",
+          "cb-outlines-t1706-f5-7",
+          "cb-outlines-t1706-f2-4",
+          "cb-outlines-t1706-f4-6",
+          "cb-outlines-t1706-f1-2",
+          "cb-outlines-t1706-f6-7",
+          "cb-outlines-t1706-f7-8",
+          "cb-outlines-t1706-f3-7",
+          "cb-outlines-t1706-f1-3",
+          "cb-outlines-t1706-f2-8",
+          "cb-outlines-t1706-f1-5",
+          "cb-outlines-t1706-f1-8",
+          "cb-outlines-t1706-f3-6",
+          "cb-outlines-t1706-f2-5",
+          "cb-outlines-t1706-f4-8",
+          "cb-outlines-t1706-f5-8",
+          "cb-outlines-t1706-f4-7",
+          "cb-outlines-t1706-f2-3",
+          "cb-outlines-t1706-f6-8",
+          "cb-outlines-t1706-f5-6",
+          "cb-outlines-t1706-f1-4"
+        ],
+        "resolution": "fixed",
+        "title": "Fix outlines task1706: pin transformers and tokenizers versions",
+        "summary": "CooperBench outlines task1706 installed transformers/tokenizers without pins; latest releases broke GPT2Tokenizer setup and caused 8 of 9 tests to error on every run.",
+        "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/39",
+        "evidence_urls": [
+          "https://github.com/cooperbench/CooperBench/pull/39"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-03-12T04:03:48.000Z",
+        "last_reviewed_at": "2026-06-10T12:37:01.384Z",
+        "decision_note": "L3-equivalent task artifact audit for CooperBench. PR #39 is merged and changes dataset/dottxt_ai_outlines_task/task1706/Dockerfile and runner.sh. The PR body documents Docker/runtime failures from unpinned transformers/tokenizers versions and verifies the fixed image/test run. Local audit cloned cooperbench/CooperBench in tmp/CooperBench-audit and confirmed merged commit b322253 changes the benchmark Dockerfile/runner inputs. This is a direct environment defect affecting the task1706 feature-pair tasks; fixed in current main.\n\nL3 Docker attempt 2026-06-10T12:37:01.384Z: not counted. Parent image reproduced the claimed transformers/tokenizers breakage, but fixed image still did not pass under current dependencies due hf_xet.download_files() DeprecationWarning errors. Logs under tmp/cooper-pr39-l3/logs/.",
+        "affected_task_count": 28
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T12:37:01.384Z",
+          "result": "not_confirmed_fixed_state_failed",
+          "method": "Built parent and fixed Dockerfiles for dottxt_ai_outlines_task/task1706; ran feature4 and feature6 tests with combined.patch.",
+          "details": "Parent image installed transformers==5.10.2 and tokenizers==0.22.2; feature4/6 runs failed with GPT2Tokenizer BPE DeprecationWarning hard errors, matching PR #39 root cause. Fixed image installed transformers==4.46.3 and tokenizers==0.20.3, but feature4/6 still exited 139 and pytest reported remaining errors from hf_xet.download_files() DeprecationWarning while downloading erwanf/gpt2-mini. Because the fixed run was not clean, this artifact remains uncounted pending a more controlled reproduction or dependency lock.",
+          "logs": [
+            "tmp/cooper-pr39-l3/logs/parent-feature4.log",
+            "tmp/cooper-pr39-l3/logs/parent-feature6.log",
+            "tmp/cooper-pr39-l3/logs/head-feature4.log",
+            "tmp/cooper-pr39-l3/logs/head-feature6.log"
+          ]
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-42.json",
+      "reason": "Still uncounted after L3 Docker attempt: parent test patches fail, but the fixed feature2-6 test patches also fail under the task8563 Docker runner with the fixed combined.patch, so the PR is not yet runtime-confirmed as a fixed benchmark defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "cooperbench__cooperbench__cooperbench__pr-42",
+        "benchmark_name": "cooperbench",
+        "scope": "task_specific",
+        "task_names": [
+          "cb-dspy-t8563-f2-3",
+          "cb-dspy-t8563-f2-6",
+          "cb-dspy-t8563-f4-5",
+          "cb-dspy-t8563-f2-4",
+          "cb-dspy-t8563-f2-5",
+          "cb-dspy-t8563-f3-6",
+          "cb-dspy-t8563-f5-6",
+          "cb-dspy-t8563-f3-4",
+          "cb-dspy-t8563-f4-6",
+          "cb-dspy-t8563-f3-5",
+          "cb-dspy-t8563-f1-5",
+          "cb-dspy-t8563-f1-4",
+          "cb-dspy-t8563-f1-3",
+          "cb-dspy-t8563-f1-2",
+          "cb-dspy-t8563-f1-6"
+        ],
+        "resolution": "fixed",
+        "title": "Fix dspy task 8563: update TOOL_CALL_TEST_CASES in features 2-6 test patches",
+        "summary": "Live CooperBench PR fixes dspy task8563 feature test patches that still expected old ToolCalls list format, causing oracle tests for features 2-6 to fail.",
+        "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/42",
+        "evidence_urls": [
+          "https://github.com/cooperbench/CooperBench/pull/42"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-03-16T00:05:05.000Z",
+        "last_reviewed_at": "2026-06-10T12:23:41.958Z",
+        "decision_note": "L3-equivalent task artifact audit for CooperBench. PR #42 is merged and changes dataset/dspy_task/task8563/feature2/tests.patch through feature6/tests.patch. The PR body documents the root cause: feature 2-6 tests retained old ToolCalls.format expected output while the merged implementation returns the new dict format. Local audit cloned cooperbench/CooperBench in tmp/CooperBench-audit and confirmed merged commit 854e4e2 changes the benchmark test patches. This is a direct benchmark task oracle/test patch fix; fixed in current main.\n\nL3 Docker attempt 2026-06-10T12:23:41.958Z: not counted. Built delphik/cooperbench-dspy-task8563:l3 and ran fixed combined.patch with parent/head feature2-6 tests. Parent tests failed, but fixed head tests also failed; feature2/4/5/6 head failed test_tool_calls_format_from_dict_list with KeyError 0, feature3 head patch did not apply, and feature1 baseline also failed in test_chat_adapter_with_code. Logs under tmp/cooper-pr42-l3/logs/.",
+        "affected_task_count": 15
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T12:23:41.958Z",
+          "result": "not_confirmed_fixed_patch_failed",
+          "method": "Docker runner from dataset/dspy_task/task8563 comparing parent/head feature2-6 tests.patch against fixed combined.patch; also ran feature1 baseline.",
+          "details": "Built delphik/cooperbench-dspy-task8563:l3 from tmp/CooperBench-audit/dataset/dspy_task/task8563. For feature2-6, parent tests all exited 1 as expected, but head tests also exited 1. feature2/4/5/6 head failed test_tool_calls_format_from_dict_list with KeyError 0; feature3 head failed to apply the test patch. feature1 baseline also exited 1 due test_chat_adapter_with_code AttributeError on ModelResponse. This does not prove the claimed fixed state.",
+          "logs": [
+            "tmp/cooper-pr42-l3/logs/feature2-parent.log",
+            "tmp/cooper-pr42-l3/logs/feature2-head.log",
+            "tmp/cooper-pr42-l3/logs/feature3-parent.log",
+            "tmp/cooper-pr42-l3/logs/feature3-head.log",
+            "tmp/cooper-pr42-l3/logs/feature4-parent.log",
+            "tmp/cooper-pr42-l3/logs/feature4-head.log",
+            "tmp/cooper-pr42-l3/logs/feature5-parent.log",
+            "tmp/cooper-pr42-l3/logs/feature5-head.log",
+            "tmp/cooper-pr42-l3/logs/feature6-parent.log",
+            "tmp/cooper-pr42-l3/logs/feature6-head.log",
+            "tmp/cooper-pr42-l3/logs/feature1-baseline.log"
+          ]
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__issue-455.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "swebench-verified__swe-bench__swe-bench__issue-455",
+        "benchmark_name": "swebench-verified",
+        "scope": "task_specific",
+        "task_names": [
+          "sphinx-doc__sphinx-10323",
+          "sphinx-doc__sphinx-10435",
+          "sphinx-doc__sphinx-10449",
+          "sphinx-doc__sphinx-10466",
+          "sphinx-doc__sphinx-10614",
+          "sphinx-doc__sphinx-10673",
+          "sphinx-doc__sphinx-11445",
+          "sphinx-doc__sphinx-11510",
+          "sphinx-doc__sphinx-7440",
+          "sphinx-doc__sphinx-7454",
+          "sphinx-doc__sphinx-7462",
+          "sphinx-doc__sphinx-7590",
+          "sphinx-doc__sphinx-7748",
+          "sphinx-doc__sphinx-7757",
+          "sphinx-doc__sphinx-7889",
+          "sphinx-doc__sphinx-7910",
+          "sphinx-doc__sphinx-7985",
+          "sphinx-doc__sphinx-8035",
+          "sphinx-doc__sphinx-8056",
+          "sphinx-doc__sphinx-8120",
+          "sphinx-doc__sphinx-8265",
+          "sphinx-doc__sphinx-8269",
+          "sphinx-doc__sphinx-8459",
+          "sphinx-doc__sphinx-8475",
+          "sphinx-doc__sphinx-8548",
+          "sphinx-doc__sphinx-8551",
+          "sphinx-doc__sphinx-8593",
+          "sphinx-doc__sphinx-8595",
+          "sphinx-doc__sphinx-8621",
+          "sphinx-doc__sphinx-8638",
+          "sphinx-doc__sphinx-8721",
+          "sphinx-doc__sphinx-9229",
+          "sphinx-doc__sphinx-9230",
+          "sphinx-doc__sphinx-9258",
+          "sphinx-doc__sphinx-9281",
+          "sphinx-doc__sphinx-9320",
+          "sphinx-doc__sphinx-9367",
+          "sphinx-doc__sphinx-9461",
+          "sphinx-doc__sphinx-9591",
+          "sphinx-doc__sphinx-9602",
+          "sphinx-doc__sphinx-9658",
+          "sphinx-doc__sphinx-9673",
+          "sphinx-doc__sphinx-9698",
+          "sphinx-doc__sphinx-9711"
+        ],
+        "resolution": "fixed",
+        "title": "Incorrect `docutils` library version resolved for sphinx when rebuilding eval images from scratch",
+        "summary": "Rebuilding SWE-bench Sphinx eval images from scratch resolves docutils 0.22 instead of 0.21.2, breaking tests and reducing gold-patch pass rate; v5 Dockerfiles pin transitive deps.",
+        "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/455",
+        "evidence_urls": [
+          "https://github.com/SWE-bench/SWE-bench/issues/455",
+          "https://github.com/SWE-bench/SWE-bench/issues/455#issuecomment-4095479236"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2025-08-14T13:10:23.000Z",
+        "last_reviewed_at": "2026-06-10T14:00:00Z",
+        "decision_note": "L3-equivalent SWE-bench harness artifact audit. Issue #455 reports Sphinx eval image rebuild drift because unpinned docutils resolves to 1.22.0 and breaks older Sphinx bases, producing behavior different from prebuilt images. Maintainer comment says this is fixed in v5 Dockerfiles by pinning undeclared transitive dependencies in 46 environment YML files. Local audit cloned SWE-bench/SWE-bench in tmp/SWE-bench-audit and confirmed current harness has moved to explicit per-repo Python constants/environment pins in swebench/harness/constants/python.py. Full 44-task Docker rebuild was not run in this pass; counted fixed because the upstream maintainer explicitly identifies the v5 Dockerfile fix and current harness contains the dependency-pin architecture that addresses the root cause.",
+        "affected_task_count": 44
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:37.474Z",
+          "result": "not_restored_no_matching_base_fixed_rebuild_evidence",
+          "method": "existing_harbor_job_review",
+          "notes": "Reviewed existing tmp/l3-harbor-jobs SWE-bench jobs. They are current oracle runs or different issue samples and do not establish this artifact-specific dependency/build root cause with base-vs-fixed Docker rebuild evidence. Artifact remains uncounted pending targeted force-rebuild reproduction for the affected package family."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-129.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "swebench-verified__swe-bench__swe-bench__pr-129",
+        "benchmark_name": "swebench-verified",
+        "scope": "task_specific",
+        "task_names": [
+          "astropy__astropy-12907",
+          "astropy__astropy-13033",
+          "astropy__astropy-13236",
+          "astropy__astropy-13398",
+          "astropy__astropy-13453",
+          "astropy__astropy-13579",
+          "astropy__astropy-13977",
+          "astropy__astropy-14096",
+          "astropy__astropy-14182",
+          "astropy__astropy-14309",
+          "astropy__astropy-14365",
+          "astropy__astropy-14369",
+          "astropy__astropy-14508",
+          "astropy__astropy-14539",
+          "astropy__astropy-14598",
+          "astropy__astropy-14995",
+          "astropy__astropy-7166",
+          "astropy__astropy-7336",
+          "astropy__astropy-7606",
+          "astropy__astropy-7671",
+          "astropy__astropy-8707",
+          "astropy__astropy-8872"
+        ],
+        "resolution": "fixed",
+        "title": "Fix astropy installation after setuptools updated to 70.0.0",
+        "summary": "PR pins/patches astropy setup requirements after setuptools 70 broke installation for astropy SWE-bench instances.",
+        "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/129",
+        "evidence_urls": [
+          "https://github.com/SWE-bench/SWE-bench/pull/129",
+          "https://github.com/SWE-bench/SWE-bench/issues/127"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2024-06-03T01:39:47.000Z",
+        "last_reviewed_at": "2026-06-10T14:00:00Z",
+        "decision_note": "L3-equivalent SWE-bench harness artifact audit. PR #129 is merged and fixes astropy image installation after setuptools 70.0.0 by adding pre_install pinning to setuptools 68.0.0. Local audit cloned SWE-bench/SWE-bench in tmp/SWE-bench-audit and confirmed merged commit 25d1da7/debfe4bc in harness constants history and current swebench/harness/constants/python.py contains astropy setuptools==68.0.0 pins/pre_install logic. Fixed in current main.",
+        "affected_task_count": 22
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:37.475Z",
+          "result": "not_restored_no_matching_base_fixed_rebuild_evidence",
+          "method": "existing_harbor_job_review",
+          "notes": "Reviewed existing tmp/l3-harbor-jobs SWE-bench jobs. They are current oracle runs or different issue samples and do not establish this artifact-specific dependency/build root cause with base-vs-fixed Docker rebuild evidence. Artifact remains uncounted pending targeted force-rebuild reproduction for the affected package family."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-184.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "swebench-verified__swe-bench__swe-bench__pr-184",
+        "benchmark_name": "swebench-verified",
+        "scope": "task_specific",
+        "task_names": [
+          "astropy__astropy-7166",
+          "astropy__astropy-7336",
+          "astropy__astropy-7606",
+          "astropy__astropy-7671",
+          "pydata__xarray-2905",
+          "pydata__xarray-3095",
+          "pydata__xarray-3151",
+          "pydata__xarray-3305",
+          "pydata__xarray-3677",
+          "pydata__xarray-3993",
+          "pydata__xarray-4075",
+          "pydata__xarray-4094",
+          "pydata__xarray-4356",
+          "pydata__xarray-4629",
+          "pydata__xarray-4687",
+          "pydata__xarray-4695",
+          "pydata__xarray-4966"
+        ],
+        "resolution": "fixed",
+        "title": "Astropy and xarray fixes",
+        "summary": "Live SWE-bench PR fixes Astropy and xarray Docker builds broken by unpinned/updated dependencies, with maintainer confirming gold validation issues resolved.",
+        "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/184",
+        "evidence_urls": [
+          "https://github.com/SWE-bench/SWE-bench/pull/184",
+          "https://github.com/SWE-bench/SWE-bench/issues/167",
+          "https://github.com/SWE-bench/SWE-bench/pull/184#issuecomment-2237060461"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2024-07-17T11:54:58.000Z",
+        "last_reviewed_at": "2026-06-10T14:00:00Z",
+        "decision_note": "L3-equivalent SWE-bench harness artifact audit. PR #184 is merged and fixes astropy/xarray Docker builds by pinning legacy dependencies and adding dask==2022.8.1 for pydata/xarray, plus log parser changes. Local audit cloned SWE-bench/SWE-bench in tmp/SWE-bench-audit and confirmed merged commits 1f7781b/48e272b in harness constants/log parser history and current constants/python.py contains pydata/xarray dask and astropy setuptools pins. Fixed in current main.",
+        "affected_task_count": 17
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:37.475Z",
+          "result": "not_restored_no_matching_base_fixed_rebuild_evidence",
+          "method": "existing_harbor_job_review",
+          "notes": "Reviewed existing tmp/l3-harbor-jobs SWE-bench jobs. They are current oracle runs or different issue samples and do not establish this artifact-specific dependency/build root cause with base-vs-fixed Docker rebuild evidence. Artifact remains uncounted pending targeted force-rebuild reproduction for the affected package family."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-205.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "swebench-verified__swe-bench__swe-bench__pr-205",
+        "benchmark_name": "swebench-verified",
+        "scope": "task_specific",
+        "task_names": [
+          "sphinx-doc__sphinx-10323",
+          "sphinx-doc__sphinx-10435",
+          "sphinx-doc__sphinx-10449",
+          "sphinx-doc__sphinx-10466",
+          "sphinx-doc__sphinx-10614",
+          "sphinx-doc__sphinx-10673",
+          "sphinx-doc__sphinx-11445",
+          "sphinx-doc__sphinx-11510",
+          "sphinx-doc__sphinx-7440",
+          "sphinx-doc__sphinx-7454",
+          "sphinx-doc__sphinx-7462",
+          "sphinx-doc__sphinx-7590",
+          "sphinx-doc__sphinx-7748",
+          "sphinx-doc__sphinx-7757",
+          "sphinx-doc__sphinx-7889",
+          "sphinx-doc__sphinx-7910",
+          "sphinx-doc__sphinx-7985",
+          "sphinx-doc__sphinx-8035",
+          "sphinx-doc__sphinx-8056",
+          "sphinx-doc__sphinx-8120",
+          "sphinx-doc__sphinx-8265",
+          "sphinx-doc__sphinx-8269",
+          "sphinx-doc__sphinx-8459",
+          "sphinx-doc__sphinx-8475",
+          "sphinx-doc__sphinx-8548",
+          "sphinx-doc__sphinx-8551",
+          "sphinx-doc__sphinx-8593",
+          "sphinx-doc__sphinx-8595",
+          "sphinx-doc__sphinx-8621",
+          "sphinx-doc__sphinx-8638",
+          "sphinx-doc__sphinx-8721",
+          "sphinx-doc__sphinx-9229",
+          "sphinx-doc__sphinx-9230",
+          "sphinx-doc__sphinx-9258",
+          "sphinx-doc__sphinx-9281",
+          "sphinx-doc__sphinx-9320",
+          "sphinx-doc__sphinx-9367",
+          "sphinx-doc__sphinx-9461",
+          "sphinx-doc__sphinx-9591",
+          "sphinx-doc__sphinx-9602",
+          "sphinx-doc__sphinx-9658",
+          "sphinx-doc__sphinx-9673",
+          "sphinx-doc__sphinx-9698",
+          "sphinx-doc__sphinx-9711"
+        ],
+        "resolution": "fixed",
+        "title": "Pin tox packages for sphinx images",
+        "summary": "SWE-bench PR pinned tox for Sphinx images after newly built images started failing with newer tox.",
+        "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/205",
+        "evidence_urls": [
+          "https://github.com/SWE-bench/SWE-bench/pull/205",
+          "https://github.com/SWE-bench/SWE-bench/issues/170",
+          "https://github.com/SWE-bench/SWE-bench/pull/205#issuecomment-2292109748"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2024-08-15T16:05:22.000Z",
+        "last_reviewed_at": "2026-06-10T14:00:00Z",
+        "decision_note": "L3-equivalent SWE-bench harness artifact audit. PR #205 is merged and pins tox packages for Sphinx images after rebuilt images started failing with newer tox. Local audit cloned SWE-bench/SWE-bench in tmp/SWE-bench-audit and confirmed merged commit dc6b81e in harness constants history and current constants/python.py contains Sphinx tox==4.16.0 and tox-current-env==0.0.11 pins. Fixed in current main.",
+        "affected_task_count": 44
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:37.475Z",
+          "result": "not_restored_no_matching_base_fixed_rebuild_evidence",
+          "method": "existing_harbor_job_review",
+          "notes": "Reviewed existing tmp/l3-harbor-jobs SWE-bench jobs. They are current oracle runs or different issue samples and do not establish this artifact-specific dependency/build root cause with base-vs-fixed Docker rebuild evidence. Artifact remains uncounted pending targeted force-rebuild reproduction for the affected package family."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-221.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "swebench-verified__swe-bench__swe-bench__pr-221",
+        "benchmark_name": "swebench-verified",
+        "scope": "task_specific",
+        "task_names": [
+          "matplotlib__matplotlib-13989",
+          "matplotlib__matplotlib-14623",
+          "matplotlib__matplotlib-20488",
+          "matplotlib__matplotlib-20676",
+          "matplotlib__matplotlib-20826",
+          "matplotlib__matplotlib-20859",
+          "matplotlib__matplotlib-21568",
+          "matplotlib__matplotlib-22719",
+          "matplotlib__matplotlib-22865",
+          "matplotlib__matplotlib-22871",
+          "matplotlib__matplotlib-23299",
+          "matplotlib__matplotlib-23314",
+          "matplotlib__matplotlib-23412",
+          "matplotlib__matplotlib-23476",
+          "matplotlib__matplotlib-24026",
+          "matplotlib__matplotlib-24149",
+          "matplotlib__matplotlib-24177",
+          "matplotlib__matplotlib-24570",
+          "matplotlib__matplotlib-24627",
+          "matplotlib__matplotlib-24637",
+          "matplotlib__matplotlib-24870",
+          "matplotlib__matplotlib-24970",
+          "matplotlib__matplotlib-25122",
+          "matplotlib__matplotlib-25287",
+          "matplotlib__matplotlib-25311",
+          "matplotlib__matplotlib-25332",
+          "matplotlib__matplotlib-25479",
+          "matplotlib__matplotlib-25775",
+          "matplotlib__matplotlib-25960",
+          "matplotlib__matplotlib-26113",
+          "matplotlib__matplotlib-26208",
+          "matplotlib__matplotlib-26291",
+          "matplotlib__matplotlib-26342",
+          "matplotlib__matplotlib-26466"
+        ],
+        "resolution": "fixed",
+        "title": "fix: install tzdata noninteractively",
+        "summary": "Live SWE-bench PR fixes matplotlib instance pre_install timeout by making tzdata installation noninteractive.",
+        "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/221",
+        "evidence_urls": [
+          "https://github.com/SWE-bench/SWE-bench/pull/221",
+          "https://github.com/SWE-bench/SWE-bench/issues/210",
+          "https://github.com/SWE-bench/SWE-bench/pull/221#issuecomment-2397332552"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2024-09-15T23:38:22.000Z",
+        "last_reviewed_at": "2026-06-10T14:00:00Z",
+        "decision_note": "L3-equivalent SWE-bench harness artifact audit. PR #221 is merged and fixes matplotlib pre_install timeout by making tzdata install noninteractive. Local audit cloned SWE-bench/SWE-bench in tmp/SWE-bench-audit and confirmed merged commit 5bd032e in harness constants history and current constants/python.py contains tzdata pins/noninteractive install handling for matplotlib specs. Fixed in current main.",
+        "affected_task_count": 34
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:37.475Z",
+          "result": "not_restored_no_matching_base_fixed_rebuild_evidence",
+          "method": "existing_harbor_job_review",
+          "notes": "Reviewed existing tmp/l3-harbor-jobs SWE-bench jobs. They are current oracle runs or different issue samples and do not establish this artifact-specific dependency/build root cause with base-vs-fixed Docker rebuild evidence. Artifact remains uncounted pending targeted force-rebuild reproduction for the affected package family."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/swebench-verified/tasks/_multi-task/swe-bench__swe-bench__pr-226.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "swebench-verified__swe-bench__swe-bench__pr-226",
+        "benchmark_name": "swebench-verified",
+        "scope": "task_specific",
+        "task_names": [
+          "scikit-learn__scikit-learn-25102",
+          "scikit-learn__scikit-learn-25232",
+          "scikit-learn__scikit-learn-25747",
+          "scikit-learn__scikit-learn-25931",
+          "scikit-learn__scikit-learn-25973",
+          "scikit-learn__scikit-learn-26194",
+          "scikit-learn__scikit-learn-26323"
+        ],
+        "resolution": "fixed",
+        "title": "fix docker building issues with sklearn",
+        "summary": "PR fixes Docker build issues for seven scikit-learn SWE-bench instances by tightening dependency constraints.",
+        "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/226",
+        "evidence_urls": [
+          "https://github.com/SWE-bench/SWE-bench/pull/226",
+          "https://github.com/SWE-bench/SWE-bench/issues/218",
+          "https://github.com/SWE-bench/SWE-bench/pull/226#issuecomment-2397295044"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2024-10-01T08:52:35.000Z",
+        "last_reviewed_at": "2026-06-10T14:00:00Z",
+        "decision_note": "L3-equivalent SWE-bench harness artifact audit. PR #226 is merged and fixes Docker build issues for seven scikit-learn instances by updating harness constants. Local audit cloned SWE-bench/SWE-bench in tmp/SWE-bench-audit and confirmed merged commit 9738a50 in harness constants history and current constants/python.py includes scikit-learn package constraints. Fixed in current main.",
+        "affected_task_count": 7
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:37.475Z",
+          "result": "not_restored_no_matching_base_fixed_rebuild_evidence",
+          "method": "existing_harbor_job_review",
+          "notes": "Reviewed existing tmp/l3-harbor-jobs SWE-bench jobs. They are current oracle runs or different issue samples and do not establish this artifact-specific dependency/build root cause with base-vs-fixed Docker rebuild evidence. Artifact remains uncounted pending targeted force-rebuild reproduction for the affected package family."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-27.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-27",
+        "benchmark_name": "terminal-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "filter-js-from-html",
+          "gpt2-codegolf",
+          "mteb-leaderboard"
+        ],
+        "resolution": "fixing",
+        "title": "Terminal-Bench-2 oracle updates for resource and dependency failures",
+        "summary": "Terminal-Bench-2 PR #27 fixes resource-limit and dependency issues in three tasks.",
+        "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/27",
+        "evidence_urls": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/27",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/27/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-01-09T19:38:59.000Z",
+        "last_reviewed_at": "2026-06-10T13:20:00Z",
+        "decision_note": "L3-equivalent Terminal-Bench-2 artifact audit. PR #27 is open and directly changes filter-js-from-html/task.toml, gpt2-codegolf/task.toml, and mteb-leaderboard/environment/Dockerfile. The body documents oracle/runtime failures from resource-limit mismatch and missing pillow dependency. Local audit cloned harbor-framework/terminal-bench-2 in tmp/terminal-bench-2-audit and confirmed the PR targets task resource/dependency artifacts. This is a current task execution defect with fix PR in progress.",
+        "affected_task_count": 3
+      },
+      "audit_attempts": [
+        {
+          "attempted_at": "2026-06-10T15:08:00Z",
+          "level": "L3",
+          "result": "blocked_runtime_startup",
+          "note": "Attempted Harbor oracle run for mteb-leaderboard from current terminal-bench-2 main. Commands created tmp/l3-terminal-pr27-mteb dataset and ran harbor run -p tmp/l3-terminal-pr27-mteb -a oracle -e docker -o tmp/l3-harbor-jobs -n 1 --job-name l3-terminal-pr27-mteb. The job stayed at docker compose up --detach --wait for about 7m48s with empty trial/job logs, then was killed; Harbor exited code 130 and mean 0.000. This did not prove the claimed missing pillow defect, so PR #27 remains uncounted until a successful runtime reproduction is available. Logs/config: tmp/l3-harbor-jobs/l3-terminal-pr27-mteb/."
+        }
+      ],
+      "updated_at": "2026-06-10T15:08:00Z",
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:57.144Z",
+          "result": "not_restored_no_successful_runtime_reproduction",
+          "method": "existing_harbor_job_and_local_source_review",
+          "notes": "Reviewed tmp/l3-harbor-jobs and tmp/terminal-bench-2-audit. Existing job for PR #27 mteb-leaderboard ended with CancelledError and no passing/failing base-vs-fixed comparison; no matching runtime jobs exist for PR #31 or PR #50. Source diffs may describe real task fixes, but without successful Harbor/Docker reproduction these artifacts remain uncounted pending L3."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-31.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-31",
+        "benchmark_name": "terminal-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "custom-memory-heap-crash",
+          "qemu-alpine-ssh",
+          "qemu-startup",
+          "schemelike-metacircular-eval"
+        ],
+        "resolution": "fixing",
+        "title": "Terminal-Bench-2 Modal oracle fixes for four tasks",
+        "summary": "Terminal-Bench-2 PR #31 fixes Modal-specific oracle failures and timeout issues in four tasks.",
+        "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/31",
+        "evidence_urls": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/31",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/31/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-01-20T20:16:29.000Z",
+        "last_reviewed_at": "2026-06-10T13:20:00Z",
+        "decision_note": "L3-equivalent Terminal-Bench-2 artifact audit. PR #31 is open and directly changes oracle solution scripts for custom-memory-heap-crash, qemu-alpine-ssh, qemu-startup, plus schemelike-metacircular-eval test timeout. The body states these oracle solutions were not passing on Modal and describes the concrete failures. Local audit cloned harbor-framework/terminal-bench-2 in tmp/terminal-bench-2-audit and confirmed the PR modifies task solution/test artifacts. This is a current oracle/verifier defect with fix PR in progress.",
+        "affected_task_count": 4
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:57.145Z",
+          "result": "not_restored_no_successful_runtime_reproduction",
+          "method": "existing_harbor_job_and_local_source_review",
+          "notes": "Reviewed tmp/l3-harbor-jobs and tmp/terminal-bench-2-audit. Existing job for PR #27 mteb-leaderboard ended with CancelledError and no passing/failing base-vs-fixed comparison; no matching runtime jobs exist for PR #31 or PR #50. Source diffs may describe real task fixes, but without successful Harbor/Docker reproduction these artifacts remain uncounted pending L3."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-50.json",
+      "reason": "Removed from counted defects because this multi-task artifact lacks Docker/Harbor runtime reproduction or an equivalent executable probe in the current evidence. It must not affect public health counts until L3 runtime evidence proves the task-impacting defect.",
+      "queued_at": "2026-06-10T14:35:00Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-50",
+        "benchmark_name": "terminal-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "caffe-cifar-10",
+          "fix-code-vulnerability",
+          "fix-git",
+          "regex-log"
+        ],
+        "resolution": "fixing",
+        "title": "Terminal-Bench-2 fixes for resources, hidden files, tests, and oracle regex",
+        "summary": "Terminal-Bench-2 PR #50 fixes four task artifacts covering resource budget, leaked patch files, missing tests, and incorrect oracle behavior.",
+        "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/50",
+        "evidence_urls": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/50",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/50/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-03-04T08:35:57.000Z",
+        "last_reviewed_at": "2026-06-10T13:20:00Z",
+        "decision_note": "L3-equivalent Terminal-Bench-2 artifact audit. PR #50 is open and directly changes caffe-cifar-10 resources, fix-git hidden files/tests, fix-code-vulnerability tests, and regex-log oracle/tests. The body lists task-specific failures and intended fixes. Local audit cloned harbor-framework/terminal-bench-2 in tmp/terminal-bench-2-audit and confirmed the PR modifies task.toml, Dockerfile, solution, and verifier artifacts. This is a current set of task defects with fix PR in progress.",
+        "affected_task_count": 4
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T13:30:57.145Z",
+          "result": "not_restored_no_successful_runtime_reproduction",
+          "method": "existing_harbor_job_and_local_source_review",
+          "notes": "Reviewed tmp/l3-harbor-jobs and tmp/terminal-bench-2-audit. Existing job for PR #27 mteb-leaderboard ended with CancelledError and no passing/failing base-vs-fixed comparison; no matching runtime jobs exist for PR #31 or PR #50. Source diffs may describe real task fixes, but without successful Harbor/Docker reproduction these artifacts remain uncounted pending L3."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-151.json",
+      "reason": "Pending L3/social-proof completion; not counted in public health.",
+      "queued_at": "2026-06-10T13:33:58.349Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "ade-bench__dbt-labs__ade-bench__pr-151",
+        "benchmark_name": "ade-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "ade-bench-ana-eng004",
+          "ade-bench-ana-eng006",
+          "ade-bench-f1002"
+        ],
+        "resolution": "fixing",
+        "title": "Fix task spec vs gold mismatches in 3 ADE-Bench tasks",
+        "summary": "ADE-Bench PR #151 fixes missing task intent in two analytics engineering prompts and a stats YAML/gold mismatch in one F1 task.",
+        "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/151",
+        "evidence_urls": [
+          "https://github.com/dbt-labs/ade-bench/pull/151",
+          "https://github.com/dbt-labs/ade-bench/pull/151/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-05-29T16:31:41.000Z",
+        "last_reviewed_at": "2026-06-10T09:53:00Z",
+        "decision_note": "L3/source audit. Ran Harbor oracle on current ade-bench@1.0: harbor run -d ade-bench@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-ade-pr151-all -i ade-bench-ana-eng004 -i ade-bench-ana-eng006 -i ade-bench-f1002 -y --no-delete --timeout-multiplier 1. All three returned reward 1, which only shows the gold solution can pass. The defect claim is task-spec/gold mismatch: the PR body says AE004/AE006 prompts omit required gold choices, and F1002 __stats.yml lists fields that the gold omits. The PR diff directly edits tasks/analytics_engineering004/task.yaml, tasks/analytics_engineering006/task.yaml, and shared/projects/dbt/f1/models/stats/__stats.yml to repair those benchmark artifacts. This is therefore counted as a current fixing task defect.",
+        "affected_task_count": 3
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T16:03:00Z",
+          "result": "pending_open_pr_task_spec_claim_needs_stronger_l3_or_merge",
+          "method": "github_pr_review_plus_oracle_smoke",
+          "notes": "PR is open and has no maintainer confirmation/merge. Current oracle run passed all three tasks, which only proves the gold solution passes; it does not prove the task spec/gold mismatch for non-oracle agents. Keep uncounted until merged/social-proofed or reproduced with a task-spec/root-cause probe."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-52.json",
+      "reason": "Pending L3/social-proof completion; not counted in public health.",
+      "queued_at": "2026-06-10T13:33:58.351Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "arc_agi_2__arcprize__arc-agi-2__pr-52",
+        "benchmark_name": "arc_agi_2",
+        "scope": "task_specific",
+        "task_names": [
+          "581f7754_0",
+          "581f7754_1"
+        ],
+        "resolution": "fixing",
+        "title": "Fix ARC-AGI-2 evaluation task 581f7754 output grid",
+        "summary": "ARC-AGI-2 PR #52 fixes incorrect output cells in data/evaluation/581f7754.json.",
+        "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/52",
+        "evidence_urls": [
+          "https://github.com/arcprize/ARC-AGI-2/pull/52",
+          "https://github.com/arcprize/ARC-AGI-2/pull/52/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2025-07-09T03:19:56.000Z",
+        "last_reviewed_at": "2026-06-10T13:22:30.812Z",
+        "decision_note": "L3 ARC-AGI-2 dataset JSON audit for 581f7754. Parsed data/evaluation/581f7754.json at main and pr-52 in tmp/ARC-AGI-2-audit and compared the task JSON programmatically. Diff result: 8 scalar cell/value change(s), 0 array length/row change(s); sample paths: train[1].output[3][8]:3->8; train[1].output[3][11]:8->3; train[1].output[4][8]:3->8; train[1].output[4][9]:1->3; train[1].output[4][10]:3->1; train[1].output[4][11]:8->3; train[1].output[5][8]:3->8; train[1].output[5][11]:8->3. The PR head changes the current main evaluation JSON and is still an open fix candidate, so this remains a fixing task oracle defect.",
+        "affected_task_count": 2
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T16:03:00Z",
+          "result": "pending_open_pr_no_maintainer_or_merge_proof",
+          "method": "github_pr_review_dataset_diff",
+          "notes": "PR is open and changes evaluation JSON, but there is no merge or maintainer confirmation in the checked source. Keep uncounted until upstream accepts it or an independent ARC task-root-cause audit confirms the old output is wrong."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-62.json",
+      "reason": "Pending L3/social-proof completion; not counted in public health.",
+      "queued_at": "2026-06-10T13:33:58.351Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "arc_agi_2__arcprize__arc-agi-2__pr-62",
+        "benchmark_name": "arc_agi_2",
+        "scope": "task_specific",
+        "task_names": [
+          "88e364bc_0",
+          "88e364bc_1"
+        ],
+        "resolution": "fixing",
+        "title": "Fix ARC-AGI-2 evaluation task 88e364bc output grid",
+        "summary": "ARC-AGI-2 PR #62 fixes incorrect output cells in data/evaluation/88e364bc.json.",
+        "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/62",
+        "evidence_urls": [
+          "https://github.com/arcprize/ARC-AGI-2/pull/62",
+          "https://github.com/arcprize/ARC-AGI-2/pull/62/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2025-09-17T06:39:18.000Z",
+        "last_reviewed_at": "2026-06-10T13:22:30.841Z",
+        "decision_note": "L3 ARC-AGI-2 dataset JSON audit for 88e364bc. Parsed data/evaluation/88e364bc.json at main and pr-62 in tmp/ARC-AGI-2-audit and compared the task JSON programmatically. Diff result: 2 scalar cell/value change(s), 0 array length/row change(s); sample paths: test[0].output[4][12]:4->0; test[0].output[8][16]:0->4. The PR head changes the current main evaluation JSON and is still an open fix candidate, so this remains a fixing task oracle defect.",
+        "affected_task_count": 2
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T16:03:00Z",
+          "result": "pending_open_pr_no_maintainer_or_merge_proof",
+          "method": "github_pr_review_dataset_diff",
+          "notes": "PR is open and changes evaluation JSON, but there is no merge or maintainer confirmation in the checked source. Keep uncounted until upstream accepts it or an independent ARC task-root-cause audit confirms the old output is wrong."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/otel-bench/tasks/_multi-task/quesmaorg__otel-bench__pr-6.json",
+      "reason": "Pending L3/social-proof completion; not counted in public health.",
+      "queued_at": "2026-06-10T13:33:58.352Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "otel-bench__quesmaorg__otel-bench__pr-6",
+        "benchmark_name": "otel-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "cpp-distributed-context-propagation",
+          "go-distributed-context-propagation",
+          "java-distributed-context-propagation",
+          "php-distributed-context-propagation",
+          "python-distributed-context-propagation"
+        ],
+        "resolution": "fixed",
+        "title": "Adding solution to failing tasks #1",
+        "summary": "otel-bench PR title says it adds solutions to failing tasks, which is evidence of benchmark tasks missing working oracle solutions.",
+        "canonical_source_url": "https://github.com/QuesmaOrg/otel-bench/pull/6",
+        "evidence_urls": [
+          "https://github.com/QuesmaOrg/otel-bench/pull/6"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-01-21T10:53:55.000Z",
+        "last_reviewed_at": "2026-06-10T13:31:32.708Z",
+        "decision_note": "L3 OTel-Bench oracle artifact audit for PR #6. Compared merged commit 06ccd56 against 06ccd56^ in tmp/otel-bench-audit. Parent had no solution/solve.sh for cpp/go/java/php/python distributed-context-propagation tasks; PR #6 adds five solution scripts: cpp 614 lines, go 962 lines, java 786 lines, php 544 lines, python 463 lines, 3369 inserted lines total. Since OTel-Bench task oracle execution depends on these solution artifacts, the missing solutions were task-impacting benchmark/oracle defects fixed by the merged PR.",
+        "affected_task_count": 5
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T16:03:00Z",
+          "result": "pending_solution_only_change_not_yet_task_defect",
+          "method": "github_pr_review",
+          "notes": "PR is merged but only adds solution/solve.sh files and has an empty body. Title says solutions were added to failing tasks, but the current evidence does not establish whether this is an agent-facing benchmark task defect or oracle/solution coverage work. Keep uncounted pending Harbor/oracle reproduction or maintainer explanation."
+        }
+      ]
+    },
+    {
+      "queue_status": "pending_l3_runtime_reproduction",
+      "counted": false,
+      "original_path": "defects/terminal-bench/tasks/_multi-task/harbor-framework__terminal-bench-2__pr-37.json",
+      "reason": "Pending L3/social-proof completion; not counted in public health.",
+      "queued_at": "2026-06-10T13:33:58.354Z",
+      "artifact": {
+        "schema_version": "v5.defect-artifact.1",
+        "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-37",
+        "benchmark_name": "terminal-bench",
+        "scope": "task_specific",
+        "task_names": [
+          "polyglot-c-py",
+          "polyglot-rust-c"
+        ],
+        "resolution": "fixing",
+        "title": "Terminal-Bench-2 Polyglot tests fail when compiled artifacts remain",
+        "summary": "Terminal-Bench-2 PR #37 fixes two Polyglot task tests that failed after compiled artifacts from prior runs remained in the task directory.",
+        "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/37",
+        "evidence_urls": [
+          "https://github.com/harbor-framework/terminal-bench-2/pull/37",
+          "https://github.com/harbor-framework/terminal-bench-2/pull/37/files"
+        ],
+        "audit_level": "L3",
+        "first_reported_at": "2026-02-13T14:20:33.000Z",
+        "last_reviewed_at": "2026-06-10T13:20:00Z",
+        "decision_note": "L3-equivalent Terminal-Bench-2 artifact audit. PR #37 is open and directly changes polyglot-c-py/tests/test_outputs.py and polyglot-rust-c/tests/test_outputs.py. The body states tests failed when compiled artifacts remained and reports oracle reward 1.0 after the fix. Local audit cloned harbor-framework/terminal-bench-2 in tmp/terminal-bench-2-audit and confirmed the PR modifies task verifier artifacts. This is a current task verifier defect with fix PR in progress.",
+        "affected_task_count": 2
+      },
+      "l3_attempts": [
+        {
+          "attempted_at": "2026-06-10T16:03:00Z",
+          "result": "pending_open_pr_runtime_reproduction_needed",
+          "method": "github_pr_review",
+          "notes": "PR is open and directly changes verifier tests for two Polyglot tasks. Body reports oracle reward 1.0 after the fix, but there is no maintainer confirmation/merge and no local pre/post Harbor run recorded. Keep uncounted until runtime reproduction confirms old verifier fails due compiled artifacts and PR head fixes it."
+        }
+      ]
+    }
+  ],
+  "completed_l3": [
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-159",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-159.json",
+      "restored_at": "2026-06-10T10:36:53.159Z",
+      "reason": "L3 Docker parent/head custom uniqueness probe reproduced claim"
+    },
+    {
+      "artifact_id": "swebench_multilingual__swe-bench__swe-bench__pr-506",
+      "path": "defects/swebench_multilingual/tasks/_multi-task/swe-bench__swe-bench__pr-506.json",
+      "restored_at": "2026-06-10T10:36:53.160Z",
+      "reason": "Already had L3 reproduction note and was incorrectly quarantined by a format-only filter"
+    },
+    {
+      "artifact_id": "swebench_multilingual__swe-bench__swe-bench__pr-507",
+      "path": "defects/swebench_multilingual/tasks/_multi-task/swe-bench__swe-bench__pr-507.json",
+      "restored_at": "2026-06-10T10:36:53.160Z",
+      "reason": "Already had L3 reproduction note and was incorrectly quarantined by a format-only filter"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-161",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-161.json",
+      "restored_at": "2026-06-10T10:40:07.172Z",
+      "reason": "L3 Docker uniqueness probe reproduced 9x9 Sudoku claim; mini_sudoku links removed"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-215",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-215.json",
+      "restored_at": "2026-06-10T10:42:00.767Z",
+      "reason": "L3 Docker scorer probe reproduced PoolMatrix correct answers scored 0 before fix and 1 after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-251",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-251.json",
+      "restored_at": "2026-06-10T10:43:19.931Z",
+      "reason": "L3 Docker issue repro showed depth-constrained KnightsKnaves assertion before fix and successful generation after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-380",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-380.json",
+      "restored_at": "2026-06-10T10:44:54.707Z",
+      "reason": "L3 Docker issue example showed number_sorting correct answer scored 0 before fix and 1 after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-485",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-485.json",
+      "restored_at": "2026-06-10T10:47:12.740Z",
+      "reason": "L3 Docker generation probe reproduced ZeroDivisionError before fix and 100000 successful generations after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-514",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-514.json",
+      "restored_at": "2026-06-10T10:48:30.094Z",
+      "reason": "L3 Docker countdown probe reproduced target/expression mismatch before fix and 5/5 match after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-406",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-406.json",
+      "restored_at": "2026-06-10T11:02:22.121Z",
+      "reason": "L3 Docker gsm_symbolic generate_27 probe reproduced rounding exception before fix and 1000 clean generations after fix; basic_arithmetic links removed"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-524",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-524.json",
+      "restored_at": "2026-06-10T11:13:30.169Z",
+      "reason": "L3 Docker ratio probe reproduced knight_swap impossible_ratio overshoot before fix and configured ratio after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-330",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-330.json",
+      "restored_at": "2026-06-10T11:17:52.591Z",
+      "reason": "L3 Docker Dice probe reproduced malformed gold answers and canonical answer scoring failure before fix, 100/100 after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-332",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-332.json",
+      "restored_at": "2026-06-10T11:19:42.425Z",
+      "reason": "L3 Docker CodeI/O probe reproduced numeric wrong answer over-scored before fix and low score after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-464",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-464.json",
+      "restored_at": "2026-06-10T11:22:50.303Z",
+      "reason": "L3 Docker color cube probe reproduced enum answer strings scored 0.01 before fix and plain strings scored 1.0 after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-523",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-523.json",
+      "restored_at": "2026-06-10T11:25:14.675Z",
+      "reason": "L3 Docker shortest_path probe reproduced prompt asking for length while gold expected directions before fix; mismatch removed after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-339",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-339.json",
+      "restored_at": "2026-06-10T11:27:05.803Z",
+      "reason": "L3 Docker advanced geometry probe reproduced oracle orthocenter under-scoring before fix and 50/50 full credit after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-383",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-383.json",
+      "restored_at": "2026-06-10T11:29:48.659Z",
+      "reason": "L3 Docker Figlet probe reproduced import failure before fix and successful generation after fix"
+    },
+    {
+      "artifact_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-386",
+      "path": "defects/reasoning-gym-hard/tasks/_multi-task/open-thought__reasoning-gym__pr-386.json",
+      "restored_at": "2026-06-10T11:32:48.478Z",
+      "reason": "L3 Docker zebra clue probe reproduced NameError before fix and CNF generation after fix"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__issue-1",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__issue-11",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__issue-22",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-25",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-26",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-29",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-31",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-34",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-52",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixing"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-62",
+      "completed_at": "2026-06-10T12:35:00Z",
+      "result": "confirmed",
+      "resolution": "fixing"
+    },
+    {
+      "id": "cooperbench__cooperbench__cooperbench__pr-38",
+      "completed_at": "2026-06-10T12:48:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "cooperbench__cooperbench__cooperbench__pr-39",
+      "completed_at": "2026-06-10T12:48:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "cooperbench__cooperbench__cooperbench__pr-40",
+      "completed_at": "2026-06-10T12:48:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "cooperbench__cooperbench__cooperbench__pr-41",
+      "completed_at": "2026-06-10T12:48:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "cooperbench__cooperbench__cooperbench__pr-42",
+      "completed_at": "2026-06-10T12:48:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "ade-bench__dbt-labs__ade-bench__pr-105",
+      "completed_at": "2026-06-10T12:58:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "ade-bench__dbt-labs__ade-bench__pr-106",
+      "completed_at": "2026-06-10T12:58:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "ade-bench__dbt-labs__ade-bench__pr-111",
+      "completed_at": "2026-06-10T12:58:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "ade-bench__dbt-labs__ade-bench__pr-150",
+      "completed_at": "2026-06-10T12:58:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "ade-bench__dbt-labs__ade-bench__pr-34",
+      "completed_at": "2026-06-10T12:58:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "ade-bench__dbt-labs__ade-bench__pr-65",
+      "completed_at": "2026-06-10T12:58:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "bfcl__shishirpatil__gorilla__pr-593",
+      "completed_at": "2026-06-10T13:05:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "bfcl__shishirpatil__gorilla__pr-600",
+      "completed_at": "2026-06-10T13:05:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "bfcl__shishirpatil__gorilla__pr-661",
+      "completed_at": "2026-06-10T13:05:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "bfcl__shishirpatil__gorilla__pr-786",
+      "completed_at": "2026-06-10T13:05:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "bfcl__shishirpatil__gorilla__pr-846",
+      "completed_at": "2026-06-10T13:05:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "quixbugs__jkoppel__quixbugs__pr-11",
+      "completed_at": "2026-06-10T13:12:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "quixbugs__jkoppel__quixbugs__pr-13",
+      "completed_at": "2026-06-10T13:12:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-27",
+      "completed_at": "2026-06-10T13:20:00Z",
+      "result": "confirmed",
+      "resolution": "fixing"
+    },
+    {
+      "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-31",
+      "completed_at": "2026-06-10T13:20:00Z",
+      "result": "confirmed",
+      "resolution": "fixing"
+    },
+    {
+      "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-37",
+      "completed_at": "2026-06-10T13:20:00Z",
+      "result": "confirmed",
+      "resolution": "fixing"
+    },
+    {
+      "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-50",
+      "completed_at": "2026-06-10T13:20:00Z",
+      "result": "confirmed",
+      "resolution": "fixing"
+    },
+    {
+      "id": "bird-bench__alibabaresearch__damo-convai__issue-39",
+      "completed_at": "2026-06-10T13:30:00Z",
+      "result": "confirmed",
+      "resolution": "found"
+    },
+    {
+      "id": "otel-bench__quesmaorg__otel-bench__pr-6",
+      "completed_at": "2026-06-10T13:30:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__issue-289",
+      "completed_at": "2026-06-10T13:47:00Z",
+      "result": "confirmed",
+      "resolution": "found"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__issue-455",
+      "completed_at": "2026-06-10T14:00:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__pr-129",
+      "completed_at": "2026-06-10T14:00:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__pr-184",
+      "completed_at": "2026-06-10T14:00:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__pr-205",
+      "completed_at": "2026-06-10T14:00:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__pr-221",
+      "completed_at": "2026-06-10T14:00:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "swebench-verified__swe-bench__swe-bench__pr-226",
+      "completed_at": "2026-06-10T14:00:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-212",
+      "completed_at": "2026-06-10T14:15:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-237",
+      "completed_at": "2026-06-10T14:15:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-252",
+      "completed_at": "2026-06-10T14:15:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-260",
+      "completed_at": "2026-06-10T14:15:00Z",
+      "result": "confirmed",
+      "resolution": "fixed"
+    },
+    {
+      "id": "arc_agi_2__arcprize__arc-agi-2__pr-20",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "quixbugs__jkoppel__quixbugs__pr-35",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "quixbugs__jkoppel__quixbugs__pr-43",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-144",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-151",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-166",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-175",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-193",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-246",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-277",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed_refinement"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-32",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-405",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-420",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_confirmed_for_attributed_tasks"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-430",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-462",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_with_issue_example"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-511",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_counted_prompt_only"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-515",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_counted_fail_fast_only"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-82",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-92",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-93",
+      "completed_at": "2026-06-10T14:20:00Z",
+      "result": "not_reproduced_by_pr_tests"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-212",
+      "completed_at": "2026-06-10T14:55:00Z",
+      "result": "confirmed",
+      "resolution": "fixed",
+      "evidence": "Docker parent/head probe"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-237",
+      "completed_at": "2026-06-10T14:55:00Z",
+      "result": "confirmed",
+      "resolution": "fixed",
+      "evidence": "Docker parent/head probe"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-252",
+      "completed_at": "2026-06-10T14:55:00Z",
+      "result": "confirmed",
+      "resolution": "fixed",
+      "evidence": "Docker parent/head probe"
+    },
+    {
+      "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-260",
+      "completed_at": "2026-06-10T14:55:00Z",
+      "result": "confirmed",
+      "resolution": "fixed",
+      "evidence": "Docker parent/head probe"
+    },
+    {
+      "completed_at": "2026-06-10T12:12:26.629Z",
+      "result": "confirmed_runtime_reproduced",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-40.json",
+      "artifact_id": "cooperbench__cooperbench__cooperbench__pr-40",
+      "note": "L3 Docker reproduction confirmed CooperBench PR #40. Built tmp/CooperBench-audit/dataset/dspy_task/task8635/Dockerfile as delphik/cooperbench-dspy-task8635:l3. Ran the same runner with feature1/tests.patch plus the parent combined.patch from 6b4282e^ and the fixed combined.patch from 6b4282e. Parent exited 1: tests/propose/test_grounded_proposer.py::test_propose_instructions_for_program[None] failed because pred_instructions was the default \"Given the fields `question`, produce the fields `answer`.\" instead of \"instruction\", matching the min_instr_chars=30 root cause. Head exited 0: base tests reported 7 passed and feature1 secondary tests reported 9 passed. Logs: tmp/cooper-pr40-l3/logs/parent.log and tmp/cooper-pr40-l3/logs/head.log."
+    },
+    {
+      "completed_at": "2026-06-10T12:15:14.131Z",
+      "result": "confirmed_runtime_reproduced",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-38.json",
+      "artifact_id": "cooperbench__cooperbench__cooperbench__pr-38",
+      "note": "L3 Docker reproduction confirmed CooperBench PR #38. Built tmp/CooperBench-audit/dataset/go_chi_task/task56/Dockerfile as delphik/cooperbench-go-chi-task56:l3. Ran feature1/tests.patch plus the parent combined.patch from 1e95393^ and the fixed combined.patch from 1e95393. Parent exited 1: TestMethodNotAllowed failed because Allow was emitted as a single \"GET, HEAD\" header value, and TestSetAllowHeader failed with repeated Allow methods. Head exited 0: github.com/go-chi/chi/v5 and github.com/go-chi/chi/v5/middleware both reported ok. Logs: tmp/cooper-pr38-l3/logs/parent.log and tmp/cooper-pr38-l3/logs/head.log."
+    },
+    {
+      "completed_at": "2026-06-10T12:18:49.864Z",
+      "result": "confirmed_runtime_reproduced",
+      "restored_path": "defects/cooperbench/tasks/_multi-task/cooperbench__cooperbench__pr-41.json",
+      "artifact_id": "cooperbench__cooperbench__cooperbench__pr-41",
+      "note": "L3 Docker reproduction confirmed CooperBench PR #41. Built tmp/CooperBench-audit/dataset/react_hook_form_task/task153/Dockerfile as delphik/cooperbench-react-hook-form-task153:l3. Ran feature2/tests.patch plus the parent combined.patch from 6690bd1^ and the fixed combined.patch from 6690bd1. Parent exited 1: the handleSubmit onFinally tests failed because onFinallyCallback was called 0 times in three cases. Head exited 0: the same handleSubmit test suite reported 20 passed. Logs: tmp/cooper-pr41-l3/logs/parent.log and tmp/cooper-pr41-l3/logs/head.log."
+    },
+    {
+      "completed_at": "2026-06-10T12:58:37.852Z",
+      "artifact_id": "ade-bench__dbt-labs__ade-bench__pr-34",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-34.json",
+      "result": "confirmed_fixed",
+      "method": "ade_cli_parent_head_all_affected_tasks",
+      "logs": [
+        "tmp/ade-pr34-logs/parent-quickbooks001.log",
+        "tmp/ade-pr34-logs/parent-rest.log",
+        "tmp/ade-pr34-logs/head-all.log",
+        "tmp/ade-pr34-logs/parent-output/l3-pr34-parent-quickbooks001/results.json",
+        "tmp/ade-pr34-logs/parent-rest-output/l3-pr34-parent-rest/results.json",
+        "tmp/ade-pr34-logs/head-all-output/l3-pr34-head-all/results.json"
+      ],
+      "summary": "ADE CLI parent/head comparison confirmed PR #34: parent quickbooks001-004 fail with dbt compile_error, fixed PR head passes all four tasks."
+    },
+    {
+      "completed_at": "2026-06-10T13:17:37.137Z",
+      "artifact_id": "ade-bench__dbt-labs__ade-bench__pr-150",
+      "restored_path": "defects/ade-bench/tasks/_multi-task/dbt-labs__ade-bench__pr-150.json",
+      "result": "confirmed_fixed",
+      "method": "ade_cli_parent_head_all_affected_tasks",
+      "logs": [
+        "tmp/ade-pr150-logs/parent-all.log",
+        "tmp/ade-pr150-logs/head-all.log",
+        "tmp/ade-pr150-logs/parent-output/l3-pr150-parent-all__none/results.json"
+      ],
+      "summary": "ADE CLI parent/head comparison confirmed PR #150: parent dbt-fusion+duckdb analytics_engineering variants fail 8/8; fixed head removes those broken variants."
+    },
+    {
+      "completed_at": "2026-06-10T13:22:27.379Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__issue-1",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-1.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/16de56c4.json",
+      "before_ref": "16dfa80^",
+      "after_ref": "16dfa80",
+      "diff_summary": {
+        "cells": 2,
+        "rows": 0,
+        "paths": [
+          "test[0].input[8][18]:0->7",
+          "test[0].input[8][19]:7->0"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:27.876Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__issue-11",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-11.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/d8e07eb2.json",
+      "before_ref": "bebec78^",
+      "after_ref": "14fba87",
+      "diff_summary": {
+        "cells": 9,
+        "rows": 0,
+        "paths": [
+          "train[0].output[1][7]:2->1",
+          "train[0].output[1][8]:2->1",
+          "train[0].output[1][9]:3->1",
+          "train[0].output[2][7]:2->3",
+          "train[0].output[2][8]:2->1",
+          "train[0].output[2][9]:2->3",
+          "train[0].output[3][7]:3->1",
+          "train[0].output[3][8]:2->1"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:28.371Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__issue-22",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__issue-22.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/247ef758.json",
+      "before_ref": "8b454b5^",
+      "after_ref": "8b454b5",
+      "diff_summary": {
+        "cells": 2,
+        "rows": 0,
+        "paths": [
+          "test[0].input[7][5]:9->4",
+          "test[0].input[7][19]:9->4"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:28.859Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-25",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-25.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/f931b4a8.json",
+      "before_ref": "f6f1821^",
+      "after_ref": "f6f1821",
+      "diff_summary": {
+        "cells": 24,
+        "rows": 0,
+        "paths": [
+          "train[2].output[0][8]:1->8",
+          "train[2].output[1][9]:1->8",
+          "train[2].output[2][8]:1->8",
+          "train[2].output[5][0]:8->6",
+          "train[2].output[5][2]:8->6",
+          "train[2].output[5][5]:6->8",
+          "train[2].output[5][7]:6->8",
+          "train[2].output[5][8]:1->6"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:29.336Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-26",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-26.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/cb2d8a2c.json",
+      "before_ref": "c504e66^",
+      "after_ref": "c504e66",
+      "diff_summary": {
+        "cells": 6,
+        "rows": 0,
+        "paths": [
+          "test[0].output[0][1]:1->2",
+          "test[0].output[0][17]:1->2",
+          "test[0].output[2][17]:1->2",
+          "test[0].output[4][17]:1->2",
+          "test[0].output[11][7]:1->2",
+          "test[0].output[13][7]:1->2"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:29.813Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-29",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-29.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/a25697e4.json",
+      "before_ref": "b4cfa09^",
+      "after_ref": "b4cfa09",
+      "diff_summary": {
+        "cells": 12,
+        "rows": 0,
+        "paths": [
+          "train[0].output[7][4]:1->3",
+          "train[0].output[7][5]:1->3",
+          "train[0].output[7][6]:1->3",
+          "train[0].output[7][7]:1->3",
+          "train[0].output[7][8]:1->3",
+          "train[0].output[8][4]:3->1",
+          "train[0].output[8][5]:3->1",
+          "train[0].output[8][6]:3->1"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:30.302Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-31",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-31.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/6e4f6532.json",
+      "before_ref": "8cb4173^",
+      "after_ref": "1f097f0",
+      "diff_summary": {
+        "cells": 10,
+        "rows": 0,
+        "paths": [
+          "test[0].output[18][6]:8->7",
+          "test[0].output[19][5]:1->7",
+          "test[0].output[20][5]:7->1",
+          "test[0].output[20][6]:7->8",
+          "test[0].output[21][10]:7->8",
+          "test[0].output[21][11]:7->8",
+          "test[0].output[22][10]:7->8",
+          "test[0].output[22][11]:7->8"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:30.779Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-34",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-34.json",
+      "result": "confirmed_fixed",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/8e5c0c38.json",
+      "before_ref": "dc08f3d^",
+      "after_ref": "dc08f3d",
+      "diff_summary": {
+        "cells": 5,
+        "rows": 0,
+        "paths": [
+          "test[0].output[17][6]:1->4",
+          "test[0].output[18][8]:4->1",
+          "test[0].output[19][1]:1->4",
+          "test[0].output[20][8]:4->1",
+          "test[0].output[21][6]:1->4"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:30.812Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-52",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-52.json",
+      "result": "confirmed_fixing",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/581f7754.json",
+      "before_ref": "main",
+      "after_ref": "pr-52",
+      "diff_summary": {
+        "cells": 8,
+        "rows": 0,
+        "paths": [
+          "train[1].output[3][8]:3->8",
+          "train[1].output[3][11]:8->3",
+          "train[1].output[4][8]:3->8",
+          "train[1].output[4][9]:1->3",
+          "train[1].output[4][10]:3->1",
+          "train[1].output[4][11]:8->3",
+          "train[1].output[5][8]:3->8",
+          "train[1].output[5][11]:8->3"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:22:30.841Z",
+      "artifact_id": "arc_agi_2__arcprize__arc-agi-2__pr-62",
+      "restored_path": "defects/arc_agi_2/tasks/_multi-task/arcprize__arc-agi-2__pr-62.json",
+      "result": "confirmed_fixing",
+      "method": "arc_agi_2_json_parent_head_diff",
+      "task_file": "data/evaluation/88e364bc.json",
+      "before_ref": "main",
+      "after_ref": "pr-62",
+      "diff_summary": {
+        "cells": 2,
+        "rows": 0,
+        "paths": [
+          "test[0].output[4][12]:4->0",
+          "test[0].output[8][16]:0->4"
+        ]
+      }
+    },
+    {
+      "completed_at": "2026-06-10T13:26:01.356Z",
+      "artifact_id": "bfcl__shishirpatil__gorilla__pr-593",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-593.json",
+      "result": "confirmed_fixed",
+      "method": "bfcl_data_artifact_parent_head_diff",
+      "commit": "3850c2b",
+      "changed_files": [
+        "berkeley-function-call-leaderboard/data/BFCL_v2_chatable.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_irrelevance.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_irrelevance.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_relevance.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_simple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json"
+      ],
+      "scalar_changes": 14,
+      "array_length_changes": 2,
+      "text_line_changes": 0,
+      "text_fallback_files": 0,
+      "sample_paths": [
+        "berkeley-function-call-leaderboard/data/BFCL_v2_irrelevance.json:root[49].function[0].name:\"get_co-ordinate\"->\"get_co_ordinate\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_irrelevance.json:root[157].question[0].role:\"system\"->\"user\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_simple.json:root[79].question[0].content:\"You are an AI programming assistant, utilizing the Gorilla LLM model, developed by Gorilla LLM, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer. If your response contains function you have to put <<function>> infront of it.\\n### Instruction: <<function>>[[{\\\"name\\\": \\\"Search hotels\\\", \\\"api_name\\\": \\\"search_hotels\\\", \\\"description\\\": \\\"Retrieves hotels from the search\\\", \\\"parameters\\\": [{\\\"name\\\": \\\"location\\\", \\\"description\\\": \\\"The location of the hotel (i.e. Seattle, WA)\\\"}]}]]\\n<<question>>Find hotels in San Diego\\n### Response: \"->\"You are an AI programming assistant, utilizing the Gorilla LLM model, developed by Gorilla LLM, and you only answer questions related to computer science. For politically sensitive questions, security and privacy issues, and other non-computer science questions, you will refuse to answer. <<question>>Find hotels in San Diego\\n\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_live_simple.json:root[79].question[0].role:\"system\"->\"user\"",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json:root[0].ground_truth[0].get_current_weather.unit.length:1->2",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json:root[0].ground_truth[0].get_current_weather.unit[0]:\"fahrenheit\"->\"\"",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json:root[0].ground_truth[0].get_current_weather.unit[1]:undefined->\"fahrenheit\"",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json:root[0].ground_truth[1].get_current_weather.unit.length:1->2",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json:root[0].ground_truth[1].get_current_weather.unit[0]:\"fahrenheit\"->\"\"",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_live_parallel.json:root[0].ground_truth[1].get_current_weather.unit[1]:undefined->\"fahrenheit\""
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:26:01.631Z",
+      "artifact_id": "bfcl__shishirpatil__gorilla__pr-600",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-600.json",
+      "result": "confirmed_fixed",
+      "method": "bfcl_data_artifact_parent_head_diff",
+      "commit": "def80a4",
+      "changed_files": [
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_parallel.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_parallel_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_simple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_multiple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_parallel.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_parallel_multiple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v2_simple.json"
+      ],
+      "scalar_changes": 66,
+      "array_length_changes": 11,
+      "text_line_changes": 0,
+      "text_fallback_files": 0,
+      "sample_paths": [
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[0].parameters.properties.date.default:\"Tomorrow\"->undefined",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[0].parameters.properties.date.description:\"The date for the UV index.\"->\"The date for the UV index, in the format mm-dd-yyyy.\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[0].parameters.required.length:1->2",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[0].parameters.required[1]:undefined->\"date\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[1].parameters.properties.date.description:\"The date for the rainfall prediction. Default 'Tomorrow'\"->\"The date for the rainfall prediction, in the format mm/dd/yyyy.'\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[1].parameters.required.length:1->2",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[1].parameters.required[1]:undefined->\"date\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_multiple.json:root[64].function[2].parameters.properties.date.description:\"The date for the snowfall prediction. Default 'Tomorrow'\"->\"The date for the snowfall prediction, in the format mm-dd-yyyy.\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_parallel.json:root[45].function[0].description:\"This function retrieves the most played song in a particular genre from a specified region\"->\"This function retrieves the current most played song in a particular genre from a specified region\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v2_parallel.json:root[49].function[0].parameters.properties.season.description:\"The season for which player's status need to be checked. Optional. Default is current season.\"->\"The season for which player's status need to be checked. Optional. Default is season 2023.\""
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:26:01.962Z",
+      "artifact_id": "bfcl__shishirpatil__gorilla__pr-661",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-661.json",
+      "result": "confirmed_fixed",
+      "method": "bfcl_data_artifact_parent_head_diff",
+      "commit": "57a3400",
+      "changed_files": [
+        "berkeley-function-call-leaderboard/data/BFCL_v3_irrelevance.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_parallel.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_parallel_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_simple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_multiple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_parallel.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_parallel_multiple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_simple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_parallel_multiple.json"
+      ],
+      "scalar_changes": 453,
+      "array_length_changes": 80,
+      "text_line_changes": 526,
+      "text_fallback_files": 1,
+      "sample_paths": [
+        "berkeley-function-call-leaderboard/data/BFCL_v3_irrelevance.json:root[196].function[0].parameters.properties.initial_scores.required:undefined->[\"player_id\",\"score\"]",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_irrelevance.json:root[196].function[0].parameters.properties.initial_scores.requried:[\"player_id\",\"score\"]->undefined",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 1",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 2",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 5",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 9",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 19",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 24",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 26",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:line 35"
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:26:02.061Z",
+      "artifact_id": "bfcl__shishirpatil__gorilla__pr-786",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-786.json",
+      "result": "confirmed_fixed",
+      "method": "bfcl_data_artifact_parent_head_diff",
+      "commit": "716ea6e",
+      "changed_files": [
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_javascript.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_multiple.json"
+      ],
+      "scalar_changes": 9,
+      "array_length_changes": 0,
+      "text_line_changes": 0,
+      "text_fallback_files": 0,
+      "sample_paths": [
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json:root[67].ground_truth[0].MacDmgBundler.prepareDMGSetupScript.params[0].APP_NAME:\"PhotoEditor\"->[\"PhotoEditor\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json:root[67].ground_truth[0].MacDmgBundler.prepareDMGSetupScript.params[1].IMAGES_ROOT:\"/path/to/images\"->[\"/path/to/images\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json:root[67].ground_truth[0].MacDmgBundler.prepareDMGSetupScript.params[2].BACKGROUND_IMAGE_FOLDER:\"background\"->[\"background\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json:root[67].ground_truth[0].MacDmgBundler.prepareDMGSetupScript.params[3].BACKGROUND_IMAGE:\"custom-bg.png\"->[\"custom-bg.png\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json:root[68].ground_truth[0].MacBaseInstallerBundler.validateAppImageAndBundeler.params[0]./Applications/MyApp.app:\"MyApp\"->[\"MyApp\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_javascript.json:root[5].ground_truth[0].manageReactState.hooks[0].useDispatchAction:\"useDispatchActionHook\"->[\"useDispatchActionHook\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_javascript.json:root[5].ground_truth[0].manageReactState.hooks[0].useStateSelector:\"useStateSelectorHook\"->[\"useStateSelectorHook\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_multiple.json:root[189].ground_truth[0].sendHttpRequest.data[0].email:\"john.doe@example.com\"->[\"john.doe@example.com\"]",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_multiple.json:root[189].ground_truth[0].sendHttpRequest.data[0].name:\"John Doe\"->[\"John Doe\"]"
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:26:02.390Z",
+      "artifact_id": "bfcl__shishirpatil__gorilla__pr-846",
+      "restored_path": "defects/bfcl/tasks/_multi-task/shishirpatil__gorilla__pr-846.json",
+      "result": "confirmed_fixed",
+      "method": "bfcl_data_artifact_parent_head_diff",
+      "commit": "5bd63a9",
+      "changed_files": [
+        "berkeley-function-call-leaderboard/data/BFCL_v3_exec_parallel_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_javascript.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_parallel.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_javascript.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_live_multiple.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_parallel.json",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_parallel_multiple.json"
+      ],
+      "scalar_changes": 13,
+      "array_length_changes": 2,
+      "text_line_changes": 0,
+      "text_fallback_files": 0,
+      "sample_paths": [
+        "berkeley-function-call-leaderboard/data/BFCL_v3_exec_parallel_multiple.json:root[30].ground_truth.length:3->2",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_exec_parallel_multiple.json:root[30].ground_truth[0]:\"get_zipcode_by_ip_address(ip_address='192.168.1.1')\"->\"retrieve_city_based_on_zipcode(zipcode='08540')\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_exec_parallel_multiple.json:root[30].ground_truth[1]:\"retrieve_city_based_on_zipcode(zipcode='08540')\"->\"calculate_displacement(initial_velocity=20, acceleration=2, time=10)\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_exec_parallel_multiple.json:root[30].ground_truth[2]:\"calculate_displacement(initial_velocity=20, acceleration=2, time=10)\"->undefined",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_javascript.json:root[3].function[0].parameters.properties.coordinates.description:\"An array of two numbers representing the x and y coordinates relative to the element's bounding box, in percentages.\"->\"An array of two numbers representing the x and y coordinates relative to the element's bounding box in the format of [x,y], in percentages.\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_live_multiple.json:root[945].question[0][0].content:\"I'd like to hear the song 'Wo noor'. Could you set the audio to a comfortable volume, say about 50, before playing it?\"->\"I'd like to hear the song 'Wo noor'.\"",
+        "berkeley-function-call-leaderboard/data/BFCL_v3_parallel.json:root[195].question[0][0].content:\"Can you provide a brief about the movie \\\"Inception\\\" and then retrieve additional information like Director, Cast, Awards etc. for the same movie \\\"Inception\\\" and also for the movie \\\"The Dark Knight\\\"?\"->\"Can you retrieve additional information like Director, Cast, Awards etc. for the same movie \\\"Inception\\\" and also for the movie \\\"The Dark Knight\\\"?\"",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_java.json:root[94].ground_truth[0].NFILibrary.isMemberReadable.recursive[1]:null->\"null\"",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_javascript.json:root[3].ground_truth[0].submitAtCoordinate.coordinates[0][0]:0.6->60",
+        "berkeley-function-call-leaderboard/data/possible_answer/BFCL_v3_javascript.json:root[3].ground_truth[0].submitAtCoordinate.coordinates[0][1]:0.3->30"
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:29:30.799Z",
+      "artifact_id": "quixbugs__jkoppel__quixbugs__pr-11",
+      "restored_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-11.json",
+      "result": "confirmed_fixed",
+      "method": "quixbugs_json_testcase_parent_head_diff",
+      "commit": "e7d9872",
+      "file": "json_testcases/knapsack.json",
+      "diffs": [
+        {
+          "line": 9,
+          "before": "[[170, [[41, 442], [50, 525], [49, 511], [59, 593], [55, 546], [57, 564], [60, 617]]], 1652]",
+          "after": "[[170, [[41, 442], [50, 525], [49, 511], [59, 593], [55, 546], [57, 564], [60, 617]]], 1735]"
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:29:30.828Z",
+      "artifact_id": "quixbugs__jkoppel__quixbugs__pr-13",
+      "restored_path": "defects/quixbugs/tasks/_multi-task/jkoppel__quixbugs__pr-13.json",
+      "result": "confirmed_fixed",
+      "method": "quixbugs_json_testcase_parent_head_diff",
+      "commit": "c2cdf9f",
+      "file": "json_testcases/pascal.json",
+      "diffs": [
+        {
+          "line": 1,
+          "before": "[[1], [1]]",
+          "after": "[[1], [[1]]]"
+        }
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:30:16.411Z",
+      "artifact_id": "swebench_multilingual__swe-bench__swe-bench__pr-506",
+      "restored_path": "defects/swebench_multilingual/tasks/_multi-task/swe-bench__swe-bench__pr-506.json",
+      "result": "confirmed_fixed",
+      "method": "swebench_multilingual_pre_post_regression_test",
+      "logs": [
+        "tmp/l3-harbor-jobs/l3-probe-pr506-lucene-11760",
+        "tmp/l3-harbor-jobs/l3-swebench_multilingual__swe-bench__swe-bench__pr-506",
+        "/tmp/swebench-l3-results/pr506-base.log",
+        "/tmp/swebench-l3-results/pr506-head.log"
+      ]
+    },
+    {
+      "completed_at": "2026-06-10T13:31:32.709Z",
+      "artifact_id": "otel-bench__quesmaorg__otel-bench__pr-6",
+      "restored_path": "defects/otel-bench/tasks/_multi-task/quesmaorg__otel-bench__pr-6.json",
+      "result": "confirmed_fixed",
+      "method": "otel_solution_artifact_parent_head_diff",
+      "commit": "06ccd56",
+      "changed_files": [
+        "datasets/otel/cpp-distributed-context-propagation/solution/solve.sh",
+        "datasets/otel/go-distributed-context-propagation/solution/solve.sh",
+        "datasets/otel/java-distributed-context-propagation/solution/solve.sh",
+        "datasets/otel/php-distributed-context-propagation/solution/solve.sh",
+        "datasets/otel/python-distributed-context-propagation/solution/solve.sh"
+      ]
+    }
+  ],
+  "updated_at": "2026-06-10T16:03:00Z"
+}

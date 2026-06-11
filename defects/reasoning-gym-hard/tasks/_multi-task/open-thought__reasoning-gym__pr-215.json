@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-215",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-algorithmic-pool-matrix-hard0292e21f-seed45-1",
+    "reasoning-gym-algorithmic-pool-matrix-hard0292e21f-seed45-0",
+    "reasoning-gym-algorithmic-pool-matrix-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix PoolMatrixConfigs::score_answer(), add unit tests",
+  "summary": "Reasoning-gym PR fixes PoolMatrixConfigs.score_answer and adds unit tests, directly repairing a benchmark scorer.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/215",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/215",
+    "https://github.com/open-thought/reasoning-gym/issues/214"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-25T23:38:04.000Z",
+  "last_reviewed_at": "2026-06-10T10:42:00.766Z",
+  "decision_note": "L3 reproduced the PoolMatrix scorer defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 92c8be16990306158dd495c50e6443e04ff02b95 and PR head 2d747b43f9530da3d227cc7313017511c191bb05 were installed with pip install -e . and evaluated on 20 PoolMatrixDataset(seed=42) examples by passing each oracle answer into score_answer. Parent printed Pool Matrix scoring errors and returned FULL_CREDIT 0/20 with all scores 0.0; PR head returned FULL_CREDIT 20/20 with all scores 1.0. Logs: tmp/reasoning-gym-regression/pr-215-parent-custom.log and tmp/reasoning-gym-regression/pr-215-head-custom.log.",
+  "affected_task_count": 3
+}

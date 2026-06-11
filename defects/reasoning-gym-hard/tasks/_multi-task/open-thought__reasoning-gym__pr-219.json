@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-219",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-0",
+    "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-1",
+    "reasoning-gym-cognition-color-cube-rotation-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix Cube Rotation Scoring",
+  "summary": "Color Cube Rotation scoring was broken according to o3 evals; PR fixes comparison to entry answer and adds scoring tests.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/219",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/219"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-26T11:55:30.000Z",
+  "last_reviewed_at": "2026-06-10T10:55:00Z",
+  "decision_note": "L3 Docker regression audit. Preflight passed: harbor 0.4.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction used local upstream clone tmp/reasoning-gym-audit and Docker image delphik/reasoning-gym-audit:py311 built from tmp/reasoning-gym-audit.Dockerfile. Command: node tmp/run-reasoning-gym-pr-regression.mjs 219. The runner fetched PR #219, checked out the PR head and its parent, overlaid the PR head regression test files onto both revisions, then ran pytest inside Docker with pip install -e '.[test]'. Parent with PR head regression test failed: score_answer returned 0.01 instead of 1.0 for the correct Color.ORANGE answer; PR head passed 4 tests. This directly reproduces the color_cube_rotation scoring defect. Logs: tmp/reasoning-gym-regression/pr-219-parent.log and tmp/reasoning-gym-regression/pr-219-head.log. This confirms the migrated multi-task artifact as a task-impacting benchmark defect for the listed hard task rows.",
+  "affected_task_count": 3
+}

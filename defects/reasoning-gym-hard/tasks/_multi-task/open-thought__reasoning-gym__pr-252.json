@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-252",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-algorithmic-word-sequence-reversal-hard0292e21f-seed45-0",
+    "reasoning-gym-algorithmic-word-sequence-reversal-hard0292e21f-seed45-1",
+    "reasoning-gym-algorithmic-word-sequence-reversal-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "small change to word sequence reversal prompt",
+  "summary": "Word-sequence-reversal prompt omitted the required comma-separated format, causing an objectively correct answer without commas to score 0.01; PR adds explicit format instructions.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/252",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/252"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-02T09:20:25.000Z",
+  "last_reviewed_at": "2026-06-10T15:05:00Z",
+  "decision_note": "L3 Docker probe confirmed word_sequence_reversal prompt/scoring mismatch. Reproduction used local open-thought/reasoning-gym parent/head checkouts inside delphik/reasoning-gym-audit:py311 and tmp/probe-reasoning-gym-pr212-237-252-260.py word_prompt. Parent result tmp/reasoning-gym-regression/pr252-parent-word_prompt.json showed the question did not mention comma-separated output, while the objectively reversed no-comma answer scored 0.01 and the comma-form answer scored 1.0. PR head tmp/reasoning-gym-regression/pr252-head-word_prompt.json added comma-format instruction while preserving the same scorer behavior. This matches the PR body example and confirms a task-facing benchmark defect.",
+  "affected_task_count": 3
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-383",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-cognition-figlet-font-hard0292e21f-seed45-0",
+    "reasoning-gym-cognition-figlet-font-hard0292e21f-seed45-1",
+    "reasoning-gym-cognition-figlet-font-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "fix figlet font curr imports",
+  "summary": "PR fixes figlet-font curriculum imports and interval metadata after the earlier version was not mergeable/working.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/383",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/383"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-18T14:19:16.000Z",
+  "last_reviewed_at": "2026-06-10T11:29:48.658Z",
+  "decision_note": "L3 reproduced the figlet_fonts import/generation defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 814da6e08ac79f28d48999a785f1f521a2fdfde9 and PR head d2ce7a2eb4663e3b90d124b77080a67650796b3f were installed with pip install -e . and run with tmp/probe-reasoning-gym-pr383-figlet.py. Parent failed on import with ImportError: cannot import name AttributeType from reasoning_gym.coaching; PR head imported FigletFontDataset and generated 5 examples successfully. Logs: tmp/reasoning-gym-regression/pr-383-parent-custom-v2.log and tmp/reasoning-gym-regression/pr-383-head-custom-v2.log.",
+  "affected_task_count": 3
+}

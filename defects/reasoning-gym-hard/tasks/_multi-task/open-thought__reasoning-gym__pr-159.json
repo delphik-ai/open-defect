@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-159",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-mini-sudoku-hard0292e21f-seed45-0",
+    "reasoning-gym-games-mini-sudoku-hard0292e21f-seed45-1",
+    "reasoning-gym-games-mini-sudoku-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Resolve mini sudoku generator outputting non-unique puzzles",
+  "summary": "Reasoning-gym PR resolves mini Sudoku generation of non-unique puzzles, choosing unique generation over accepting multiple possible solutions in scoring.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/159",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/159"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-18T18:48:27.000Z",
+  "last_reviewed_at": "2026-06-10T10:36:53.157Z",
+  "decision_note": "L3 reproduced the PR claim with a Docker parent/head probe against open-thought/reasoning-gym. Probe command used the local delphik/reasoning-gym-audit:py311 image, checked out parent 1fcbc04f01ac048b628d15d2f0664db1029c2cf6 and PR head 473368bbeacd47bafaa8a0cdcc5bd545b988767f, installed the package, generated 200 mini_sudoku samples with seed=0 and min_empty=8/max_empty=12, and counted valid solutions independently. Parent produced NONUNIQUE_COUNT 109 with samples such as indices 0, 1, 2, 6, 7, 9, 12, 13, 16, 19; PR head produced NONUNIQUE_COUNT 0. Logs: tmp/reasoning-gym-regression/pr-159-parent-custom.log and tmp/reasoning-gym-regression/pr-159-head-custom.log.",
+  "affected_task_count": 3
+}

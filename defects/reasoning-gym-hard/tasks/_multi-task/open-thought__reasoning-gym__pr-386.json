@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-386",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-logic-zebra-puzzles-hard0292e21f-seed45-0",
+    "reasoning-gym-logic-zebra-puzzles-hard0292e21f-seed45-1",
+    "reasoning-gym-logic-zebra-puzzles-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix small bit of old code",
+  "summary": "PR removes a stale sat_utils qualifier from zebra clue generation, allowing the generator to use the full available clue set instead of failing on the old reference.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/386",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/386"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-19T19:04:22.000Z",
+  "last_reviewed_at": "2026-06-10T11:32:48.477Z",
+  "decision_note": "L3 reproduced the zebra_puzzles right_of clue generator defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent b69c35818ab551a0a3b150ca02de3e9b01e23a4a and PR head 6c4de8fd8b370798ab962c4f6ef801f0d9308662 were installed with pip install -e . and run with tmp/probe-reasoning-gym-pr386-zebra.py. Parent failed right_of(Color.red, Nationality.dane).as_cnf() with NameError: sat_utils is not defined; PR head returned CNF_LEN 19. Logs: tmp/reasoning-gym-regression/pr-386-parent-custom-v2.log and tmp/reasoning-gym-regression/pr-386-head-custom-v2.log.",
+  "affected_task_count": 3
+}

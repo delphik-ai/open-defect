@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-524",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-knight-swap-hard0292e21f-seed45-0",
+    "reasoning-gym-games-knight-swap-hard0292e21f-seed45-1",
+    "reasoning-gym-games-knight-swap-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix impossible_ratio not being respected in knight_swap",
+  "summary": "Fix knight_swap impossible_ratio generation.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/524",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/524",
+    "https://github.com/open-thought/reasoning-gym/issues/521"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-03-27T15:18:08Z",
+  "last_reviewed_at": "2026-06-10T11:13:30.168Z",
+  "decision_note": "L3 reproduced the knight_swap impossible_ratio defect with a Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 49b1dbbcce173ef65456a6dc7ce0a5b5cb930c84 and PR head 304558a67374de0abdb3c46f7a5d121599e0fe94 were installed with pip install -e . and run with KnightSwapConfig(seed=42, size=500, impossible_ratio=0.2, max_attempts=100). Parent generated 233/500 impossible puzzles, ratio 0.466, outside the configured 0.2 target; PR head generated 114/500, ratio 0.228, within the 0.10..0.30 acceptance band. Logs: tmp/reasoning-gym-regression/pr-524-parent-custom.log and tmp/reasoning-gym-regression/pr-524-head-custom.log.",
+  "affected_task_count": 3
+}

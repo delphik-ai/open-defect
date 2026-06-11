@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-212",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-algorithmic-graph-color-hard0292e21f-seed45-0",
+    "reasoning-gym-algorithmic-graph-color-hard0292e21f-seed45-1",
+    "reasoning-gym-algorithmic-graph-color-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Add llama-3.3-70b-instruct algebra, algorithmic eval configs",
+  "summary": "Fix graph_colour score_answer handling.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/212",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/212",
+    "https://github.com/open-thought/reasoning-gym/issues/213"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-25T22:46:08Z",
+  "last_reviewed_at": "2026-06-10T15:05:00Z",
+  "decision_note": "L3 Docker probe confirmed graph_colour scorer robustness defect. Reproduction used local open-thought/reasoning-gym parent/head checkouts inside delphik/reasoning-gym-audit:py311 and tmp/probe-reasoning-gym-pr212-237-252-260.py graph_score. Parent result tmp/reasoning-gym-regression/pr212-parent-graph_score.json raised JSONDecodeError on an invalid Python-dict-style model answer; PR head tmp/reasoning-gym-regression/pr212-head-graph_score.json did not raise and returned score 0.0. This confirms the pre-fix evaluator could crash instead of assigning a safe incorrect score.",
+  "affected_task_count": 3
+}

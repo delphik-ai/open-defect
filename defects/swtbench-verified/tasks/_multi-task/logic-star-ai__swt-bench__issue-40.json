@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swtbench-verified__logic-star-ai__swt-bench__issue-40",
+  "benchmark_name": "swtbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "pylint-dev__pylint-6386",
+    "pylint-dev__pylint-6903",
+    "pylint-dev__pylint-7080",
+    "sphinx-doc__sphinx-8459",
+    "sphinx-doc__sphinx-8475",
+    "sphinx-doc__sphinx-8548",
+    "sphinx-doc__sphinx-8551",
+    "sphinx-doc__sphinx-8593",
+    "sphinx-doc__sphinx-8595",
+    "sphinx-doc__sphinx-8621",
+    "sphinx-doc__sphinx-8638",
+    "sphinx-doc__sphinx-8721"
+  ],
+  "resolution": "found",
+  "title": "Gold Patch Failures/Errors in SWT-Bench Verified",
+  "summary": "SWT-Bench Verified gold/oracle evaluation still fails on 12 of the 14 instances reported in issue #40.",
+  "canonical_source_url": "https://github.com/logic-star-ai/swt-bench/issues/40",
+  "evidence_urls": [
+    "https://github.com/logic-star-ai/swt-bench/issues/40",
+    "https://github.com/logic-star-ai/swt-bench/issues/40#issuecomment-3659640224"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-12-16T03:35:15.000Z",
+  "last_reviewed_at": "2026-06-10T09:23:00Z",
+  "decision_note": "L3 full affected-set reproduction. Preflight passed, then ran: harbor run -d swtbench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 2 --job-name l3-queue-swt-issue40-all -i <14 issue #40 task names> -y --no-delete --timeout-multiplier 1. The job completed 14/14 with no exceptions. Current swtbench-verified@1.0 reproduced reward 0 for 12 tasks: pylint-dev__pylint-6386, pylint-dev__pylint-6903, pylint-dev__pylint-7080, sphinx-doc__sphinx-8459, sphinx-doc__sphinx-8475, sphinx-doc__sphinx-8548, sphinx-doc__sphinx-8551, sphinx-doc__sphinx-8593, sphinx-doc__sphinx-8595, sphinx-doc__sphinx-8621, sphinx-doc__sphinx-8638, sphinx-doc__sphinx-8721. It returned reward 1 for astropy__astropy-8872 and pylint-dev__pylint-7277, so those two reported tasks are not counted in this current artifact. Maintainer/collaborator comment confirms the Sphinx class of failure in the latest repository.",
+  "affected_task_count": 12
+}

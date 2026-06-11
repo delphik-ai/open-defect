@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-251",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-logic-knights-knaves-hard0292e21f-seed45-1",
+    "reasoning-gym-logic-knights-knaves-hard0292e21f-seed45-0",
+    "reasoning-gym-logic-knights-knaves-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "fixed problems in knights_knaves",
+  "summary": "PR fixes #245 by adding depth_constraint support for knights_knaves, removing problematic variables, and adding unit tests.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/251",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/251",
+    "https://github.com/open-thought/reasoning-gym/issues/245"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-03-02T06:45:36.000Z",
+  "last_reviewed_at": "2026-06-10T10:43:19.930Z",
+  "decision_note": "L3 reproduced issue #245 with the issue-provided Docker parent/head probe against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent a66a7e796552ff23410508a6c696a6f1a70a9988 and PR head c03832e9ec7c4bfa5da3123fc3615d410e6312ce were installed with pip install -e . and run on three KnightsKnavesConfig examples from the issue, including n_people=5, depth_constraint=5, width_constraint=5, seed=42. Parent generated the first two examples but failed the depth-constrained case with AssertionError in _format_knight_knave; PR head generated all three configs successfully. Logs: tmp/reasoning-gym-regression/pr-251-parent-custom.log and tmp/reasoning-gym-regression/pr-251-head-custom.log.",
+  "affected_task_count": 3
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-161",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-sudoku-hard0292e21f-seed45-0",
+    "reasoning-gym-games-sudoku-hard0292e21f-seed45-1",
+    "reasoning-gym-games-sudoku-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixed",
+  "title": "Fix Sudoku generator for uniqueness, implement scoring",
+  "summary": "Reasoning-gym PR fixes 9x9 Sudoku generation to ensure unique puzzles and adds scoring; mini_sudoku is not attributed to this PR because it remains non-unique at this PR head and is covered by PR #159.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/161",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/161"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2025-02-18T21:39:29.000Z",
+  "last_reviewed_at": "2026-06-10T10:40:07.171Z",
+  "decision_note": "L3 reproduced the PR claim with Docker parent/head probes against open-thought/reasoning-gym. Using image delphik/reasoning-gym-audit:py311, parent 1fcbc04f01ac048b628d15d2f0664db1029c2cf6 and PR head 75802c6a1cfab9630dac46b93f30f1ed58dee3b7 were checked out, installed with pip install -e ., and tested with tmp/probe-reasoning-gym-sudoku-uniqueness.py. For 9x9 sudoku, parent produced NONUNIQUE_COUNT 26/50 and PR head produced NONUNIQUE_COUNT 0/50. The same probe showed mini_sudoku still had NONUNIQUE_COUNT 54/100 at this PR head, so mini_sudoku task links were removed from this artifact and remain attributed to PR #159. Logs: tmp/reasoning-gym-regression/pr-161-parent-sudoku.log, tmp/reasoning-gym-regression/pr-161-head-sudoku.log, tmp/reasoning-gym-regression/pr-161-head-mini_sudoku.log.",
+  "affected_task_count": 3
+}

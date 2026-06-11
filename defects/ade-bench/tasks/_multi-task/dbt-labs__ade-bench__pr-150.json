@@ -1,0 +1,28 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__pr-150",
+  "benchmark_name": "ade-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "ade-bench-ana-eng001",
+    "ade-bench-ana-eng002",
+    "ade-bench-ana-eng002-medium",
+    "ade-bench-ana-eng004",
+    "ade-bench-ana-eng005",
+    "ade-bench-ana-eng006",
+    "ade-bench-ana-eng007",
+    "ade-bench-ana-eng007-medium"
+  ],
+  "resolution": "fixed",
+  "title": "Disable dbt-fusion + duckdb variant on 6 analytics_engineering tasks",
+  "summary": "ADE-bench disables dbt-fusion+duckdb variants on six tasks because an upstream duckdb-driver bug made always-pass CI fail.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/150",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/150"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-05-27T21:34:51.000Z",
+  "last_reviewed_at": "2026-06-10T13:17:37.132Z",
+  "decision_note": "L3 ADE-Bench runtime reproduction for PR #150. Prepared git worktrees at parent b781cbb^ and fixed b781cbb, linked release DuckDB files, and ran ADE CLI with the solution agent on Docker-backed duckdb/dbt-fusion tasks. Parent run: `uv run ade run analytics_engineering001 analytics_engineering002 analytics_engineering004 analytics_engineering005 analytics_engineering006 analytics_engineering007 --db duckdb --project-type dbt-fusion --agent sage --n-concurrent-trials 1 --run-id l3-pr150-parent-all --output-path tmp/ade-pr150-logs/parent-output` expanded to 8 trials and failed 8/8: analytics_engineering001, 002, 002.medium, 004, 005, 006, 007, 007.medium all had eval_error with failing dbt tests. Fixed run: the same command at b781cbb reported `No tasks have matching database and project type configurations` and ran 0/0 because PR #150 removes the broken dbt-fusion + duckdb variants from those task YAML files. The parent/head split confirms the broken variant was task-impacting and fixed by disabling that invalid variant.",
+  "affected_task_count": 8
+}
