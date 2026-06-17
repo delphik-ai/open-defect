@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/hilbenchauthors/hil-bench/issues/1",
+  "repo": "hilbenchauthors/hil-bench",
+  "source_type": "github_issue",
+  "github_number": 1,
+  "title": "Upload to the Harbor registry",
+  "body": "You should prebuild the Docker images and set them in `task.toml [environment.docker_image]`.\n\nAnd then upload to the harbor registry so people can skip all the build steps and just run\n\nharbor run -d scale-ai/hilbench directly",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-04-21T03:43:46Z",
+  "github_updated_at": "2026-04-21T03:43:46Z",
+  "candidate_benchmark_names": [
+    "hil-bench"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Request to upload the dataset to the Harbor registry; not a benchmark defect.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/issues/1"
+  ]
+}

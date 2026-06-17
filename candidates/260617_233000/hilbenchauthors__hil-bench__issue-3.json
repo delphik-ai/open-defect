@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/hilbenchauthors/hil-bench/issues/3",
+  "repo": "hilbenchauthors/hil-bench",
+  "source_type": "github_issue",
+  "github_number": 3,
+  "title": "Data hosted at [REDACTED]?",
+  "body": "Is the [REDACTED] intentional?\n\n\"The public dataset is hosted externally on Hugging Face at [REDACTED]\"",
+  "comments": [
+    {
+      "url": "https://github.com/hilbenchauthors/hil-bench/issues/3#issuecomment-4291435202",
+      "user": "hilbenchauthors",
+      "created_at": "2026-04-21T20:05:06Z",
+      "updated_at": "2026-04-21T20:05:06Z",
+      "body": "Fixed!"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-04-21T03:47:31Z",
+  "github_updated_at": "2026-04-21T20:05:06Z",
+  "candidate_benchmark_names": [
+    "hil-bench"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Closed question about data hosting; not a benchmark defect.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/issues/3"
+  ]
+}

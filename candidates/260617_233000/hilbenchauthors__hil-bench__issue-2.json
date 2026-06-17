@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/hilbenchauthors/hil-bench/issues/2",
+  "repo": "hilbenchauthors/hil-bench",
+  "source_type": "github_issue",
+  "github_number": 2,
+  "title": "harbor_swe path missing?",
+  "body": "(no issue body)",
+  "comments": [
+    {
+      "url": "https://github.com/hilbenchauthors/hil-bench/issues/2#issuecomment-4336351832",
+      "user": "sam571128",
+      "created_at": "2026-04-28T14:43:40Z",
+      "updated_at": "2026-04-28T14:43:40Z",
+      "body": "+1. Wanted to try running this with Harbor, but noticed that the tasks are not there yet"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-04-21T03:46:32Z",
+  "github_updated_at": "2026-04-28T14:43:40Z",
+  "candidate_benchmark_names": [
+    "hil-bench"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Empty-body setup question ('harbor_swe path missing?'); nothing substantiable as a defect.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/issues/2"
+  ]
+}

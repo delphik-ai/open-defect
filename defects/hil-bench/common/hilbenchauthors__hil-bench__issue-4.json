@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "hil-bench__hilbenchauthors__hil-bench__issue-4",
+  "benchmark_name": "hil-bench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Shallow-copy aliasing shares _agent_config across (model, mode) expansions",
+  "summary": "In create_mixed_mode_instances() (hil_bench/scripts/swe.py#L735) instances are duplicated per (model, mode) with a shallow instance.copy(); a nested extra_fields dict is shared by reference across expansions. The later in-place ps_extra.update(extra) / top_extra.update(extra) (#L777-L787) mutates that shared dict, so every expansion's _agent_config is overwritten on each model_configs iteration. ask_human mode silently loses its tool bundle, corrupting mixed-mode evaluation.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "aliasing_bug",
+  "canonical_source_url": "https://github.com/hilbenchauthors/hil-bench/issues/4",
+  "evidence_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/issues/4",
+    "https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/hil_bench/scripts/swe.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-11T01:06:57Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read + linked source (swe.py#L735, #L761, #L777-L787). Clear reference-aliasing bug affecting eval correctness. Fix not yet filed, no maintainer ack -> resolution found. L2."
+}

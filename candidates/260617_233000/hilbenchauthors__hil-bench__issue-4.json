@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/hilbenchauthors/hil-bench/issues/4",
+  "repo": "hilbenchauthors/hil-bench",
+  "source_type": "github_issue",
+  "github_number": 4,
+  "title": "Shallow copy in create_mixed_mode_instances() makes _agent_config shared across modes (ask_human silently loses its tool bundle)",
+  "body": "## Summary\n\nIn `create_mixed_mode_instances()` ([hil_bench/scripts/swe.py#L735](https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/hil_bench/scripts/swe.py#L735)), instances are duplicated per `(model, mode)` combination with a **shallow** copy:\n\n```python\nnew_instance = instance.copy()\n```\n\nand for SQL instances the `problem_statement` is also only shallow-copied ([#L761](https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/hil_bench/scripts/swe.py#L761)):\n\n```python\nnew_instance[\"problem_statement\"] = new_instance[\"problem_statement\"].copy()\n```\n\nIf the input instance already contains an `extra_fields` dict (top-level for SWE, inside `problem_statement` for SQL), that nested dict is **shared by reference** across all `(model, mode)` expansions of the same original instance. The subsequent in-place write ([#L777-L787](https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/hil_bench/scripts/swe.py#L777-L787)):\n\n```python\nps_extra = ps.get(\"extra_fields\", {})\nps_extra.update(extra)          # extra = {\"_model_name\": ..., \"_agent_config\": base_config}\nps[\"extra_fields\"] = ps_extra\n```\n\n(and the analogous `top_extra.update(extra)` for SWE) then mutates that shared dict, so the `_agent_config` of every expansion is overwritten on each iteration of the `model_configs` loop. **Last writer wins**: with the usual mode order `baseline → ask_human → full_info`, *all* expansions of an instance end up with the `full_info` agent config.\n\n## Impact\n\nThe most visible casualty is `ask_human` mode: its instances lose the ask_human tool bundle (their `_agent_config` is replaced by the last mode's config, which doesn't include the ask tool). The agent therefore never has the ask tool available, which shows up in results as `num_questions = 0` and `ask_f1 = 0.0` for the entire ask_human arm, with no error or warning anywhere.\n\n`TASK_INSTANCE_ID` ([#L812-L825](https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/hil_bench/scripts/swe.py#L812-L825)) is written into the same shared dict and gets clobbered the same way.\n\n## Trigger condition\n\nThe bug only fires when the input `instances.json` entries already carry an `extra_fields` key (otherwise `.get(\"extra_fields\", {})` creates a fresh dict per expansion). But the repo's own workspace builder produces exactly that: `run_hil_bench.py` emits `\"extra_fields\": {}` inside `problem_statement` for SQL instances ([run_hil_bench.py#L293](https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/run_hil_bench.py#L293)) and a populated top-level `extra_fields` for SWE instances ([#L381](https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/run_hil_bench.py#L381)), so the standard pipeline hits this out of the box.\n\n## Minimal reproduction\n\nThis mirrors the exact copy/update sequence from `create_mixed_mode_instances()`:\n\n```python\ninstance = {\n    \"problem_statement\": {\"id\": \"task-1\", \"extra_fields\": {}},  # as produced by run_hil_bench.py\n}\n\nexpanded = []\nfor mode in [\"baseline\", \"ask_human\", \"full_info\"]:\n    base_config = {\"mode\": mode}                      # stand-in for the per-mode agent config\n\n    new_instance = instance.copy()                    # L735 (shallow)\n    new_instance[\"problem_statement\"] = new_instance[\"problem_statement\"].copy()  # L761 (shallow)\n\n    ps = new_instance[\"problem_statement\"]\n    ps_extra = ps.get(\"extra_fields\", {})             # returns the SHARED dict\n    ps_extra.update({\"_agent_config\": base_config})   # mutates it in place\n    ps[\"extra_fields\"] = ps_extra\n    expanded.append((mode, new_instance))\n\nfor mode, inst in expanded:\n    print(mode, \"->\", inst[\"problem_statement\"][\"extra_fields\"][\"_agent_config\"])\n```\n\nOutput:\n\n```\nbaseline -> {'mode': 'full_info'}\nask_human -> {'mode': 'full_info'}\nfull_info -> {'mode': 'full_info'}\n```\n\nExpected: each expansion keeps its own mode's `_agent_config`.\n\n## Suggested fix\n\nReplace the shallow copy with a deep copy:\n\n```python\nimport copy\n...\nnew_instance = copy.deepcopy(instance)\n```\n\nI've verified locally that this one-line change fixes the issue: with it, ask_human instances retain the ask tool config and `num_questions` / `ask_f1` are non-zero again. Happy to send a PR if useful.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-11T01:06:57Z",
+  "github_updated_at": "2026-06-11T01:06:57Z",
+  "candidate_benchmark_names": [
+    "hil-bench"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "Confirmed via thread read + linked source (swe.py#L735, #L761, #L777-L787). Clear reference-aliasing bug affecting eval correctness. Fix not yet filed, no maintainer ack -> resolution found. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/issues/4",
+    "https://github.com/hilbenchauthors/hil-bench/blob/352d14c861f2531949dfa91848d4b2fe46b8a247/hil_bench/scripts/swe.py"
+  ],
+  "benchmark_name": "hil-bench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "In create_mixed_mode_instances() (hil_bench/scripts/swe.py#L735) instances are duplicated per (model, mode) with a shallow instance.copy(); a nested extra_fields dict is shared by reference across expansions. The later in-place ps_extra.update(extra) / top_extra.update(extra) (#L777-L787) mutates that shared dict, so every expansion's _agent_config is overwritten on each model_configs iteration. ask_human mode silently loses its tool bundle, corrupting mixed-mode evaluation.",
+  "defect_title": "Shallow-copy aliasing shares _agent_config across (model, mode) expansions",
+  "defect_type_main": "harness",
+  "defect_type_sub": "aliasing_bug",
+  "linked_defect_id": "hil-bench__hilbenchauthors__hil-bench__issue-4"
+}
