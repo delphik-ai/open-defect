@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/35",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 35,
+  "title": "Kimi K2.7 just dropped",
+  "body": "I would be curious to see an accurate \"non-benchmaxed\" benchmark for this model.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-12T13:53:04Z",
+  "github_updated_at": "2026-06-12T13:53:04Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/35"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

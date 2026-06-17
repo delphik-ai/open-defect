@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__pr-72",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "postgres-sqlite-wire-adapter"
+  ],
+  "resolution": "fixed",
+  "title": "Postgres-TAP tests could hang on deadlocks",
+  "summary": "The postgres task's TAP tests could hang on deadlocks, blocking partial scores. Per-suite and per-test timeouts were added so hangs are killed and partial scores are recorded.",
+  "defect_type_main": "verifier",
+  "defect_type_sub": "timeout_hang",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/pull/72",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/pull/72"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-15T07:00:38Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Fix PR merged 2026-06-15 (verified MERGED via GitHub API) -> resolution fixed. L2."
+}

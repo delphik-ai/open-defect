@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/vals-ai/finance-agent/pull/47",
+  "repo": "vals-ai/finance-agent",
+  "source_type": "github_pr",
+  "github_number": 47,
+  "title": "Preserve braces in retrieval prompts",
+  "body": "## Summary\n\n- replace `str.format()` prompt interpolation in `retrieve_information` with direct `{{key}}` substitution\n- preserve ordinary braces in prompts, such as JSON output schemas or dictionary examples\n- add focused tests for JSON-style prompts and character-range extraction\n\n## Why\n\nFinancial research prompts often ask the retrieval tool to return structured JSON with sources or citations. The previous implementation converted `{{stored_key}}` to `{stored_key}` and then called `str.format()`, so unrelated braces in the prompt could be interpreted as format fields and raise a `KeyError` before the LLM call.\n\n## Validation\n\n- `python -m pytest tests\\test_tools.py -q`\n- `python -m py_compile finance_agent\\tools.py tests\\test_tools.py`\n- `python -m ruff check finance_agent\\tools.py tests\\test_tools.py`\n- `git diff --check` (only Windows line-ending warnings)\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/vals-ai/finance-agent/pull/47#issuecomment-4668679924",
+      "user": "assert-app[bot]",
+      "created_at": "2026-06-10T09:36:05Z",
+      "updated_at": "2026-06-10T09:37:53Z",
+      "body": "**[Review on Assert →](https://app.assert.dev/review/github/vals-ai/finance-agent/47)**\n\n3 clusters identified, 0 previews generated"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/finance_agent/tools.py b/finance_agent/tools.py\nindex 64d55c3..4a54b44 100644\n--- a/finance_agent/tools.py\n+++ b/finance_agent/tools.py\n@@ -452,14 +452,7 @@ def _format_prompt(self, prompt: str, ranges_dict: dict[str, tuple[int, int]], s\n             else:\n                 formatted_data[key] = doc_content\n \n-        formatted_prompt = re.sub(r\"{{([^{}]+)}}\", r\"{\\1}\", prompt)\n-\n-        try:\n-            return formatted_prompt.format(**formatted_data)\n-        except KeyError as e:\n-            raise KeyError(\n-                f\"ERROR: The key {str(e)} was not found in the data storage. Available keys are: {', '.join(state.keys())}\"\n-            )\n+        return re.sub(r\"{{([^{}]+)}}\", lambda match: str(formatted_data[match.group(1)]), prompt)\n \n     async def execute(self, args: dict[str, Any], state: dict[str, Any], logger: logging.Logger) -> ToolOutput:\n         try:\ndiff --git a/tests/test_tools.py b/tests/test_tools.py\nnew file mode 100644\nindex 0000000..d12edaf\n--- /dev/null\n+++ b/tests/test_tools.py\n@@ -0,0 +1,30 @@\n+from finance_agent.tools import RetrieveInformation\n+\n+\n+def test_retrieve_information_prompt_preserves_json_braces() -> None:\n+    tool = RetrieveInformation(llm=None)  # type: ignore[arg-type]\n+    state = {\n+        \"filing_excerpt\": \"Revenue was $383.29 billion in fiscal 2023.\",\n+    }\n+    prompt = (\n+        'Return JSON like {\"answer\": \"...\", \"sources\": []} using this filing: '\n+        \"{{filing_excerpt}}\"\n+    )\n+\n+    formatted = tool._format_prompt(prompt, {}, state)\n+\n+    assert formatted == (\n+        'Return JSON like {\"answer\": \"...\", \"sources\": []} using this filing: '\n+        \"Revenue was $383.29 billion in fiscal 2023.\"\n+    )\n+\n+\n+def test_retrieve_information_prompt_applies_character_range() -> None:\n+    tool = RetrieveInformation(llm=None)  # type: ignore[arg-type]\n+    state = {\n+        \"filing_excerpt\": \"0123456789\",\n+    }\n+\n+    formatted = tool._format_prompt(\"Use {{filing_excerpt}}\", {\"filing_excerpt\": (2, 6)}, state)\n+\n+    assert formatted == \"Use 2345\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-10T09:36:02Z",
+  "github_updated_at": "2026-06-10T09:37:53Z",
+  "candidate_benchmark_names": [
+    "financeagent"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "financeagent",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "str.format() mangles braces in retrieval prompts",
+  "summary": "retrieve_information interpolates prompts with str.format(), so ordinary braces in prompts (e.g. JSON output schemas or dictionary examples) are treated as format fields and raise KeyError before the LLM call. The fix replaces this with direct {{key}} substitution.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "prompt_formatting",
+  "decision_note": "Confirmed via PR description + tests. Fix PR OPEN, no maintainer ack -> resolution found. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "financeagent__vals-ai__finance-agent__pr-47",
+  "checked_urls": [
+    "https://github.com/vals-ai/finance-agent/pull/47"
+  ]
+}

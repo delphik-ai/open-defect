@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__issue-69",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "revideo-perf-opt"
+  ],
+  "resolution": "found",
+  "title": "Contradictory baseline-access rules and impossible correctness target",
+  "summary": "Task revideo-perf-opt gives contradictory rules: the workspace starts at revideo v0.4.2 but the verifier compares output against v0.4.4 while forbidding /baseline access. Correct, untouched v0.4.2 output still scores 0 (3/8 correctness), and the correctness oracle is unknowable during the agent phase.",
+  "defect_type_main": "task_spec",
+  "defect_type_sub": "contradictory_requirements",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/69",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/69"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-03T09:27:48Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read; reporter includes a self-test table of verifier behavior. L2."
+}

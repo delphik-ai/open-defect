@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/2",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 2,
+  "title": "Advice for Newcomers: How to Evaluate Open Source Projects",
+  "body": "@rucnyz @kaijiezhu11\n\nIf you're just starting your journey in open source, I'd like to share some hard-won advice about evaluating projects. I've been building and contributing to open-source software for many years, and I've seen my share of projects that aren't what they seem. This repository happens to illustrate several patterns worth learning about.\n\n**Stars are a signal, not a verdict.** Think of a star count the way you'd think of a restaurant's rating on a review site. It's a starting point, but you wouldn't eat somewhere based solely on a number. You'd read the reviews, look at photos of the food, maybe check how the owner responds to complaints.\n\n**Look for signs of life, not signs of popularity.** A thriving project has conversations happening in its issues. People submit pull requests and get feedback. The maintainers are visibly present and engaged. When you see a high star count paired with a ghost-town community, that mismatch should make you pause.\n\n**Inspect the audience, not just the applause.** Take a few minutes to click through the profiles of recent stargazers. Real developers have repositories, contributions, and varied activity. If what you find instead is a sea of empty, freshly-minted profiles, that tells you something important.\n\n**Try before you trust.** Clone the project. Read the code. Run it. Does it actually work? Is the documentation accurate and helpful? There's no substitute for firsthand experience. Projects that invest in stars over substance tend to fall apart the moment you actually try to use them.\n\n**Watch the growth story.** Healthy projects grow in response to real-world events -- a conference talk, a popular blog post, a mention by a well-known developer. If you can't find any external reason for a sudden surge in stars, be skeptical.\n\nI hope this helps some of you avoid the kind of frustration that comes from trusting a number over your own judgment. Open source is wonderful, but it requires the same critical thinking you'd apply anywhere else.",
+  "comments": [
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/2#issuecomment-3922698386",
+      "user": "kaijiezhu11",
+      "created_at": "2026-02-18T19:17:29Z",
+      "updated_at": "2026-02-18T19:17:29Z",
+      "body": "Hi @rifacnt17,\n\nIf you have evidence that we bought GitHub stars, please report it to GitHub immediately.\n\nAlso, it is quite ironic to receive a lecture on 'trust' and 'authenticity' from a burner account. Please use your main account next time :)"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-16T19:29:42Z",
+  "github_updated_at": "2026-06-03T10:45:13Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/2"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Generic 'advice for newcomers' spam, unrelated to any benchmark defect."
+}

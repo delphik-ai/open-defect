@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/30",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 30,
+  "title": "[Bug] 8 tasks have official `solution.patch` files that fail grading.",
+  "body": "## Summary\n\nI ran every task in the 113-task DeepSWE set through the official grader twice:\n1. **pure base commit** → run `test.sh base`\n2. **apply `solution/solution.patch`** → run `test.sh base` and `test.sh new`\n\nA task should be gradable iff the official solution yields `reward=1` (i.e. `base` exit 0 **and** `new` exit 0).\n\n**Result: 105 / 113 pass with the official solution. 8 do not.** Of those 8, 6 are image/dependency drift (the task itself is fine, it just cannot be graded in the current image) and 2 are real failures where the solution does not satisfy the hidden `new` tests.\n\n## Category A — image / dependency drift (6 tasks)\n\nRoot cause: the task `Dockerfile` installs deps via `pip install -e \".[...]\"` **without pinning versions** (e.g. `polars<=1.40.0`). Images built later than the authoring date pull newer dependencies that introduce deprecations / behavior changes. In all 6, the **failing `base` tests are unrelated to the task**, and the `new` (feature) tests pass. The official solution presumably passed because the traj was recorded against an earlier image build with older deps.\n\n| Task | Failing `base` tests (unrelated to task) | `new` | Root cause | Suggested fix |\n|---|---|---|---|---|\n| `narwhals-rolling-window-suite` | base: interchange tests (test_get_level, test_interchange_schema, ...) fail with `DeprecationWarning: dataframe interchange protocol deprecated since 1.40.0` under `filterwarnings=error` | new passes | polars resolved to 1.40.1 at image build time. After downgrading to 1.39.3, base passes (10091 passed, 0 failed). | Pin polars<1.40, or add the interchange DeprecationWarning to the filterwarnings allowlist |\n| `skrub-duration-encoding` | base: test_apply_to_cols.py::*[polars] (98 failed) | new passes (130 passed) | polars version drift. base fails on polars-related tests unrelated to the duration-encoder task. | Pin polars to the version used at authoring time |\n| `dateutil-rfc5545-timezone-interop` | base: test_tz.py::ZoneInfo* (41 failed, UserWarning: I/O error on tz data) | new passes (71 passed) | base fails on timezone tests unrelated to the rrule task. | Fix tz-data / dependency in the image |\n| `langchain-request-coalescing` | base: test_runnable.py::test_prompt_with_chat_model (1 snapshot mismatch) | new passes (50 passed) | base fails on a snapshot test unrelated to the coalescing task. | Refresh snapshot or pin the drifting dependency |\n| `fd-deterministic-multi-key-sorting` | base: test_exec_nulls (rust panic at tests/testenv/mod.rs:294, exit 101) | new passes (47 passed) | base fails on an exec test unrelated to the sorting task. | Investigate test_exec_nulls environment dependency |\n| `igel-persist-feature-schema` | base & new: `No module named pytest` | Running with `/opt/venv/bin/python -m pytest` -> 2 passed | `/app/test.sh` invokes bare `python -m pytest`, but the default `/usr/local/bin/python` has no pytest; pytest lives in `/opt/venv`. | Make /app/test.sh use the venv python (e.g. `/opt/venv/bin/python` or activate the venv) |\n\n### Confirmed example (narwhals)\n- Image `polars` = **1.40.1** (installed at build time `2026-05-13`, same timestamp as image creation).\n- `filterwarnings = [\"error\", ...]` in `pyproject.toml` turns the interchange `DeprecationWarning` into a hard error; the allowlist does not cover it.\n- The base commit message is literally `chore: silence deprecationwarning we cannot do anything about` — written against an older polars where interchange was not yet deprecated.\n- **Downgrading to `polars==1.39.3` → `base` = 10091 passed, 0 failed.** Confirms it is purely version drift, not a task bug.\n\n## Category B — real failures: official solution fails the `new` tests (2 tasks)\n\nThese are **not** flaky and **not** dependency drift — `new` (the actual feature gate) fails deterministically across 3/3 runs with the official solution applied. Worth a direct look.\n\n| Task | `new` failure (3/3 stable) | Suggested fix |\n|---|---|---|\n| `mnamer-daemon-watch-lifecycle` | new: test_daemon_start_with_valid_config_exits_zero -> subprocess.TimeoutExpired after 3.0s | Relax the 3s timeout or investigate daemon stop behavior |\n| `helm-unified-manifest-stream` | new: TestDeterministicRenderOrdering/deterministic_ordering_in_install_dry-run | Review the solution patch and/or the test assertion |\n\n## Reproduction\n\nPer task, inside the task image:\n```bash\ngit reset --hard <base_commit> && git clean -fd\ngit apply --whitespace=nowarn solution/solution.patch          # category B: skip to see base-only\n# reset files touched by test.patch, then:\ngit apply --whitespace=nowarn tests/test.patch\nbash /app/test.sh base    # exit 0 expected\nbash /app/test.sh new     # exit 0 expected\n```",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-08T13:19:20Z",
+  "github_updated_at": "2026-06-08T13:19:20Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "narwhals-rolling-window-suite",
+    "skrub-duration-encoding",
+    "dateutil-rfc5545-timezone-interop",
+    "langchain-request-coalescing",
+    "fd-deterministic-multi-key-sorting",
+    "igel-persist-feature-schema",
+    "mnamer-daemon-watch-lifecycle",
+    "helm-unified-manifest-stream"
+  ],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "8 tasks whose official solution.patch fails grading",
+  "summary": "Across the 113-task DeepSWE set, 8 tasks' official solution.patch fails grading: 6 from unpinned dependency drift in the task Dockerfile (newer deps break unrelated base tests under filterwarnings=error; e.g. polars 1.40 in narwhals-rolling-window-suite, confirmed fixed by downgrading to 1.39.3) and 2 where the official solution deterministically fails the hidden new tests (mnamer-daemon-watch-lifecycle, helm-unified-manifest-stream).",
+  "defect_type_main": "grading",
+  "defect_type_sub": "dependency_drift",
+  "decision_note": "Confirmed via thread read; reporter ran the official grader twice with per-task evidence and a reproduction recipe. L2 (not independently re-run).",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-30",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/30"
+  ]
+}

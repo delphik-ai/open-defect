@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__issue-33",
+  "benchmark_name": "gso",
+  "scope": "task_specific",
+  "task_names": [
+    "gso-abetlen--llama-cpp-python-218d361"
+  ],
+  "resolution": "found",
+  "title": "Reference patch fails the functional-equivalence oracle",
+  "summary": "Task gso-abetlen--llama-cpp-python-218d361: the dataset reference patch applies and installs, but fails the GSO functional-equivalence check with a deterministic completion mismatch on prompt 0 for an LLM-generation workload, so the oracle cannot pass its own equivalence gate.",
+  "defect_type_main": "oracle",
+  "defect_type_sub": "equivalence_too_strict",
+  "canonical_source_url": "https://github.com/gso-bench/gso/issues/33",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/issues/33"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-14T02:57:09Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read; reporter includes the AssertionError. L2 (not re-run in Harbor)."
+}

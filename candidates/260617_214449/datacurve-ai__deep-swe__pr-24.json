@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/24",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 24,
+  "title": "fix(quill-shared-toolbar-focus): accept W3C-equivalent aria-disabled removal in restore test",
+  "body": "## Hi there\r\n\r\nFirst off, thank you for putting this benchmark together — the `quill-shared-toolbar-focus` task is really well constructed. While working through it I ran into one small thing in the grader and wanted to share it, in case it's useful.\r\n\r\n### What I noticed\r\n\r\nThe test **\"restores shared controls after switching away from a read-only editor\"** checks that the picker label's `aria-disabled` attribute is exactly the string `'false'` once the editor is re-enabled:\r\n\r\n```js\r\nexpect(\r\n  (getSizePickerLabel(toolbar) as HTMLElement).getAttribute('aria-disabled'),\r\n).toBe('false');\r\n```\r\n\r\nA solution that clears the disabled state by **removing** the attribute (a pretty common and accessibility-friendly approach) ends up with `getAttribute('aria-disabled') === null`, so it fails here — even though, as far as I can tell, it's perfectly standards-compliant.\r\n\r\n### Why I think both should be accepted\r\n\r\nPer WAI-ARIA, the `true/false` value type defaults to `false`, which means an **absent** `aria-disabled` is semantically equivalent to `aria-disabled=\"false\"` — both say \"not disabled\":\r\n\r\n- WAI-ARIA states & properties (`true/false` → default `false`): https://www.w3.org/TR/wai-aria-1.0/states_and_properties\r\n- WAI-ARIA 1.2, `aria-disabled` (normative): https://www.w3.org/TR/wai-aria-1.2/#aria-disabled\r\n- MDN, `aria-disabled` — *\"Toggle the value to false (or remove the attribute entirely)\"*: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-disabled\r\n\r\nSo the test currently leans toward one specific representation and rejects the other equally-valid one.\r\n\r\n### Suggested change\r\n\r\nA tiny one-liner that accepts both `null` and `'false'`, while still failing on `'true'` (i.e. still disabled):\r\n\r\n```diff\r\n-    ).toBe('false');\r\n+    ).not.toBe('true');\r\n```\r\n\r\nI intentionally left the companion **\"disables shared controls when read-only\"** assertion (`toBe('true')`) as-is — to expose a non-form element (the `<span>` picker label) as disabled, an explicit `aria-disabled=\"true\"` really is needed, since absence would mean enabled.\r\n\r\n### A couple of notes\r\n\r\n- The existing reference solution sets `aria-disabled=\"false\"` explicitly, so it keeps passing — this change only **additionally** accepts the attribute-removal approach.\r\n- This is just a suggestion, and I completely understand if you'd prefer to keep the stricter assertion\r\n\r\nThanks again for maintaining this!\r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/quill-shared-toolbar-focus/tests/test.patch b/tasks/quill-shared-toolbar-focus/tests/test.patch\nindex 421c195b..eaebed18 100644\n--- a/tasks/quill-shared-toolbar-focus/tests/test.patch\n+++ b/tasks/quill-shared-toolbar-focus/tests/test.patch\n@@ -497,7 +497,7 @@ index 00000000..5aa1f1f5\n +    expect(getSizeSelect(toolbar).disabled).toBe(false);\n +    expect(\n +      (getSizePickerLabel(toolbar) as HTMLElement).getAttribute('aria-disabled'),\n-+    ).toBe('false');\n++    ).not.toBe('true');\n +\n +    getBoldButton(toolbar).click();\n +\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-03T13:13:08Z",
+  "github_updated_at": "2026-06-03T13:49:37Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "quill-shared-toolbar-focus"
+  ],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "Grader rejects standards-compliant aria-disabled removal",
+  "summary": "The quill-shared-toolbar-focus grader asserts getAttribute('aria-disabled') is exactly the string 'false' after re-enabling the editor, rejecting the standards-compliant approach of removing the attribute (which yields null). A correct, accessibility-friendly solution fails the restore test.",
+  "defect_type_main": "grading",
+  "defect_type_sub": "overly_strict_assertion",
+  "decision_note": "Confirmed via thread read + PR diff; the asserted test code is quoted. Fix PR OPEN, no maintainer ack -> resolution found. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__pr-24",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/24"
+  ]
+}

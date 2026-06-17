@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Tencent-Hunyuan/AutoCodeBenchmark/pull/7",
+  "repo": "tencent-hunyuan/autocodebenchmark",
+  "source_type": "github_pr",
+  "github_number": 7,
+  "title": "Update README.md with correct paper link",
+  "body": "Fixes #5",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex 0e09b94..9bafc61 100644\n--- a/README.md\n+++ b/README.md\n@@ -22,7 +22,7 @@\n - **2025.12.04** 🚀 - We released ***AutoCodeBench-V2***, built on the original dataset and iteratively refined through top proprietary models and a sandbox to produce 1,000 higher-quality problems! The **leaderboard and evaluation tutorial** are available in [AutoCodeBench-V2](./AutoCodeBench-V2/)!\n - **2025.12.04** 📚 - We released ***AutoCodeInstruct***, a large-scale multilingual dataset equipped with golden answers distilled from DeepSeek-V3-0324, and filtered using Qwen2.5-Coder-7B/32B-Instruct to create two versions suitable for RL and SFT training! The dataset is available at [autocodeinstruct_v3answer_qwen32b.jsonl](https://huggingface.co/datasets/tencent/AutoCodeBenchmark/blob/main/autocodeinstruct_v3answer_qwen32b.jsonl) and [autocodeinstruct_v3answer_qwen7b.jsonl](https://huggingface.co/datasets/tencent/AutoCodeBenchmark/blob/main/autocodeinstruct_v3answer_qwen7b.jsonl). Experimental results can be found in the AutoCodeInstruct section below.\n - **2025.08.15** 🎉 - We released AutoCodeGen, AutoCodeBench series, and Multi-lingual Sandbox!\n-- **2025.08.13** 📄 - We published our [arXiv paper](https://arxiv.org/abs/2411.02906)!\n+- **2025.08.13** 📄 - We published our [arXiv paper](https://arxiv.org/abs/2508.09101)!\n \n \n \n",
+  "github_state": "closed",
+  "github_created_at": "2026-04-17T16:08:02Z",
+  "github_updated_at": "2026-06-08T16:35:32Z",
+  "candidate_benchmark_names": [
+    "autocodebench"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/Tencent-Hunyuan/AutoCodeBenchmark/pull/7"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

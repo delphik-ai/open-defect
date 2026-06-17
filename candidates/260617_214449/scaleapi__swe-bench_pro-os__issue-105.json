@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/105",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_issue",
+  "github_number": 105,
+  "title": "Any plan to upgrade to support mini-swe-agent v2.x?",
+  "body": "hi @jeff-da ,\nIn the past, i used mini-swe-agent version 2.2.7 and swe-bench datasets to evaluate LLM. When trying swe-bench pro, i found the submodule mini-swe-agent is based on version 1.15 which has lots of differences compared to 2.2.7.  The new version has more features and more mature, because mini-swe-agent is chosen by more and more people, i am wondering if there is a plan to upgrade to support mini-swe-agent v2.x? Thanks!\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-03T02:36:32Z",
+  "github_updated_at": "2026-06-03T02:36:32Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/105"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Request to support mini-swe-agent v2.x; harness version question, not a defect."
+}

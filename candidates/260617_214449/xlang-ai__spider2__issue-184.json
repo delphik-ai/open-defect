@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/184",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 184,
+  "title": "Spider 2 Snow credential account - Your account is suspended due to lack of payment method.",
+  "body": "Dear Spider 2 team,\nCan you help me resolve the issue on Spider 2 Snowflake data warehouse. Whenever we try to evaluate using the credential given, it returns:\n\"Your account is suspended due to lack of payment method.\"\nThis seems to be related to an account level issue from  (RSRSBDK-YDB67606).\nThank you!",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/184#issuecomment-4637361990",
+      "user": "KyranFang",
+      "created_at": "2026-06-06T04:23:41Z",
+      "updated_at": "2026-06-06T04:23:41Z",
+      "body": "+1, \"000666 (57014): Your account is suspended due to lack of payment method.\""
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-04-03T15:33:01Z",
+  "github_updated_at": "2026-06-06T04:23:41Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/184"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Snowflake credential account suspended; an external access/provisioning problem, not a task defect."
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/pull/72",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_pr",
+  "github_number": 72,
+  "title": "Add timeouts to tests in postgres task",
+  "body": "add per suite and per test timeout so that postgres-TAP hangs are killed (deadlocks) and partial scores appear\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Verifier-only harness change; no production or candidate build logic, with bounded impact on scoring when suites hit the new limits.\n> \n> **Overview**\n> The postgres-sqlite wire adapter verifier no longer runs **core regression** and **TAP** `make installcheck` without a ceiling. Each invocation is wrapped in `timeout -s KILL` so a candidate that deadlocks on a blocking wire read cannot hang the whole verifier indefinitely.\n> \n> **Regression** (`src/test/regress`) is capped at **1800s**; each **TAP directory** loop iteration is capped at **300s**. On timeout the process is killed, exit status is still captured via `PIPESTATUS`, and the existing log parsers continue to derive partial pass/fail counts before reward computation finishes.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit d1704b1acc29d62d6c5085710dfa3cbbe5d5bdaa. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/postgres-sqlite-wire-adapter/tests/test.sh b/tasks/postgres-sqlite-wire-adapter/tests/test.sh\nindex 33719267..c2aa2cf8 100755\n--- a/tasks/postgres-sqlite-wire-adapter/tests/test.sh\n+++ b/tasks/postgres-sqlite-wire-adapter/tests/test.sh\n@@ -387,7 +387,11 @@ if [ \"${BUILD_OK}\" -eq 1 ] && [ \"${HAS_BINARY}\" -eq 1 ] && [ \"${POSTGRES_SOURCE_\n         WATCHDOG_PID=$!\n \n         set +e\n-        bash -lc \"cd '${HARNESS_ROOT}/src/test/regress' && make installcheck\" 2>&1 | tee \"${REGRESSION_LOG}\"\n+        # Per-suite timeout: a candidate whose wire server deadlocks a TAP/regress\n+        # test (blocks prove on a socket read that never returns) would otherwise\n+        # hang installcheck forever. Bound it so partial pass-counts are still\n+        # parsed and the verifier finishes (hardens the postgres-TAP hang).\n+        timeout -s KILL 1800 bash -lc \"cd '${HARNESS_ROOT}/src/test/regress' && make installcheck\" 2>&1 | tee \"${REGRESSION_LOG}\"\n         regression_exit=${PIPESTATUS[0]}\n         set -e\n \n@@ -519,7 +523,9 @@ PYEOF\n \n         echo \"--- TAP dir: ${rel_dir} (${dir_total} files) ---\" | tee -a \"${TAP_LOG}\"\n         set +e\n-        bash -lc \"cd '${tap_dir}' && make installcheck\" 2>&1 | tee \"${dir_log}\"\n+        # Per-TAP-dir timeout (see regression note above): bound a deadlocking\n+        # sub-suite so the loop proceeds and partial counts are still scored.\n+        timeout -s KILL 300 bash -lc \"cd '${tap_dir}' && make installcheck\" 2>&1 | tee \"${dir_log}\"\n         tap_exit=${PIPESTATUS[0]}\n         set -e\n         cat \"${dir_log}\" >> \"${TAP_LOG}\"\n",
+  "github_state": "closed",
+  "github_created_at": "2026-06-15T07:00:38Z",
+  "github_updated_at": "2026-06-15T07:02:46Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "postgres-sqlite-wire-adapter"
+  ],
+  "resolution": "fixed",
+  "audit_level": "L2",
+  "defect_title": "Postgres-TAP tests could hang on deadlocks",
+  "summary": "The postgres task's TAP tests could hang on deadlocks, blocking partial scores. Per-suite and per-test timeouts were added so hangs are killed and partial scores are recorded.",
+  "defect_type_main": "verifier",
+  "defect_type_sub": "timeout_hang",
+  "decision_note": "Fix PR merged 2026-06-15 (verified MERGED via GitHub API) -> resolution fixed. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__pr-72",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/pull/72"
+  ]
+}

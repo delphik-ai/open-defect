@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Future-House/LAB-Bench/issues/15",
+  "repo": "future-house/lab-bench",
+  "source_type": "github_issue",
+  "github_number": 15,
+  "title": "Related eval: REFUTE (scientific critique & calibration)",
+  "body": "Sharing [REFUTE](https://huggingface.co/datasets/BGPT-OFFICIAL/refute) — complementary open benchmark for scientific critique and epistemic calibration on recent science summaries. Integrator guide: https://huggingface.co/datasets/BGPT-OFFICIAL/refute/blob/main/INTEGRATORS.md",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-05T04:44:24Z",
+  "github_updated_at": "2026-06-05T04:44:24Z",
+  "candidate_benchmark_names": [
+    "labbench"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/Future-House/LAB-Bench/issues/15"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

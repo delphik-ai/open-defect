@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "financeagent__vals-ai__finance-agent__pr-47",
+  "benchmark_name": "financeagent",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "str.format() mangles braces in retrieval prompts",
+  "summary": "retrieve_information interpolates prompts with str.format(), so ordinary braces in prompts (e.g. JSON output schemas or dictionary examples) are treated as format fields and raise KeyError before the LLM call. The fix replaces this with direct {{key}} substitution.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "prompt_formatting",
+  "canonical_source_url": "https://github.com/vals-ai/finance-agent/pull/47",
+  "evidence_urls": [
+    "https://github.com/vals-ai/finance-agent/pull/47"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-10T09:36:02Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via PR description + tests. Fix PR OPEN, no maintainer ack -> resolution found. L2."
+}

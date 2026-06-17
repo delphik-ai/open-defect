@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/25",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 25,
+  "title": "Qwen3.6 27B - echo COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT is not a tool call",
+  "body": "## mini-swe-agent does not submit final output although it emits `COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT`\n\n### Description\n\nI am running the `deep-swe/tasks` benchmark with `mini-swe-agent` against Qwen 3.6 27B via LiteLLM.\n\nThe agent appears to complete the task successfully and emits the expected final submission command:\n\n```bash\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n```\n\nHowever, the tool action is not executed. The run reports `returncode -1` with:\n\n```text\n<exception_info>\naction was not executed\n```\n\nAs a result, the trajectory is saved, but the benchmark does not seem to count the task as submitted and the mean score remains `0.000`.\n\n### Command\n\n```bash\npier run -p deep-swe/tasks \\\n  --agent mini-swe-agent \\\n  --model openai/qwen3.6-27b-autoround \\\n  --agent-kwarg model_class=litellm \\\n  --agent-kwarg temperature=0\n```\n\n### Observed output\n\n```text\n==> python-statemachine-state-data-s__NoUZm9R/agent/mini-swe-agent.txt <==\n\nmini-swe-agent (step 86, $0.00):\nNow let me submit my work since all the required features are implemented and\nall tests are passing.\n\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n\nTool:\n<returncode>\n-1\n<output>\n\n<exception_info>\naction was not executed\n\nExit:\n\nSaved trajectory to '/logs/agent/mini-swe-agent.trajectory.json'\n```\n\nThe benchmark continues running additional trials, but the completed task still results in:\n\n```text\nMean: 0.000\n```\n\nExample progress output:\n\n```text\n0/113 Running trials...\n0:19:52 python-statemachine-state-data-s__NoUZm9R: running agent...\n1/113 Mean: 0.000\n0:23:40 python-statemachine-state-data-s__NoUZm9R: running agent...\n2/113 Mean: 0.000\n0:25:27 query-persist-restored-query-sta__B6rknRV: running agent...\n0:25:26 helm-array-merge-strategies__LiAC4G7: running agent...\n0:05:29 go-git-worktree-merge-conflicts__RMaEv3T: running agent...\n0:01:24 optique-conditional-option-depen__zr4nxt8: starting environment...\n```\n\n### Expected behavior\n\nWhen the agent reaches the final submission step, it should execute the final submit command:\n\n```bash\necho COMPLETE_TASK_AND_SUBMIT_FINAL_OUTPUT\n```\n\nThe task should then be submitted successfully and scored.\n\n### Actual behavior\n\nThe final submit action is not executed:\n\n```text\n<returncode>\n-1\n\n<exception_info>\naction was not executed\n```\n\nThe task does not appear to be submitted, and the benchmark score remains `0.000`.\n\n### Environment\n\n- Benchmark: `deep-swe/tasks`\n- Runner: `pier run`\n- Agent: `mini-swe-agent`\n- Model: `openai/qwen3.6-27b-autoround`\n- Backend: LiteLLM\n- Temperature: `0`\n\n### Possible cause\n\nIt looks like the model emits the correct submit command as plain Markdown/text, but the benchmark runner expects it as an actual executable tool/action call.\n\nThis may be related to one of the following:\n\n- the model output not being parsed as a tool call\n- LiteLLM not mapping the model response into the expected tool-call format\n- the `mini-swe-agent` prompt not being strict enough about final submission format\n- the benchmark runner ignoring commands that are only printed in Markdown/code blocks\n\n### Question\n\nIs this expected behavior when the model prints the submit command instead of calling the tool directly?\n\nShould this be fixed in the agent prompt, the LiteLLM adapter/model configuration, or the benchmark runner?",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-03T14:14:17Z",
+  "github_updated_at": "2026-06-03T18:03:02Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/25"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "mini-swe-agent did not submit final output; a harness/agent issue, not a benchmark task defect."
+}

@@ -188,5 +188,17 @@
   ],
   "xlang-ai/spider2": [
     "spider2-dbt"
+  ],
+  "datacurve-ai/deep-swe": [
+    "deep-swe"
+  ],
+  "Proximal-Labs/frontier-swe": [
+    "frontier-swe"
+  ],
+  "Mercor-Intelligence/apex-swe": [
+    "apex-swe"
+  ],
+  "abundant-ai/swe-marathon": [
+    "swe-marathon"
   ]
 }

@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/32",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 32,
+  "title": "Can you run Qwen3.7 Plus/Max?",
+  "body": "As the title says. I think Qwen3.7 Max may be a strong OSS model, but would love to see the score on this benchmark.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/32#issuecomment-4683829898",
+      "user": "ColRuDev",
+      "created_at": "2026-06-11T18:42:34Z",
+      "updated_at": "2026-06-11T18:42:34Z",
+      "body": "Hi. I would love to see 3.7 plus too. Today I found the 3.7Max lower than expected but still want to know how well does 3.7 plus scores. It would help us better understand the difference between both models"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/32#issuecomment-4704201348",
+      "user": "coygeek",
+      "created_at": "2026-06-15T03:22:45Z",
+      "updated_at": "2026-06-15T03:22:45Z",
+      "body": "qwen3.7-max => 18%"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/32#issuecomment-4725564573",
+      "user": "ColRuDev",
+      "created_at": "2026-06-17T03:19:17Z",
+      "updated_at": "2026-06-17T03:19:17Z",
+      "body": "Since its closed. should we assume 3.7 plus and 3.7 max had the same results?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-08T18:50:48Z",
+  "github_updated_at": "2026-06-17T03:19:17Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/32"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

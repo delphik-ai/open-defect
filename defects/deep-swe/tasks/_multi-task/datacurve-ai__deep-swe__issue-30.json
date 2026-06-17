@@ -1,0 +1,29 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-30",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "narwhals-rolling-window-suite",
+    "skrub-duration-encoding",
+    "dateutil-rfc5545-timezone-interop",
+    "langchain-request-coalescing",
+    "fd-deterministic-multi-key-sorting",
+    "igel-persist-feature-schema",
+    "mnamer-daemon-watch-lifecycle",
+    "helm-unified-manifest-stream"
+  ],
+  "resolution": "found",
+  "title": "8 tasks whose official solution.patch fails grading",
+  "summary": "Across the 113-task DeepSWE set, 8 tasks' official solution.patch fails grading: 6 from unpinned dependency drift in the task Dockerfile (newer deps break unrelated base tests under filterwarnings=error; e.g. polars 1.40 in narwhals-rolling-window-suite, confirmed fixed by downgrading to 1.39.3) and 2 where the official solution deterministically fails the hidden new tests (mnamer-daemon-watch-lifecycle, helm-unified-manifest-stream).",
+  "defect_type_main": "grading",
+  "defect_type_sub": "dependency_drift",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/30",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/30"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-08T13:19:20Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read; reporter ran the official grader twice with per-task evidence and a reproduction recipe. L2 (not independently re-run)."
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Tencent-Hunyuan/AutoCodeBenchmark/issues/5",
+  "repo": "tencent-hunyuan/autocodebenchmark",
+  "source_type": "github_issue",
+  "github_number": 5,
+  "title": "Paper link links to wrong paper in README",
+  "body": "It was, however, fascinating to learn about wire rolling bearings",
+  "comments": [
+    {
+      "url": "https://github.com/Tencent-Hunyuan/AutoCodeBenchmark/issues/5#issuecomment-4269547249",
+      "user": "valbaca",
+      "created_at": "2026-04-17T16:06:32Z",
+      "updated_at": "2026-04-17T16:06:32Z",
+      "body": "Bump on this, where's the actual paper?"
+    },
+    {
+      "url": "https://github.com/Tencent-Hunyuan/AutoCodeBenchmark/issues/5#issuecomment-4274427384",
+      "user": "gemwang",
+      "created_at": "2026-04-18T19:36:09Z",
+      "updated_at": "2026-04-18T19:36:09Z",
+      "body": "actual paper is here: [https://arxiv.org/abs/2508.09101](https://arxiv.org/abs/2508.09101)\n\nI checked this here. https://autocodebench.github.io\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-01-29T04:46:54Z",
+  "github_updated_at": "2026-06-10T01:54:38Z",
+  "candidate_benchmark_names": [
+    "autocodebench"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/Tencent-Hunyuan/AutoCodeBenchmark/issues/5"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/23",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 23,
+  "title": "Can you run Minimaxi 3 :)",
+  "body": "(no issue body)",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/23#issuecomment-4617216513",
+      "user": "FlunkyDev",
+      "created_at": "2026-06-03T22:24:19Z",
+      "updated_at": "2026-06-03T22:24:19Z",
+      "body": "Yes, please :)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/23#issuecomment-4644360471",
+      "user": "coygeek",
+      "created_at": "2026-06-07T23:01:50Z",
+      "updated_at": "2026-06-07T23:01:50Z",
+      "body": "Was added. It scores 20%, slightly behind kimi-k2.6 (which is 24%)."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-02T21:42:41Z",
+  "github_updated_at": "2026-06-07T23:01:50Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/23"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

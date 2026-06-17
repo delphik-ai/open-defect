@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/197",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 197,
+  "title": "Snowflake Authorization Delay",
+  "body": "Hi,\n\nI submitted a request for Snowflake authorization but haven’t received access after 12+ hours. my email is qqqyyy125@gmail.com.\n\n\nThanks!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-09T09:33:32Z",
+  "github_updated_at": "2026-06-09T09:33:32Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/197"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Snowflake authorization delay; access/provisioning, not a task defect."
+}

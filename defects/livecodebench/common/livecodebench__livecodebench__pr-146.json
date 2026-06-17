@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "livecodebench__livecodebench__livecodebench__pr-146",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Double BOS token in llama3 prompts under vLLM",
+  "summary": "format_prompt_generation builds llama3 prompts via apply_chat_template(tokenize=False), which already emits <|begin_of_text|>; vLLM then tokenizes with add_special_tokens=True and prepends a second BOS, corrupting llama3 prompts during evaluation.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "prompt_formatting",
+  "canonical_source_url": "https://github.com/LiveCodeBench/LiveCodeBench/pull/146",
+  "evidence_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/146"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-11T19:05:27Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via PR description; clear tokenization mechanism. Fix PR OPEN, no maintainer ack -> resolution found. L2."
+}

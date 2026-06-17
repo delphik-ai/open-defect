@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__issue-32",
+  "benchmark_name": "gso",
+  "scope": "task_specific",
+  "task_names": [
+    "gso-uploadcare--pillow-simd-2818b90"
+  ],
+  "resolution": "found",
+  "title": "Wikimedia thumbnail URL now returns HTTP 400",
+  "summary": "Task gso-uploadcare--pillow-simd-2818b90 cannot be graded: gso_test_10.py requests a Wikimedia thumbnail URL that now returns HTTP 400, so the dataset reference patch cannot be evaluated reproducibly.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "external_dependency",
+  "canonical_source_url": "https://github.com/gso-bench/gso/issues/32",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/issues/32"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-14T02:55:48Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read; reporter includes the HTTPError traceback. L2 (not re-run in Harbor)."
+}

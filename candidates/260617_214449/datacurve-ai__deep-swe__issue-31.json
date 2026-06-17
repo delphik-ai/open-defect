@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/31",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 31,
+  "title": "[Bug] Grading on `base`/`new` return codes causes false negatives — propose f2p/p2p log parsing",
+  "body": "## Current behavior\nReward = `base` exit 0 AND `new` exit 0. Most tasks run `base` via directory wildcards (`pytest tests/`, `go test ./...`, `cargo test`), and the verifier's reset step only restores files that `test.patch` touches.\n\n## Question\nWas return-code grading (vs. checking specific expected test IDs) intentional? And was resetting only `test.patch`-touched files (not the whole test tree) intended?\n\n## Problem\nA model that **solves the task** can still score 0 if it leaves any extra/broken test that `base`'s wildcard collects (e.g. a stray `*_test.py` or `conftest.py`) — it survives the reset and makes `base` exit non-zero. This is a **false negative, not a hack** (it only lowers scores; the real f2p tests come from `test.patch` and can't be tampered with). **69/113 tasks** use wildcard `base` collection and are exposed.\n\n## Proposal: f2p/p2p lists + log parsing (like SWE-bench)\n- Ship `FAIL_TO_PASS` (must go fail→pass) and `PASS_TO_PASS` (must stay pass) test-ID lists per task.\n- Parse the test log into a per-ID pass/fail map; reward = all f2p pass AND all p2p pass. **Tests outside these lists (incl. model-added) are ignored.**\n\nThis eliminates the false negative, makes unrelated dependency-drift breakage harmless unless it hits a p2p test (see companion report: 6 tasks where the official solution already fails `base` purely from dep drift), and matches a known standard. f2p/p2p can be derived by diffing base-commit vs official-solution runs.\n\nHappy to prototype the parser + list generation.\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-08T13:26:06Z",
+  "github_updated_at": "2026-06-08T13:26:06Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "Return-code grading causes false negatives",
+  "summary": "DeepSWE rewards base exit 0 AND new exit 0, but 69/113 tasks collect base tests via directory wildcards (pytest tests/, go test ./..., cargo test) and the reset step restores only test.patch-touched files. A model that solves the task can still score 0 if it leaves any extra/broken test the wildcard collects -- a false negative. Proposal: ship FAIL_TO_PASS/PASS_TO_PASS lists and grade via log parsing (SWE-bench style).",
+  "defect_type_main": "grading",
+  "defect_type_sub": "methodology",
+  "decision_note": "Confirmed via thread read; quantified exposure (69/113) with a concrete mechanism. Methodology claim, no maintainer ack -> resolution found. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-31",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/31"
+  ]
+}

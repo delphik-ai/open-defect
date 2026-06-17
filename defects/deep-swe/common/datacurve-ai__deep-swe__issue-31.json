@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-31",
+  "benchmark_name": "deep-swe",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Return-code grading causes false negatives",
+  "summary": "DeepSWE rewards base exit 0 AND new exit 0, but 69/113 tasks collect base tests via directory wildcards (pytest tests/, go test ./..., cargo test) and the reset step restores only test.patch-touched files. A model that solves the task can still score 0 if it leaves any extra/broken test the wildcard collects -- a false negative. Proposal: ship FAIL_TO_PASS/PASS_TO_PASS lists and grade via log parsing (SWE-bench style).",
+  "defect_type_main": "grading",
+  "defect_type_sub": "methodology",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/31",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/31"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-08T13:26:06Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read; quantified exposure (69/113) with a concrete mechanism. Methodology claim, no maintainer ack -> resolution found. L2."
+}

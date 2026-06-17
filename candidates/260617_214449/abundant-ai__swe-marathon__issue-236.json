@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/236",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 236,
+  "title": "Reasoning effort defaults?",
+  "body": "Hello ppl, \ni wasn't able to find any info on the reasoning effort used to bench the models. Can you please clarify that?\n\nI'd assume defaults were used, so it's \"medium\" for GPT-5.5, even in Codex, and, to the best of my knowledge, \"high\" for Opus models — both aren't maximums for the corresponding models.\n\nThanks for the clarification & the bench!",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/236#issuecomment-4693800477",
+      "user": "RishiDesai",
+      "created_at": "2026-06-12T17:41:47Z",
+      "updated_at": "2026-06-12T17:41:47Z",
+      "body": "Yes - I used the installation defaults for GPT-5.5/codex and Opus-4.8/claude-code, which is medium-level reasoning."
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/236#issuecomment-4694010246",
+      "user": "stalkermustang",
+      "created_at": "2026-06-12T18:12:05Z",
+      "updated_at": "2026-06-12T18:12:05Z",
+      "body": "hey @RishiDesai , thanks for your response! Is there a plan to run the bench with higher reasoning efforts?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-08T13:52:31Z",
+  "github_updated_at": "2026-06-12T18:12:05Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/236"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

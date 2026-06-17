@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/39",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 39,
+  "title": "Malicious ad redirect on deepswe.net (Malvertising)",
+  "body": "Hello,\nI wanted to report a security issue on deepswe.net.\nWhen visiting the site without an adblocker, clicking on the page title triggers a malicious redirect to a scam website (confirm notification scam asking to \"allow to prove you are not a robot\", then push notifications from chrome to windows)\nWhen the adblocker is enabled, the redirect does not happen. This looks like a malicious ad script (malvertising) or a compromised script injector on your site.\nHope this helps you clean it up!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-16T07:59:04Z",
+  "github_updated_at": "2026-06-16T07:59:04Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/39"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Malvertising on the deepswe.net website; a site security issue, not a benchmark task/grading defect."
+}

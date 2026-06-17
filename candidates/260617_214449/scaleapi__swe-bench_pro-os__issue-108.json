@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/108",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_issue",
+  "github_number": 108,
+  "title": "Right of reply: an external determinacy audit of the SWE-bench Pro public set",
+  "body": "Hi SWE-bench Pro team,\n\nI've run an external, preregistered determinacy audit of the public SWE-bench Pro set, and before archiving it with a citable DOI I want to give you the right of reply.\n\nCredit where it's due: I audited Pro because it's a benchmark a lot of people now rely on, and because its contamination resistance holds up in my checks. The finding below is narrow, and it is not a contamination claim.\n\nThe decisive evidence is the repository itself. For every behavior the hidden test grades that the prose leaves open, I ask what the codebase already does at the base commit, settled by grep-verified live precedents (a model only proposes what to grep; the grep settles it):\n\n- one live way and the gold matches it, **determined-codebase**: a from-codebase solver lands on gold, so this is *not* a defect. 78 tasks the screen had flagged resolve here.\n- one way and the gold pins a different value, **misdetermined**: a codebase-faithful solver follows the convention and fails the test.\n- two or more live ways, **codebase-plural**: the test pins one arbitrarily.\n- no comparable precedent and the constant absent from prose and code, **airtight**.\n\nScoped to the 728 public tasks, with every verdict re-derivable from committed receipts, the audit finds a documented lower bound of **109 of 728 (15.0%)** where the behavior the hidden test grades is not pinned by what a solver receives (problem statement, requirements, interface, and repo source at the base commit):\n\n- **83 hold mechanically, by grep, with no model judgment** (11.4%): a graded constant absent from the prose and the codebase (airtight); a live codebase convention the gold contradicts (misdetermined); a choice the codebase makes >=2 live ways (codebase-plural); a prose-faithful alternative patch the official grader rejects (graded-patch); or a verbatim prose clause the test contradicts (hand-verified).\n- **26 are two-expert prose-plurality splits** (3.6%): the prose itself licenses two requirement-faithful readings, written from only the prose and the source, that the hidden test splits. This is the one tier that genuinely needs a reader, so it is the one I verify adversarially: two independent model families act as constructor and refuter (one builds the case, the other tries to break it), with a symmetric advocate pass and reported kappa = 0.52. The grep-mechanical tiers need no such pass.\n- **3 are gold-fails-grader defects**, and **at least 1 is a feature mismatch** where the prose describes one feature while the gold and test grade another.\n- In **14** of these cases, a maintainer or reviewer settles the test-pinned choice on the original upstream PR (deep-linked in the audit). The choice was made in review, not stated in the task a solver receives.\n\nA note on what changed since I first posted this: making the codebase the decisive evidence both raised the floor (from a pre-sweep 65 / 8.9%) and shrank the rater-pending pile, because the codebase settled most borderline cases either way. 78 went toward determined (not defects), the rest into the grep-provable tiers above. 63 screen-flagged candidates remain rater-pending and are excluded from the floor.\n\nBeyond that floor, a separate design-level divergence axis flags a candidate ~20% of the public set as underdetermined. That tier is single-rater and not yet receipt-grade, so I'm not claiming it alongside the 15.0% floor. I mention it for completeness, and would welcome your view on it too.\n\nEverything is inspectable. Each claim is one row in CLAIMS.md (https://github.com/kimjune01/swebench-pro-audit/blob/main/CLAIMS.md), linking the case's spec, gold, test, and the real PR; every mechanical-spine row carries a grep-verifiable citation. The method and integrity rules are in the README (https://github.com/kimjune01/swebench-pro-audit) and docs/ADMISSIBILITY-SPEC.md.\n\nOne disclosure: I previously built a Pro harness whose oracle-free results raised this question. The audit is built blind to that harness's win/loss and is fully receipted, to keep it separate from that prior result.\n\nI'd genuinely like to be corrected where I'm wrong. If the method or any specific case is off, tell me here and I'll fix it and note your response in the published version. I plan to mint the DOI on or after 2026-06-16 (one week), and I'll fold in any reply you send by then.\n\nThanks for building Pro. The audit only exists because the benchmark is worth taking seriously.\n\nJune Kim (kimjune01)\nAudit conducted with Claude Opus 4.8 and OpenAI GPT-5.5 (codex).\n",
+  "comments": [
+    {
+      "url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/108#issuecomment-4721152036",
+      "user": "navels",
+      "created_at": "2026-06-16T16:46:06Z",
+      "updated_at": "2026-06-16T16:46:06Z",
+      "body": "Thanks for doing this analysis! I am running a custom orchestrator through SWE-bench pro and kept running into unsolvable cases and now I can just use your ENTAILED/DETERMINED subset."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-09T15:23:24Z",
+  "github_updated_at": "2026-06-16T16:46:06Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/108"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "External determinacy audit; author frames it as narrow and explicitly 'not a defect' for the 78 determined tasks. No concrete per-task defect list to count conservatively."
+}

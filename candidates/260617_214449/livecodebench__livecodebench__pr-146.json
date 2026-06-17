@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/pull/146",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_pr",
+  "github_number": 146,
+  "title": "fix: double BOS in llama3 prompts with vLLM",
+  "body": "`format_prompt_generation` creates llama3 prompts with `apply_chat_template(.., tokenize=False)`, in which the output already starts with `<|begin_of_text|>`.  vLLM tokenizes prompts with `add_special_tokens=True`, which prepends a second BOS",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/lcb_runner/prompts/code_generation.py b/lcb_runner/prompts/code_generation.py\nindex 22ba3f82..959aa82e 100644\n--- a/lcb_runner/prompts/code_generation.py\n+++ b/lcb_runner/prompts/code_generation.py\n@@ -267,13 +267,16 @@ def format_prompt_generation(\n         tokenizer = AutoTokenizer.from_pretrained(\n             \"meta-llama/Meta-Llama-3-8B-Instruct\", padding_side=\"left\", use_fast=False\n         )\n-        return tokenizer.apply_chat_template(\n+        prompt = tokenizer.apply_chat_template(\n             chat_messages,\n             tokenize=False,\n             add_generation_prompt=True,\n             truncation=False,\n             padding=False,\n         )\n+        if tokenizer.bos_token and prompt.startswith(tokenizer.bos_token):\n+            prompt = prompt[len(tokenizer.bos_token):]\n+        return prompt\n \n     if LanguageModelStyle == LMStyle.Claude:\n         prompt = f\"{HUMAN_PROMPT}\\n\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-11T19:05:27Z",
+  "github_updated_at": "2026-06-11T19:05:27Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "Double BOS token in llama3 prompts under vLLM",
+  "summary": "format_prompt_generation builds llama3 prompts via apply_chat_template(tokenize=False), which already emits <|begin_of_text|>; vLLM then tokenizes with add_special_tokens=True and prepends a second BOS, corrupting llama3 prompts during evaluation.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "prompt_formatting",
+  "decision_note": "Confirmed via PR description; clear tokenization mechanism. Fix PR OPEN, no maintainer ack -> resolution found. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "livecodebench__livecodebench__livecodebench__pr-146",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/146"
+  ]
+}

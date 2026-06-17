@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/12",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 12,
+  "title": "Composer 2.5 tests",
+  "body": "https://cursor.com/cursorbench\n\nCursors have their own benchmark and would be nice to test their Composer 2.5 model as well. ",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/12#issuecomment-4610162660",
+      "user": "morloy",
+      "created_at": "2026-06-03T07:45:08Z",
+      "updated_at": "2026-06-03T07:45:45Z",
+      "body": "Since the DeepSWE blog writes about comparing their `mini-swe-agent` harness against the native ones, I got curious if we can run the benchmark with Composer 2.5 using [Cursor CLI](https://cursor.com/cli). I asked my agent if this was easy and it came back with “no problem”.\n\nSo here is an overnight run with the verdict written by Codex:\n\n> ## Cursor CLI / Composer 2.5 on DeepSWE\n> \n> We ran the full DeepSWE suite with Pier using a Cursor CLI adapter and Composer 2.5.\n> \n> ### Result\n> \n> - Benchmark: DeepSWE full suite\n> - Tasks: 113/113 completed\n> - Rollouts: 1 per task\n> - Passed: 26/113\n> - **Solve rate / mean reward: 23.0% (`0.23008849557522124`)**\n> - Errored trials: 1\n> - Error: `VerifierTimeoutError` on `langchain-request-coalescing__uqDemxi`\n> - Retries: 0\n> - Cost: $84.0450488\n> - Avg cost per task: $0.7438 across 113 completed trials\n> - Tokens:\n>   - Input: 362,218,645\n>   - Cache: 350,297,154\n>   - Output: 3,209,949\n> \n> ### Run Details\n> \n> - Agent/harness: `cursor-cli`\n> - Model: `composer-2.5`\n> - Environment: Docker\n> - Pier version: `0.2.1`\n> - Cursor Agent version: `2026.05.16-0338208`\n> - DeepSWE commit: `578129c4334f6656a92a1c629af63a530596f169`\n> - Prompt: no-web benchmark prompt template\n> - Web/tooling audit: no web search/fetch/browser tool usage found in trajectories\n> \n> ### Comparability Note\n> \n> This should be treated as a Cursor CLI harness-specific result, not as a direct apples-to-apples model leaderboard row. The current DeepSWE chart says all listed models are run on `mini-swe-agent` for consistency, so this likely belongs as a separate agent/harness entry or external evidence result rather than on the main normalized model chart.\n\n### Evidence bundle\n[deepswe-evidence-cursor-cli-composer-2.5-cursor-cli-composer-2-noweb-retry-n2-full-20260602-1905 2.zip](https://github.com/user-attachments/files/28541034/deepswe-evidence-cursor-cli-composer-2.5-cursor-cli-composer-2-noweb-retry-n2-full-20260602-1905.2.zip)\nThe archive includes aggregate Pier results, per-trial result rows, per-task patches, and verifier rewards. Raw Cursor trajectories are intentionally excluded from the public bundle.\n\n\nCurious to hear if people can reproduce the benchmark and come to a similar result. While not directly comparable because of the native harness, still seems disappointing that it scores below Kimi K2.6 (although it's based on K2.5).\n\n<details><summary>Reproduction Sketch</summary>\n\n```bash\ngit clone https://github.com/datacurve-ai/deep-swe\ncd deep-swe\ngit checkout 578129c4334f6656a92a1c629af63a530596f169\nuv tool install datacurve-pier\n\n# Ensure Cursor CLI / cursor-agent is installed and authenticated.\n# Then run with an equivalent Cursor CLI Pier adapter/config:\npier run \\\n  -p deep-swe/tasks \\\n  --agent cursor-cli \\\n  --model composer-2.5 \\\n  --env docker \\\n  --jobs-dir ./jobs \\\n  --job-name cursor-cli-composer-2-noweb-retry-n2-full-20260602-1905 \\\n  --yes\n```\n\nThis run also used the bundled no-web prompt template in `aggregate/no-web-prompt-template.md`.\n\n## Files\n\n- `metadata.json`: run metadata, score summary, redaction notes, and file inventory.\n- `aggregate/result.json`: sanitized Pier aggregate result.\n- `aggregate/config.json`: sanitized Pier aggregate config.\n- `trials/trials.json`: data-page-style per-trial rows.\n- `trials/trials.csv`: CSV per-trial rows.\n- `trials/trials.jsonl`: JSONL per-trial rows.\n- `per_trial_results/*.json`: sanitized per-trial Pier result files.\n- `patches/*.patch`: model patch for each task.\n- `verifier_rewards/*.txt`: verifier reward files where present.\n</details>"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/12#issuecomment-4610402598",
+      "user": "Egorrko",
+      "created_at": "2026-06-03T08:20:30Z",
+      "updated_at": "2026-06-03T08:20:30Z",
+      "body": "https://github.com/standardagents/composer-api\nIt might be useful"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-05-30T12:12:44Z",
+  "github_updated_at": "2026-06-03T08:20:30Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/12"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

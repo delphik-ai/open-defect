@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/596",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 596,
+  "title": "fix: disable nose pytest plugin for Astropy eval harness",
+  "body": "## Summary\nFixes #530.\n\nAstropy 3.1 instances like `astropy__astropy-8707` were graded as unresolved even when the gold patch passed locally, because pytest 7 auto-loads the deprecated `nose` plugin and aborts during collection.\n\n## Root cause\n`TEST_ASTROPY_PYTEST` did not disable the nose plugin. Other harness test commands already pass `-p no:...` flags (e.g. `TEST_PYTEST` uses `-p no:cacheprovider`).\n\n## Fix\nAppend `-p no:nose` to `TEST_ASTROPY_PYTEST` so pytest skips the nose plugin and Astropy tests can run under the harness pytest version.\n\n## Test plan\n- [ ] Re-run gold evaluation for `astropy__astropy-8707` and confirm tests collect and resolve correctly\n\nMade with [Cursor](https://cursor.com)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/constants/python.py b/swebench/harness/constants/python.py\nindex a99853164..f72904de6 100644\n--- a/swebench/harness/constants/python.py\n+++ b/swebench/harness/constants/python.py\n@@ -1,7 +1,7 @@\n # Constants - Testing Commands\n TEST_PYTEST = \"pytest --no-header -rA --tb=no -p no:cacheprovider\"\n TEST_PYTEST_VERBOSE = \"pytest -rA --tb=long -p no:cacheprovider\"\n-TEST_ASTROPY_PYTEST = \"pytest -rA -vv -o console_output_style=classic --tb=no\"\n+TEST_ASTROPY_PYTEST = \"pytest -rA -vv -o console_output_style=classic --tb=no -p no:nose\"\n TEST_DJANGO = \"./tests/runtests.py --verbosity 2 --settings=test_sqlite --parallel 1\"\n TEST_DJANGO_NO_PARALLEL = \"./tests/runtests.py --verbosity 2\"\n TEST_SEABORN = \"pytest --no-header -rA\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-10T11:00:27Z",
+  "github_updated_at": "2026-06-10T11:00:27Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/596"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

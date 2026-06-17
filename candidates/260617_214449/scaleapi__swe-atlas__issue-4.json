@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-Atlas/issues/4",
+  "repo": "scaleapi/swe-atlas",
+  "source_type": "github_issue",
+  "github_number": 4,
+  "title": "SWE-Atlas data/image defects (oracle solutions fail their own verifier",
+  "body": "Running each task's gold solution through its own verifier surfaced several defect classes where the **reference solution cannot pass its own verifier**.\n\n## Type 1 — Incomplete vendored dependency in container image → baseline build fails (RF)\n**Symptom:** Build fails at the **baseline** stage (clean base commit, no patch), so `tests_reward=0`. Top-level log only shows `ERROR: cmake failed` / `make clean failed`; the real compile error sits in an in-container build log that isn't collected. Sibling tasks from the same repo build fine, so it's image-specific.\n\n- `task-69b7c2a04b6f8ff9ed98812d` (MariaDB): `storage/rocksdb/rocksdb/*.cc` sources missing → `No SOURCES given to target: rocksdblib`.\n- `task-69b7c2a04b6f8ff9ed988137` (Suricata): bundled `libhtp/htp/*.c` missing + no system libhtp; image's python 3.12 also lacks distutils → `make clean failed`.\n\n## Type 2 — TW manifest lists non-test source files as test files (TW)\n**Symptom:** Build and tests pass, but manifest check = False → `reward=0`. The manifest lists a production source file (`.c/.h/.go/.ts/.py`) with test names duplicated under it; the judge rejects it (that source file contains no tests).\n\nAffected (mislisted source in parens): `27209`(executor.go) `2720c`(explore.ts) `27215`(utils.py) `27224`(inet.py) `2723c`(rewrap.h) `27242`(screen.c) `27243`(screen.c) `27275`(execution_segment.go).\n\n## Type 3 — TW manifest path/test-name mismatch with the patch (TW)\n**Symptom:** manifest = False. Test-file path is missing the repo's real `src/` prefix, and/or the test-name list doesn't match the tests actually added in `addition.patch`.\n\nAffected: `2721c` (missing `src/`; omits `test_error_login`), `2727e` (missing `src/`; omits 2 tests), `27229` (missing `src/`; incomplete list).\n\n## Type 4 — TW mutation: an extra oracle test can't kill the skeleton mutation (TW)\n**Symptom:** rubrics and manifest pass, but mutation = False → `reward=0`. The skeleton swap stubs the core impl; every relevant test must flip PASS→FAIL, but a read-only test only asserts \"state unchanged\" and passes under the stub too.\n\n- `task-…27229`: oracle added `test_add_tags_suggest` beyond the required 4. `--suggest` is read-only, so it passes regardless of the implementation → survives → mutation = False. (The 4 required tests all kill the mutation.)\n\n## Type 5 — TW manifest too vague, judged False (TW)\n**Symptom:** manifest = False not from a path/file error but because the test description is too generic.\n\n- `task-…27215`: lists a single vague `Test hexdiff function` instead of enumerating the 4 distinct assertions it covers.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-16T08:23:31Z",
+  "github_updated_at": "2026-06-16T08:23:31Z",
+  "candidate_benchmark_names": [
+    "scale-ai__swe-atlas-qna",
+    "scale-ai__swe-atlas-tw"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/issues/4"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "Our own SWE-Atlas oracle-fails-verifier audit. Already represented in the skill-defect channel; task IDs in the thread are truncated (TW short-hex) and re-curating as artifacts would double-count the health badge. Tracked via the Scale audit deliverable instead."
+}

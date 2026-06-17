@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/gso-bench/gso/issues/31",
+  "repo": "gso-bench/gso",
+  "source_type": "github_issue",
+  "github_number": 31,
+  "title": "GSO uploadcare__pillow-simd-0514e20 fails because an external image URL no longer returns a valid image",
+  "body": "### Instance\n\n- Benchmark: GSO\n- Instance ID: `uploadcare__pillow-simd-0514e20`\n- Repo: `uploadcare/pillow-simd`\n- API: `ImagingAlphaComposite`\n- Base commit: `0514e2053873ae7eca96ea6c64a4e200afc2ff7a^`\n- Opt commit: `0514e2053873ae7eca96ea6c64a4e200afc2ff7a`\n\n### Problem\n\nWhen replaying the dataset-provided `gt_diff` / reference patch, the evaluation fails before a valid score is produced because one of the benchmark test cases downloads an external image resource that is not a valid image response anymore.\n\n### Observed error\n\nThe failing test is `gso_test_11.py`:\n\n```text\nTraceback (most recent call last):\n  File \"/gso_test_11.py\", line 322, in <module>\n    main()\n  File \"/gso_test_11.py\", line 314, in main\n    execution_time = run_test(args.eqcheck, args.reference, args.file_prefix)\n  File \"/gso_test_11.py\", line 262, in run_test\n    im_dst, im_src = setup()\n  File \"/gso_test_11.py\", line 161, in setup\n    fg_img = Image.open(io.BytesIO(fg_resp.content)).convert(\"RGBA\")\n  File \".../PIL/Image.py\", line 3298, in open\n    raise UnidentifiedImageError(msg)\nPIL.UnidentifiedImageError: cannot identify image file <_io.BytesIO object ...>\n```\n### Expected behavior\nThe benchmark should avoid depending on a live external image URL, or should pin/cache the image fixture so the reference patch can be evaluated reproducibly.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-14T02:54:01Z",
+  "github_updated_at": "2026-06-14T02:54:01Z",
+  "candidate_benchmark_names": [
+    "gso"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "gso",
+  "scope": "task_specific",
+  "task_names": [
+    "gso-uploadcare--pillow-simd-0514e20"
+  ],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "External image URL no longer returns a valid image",
+  "summary": "Task gso-uploadcare--pillow-simd-0514e20 cannot be graded: gso_test_11.py downloads an external image whose URL no longer returns a valid image (PIL.UnidentifiedImageError), so even the dataset reference patch fails before a score is produced.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "external_dependency",
+  "decision_note": "Confirmed via thread read; reporter includes the full failing traceback. L2 (not re-run in Harbor).",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "gso__gso-bench__gso__issue-31",
+  "checked_urls": [
+    "https://github.com/gso-bench/gso/issues/31"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__issue-73",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "a6f40cea_0"
+  ],
+  "resolution": "found",
+  "title": "Off-by-one striped-frame inconsistency in public eval task",
+  "summary": "Public evaluation task a6f40cea has an off-by-one (striped-frame phase) inconsistency in train pair 2's output grid. The maintainer acknowledged it as an unintentional error, not prioritized for fix because it sits in a train example.",
+  "defect_type_main": "data_integrity",
+  "defect_type_sub": "label_error",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/issues/73",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/issues/73"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-14T22:18:04Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Maintainer (gkamradt) acknowledged the off-by-one in-thread. L2."
+}

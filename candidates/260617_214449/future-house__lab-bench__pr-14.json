@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Future-House/LAB-Bench/pull/14",
+  "repo": "future-house/lab-bench",
+  "source_type": "github_pr",
+  "github_number": 14,
+  "title": "Add BGPT REFUTE benchmark",
+  "body": "Adds [REFUTE](https://huggingface.co/datasets/BGPT-OFFICIAL/refute) — Apache-2.0 benchmark for scientific critique and epistemic calibration. Integrator guide: https://huggingface.co/datasets/BGPT-OFFICIAL/refute/blob/main/INTEGRATORS.md",
+  "comments": [
+    {
+      "url": "https://github.com/Future-House/LAB-Bench/pull/14#issuecomment-4628283522",
+      "user": "connerlambden",
+      "created_at": "2026-06-05T04:45:16Z",
+      "updated_at": "2026-06-05T04:45:16Z",
+      "body": "Integrator guide: https://huggingface.co/datasets/BGPT-OFFICIAL/refute/blob/main/INTEGRATORS.md · Launch post: https://huggingface.co/datasets/BGPT-OFFICIAL/refute/discussions/9"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex 92c37fb..e723785 100644\n--- a/README.md\n+++ b/README.md\n@@ -84,3 +84,8 @@ To reproduce the numbers in our paper, we provide a script `scripts/score_baseli\n ```\n \n To run all of the different agent configurations we report, simply call `./run_baselines.sh`\n+\n+\n+## Benchmarks\n+\n+- [REFUTE](https://huggingface.co/datasets/BGPT-OFFICIAL/refute) — Scientific critique & epistemic calibration on recent science summaries (Apache-2.0). [Leaderboard](https://huggingface.co/spaces/BGPT-OFFICIAL/refute-leaderboard) · [Technical report](https://huggingface.co/datasets/BGPT-OFFICIAL/refute/blob/main/TECHNICAL_REPORT.md) · [Integrators](https://huggingface.co/datasets/BGPT-OFFICIAL/refute/blob/main/INTEGRATORS.md)\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-05T04:41:05Z",
+  "github_updated_at": "2026-06-05T04:45:16Z",
+  "candidate_benchmark_names": [
+    "labbench"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/Future-House/LAB-Bench/pull/14"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

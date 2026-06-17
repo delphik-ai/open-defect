@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/7",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 7,
+  "title": "Regarding Recent Suspicious Bot Activity and Stars",
+  "body": "It seems our project has caught the attention of some bot networks. We have noticed that around 70% of the recent stars come from accounts created just a month ago, followed by automated comments accusing us of buying stars.\n\nWe have officially reported this coordinated spam issue to GitHub Support. We hope to maintain a clean and great open-source community together.",
+  "comments": [
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/7#issuecomment-3955381296",
+      "user": "kaijiezhu11",
+      "created_at": "2026-02-24T23:47:36Z",
+      "updated_at": "2026-02-24T23:47:36Z",
+      "body": "We have observed similar coordinated attacks on other repositories focused on terminal agent training:\n\nhttps://github.com/LiberCoders/CLI-Gym/issues/2\nhttps://github.com/multimodal-art-projection/TerminalTraj/issues/2"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-02-24T05:59:27Z",
+  "github_updated_at": "2026-06-03T10:35:07Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/7"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Meta note about suspicious bot stars/comments; not a benchmark defect."
+}

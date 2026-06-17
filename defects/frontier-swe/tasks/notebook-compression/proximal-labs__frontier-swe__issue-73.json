@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__issue-73",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "notebook-compression"
+  ],
+  "resolution": "found",
+  "title": "Task missing setup data (broken Docker environment)",
+  "summary": "Task notebook-compression cannot be set up: instruction.md expects the data at $DATA_ROOT/visible, but that directory does not exist in the task's Docker environment.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "missing_data",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/73",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/73"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-16T14:33:11Z",
+  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "decision_note": "Confirmed via thread read; concrete missing-path claim. L2."
+}

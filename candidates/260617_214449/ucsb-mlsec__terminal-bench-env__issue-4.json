@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 4,
+  "title": "Conversion to Harbor format",
+  "body": "Please convert the dataset to terminal bench 2.0 format as the old format is no longer maintained. Thanks for your solid work!",
+  "comments": [
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4#issuecomment-3923361683",
+      "user": "kaijiezhu11",
+      "created_at": "2026-02-18T21:40:17Z",
+      "updated_at": "2026-02-18T21:40:17Z",
+      "body": "Hi @Superskyyy, thanks for your suggestion! We are actively working on this and will release the 2.0 format soon."
+    },
+    {
+      "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4#issuecomment-3928755801",
+      "user": "kaijiezhu11",
+      "created_at": "2026-02-19T17:33:09Z",
+      "updated_at": "2026-02-19T17:33:09Z",
+      "body": "Hi @Superskyyy, we have uploaded the 2.0 format. Thanks for your suggestions again!"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-02-18T15:38:23Z",
+  "github_updated_at": "2026-06-03T10:50:53Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

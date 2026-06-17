@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/73",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 73,
+  "title": "Notebook-compression Task Missing data for setup.",
+  "body": "Currently, this task cannot be set up because of an incorrect Docker environment.\n\nThe `instruction.md` file mentions that the data should be located in `$DATA_ROOT/visible`, but this directory does not exist. I have opened several issues, but no one has replied. I also tried to DM the organizer, but I still have not received any response.\n\nIt is difficult for us to use `frontier-swe` when the organizers do not provide clear guidance to the community.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-16T14:33:11Z",
+  "github_updated_at": "2026-06-16T14:33:11Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "notebook-compression"
+  ],
+  "resolution": "found",
+  "audit_level": "L2",
+  "defect_title": "Task missing setup data (broken Docker environment)",
+  "summary": "Task notebook-compression cannot be set up: instruction.md expects the data at $DATA_ROOT/visible, but that directory does not exist in the task's Docker environment.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "missing_data",
+  "decision_note": "Confirmed via thread read; concrete missing-path claim. L2.",
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__issue-73",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/73"
+  ]
+}

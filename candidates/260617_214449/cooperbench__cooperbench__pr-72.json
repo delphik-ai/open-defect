@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/cooperbench/CooperBench/pull/72",
+  "repo": "cooperbench/cooperbench",
+  "source_type": "github_pr",
+  "github_number": 72,
+  "title": "feat(coop): optional \"trust your teammate\" prompt emphasis (openhands)",
+  "body": "## What\n\nAn env-gated experiment knob, `CB_COOP_TRUST_EMPHASIS`. When set, the openhands coop collaboration system prompt gains a **Trust** block:\n\n> YOU SHOULD TRY TO TRUST YOUR TEAMMATE REGARDING WHAT THEY PROMISED. … build against what they promised, do not re-implement or second-guess their part, and do not duplicate their changes.\n\nOff by default — the baseline coop prompt is unchanged. Built host-side in `get_coop_system_prompt`, so it composes with whatever else is in the collaboration block.\n\n## Result (flash, coop+git, gemini-3-flash, openhands)\n\n| prompt | pass | merge-conflicts |\n|---|---|---|\n| baseline | 20% (10/50) | 18 |\n| **+ trust emphasis** | **32% (16/50)** | **11** |\n\nThe lift came mainly from fewer merge conflicts — agents stopped redoing each other's work once told to trust stated promises. (Small countervailing cost: a few more apply-failures from building against an interface that didn't land exactly.) Coordination volume was unchanged (~9 msgs/pair).\n\n## Test\n\n`ruff` + `mypy` clean; full `pytest` suite (385 passed). The knob is openhands-only for now.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/src/cooperbench/agents/openhands_agent_sdk/openhands-tools/openhands/tools/preset/default.py b/src/cooperbench/agents/openhands_agent_sdk/openhands-tools/openhands/tools/preset/default.py\nindex e422b0c..0a51398 100644\n--- a/src/cooperbench/agents/openhands_agent_sdk/openhands-tools/openhands/tools/preset/default.py\n+++ b/src/cooperbench/agents/openhands_agent_sdk/openhands-tools/openhands/tools/preset/default.py\n@@ -1,5 +1,7 @@\n \"\"\"Default preset configuration for OpenHands agents.\"\"\"\n \n+import os\n+\n from openhands.sdk import Agent\n from openhands.sdk.context.condenser import (\n     LLMSummarizingCondenser,\n@@ -116,6 +118,20 @@ def get_coop_system_prompt(agent_id: str, teammates: list[str], messaging_enable\n * Push: `git push team {agent_id}`\n * Fetch: `git fetch team`\n \"\"\"\n+    # Experiment knob: when CB_COOP_TRUST_EMPHASIS is set, add a strong\n+    # instruction to trust the teammate's stated promises (rather than\n+    # re-verifying or defensively duplicating their work).  Off by default\n+    # so the baseline coop prompt is unchanged.\n+    if os.environ.get(\"CB_COOP_TRUST_EMPHASIS\"):\n+        collab_section += (\n+            \"\\n## Trust\\n\"\n+            \"YOU SHOULD TRY TO TRUST YOUR TEAMMATE REGARDING WHAT THEY PROMISED. \"\n+            f\"When {teammate_name} tells you which files/functions they will handle or how an \"\n+            \"interface will behave, take them at their word: build against what they promised, \"\n+            \"do not re-implement or second-guess their part, and do not duplicate their changes. \"\n+            \"Coordinate through messages and rely on their commitments.\\n\"\n+        )\n+\n     collab_section += \"\"\"\n </collaboration>\n \"\"\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-03T17:04:28Z",
+  "github_updated_at": "2026-06-03T17:04:28Z",
+  "candidate_benchmark_names": [
+    "cooperbench"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/72"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

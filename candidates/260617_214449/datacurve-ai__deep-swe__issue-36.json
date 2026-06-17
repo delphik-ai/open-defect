@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/36",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 36,
+  "title": "Can you add GLM-5.2?",
+  "body": "As the title says, curious how this performs vs other open source models right now.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4723908886",
+      "user": "Perusae",
+      "created_at": "2026-06-16T21:45:41Z",
+      "updated_at": "2026-06-16T21:45:41Z",
+      "body": "Based upon zai their blog: https://z.ai/blog/glm-5.2\n\n* GLM 5.1: 18\n* GLM 5.2: 46.2 \n\nSo that puts it right between claude-opus-4.8 [medium] and claude-opus-4.7 [xhigh]"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4725580697",
+      "user": "ColRuDev",
+      "created_at": "2026-06-17T03:23:04Z",
+      "updated_at": "2026-06-17T03:23:04Z",
+      "body": "Should we believe it? benchmark results from different sources tend to vary."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-15T21:45:58Z",
+  "github_updated_at": "2026-06-17T03:23:04Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/36"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

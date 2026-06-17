@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/34",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 34,
+  "title": "Humble request for ultracode effort level for antrhopic models",
+  "body": "ultracode is a pseudo effort level in Claude, which combines xhigh effort level with the claude's workflows feature\n\n\nfor my subjective testing ultracode provides better results at much increase financial and time cost\n\n\nregardless thank you for this excellent benchmark      ",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/34#issuecomment-4686507217",
+      "user": "na2axl",
+      "created_at": "2026-06-12T01:25:30Z",
+      "updated_at": "2026-06-12T01:25:30Z",
+      "body": "I don't think this will be possible since DeepSWE uses a custom harness to run all tests, and ultracode is not really an effort but a tweak of the Claude Code's harness using xhigh effort. Using Claude Code harness on Claude model may bias the merged results.\n\nJust my thoughts, I'm not part of the DeepSWE team :)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/34#issuecomment-4691774901",
+      "user": "tholum",
+      "created_at": "2026-06-12T13:37:36Z",
+      "updated_at": "2026-06-12T13:37:36Z",
+      "body": "it would be awesome if we could! (it would probably require https://github.com/datacurve-ai/deep-swe/issues/20 to be done first)"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-11T06:10:42Z",
+  "github_updated_at": "2026-06-12T13:37:36Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/34"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-Atlas/issues/3",
+  "repo": "scaleapi/swe-atlas",
+  "source_type": "github_issue",
+  "github_number": 3,
+  "title": "the four operations of refactoring",
+  "body": "Hello, Could you please show me the four operations of refactoring: decomposition (break apart monolithic implementations), interface_evolution (strengthen or restructure a public interface), extraction (pull duplicated logic into a shared package), and relocation (move code to a more appropriate place).\nI wanna know which operation each task belongs to. You haven't marked these subcategories yet.\nif you can mark that, it will be very helpful\nthx\n\n<img width=\"365\" height=\"314\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c512f963-0c8d-473e-8c6c-ffc70c666531\" />",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-08T08:59:45Z",
+  "github_updated_at": "2026-06-08T08:59:45Z",
+  "candidate_benchmark_names": [
+    "scale-ai__swe-atlas-qna",
+    "scale-ai__swe-atlas-tw"
+  ],
+  "reviewed_at": "2026-06-17T12:00:00.000Z",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/issues/3"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope."
+}
