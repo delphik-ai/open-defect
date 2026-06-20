@@ -1,0 +1,193 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/datacurve-ai/deep-swe/issues/33",
+ "repo": "datacurve-ai/deep-swe",
+ "source_type": "github_issue",
+ "github_number": 33,
+ "title": "Fable",
+ "body": "Im sure your on it, but fable 5 just came out, Please benchmark it!",
+ "comments": [
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4662742154",
+   "user": "JarvisPrestidge",
+   "created_at": "2026-06-09T18:23:12Z",
+   "updated_at": "2026-06-09T18:23:12Z",
+   "body": "Yes please, I'm dying to know the result!"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4666648418",
+   "user": "bitnom",
+   "created_at": "2026-06-10T04:52:12Z",
+   "updated_at": "2026-06-10T04:52:12Z",
+   "body": "Everything Anthropic publishes is obvious benchmax. Let's go"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4669536671",
+   "user": "adsouza",
+   "created_at": "2026-06-10T11:14:30Z",
+   "updated_at": "2026-06-10T11:14:30Z",
+   "body": "It's spelled Fable not Fabel."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4670310181",
+   "user": "tholum",
+   "created_at": "2026-06-10T12:43:46Z",
+   "updated_at": "2026-06-10T12:43:46Z",
+   "body": "> It's spelled Fable not Fabel.\n\nHow else are you going to know its human written unless it has spelling issues :)"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4670891333",
+   "user": "stagefright5",
+   "created_at": "2026-06-10T13:44:36Z",
+   "updated_at": "2026-06-10T13:44:36Z",
+   "body": "Please do it! I want to know if I should quit software engineering!!"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4671444159",
+   "user": "bikouz",
+   "created_at": "2026-06-10T14:43:38Z",
+   "updated_at": "2026-06-10T14:43:38Z",
+   "body": "Still no results? "
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4671822704",
+   "user": "Orel-A",
+   "created_at": "2026-06-10T15:31:08Z",
+   "updated_at": "2026-06-10T15:32:40Z",
+   "body": "A reasonable improvement is probably a 5% to 10% increase in score.\nSimilar to CursorBench graph: https://cursor.com/cursorbench"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4674030907",
+   "user": "Clubbers",
+   "created_at": "2026-06-10T20:11:12Z",
+   "updated_at": "2026-06-10T20:11:12Z",
+   "body": "But cursorbench have 4.8 just behind 5.5, so quite different compared to DeepSwe."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4674517843",
+   "user": "yoavgeva",
+   "created_at": "2026-06-10T21:05:40Z",
+   "updated_at": "2026-06-10T21:05:40Z",
+   "body": "> A reasonable improvement is probably a 5% to 10% increase in score. Similar to CursorBench graph: https://cursor.com/cursorbench\n\ncursor bench put composer 2.5 above gpt 5.5, and if you used them both, you know it's far from the truth, I don't trust cursor benchmark"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4675589270",
+   "user": "smshapiro85",
+   "created_at": "2026-06-10T23:17:13Z",
+   "updated_at": "2026-06-10T23:17:13Z",
+   "body": "Man, I cannot WAIT to see this benchmark. Seriously pumped."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4675749992",
+   "user": "Clubbers",
+   "created_at": "2026-06-10T23:42:06Z",
+   "updated_at": "2026-06-10T23:42:06Z",
+   "body": "I run Codex, so I more pumped for 5.6! But yeam the big releases are alwys exciting!\n\nBut come on now, let us see how Fable did!!! :D"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4675921765",
+   "user": "luisKisters",
+   "created_at": "2026-06-11T00:15:00Z",
+   "updated_at": "2026-06-11T00:15:44Z",
+   "body": "Waiting for Theo's video. I hope he *leaks* some early evals from datacurve (as he did with 4.8) and I'm generally interested in his opinion.\n> Still no results?\n\nCalm down man good things take some time and DeepSWE is some good stuff"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4678871721",
+   "user": "niels-bosman",
+   "created_at": "2026-06-11T08:56:52Z",
+   "updated_at": "2026-06-11T08:56:52Z",
+   "body": "<img width=\"976\" height=\"636\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8786cf11-f4db-4914-a1ae-fc3cd448b715\" />\n\nHere you guys go"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4679329300",
+   "user": "Orel-A",
+   "created_at": "2026-06-11T09:53:29Z",
+   "updated_at": "2026-06-11T09:53:29Z",
+   "body": "apparently it was taken from this youtube video:\nhttps://www.youtube.com/watch?v=7IewbRdaBWI"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4681124386",
+   "user": "SomarkLenka",
+   "created_at": "2026-06-11T13:34:16Z",
+   "updated_at": "2026-06-11T13:34:16Z",
+   "body": "The shared graph is apparently early leaked info from DataCurve themselves."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4687793442",
+   "user": "Clubbers",
+   "created_at": "2026-06-12T05:33:25Z",
+   "updated_at": "2026-06-12T05:33:40Z",
+   "body": "What is going on? They leaked it, but not posting it themselves? There's something fishy going on here. Either that leak to Theo was wrong, or they have found other problems with the benchmark or the scoring. I can't see any other reason at this point. Several days now and not an update. This is not ok if they wanna be a serious benchmark."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4688022857",
+   "user": "brrock",
+   "created_at": "2026-06-12T06:17:33Z",
+   "updated_at": "2026-06-12T06:17:59Z",
+   "body": "guys its not leaked its an early access version Theo had permission to send (from a slack channel). It's not published prob bc they are still finishing something"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4691189756",
+   "user": "Clubbers",
+   "created_at": "2026-06-12T12:18:04Z",
+   "updated_at": "2026-06-12T12:18:04Z",
+   "body": "Leaked/shown with permission, who cares. Why is it taking sseveral days to finish it? They've already run it for many models, so what would make it take this long, there must be something going on, like they've found real issues. If not, why are they not communicating anyting anywhere. So weird."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4691757972",
+   "user": "tholum",
+   "created_at": "2026-06-12T13:35:32Z",
+   "updated_at": "2026-06-12T13:35:32Z",
+   "body": "From using it for a few days, I can say, that leaked graph does not seem accurate, GPT-5.5 isn't even playing in the same playground as Fable, Eather that Claude codes harness is doing some real magic"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4697383123",
+   "user": "eduardozf",
+   "created_at": "2026-06-13T03:49:04Z",
+   "updated_at": "2026-06-13T03:49:04Z",
+   "body": "R.I.P"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4698986122",
+   "user": "abhiram-ar",
+   "created_at": "2026-06-13T15:41:58Z",
+   "updated_at": "2026-06-13T15:41:58Z",
+   "body": "Is DeepSWE affiliated with OpenAI in some way? Getting a Feeling these guys are only upselling OpenAI"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4699755601",
+   "user": "yoavgeva",
+   "created_at": "2026-06-13T20:51:14Z",
+   "updated_at": "2026-06-13T20:51:14Z",
+   "body": "> Is DeepSWE affiliated with OpenAI in some way? Getting a Feeling these guys are only upselling OpenAI\n\nIf you don't trust their results, you can run it yourself? it's open source that's the point..., from comparing other benchmarks to their, from my POV this benchmark shows how I use AI myself."
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4748412889",
+   "user": "coygeek",
+   "created_at": "2026-06-19T04:09:02Z",
+   "updated_at": "2026-06-19T04:09:02Z",
+   "body": "Fable was added. And its the king. \n\n<img width=\"983\" height=\"926\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/72893f1c-a850-4e91-adbb-1d4beb677d1b\" />"
+  },
+  {
+   "url": "https://github.com/datacurve-ai/deep-swe/issues/33#issuecomment-4754338000",
+   "user": "tholum",
+   "created_at": "2026-06-19T19:54:37Z",
+   "updated_at": "2026-06-19T19:54:37Z",
+   "body": "I can close this issue, Fable doesn't have as high of a lead as I would have expected, it feels leagues above 5.5, but maybe the last 30% is just that much harder"
+  }
+ ],
+ "linked_pr_diff": null,
+ "github_state": "closed",
+ "github_created_at": "2026-06-09T17:37:47Z",
+ "github_updated_at": "2026-06-19T19:54:37Z",
+ "candidate_benchmark_names": [
+  "deep-swe"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Model request (Fable); not a defect.",
+ "checked_urls": [
+  "https://github.com/datacurve-ai/deep-swe/issues/33"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

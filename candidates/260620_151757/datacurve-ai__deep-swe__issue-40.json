@@ -1,0 +1,24 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/datacurve-ai/deep-swe/issues/40",
+ "repo": "datacurve-ai/deep-swe",
+ "source_type": "github_issue",
+ "github_number": 40,
+ "title": "suggested models",
+ "body": "Have you guys tested the Deepseek V4 Flash, Step 3.7 Flash? I know they might not do so well in the benchmark, but it would be nice to see some mention of whether they achieved any results or failed completely.\n\nAnother suggestion: it would be interesting to see the Chinese models being used within the Claude Code Harness (using the Claude Code Router with CLIproxy, it would be interesting to see the difference in scores).",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-17T21:15:29Z",
+ "github_updated_at": "2026-06-17T21:15:29Z",
+ "candidate_benchmark_names": [
+  "deep-swe"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Model suggestions; not a defect.",
+ "checked_urls": [
+  "https://github.com/datacurve-ai/deep-swe/issues/40"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

@@ -1,0 +1,32 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/openai/simple-evals/issues/83",
+ "repo": "openai/simple-evals",
+ "source_type": "github_issue",
+ "github_number": 83,
+ "title": "Medical category of questions in the dataset",
+ "body": "Hi \n\nI would like to know if there is a way to map the questions in the dataset to the specialities mentioned [here](https://openai.com/index/healthbench/)\n\nI am aware that the dataset can be accessed via these links:\n\n- https://openaipublic.blob.core.windows.net/simple-evals/healthbench/2025-05-07-06-14-12_oss_eval.jsonl\n- https://openaipublic.blob.core.windows.net/simple-evals/healthbench/hard_2025-05-08-21-00-10.jsonl\n- https://openaipublic.blob.core.windows.net/simple-evals/healthbench/consensus_2025-05-09-20-00-46.jsonl\n\nBut is there a way to map each of these datapoints to the medical categories mentioned(namely the list below)?\n\n_Anesthesiology, Dermatology, Diagnostic Radiology, Emergency Medicine, Family Medicine, General Surgery, Internal Medicine, Interventional Radiology and Diagnostic Radiology, Medical Genetics and Genomics, Neurological Surgery, Neurology, Nuclear Medicine, Obstetrics and Gynecology, Ophthalmology, Orthopaedic Surgery, Otolaryngology, Pathology, Pediatrics, Physical Medicine and Rehabilitation, Plastic Surgery, Psychiatry, Public Health and General Preventive Medicine, Radiation Oncology, Thoracic Surgery, Urology, Vascular Surgery_\n\nThanks in advance for your help!",
+ "comments": [
+  {
+   "url": "https://github.com/openai/simple-evals/issues/83#issuecomment-4737629512",
+   "user": "isjinghao",
+   "created_at": "2026-06-18T03:39:24Z",
+   "updated_at": "2026-06-18T03:39:24Z",
+   "body": "+1👀"
+  }
+ ],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2025-05-29T11:00:27Z",
+ "github_updated_at": "2026-06-18T03:39:24Z",
+ "candidate_benchmark_names": [
+  "simpleqa"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Usage question (mapping HealthBench questions to medical categories); not a defect.",
+ "checked_urls": [
+  "https://github.com/openai/simple-evals/issues/83"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

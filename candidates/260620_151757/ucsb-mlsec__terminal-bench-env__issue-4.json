@@ -1,0 +1,46 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4",
+ "repo": "ucsb-mlsec/terminal-bench-env",
+ "source_type": "github_issue",
+ "github_number": 4,
+ "title": "Conversion to Harbor format",
+ "body": "Please convert the dataset to terminal bench 2.0 format as the old format is no longer maintained. Thanks for your solid work!",
+ "comments": [
+  {
+   "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4#issuecomment-3923361683",
+   "user": "kaijiezhu11",
+   "created_at": "2026-02-18T21:40:17Z",
+   "updated_at": "2026-02-18T21:40:17Z",
+   "body": "Hi @Superskyyy, thanks for your suggestion! We are actively working on this and will release the 2.0 format soon."
+  },
+  {
+   "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4#issuecomment-3928755801",
+   "user": "kaijiezhu11",
+   "created_at": "2026-02-19T17:33:09Z",
+   "updated_at": "2026-02-19T17:33:09Z",
+   "body": "Hi @Superskyyy, we have uploaded the 2.0 format. Thanks for your suggestions again!"
+  },
+  {
+   "url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4#issuecomment-4742858340",
+   "user": "binybow623",
+   "created_at": "2026-06-18T14:15:46Z",
+   "updated_at": "2026-06-18T14:15:46Z",
+   "body": "@Superskyyy @kaijiezhu11\n\n（纯属虚构，如有雷同，那就是你）\n\n------\n\n**你**：Star 数终于上去了！\n\n**真相**：是吗？那你的用户也变多了吗？\n\n**你**：……呃，没有。但数据好看了啊。\n\n**真相**：那你的 Issue 区呢？\n\n**你**：跟以前一样冷清……\n\n**真相**：PR 呢？\n\n**你**：也没有。\n\n**真相**：npm/pip 下载量呢？\n\n**你**：也没变。\n\n**真相**：所以你花了钱，买了一堆没有用户、没有反馈、没有贡献的假数字。唯一的区别是——现在所有人都知道你造假了。\n\n**你**：……\n\n------\n\n说回正题。同期 Issue 为 0 PR 为 0。翻了十几页全是空壳号。\n\n建议：清理假号、停止造假、以后别刷了。\n\n这件事拖得越久对你们越不利。趁早处理吧。\n违规情形齐全，举报到 GitHub，刷取人气清空，项目下线。"
+  }
+ ],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-02-18T15:38:23Z",
+ "github_updated_at": "2026-06-18T14:15:46Z",
+ "candidate_benchmark_names": [
+  "termigen-environments"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Request to convert to Harbor format; not a defect.",
+ "checked_urls": [
+  "https://github.com/ucsb-mlsec/terminal-bench-env/issues/4"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

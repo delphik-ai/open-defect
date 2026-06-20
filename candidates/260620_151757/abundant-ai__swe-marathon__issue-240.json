@@ -1,0 +1,24 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/abundant-ai/swe-marathon/issues/240",
+ "repo": "abundant-ai/swe-marathon",
+ "source_type": "github_issue",
+ "github_number": 240,
+ "title": "suggested modelsClaude code harness",
+ "body": "Have you guys tested the Deepseek V4 Flash, Step 3.7 Flash, or MIMO 2.5 Pro? I know they might not do so well in the benchmark, but it would be nice to see some mention of whether they achieved any results or failed completely. \nAnother suggestion: it would be interesting to see the Chinese models being used within the Claude Code Harness (using the Claude Code Router with CLIproxy, it would be interesting to see the difference in scores).",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-17T21:13:50Z",
+ "github_updated_at": "2026-06-17T21:13:50Z",
+ "candidate_benchmark_names": [
+  "swe-marathon"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Model/harness suggestion, not a benchmark task or eval defect.",
+ "checked_urls": [
+  "https://github.com/abundant-ai/swe-marathon/issues/240"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

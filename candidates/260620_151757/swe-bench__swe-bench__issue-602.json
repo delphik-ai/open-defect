@@ -1,0 +1,25 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/SWE-bench/SWE-bench/issues/602",
+ "repo": "swe-bench/swe-bench",
+ "source_type": "github_issue",
+ "github_number": 602,
+ "title": "[Bug]: Loss of Evaluation Determinism and Execution Drift due to Missing Sandbox State Isolation",
+ "body": "### Describe the bug\n\nThe SWE-bench evaluation framework fails to enforce deterministic system states within its Docker sandboxes, leading to execution drift and flaky test results during concurrent evaluations.\n\nIn swebench/harness/docker_build.py (around line 349), the client.containers.create method is called without the environment parameter. This fails to freeze critical system-level variables (such as TZ=UTC for timezone standardization or PYTHONHASHSEED=0 for deterministic dictionary iteration).\n\nFurthermore, the script generation logic in swebench/harness/test_spec/test_spec.py does not inject pseudo-random seed constraints (e.g., fixing numpy.random.seed or Python's native random.seed) or clock isolation mechanisms into the eval_script. When evaluating complex repositories (especially those involving numerical computing or machine learning) with max_workers > 1, CPU resource contention exacerbates timing-dependent unit test assertions. This lack of strict state isolation causes identical patches to sporadically fail across different runs, destroying the reproducibility and integrity of the benchmark.\n\n### Steps/Code to Reproduce\n\n1. Trigger an evaluation on a repository containing time-sensitive assertions or unseeded random sampling using max_workers=4 (or higher).\n\n2. Inspect the container creation logic in docker_build.py; notice the absence of environmental constraints:\n# Missing explicit environment normalization\ncontainer = client.containers.create(\n    image=test_spec.instance_image_key,\n    name=test_spec.get_instance_container_name(run_id),\n    user=DOCKER_USER,\n    detach=True,\n    command=\"tail -f /dev/null\",\n    platform=test_spec.platform,\n    cap_add=cap_add,\n    # VULNERABILITY: Missing environment={'TZ': 'UTC', 'PYTHONHASHSEED': '0', 'LANG': 'C.UTF-8'}\n)\n\n3. Run the exact same evaluation multiple times using the same prediction patch.\n\n\n### Expected Results\n\nThe evaluation sandbox must be strictly deterministic. Containers should be initialized with hardcoded, uniform environment variables. The evaluation harness should guarantee that identical patches yield 100% reproducible results, completely insulated from host OS configurations, hardware architectures, or concurrent resource contention.\n\n### Actual Results\n\nIdentical patches yield fluctuating evaluation scores (False Negatives). The test suites fail sporadically due to unseeded random operations, timezone mismatches, or time-series race conditions induced by concurrent worker preemption inside the unisolated Docker containers.\n\n### System Information\n\nOS: MacOS\nPython version: 3.9+\nswebench package version: Latest main branch",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-19T02:21:56Z",
+ "github_updated_at": "2026-06-19T02:21:56Z",
+ "candidate_benchmark_names": [
+  "swebench-verified",
+  "swebench_multilingual"
+ ],
+ "terminal_status": "unverified",
+ "audit_level": "L1",
+ "decision_note": "Eval-determinism/sandbox-isolation claim (missing TZ/PYTHONHASHSEED/seed pinning). Open issue, 0 comments, no maintainer ack, no merged fix; flakiness claim needs repeated-run L3 evidence which was not performed. Cannot confirm.",
+ "checked_urls": [
+  "https://github.com/SWE-bench/SWE-bench/issues/602"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

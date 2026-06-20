@@ -1,0 +1,32 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/cooperbench/CooperBench/pull/74",
+ "repo": "cooperbench/cooperbench",
+ "source_type": "github_pr",
+ "github_number": 74,
+ "title": "fix(eval): override image entrypoint so podman keeps the sandbox alive",
+ "body": "The docker eval backend cleared the image ENTRYPOINT with entrypoint=\"\" and passed command=\"sleep infinity\". Podman's docker-compat API ignores an empty-string entrypoint, so the dataset images' baked-in /usr/local/bin/runner.sh entrypoint survives, runs with \"sleep infinity\" as an ignored argument, and the container exits immediately. Subsequent exec calls then fail with a 409 (\"cannot exec in a container that is not running\").\r\n\r\nFold the keep-alive into the entrypoint itself (entrypoint=[\"sleep\", \"infinity\"]) so the baked-in entrypoint is overridden on both Docker and podman.\r\n\r\n## Description\r\n\r\n<!-- Brief description of this PR -->\r\n\r\nCloses #<!-- Issue number -->\r\n\r\n## Changes\r\n\r\n<!-- List of changes -->\r\n- \r\n\r\n## Checklist\r\n\r\n- [ ] Code follows project style\r\n- [ ] Tests pass locally\r\n- [ ] Documentation updated (if needed)\r\n",
+ "comments": [
+  {
+   "url": "https://github.com/cooperbench/CooperBench/pull/74#issuecomment-4746278591",
+   "user": "maria-chang",
+   "created_at": "2026-06-18T21:29:11Z",
+   "updated_at": "2026-06-18T21:29:11Z",
+   "body": "Apologies -- this PR was intended for a fork and was submitted here by mistake. Closing now."
+  }
+ ],
+ "linked_pr_diff": "diff --git a/src/cooperbench/eval/backends/docker.py b/src/cooperbench/eval/backends/docker.py\nindex 81f30ca1..8ba151f3 100644\n--- a/src/cooperbench/eval/backends/docker.py\n+++ b/src/cooperbench/eval/backends/docker.py\n@@ -90,15 +90,21 @@ def create_sandbox(\n         client = self._get_client()\n \n         # Run container in detached mode with a long-running command.\n-        # entrypoint=\"\" clears any ENTRYPOINT baked into the image (benchmark\n-        # dataset images set /usr/local/bin/runner.sh as their entrypoint,\n-        # which would otherwise consume \"sleep infinity\" as an argument and\n-        # exit immediately, matching the handling in the Modal and GCP\n-        # backends).\n+        # Override the ENTRYPOINT baked into the image (benchmark dataset\n+        # images set /usr/local/bin/runner.sh as their entrypoint, which would\n+        # otherwise consume \"sleep infinity\" as an argument and exit\n+        # immediately, matching the handling in the Modal and GCP backends).\n+        #\n+        # We fold \"sleep infinity\" into the entrypoint itself rather than\n+        # clearing entrypoint=\"\" and passing command=\"sleep infinity\": the\n+        # podman docker-compat API ignores an empty-string entrypoint and keeps\n+        # the image's runner.sh, so the container exits immediately and later\n+        # exec calls fail with a 409 (\"container is not running\"). Supplying a\n+        # concrete entrypoint overrides the baked-in one on both Docker and\n+        # podman.\n         container = client.containers.run(\n             image=image,\n-            entrypoint=\"\",\n-            command=\"sleep infinity\",\n+            entrypoint=[\"sleep\", \"infinity\"],\n             detach=True,\n             working_dir=workdir,\n             remove=False,\n",
+ "github_state": "closed",
+ "github_created_at": "2026-06-18T21:09:00Z",
+ "github_updated_at": "2026-06-18T21:29:11Z",
+ "candidate_benchmark_names": [
+  "cooperbench"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Author stated it was submitted here by mistake (intended for a fork) and closed it; not a CooperBench defect.",
+ "checked_urls": [
+  "https://github.com/cooperbench/CooperBench/pull/74"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

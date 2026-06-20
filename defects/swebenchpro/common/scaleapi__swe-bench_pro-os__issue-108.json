@@ -1,0 +1,18 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-108",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Right of reply: an external determinacy audit of the SWE-bench Pro public set",
+  "summary": "External preregistered determinacy audit of the public SWE-bench Pro set documents an under-determination floor of 109/728 (15.0%) where the behavior the hidden test grades is not pinned by what a solver receives (problem statement, requirements, interface, base-commit source). Explicitly not a contamination claim. Archived with a citable Zenodo DOI.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/108",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/108"
+  ],
+  "audit_level": "L1",
+  "first_reported_at": "2026-06-09T15:23:24Z",
+  "last_reviewed_at": "2026-06-20T06:24:27Z",
+  "decision_note": "Third-party external audit by GitHub user kimjune01 (independent of Delphik), with public grep-verifiable receipts and a Zenodo DOI (concept 10.5281/zenodo.20738219). Maintainers have not yet responded. Recorded as a single benchmark-level canonical defect (under-determination of the eval set), resolution=found. Distinct root cause from environment/git-history leakage. We did not independently L3-reproduce the 109-task list, so this is counted benchmark_level (one canonical defect), not per-task."
+}

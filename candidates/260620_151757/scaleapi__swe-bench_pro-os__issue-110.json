@@ -1,0 +1,24 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/110",
+ "repo": "scaleapi/swe-bench_pro-os",
+ "source_type": "github_issue",
+ "github_number": 110,
+ "title": "Request for GPT-5.2-Codex SWE-agent Trajectories and Cost Metadata",
+ "body": "Hi SWE-bench Pro team, I noticed that GPT-5.2-Codex is reported on the SWE-bench Pro leaderboard with a resolution rate of 41.04%. However, unlike several other models, I could not find the corresponding trajectories, cost information, or execution configuration in the released artifacts:\n\nhttps://github.com/scaleapi/SWE-bench_Pro-os/tree/main/traj\nhttps://docent.transluce.org/dashboard/032fb63d-4992-4bfc-911d-3b7dafcb931f/agent_run\n\nWould it be possible to share the GPT-5.2-Codex SWE-agent trajectories or, if unavailable, the associated evaluation configuration and cost statistics? Thanks!",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-18T00:19:44Z",
+ "github_updated_at": "2026-06-18T00:19:44Z",
+ "candidate_benchmark_names": [
+  "swebenchpro"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Request for additional model trajectories/cost metadata; not a defect.",
+ "checked_urls": [
+  "https://github.com/scaleapi/SWE-bench_Pro-os/issues/110"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

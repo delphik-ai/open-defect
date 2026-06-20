@@ -1,0 +1,24 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/gso-bench/gso/issues/34",
+ "repo": "gso-bench/gso",
+ "source_type": "github_issue",
+ "github_number": 34,
+ "title": "GSO task `abetlen__llama-cpp-python-2bc1d97` is not reproducible across x86_64 CPU families",
+ "body": "A portability issue was observed when replaying the GSO reference task `abetlen__llama-cpp-python-2bc1d97`.\n\nThe task image is listed as an x86_64 GSO instance:\n\n```text\ngso.eval.x86_64.abetlen__llama-cpp-python-2bc1d97\n```\n\nHowever, the base run fails on Google Cloud `n2d-standard-64` with AMD EPYC Milan before the reference patch is applied. The failure is an `Illegal instruction`, which prevents the task from producing a replay score on that x86_64 machine.\n\nObserved on GSO commit:\n\n```text\nc89aecd83977e40ee4ebfc7b3cca609dc2b19be8\n```\n\nObserved failure on AMD EPYC Milan / `n2d-standard-64`:\n\n```text\nRunning performance test before patch...\nRunning test /gso_test_0.py 1 times...\n  Iteration 1/1\ntimeout: the monitored command dumped core\n/eval.sh: line 62:    69 Illegal instruction     timeout 0s python \"$test_file\" \"$result_file\" \"$flag\" --file_prefix \"$prefix\"\n>>>>> Tests Errored\n```\n\nThe failure was reproducible across all three replay rounds on `n2d-standard-64`. The same task was able to produce replay scores on the following x86_64 machines:\n\n```text\nn2-standard-64\nn4-standard-64\nn4d-standard-64\n```\n\nThis suggests that the task is not portable across all x86_64 CPU families and may depend on CPU instruction extensions that are not available on AMD EPYC Milan.\n\nExpected benchmark behavior:\n\nIf this task is intended to be hardware-specific, the required CPU instruction set and supported machine scope should be documented explicitly. If it is intended to be a portable x86_64 benchmark task, the image or build configuration should avoid CPU-specific instructions that cause the base run to fail on some x86_64 CPU families.\n",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-20T04:59:07Z",
+ "github_updated_at": "2026-06-20T04:59:07Z",
+ "candidate_benchmark_names": [
+  "gso"
+ ],
+ "terminal_status": "unverified",
+ "audit_level": "L1",
+ "decision_note": "Task abetlen__llama-cpp-python-2bc1d97 reported as Illegal instruction on AMD EPYC Milan (x86_64 microarch portability). Plausible task-image portability defect, but reporter-only with 0 comments and no maintainer ack; could be runner CPU lacking required ISA vs a genuine task defect. L3 repro on the named arch not run, so unverified.",
+ "checked_urls": [
+  "https://github.com/gso-bench/gso/issues/34"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

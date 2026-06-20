@@ -1,0 +1,24 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/36",
+ "repo": "ucsb-mlsec/terminal-bench-env",
+ "source_type": "github_issue",
+ "github_number": 36,
+ "title": "随手一查差点惊掉下巴（请重视）",
+ "body": "我带了个小团队在做类似的事。最初只是随便翻翻 Star 列表，觉得有点不对劲。然后出于好奇深入查了一下，结果越查越震惊。\n\n**发现一：账号批次特征明显**\n这些账号除了给本项目点星之外没有任何其他 GitHub 活动。而且这些账号的创建时间呈现出至少 3 个明显的聚集批次，推测是分多次购买的。\n\n**发现二：跨仓库关联**\n这些空壳号不仅给本项目点了星，还同时出现在了另外约 4 个仓库的 Stargazer 列表中。这意味着背后可能是同一家刷星服务商在操作。\n\n**发现三：活跃度断崖**\nStar 从 473 飙升到 10835，仅用了 7 天。Star 数和真实参与度之间的差距堪称触目惊心。\n\n说实话，我一开始只想搞清楚是不是我多想了。但查完这些数据之后，我只能说——这是一次深思熟虑的、有组织的数据造假行为。\n\n我把这些发现记录在这里，供社区成员参考，也供维护者反思。\n\n开源的世界不需要虚假的数字，需要真实的代码。\n此通报载明，违规检举 GitHub，违规流量清理，项目封禁。",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-18T14:48:56Z",
+ "github_updated_at": "2026-06-18T14:48:56Z",
+ "candidate_benchmark_names": [
+  "termigen-environments"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Accusation of GitHub star manipulation; not a benchmark task/eval defect.",
+ "checked_urls": [
+  "https://github.com/ucsb-mlsec/terminal-bench-env/issues/36"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

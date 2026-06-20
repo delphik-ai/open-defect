@@ -1,0 +1,25 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/SWE-bench/SWE-bench/pull/604",
+ "repo": "swe-bench/swe-bench",
+ "source_type": "github_pr",
+ "github_number": 604,
+ "title": "Add MEA v5.8.1 AGIR results by Bruno Loureiro",
+ "body": "I am officially submitting the results for the MEA v5.8.1 AGIR framework. \r\n\r\n**Performance Summary:**\r\n- **Instances Resolved:** 316 / 500 (63.2% Success Rate)\r\n- **Total Inference Cost:** $0.45 USD (Averaging $0.0014 per task)\r\n- **Framework:** MEA v5.8.1 'AGIR' (Independent Multi-Agent SRE)\r\n- **Model:** gpt-4o-mini (Proprietary Orchestration)\r\n\r\nThis submission demonstrates that superior orchestration logic and proprietary physical feedback loops can achieve elite engineering results at near-zero marginal cost, breaking the world record for cost-efficiency in autonomous software repair.\r\n\r\n**Author:** Bruno Loureiro (Harvard CS50 Certified)\r\n**Proof of Execution & Logs:** https://github.com/Ahavahdev1/SWE-bench-Verified-Submission-MEA-v5.8.1",
+ "comments": [],
+ "linked_pr_diff": "diff --git a/submissions/verified/20260620_MEA_v5_8_1_AGIR_Bruno_Loureiro/metadata.json b/submissions/verified/20260620_MEA_v5_8_1_AGIR_Bruno_Loureiro/metadata.json\nnew file mode 100644\nindex 000000000..483200e1d\n--- /dev/null\n+++ b/submissions/verified/20260620_MEA_v5_8_1_AGIR_Bruno_Loureiro/metadata.json\n@@ -0,0 +1,10 @@\n+{\n+    \"model_name_or_path\": \"MEA-v5.8.1-AGIR-BRUNO-LOUREIRO\",\n+    \"author\": \"Bruno Loureiro (Ahavahdev1)\",\n+    \"contact\": \"LinkedIn: https://www.linkedin.com/in/bruno-loureiro-69747728/ / WhatsApp: +55 15 99688-5952\",\n+    \"github\": \"https://github.com/Ahavahdev1\",\n+    \"credentials\": \"Harvard CS50 Certified (c50dface-93d3-4b70-82d3-e349ab43fb99)\",\n+    \"description\": \"MEA QUANTUM v5.8.1 'AGIR' - Independent multi-agent framework SRE. Achieved 63.2% success rate on SWE-bench Verified at a world-record cost of $0.0014/task. A pioneer project in Green AI and autonomous infrastructure repair.\",\n+    \"total_cost_usd\": 0.45,\n+    \"success_count\": 316\n+}\n\\ No newline at end of file\n",
+ "github_state": "open",
+ "github_created_at": "2026-06-20T03:53:06Z",
+ "github_updated_at": "2026-06-20T03:53:06Z",
+ "candidate_benchmark_names": [
+  "swebench-verified",
+  "swebench_multilingual"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Leaderboard results submission; not a defect.",
+ "checked_urls": [
+  "https://github.com/SWE-bench/SWE-bench/pull/604"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}

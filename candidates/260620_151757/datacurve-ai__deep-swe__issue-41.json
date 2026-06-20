@@ -1,0 +1,24 @@
+{
+ "schema_version": "v5.source-candidate.1",
+ "source_url": "https://github.com/datacurve-ai/deep-swe/issues/41",
+ "repo": "datacurve-ai/deep-swe",
+ "source_type": "github_issue",
+ "github_number": 41,
+ "title": "Clarify expectations for GitHub Issues",
+ "body": "@Ynng \nHi Datacurve team,\nQuick process question: should the community expect GitHub Issues here to be an active support/discussion channel?\n\nI may have missed it, but I have not seen public maintainer replies or reactions on issues yet. A brief note on the intended workflow would help align expectations.\n\nFor example, it would be useful to know whether issues are intended to be handled later, whether another channel is preferred, or whether this repository is not meant for active collaboration.\n\nThanks.",
+ "comments": [],
+ "linked_pr_diff": null,
+ "github_state": "open",
+ "github_created_at": "2026-06-19T09:56:43Z",
+ "github_updated_at": "2026-06-19T09:56:43Z",
+ "candidate_benchmark_names": [
+  "deep-swe"
+ ],
+ "terminal_status": "rejected",
+ "audit_level": "L1",
+ "decision_note": "Maintainer clarifying issue-tracker expectations; not a defect.",
+ "checked_urls": [
+  "https://github.com/datacurve-ai/deep-swe/issues/41"
+ ],
+ "reviewed_at": "2026-06-20T06:24:27Z"
+}
