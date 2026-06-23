@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/42",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 42,
+  "title": "`sakana/fugu-ultra`",
+  "body": "No GitHub body text provided.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-22T14:03:39Z",
+  "github_updated_at": "2026-06-22T14:03:39Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Model name request only; no benchmark defect evidence.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/42"
+  ]
+}

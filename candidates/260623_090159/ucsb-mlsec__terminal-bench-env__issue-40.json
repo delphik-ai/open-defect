@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/40",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 40,
+  "title": "[质疑] 有话直说",
+  "body": "我做了简单检查，Star 来源高度可疑。\n\n86% 新增账号是空壳号。用户名像随机生成的字符串。\n\n建议：联系 GitHub、靠内容说话、发个声明。\n\n望回应。\n违规核实之时，举报同步提交 GitHub，违规流量清理，项目入口立时关停。",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-21T15:15:12Z",
+  "github_updated_at": "2026-06-21T15:15:12Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Repository star-manipulation accusation; outside benchmark defect scope.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/40"
+  ]
+}

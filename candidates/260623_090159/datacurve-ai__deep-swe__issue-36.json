@@ -1,0 +1,88 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/36",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 36,
+  "title": "Can you add GLM-5.2?",
+  "body": "As the title says, curious how this performs vs other open source models right now.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4723908886",
+      "user": "Perusae",
+      "created_at": "2026-06-16T21:45:41Z",
+      "updated_at": "2026-06-16T21:45:41Z",
+      "body": "Based upon zai their blog: https://z.ai/blog/glm-5.2\n\n* GLM 5.1: 18\n* GLM 5.2: 46.2 \n\nSo that puts it right between claude-opus-4.8 [medium] and claude-opus-4.7 [xhigh]"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4725580697",
+      "user": "ColRuDev",
+      "created_at": "2026-06-17T03:23:04Z",
+      "updated_at": "2026-06-17T03:23:04Z",
+      "body": "Should we believe it? benchmark results from different sources tend to vary."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4733748077",
+      "user": "Perusae",
+      "created_at": "2026-06-17T18:03:29Z",
+      "updated_at": "2026-06-17T18:03:29Z",
+      "body": "> Should we believe it? benchmark results from different sources tend to vary.\n\nThere is no reason for them to lie about those benchmarks, because of the potential PR fallout. Most simply not reporting on bad benchmark results. The fact that they added it, makes it highly likely that its accurate. We will know for sure when its been rebenched (and hopefully without the issues that plagued DeekSeek v4 pro its scores).  \n\nWorking with GLM 5.2 myself, the results feel accurate... somewhere between Opus 4.7 and 4.8 levels. Its probably from the original DeepSeek release, been this long that a Chinese model felt so close to the western frontier models."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4742880017",
+      "user": "ColRuDev",
+      "created_at": "2026-06-18T14:18:13Z",
+      "updated_at": "2026-06-18T14:18:13Z",
+      "body": "Then maybe is pretty closed to a future rebench score. I doubt more of the self published scores since they can use a specific environment or repeat multiple times to keep when it do good. For example, this benchmark prove results with claude code or codex agents are different with the ones using the mini agent. \n\nSince your personal experience is so good then maybe its real that ~30 points improve. I was just surprise because I spected to be closer to Kimi k2.7 "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4748425293",
+      "user": "coygeek",
+      "created_at": "2026-06-19T04:12:04Z",
+      "updated_at": "2026-06-19T04:12:04Z",
+      "body": "Please add GLM 5.2 to the new v1.1 benchmark. \nThis is critical, since it's ranked literally on par with Opus/GPT and currently #1 in open-source by most benchmarks. \n\nIn DeepSWE we trust!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4758326735",
+      "user": "Daucloud",
+      "created_at": "2026-06-20T13:49:36Z",
+      "updated_at": "2026-06-20T13:49:36Z",
+      "body": "> Then maybe is pretty closed to a future rebench score. I doubt more of the self published scores since they can use a specific environment or repeat multiple times to keep when it do good. For example, this benchmark prove results with claude code or codex agents are different with the ones using the mini agent.\n> \n> Since your personal experience is so good then maybe its real that ~30 points improve. I was just surprise because I spected to be closer to Kimi k2.7\n\n\"DeepSWE: We run DeepSWE with the official pier evaluation framework and the mini-swe-agent harness (temperature=1.0, top_p=1.0, timeout=2h, 400K context). Each task is solved in an isolated container with 2 CPUs, 8 GB RAM, and no internet access.\"\n\nZAI has noted their evaluation setting as mentioned above. I guess no need to worry about the benchmarking scaffold. Also, I myself have compared DeepSWE between Claude Code and mini-swe-agent on GLM, and the scores are really close."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4760436975",
+      "user": "ColRuDev",
+      "created_at": "2026-06-21T00:35:05Z",
+      "updated_at": "2026-06-21T00:36:36Z",
+      "body": "Thanks for the answers. I think this issue should be closed since the new v1.1 already include the scores with ~44% and 42% in the old version with max mode. which is not that far from the presented by zAI"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4760469720",
+      "user": "coygeek",
+      "created_at": "2026-06-21T00:50:14Z",
+      "updated_at": "2026-06-21T00:50:14Z",
+      "body": "Thank you very much for the quick turnaround, DeepSWE!\n\n<img width=\"988\" height=\"931\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6026b136-b2f2-4809-924f-775491e936af\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/36#issuecomment-4760505143",
+      "user": "coygeek",
+      "created_at": "2026-06-21T01:07:42Z",
+      "updated_at": "2026-06-21T01:07:42Z",
+      "body": "I've been testing GLM 5.2 (both on official Z-AI sub, and via Factory/Droid sub) head to head with GPT 5.5 medium, and OpenAI wins in every test I throw at it. \n\nMy 2 cents."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-15T21:45:58Z",
+  "github_updated_at": "2026-06-21T01:07:42Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Model evaluation request for GLM-5.2; no benchmark artifact defect claim.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/36"
+  ]
+}

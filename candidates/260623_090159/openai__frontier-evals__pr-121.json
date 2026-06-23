@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/121",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 121,
+  "title": "Add SECURITY.md",
+  "body": "The repo currently has no `SECURITY.md`, so https://github.com/openai/frontier-evals/security/policy 404s. This adds one in the same style as the sibling `openai/evals` SECURITY.md — references the existing OpenAI [Coordinated Vulnerability Disclosure Policy](https://openai.com/security/disclosure/) rather than introducing a new channel.\n\nThe one repo-specific addition is a scope note: `frontier-evals` contains intentionally adversarial content (EVMBench exploit replication, SWE-Lancer security-relevant tasks, PaperBench's offensive-security paper replications). Without an explicit note, security researchers can file reports against the eval design itself — flagging model behaviour on these inputs as \"vulnerabilities\" when that behaviour is the eval signal. The scope section makes the in-scope categories (harness code, supply chain, sandbox boundaries, accidental data disclosure) explicit and lists what is out of scope so reports route to the right place.\n\nNo code changes. Happy to adjust wording if you'd prefer a thinner version that just references the disclosure policy without the scope note.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/SECURITY.md b/SECURITY.md\nnew file mode 100644\nindex 0000000..0a18aa4\n--- /dev/null\n+++ b/SECURITY.md\n@@ -0,0 +1,24 @@\n+# Security Policy\n+\n+For a more in-depth look at our security policy, please check out our [Coordinated Vulnerability Disclosure Policy](https://openai.com/security/disclosure/).\n+\n+Our PGP key is located [at this address](https://cdn.openai.com/security.txt).\n+\n+## Scope Note for `frontier-evals`\n+\n+This repository contains intentionally adversarial content used to measure frontier-model capability and safety:\n+\n+- **EVMBench** — smart contract exploit replication tasks, with audit reports, vulnerability hints, and patch references.\n+- **SWE-Lancer** — freelance software-engineering tasks, some of which include security-relevant code paths.\n+- **PaperBench** — paper-replication tasks that may invoke offensive-security or red-teaming workflows.\n+\n+Model behaviour on these inputs is the eval signal, not a vulnerability. Please do not file reports for adversarial content that the evals are designed to elicit.\n+\n+The following ARE in scope and we welcome reports for them:\n+\n+- Vulnerabilities in the eval harness code itself (the orchestration scripts under `project/*/runtime_*/`, shared utilities under `project/common/`, or the top-level `pyproject.toml` tooling chain).\n+- Supply-chain issues in pinned dependencies (`uv.lock`, `pyproject.toml`).\n+- Sandbox-escape paths in EVMBench's task runners or PaperBench's replication environment that would allow eval code to affect the host beyond its intended boundary.\n+- Accidental disclosure of PII, secrets, or non-public OpenAI material in committed task data.\n+\n+Please follow the [Coordinated Vulnerability Disclosure Policy](https://openai.com/security/disclosure/) for all reports.\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-21T05:46:16Z",
+  "github_updated_at": "2026-06-21T05:46:16Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "SECURITY.md documentation PR; no swe-lancer-diamond benchmark defect claim.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/121"
+  ]
+}

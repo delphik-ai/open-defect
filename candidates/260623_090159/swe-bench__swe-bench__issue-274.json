@@ -1,0 +1,54 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/274",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 274,
+  "title": "`pvlib/pvlib-python` in dev set failed for Gold Patch",
+  "body": "### Describe the bug\n\n`pvlib/pvlib-python` in dev set isn't working\n\n### Steps/Code to Reproduce\n\n```bash\r\npython -m swebench.harness.run_evaluation \\\r\n    --predictions_path gold \\\r\n    --max_workers 1 \\\r\n    --instance_ids pvlib__pvlib-python-1707 pvlib__pvlib-python-1072 pvlib__pvlib-python-1606 pvlib__pvlib-python-1854 pvlib__pvlib-python-1154 \\\r\n    --run_id validate-gold \\\r\n    --split dev\r\n```\n\n### Expected Results\n\nIt should pass all\n\n### Actual Results\n\nNone of them pass.\r\n\r\nAll the logs ends up with this error: \r\n\r\n```log\r\n+ git apply -v -\r\nChecking patch pvlib/tests/test_iam.py...\r\nApplied patch pvlib/tests/test_iam.py cleanly.\r\n+ pytest -rA pvlib/tests/test_iam.py\r\nImportError while loading conftest '/testbed/pvlib/tests/conftest.py'.\r\npvlib/__init__.py:3: in <module>\r\n    from pvlib import (  # noqa: F401\r\npvlib/ivtools/__init__.py:7: in <module>\r\n    from pvlib.ivtools import sde, sdm, utils  # noqa: F401\r\npvlib/ivtools/sdm.py:15: in <module>\r\n    from pvlib.pvsystem import calcparams_pvsyst, singlediode, v_from_i\r\npvlib/pvsystem.py:21: in <module>\r\n    from pvlib import (atmosphere, iam, inverter, irradiance,\r\npvlib/singlediode.py:59: in <module>\r\n    NsVbi=np.Inf, breakdown_factor=0., breakdown_voltage=-5.5,\r\n/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/numpy/__init__.py:397: in __getattr__\r\n    raise AttributeError(\r\nE   AttributeError: `np.Inf` was removed in the NumPy 2.0 release. Use `np.inf` instead.\r\n+ git checkout 40e9e978c170bdde4eeee1547729417665dbc34c pvlib/tests/test_iam.py\r\nUpdated 1 path from e6a4d8e\r\n```\n\n### System Information\n\n```bash\r\n> pip list | grep swebench\r\nswebench                          2.1.7\r\n```",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/274#issuecomment-2556610360",
+      "user": "Ryker-shi",
+      "created_at": "2024-12-20T09:29:34Z",
+      "updated_at": "2024-12-20T09:29:34Z",
+      "body": "same  issue"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/274#issuecomment-2635531405",
+      "user": "john-b-yang",
+      "created_at": "2025-02-05T01:58:18Z",
+      "updated_at": "2025-02-05T01:58:18Z",
+      "body": "I just ran it with the latest version of SWE-bench.\n```\n$ ./test.sh\n/opt/miniconda3/envs/sweb/lib/python3.10/runpy.py:126: RuntimeWarning: 'swebench.harness.run_evaluation' found in sys.modules after import of package 'swebench.harness', but prior to execution of 'swebench.harness.run_evaluation'; this may result in unpredictable behaviour\n  warn(RuntimeWarning(msg))\nUsing gold predictions - ignoring predictions_path\n3 instances already run, skipping...\nRunning 2 unevaluated instances...\nRunning 2 instances...\n2 ran successfully, 0 failed: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [01:30<00:00, 45.13s/it]\nAll instances run.\nCleaning cached images...\nRemoved 0 images.\nTotal instances: 5\nInstances submitted: 5\nInstances completed: 5\nInstances incomplete: 0\nInstances resolved: 5\nInstances unresolved: 0\nInstances with empty patches: 0\nInstances with errors: 0\nUnstopped containers: 0\nUnremoved images: 0\nReport written to gold.validate-gold.json\n```\n\nI made a change to SWE-bench today that I think fixed this issue. Instead of the default behavior being to build the images + containers from scratch, it defaults to pulling the SWE-bench images we've created on dockerhub.\n\nWith this strategy, it avoids any issues that might arise from re-building images from scratch, primarily changes to dependencies.\n\nI currently don't have the capacity to dive into fixing the actual build specifications itself. This solution should be good enough to ensure SWE-bench evaluation is reproducible.\n\nI'm closing this issue for now. Please try running the exact same command again on a Linux machine, and if it still fails, please feel free to re-open and communicate what error you're getting."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/274#issuecomment-4586400233",
+      "user": "id01",
+      "created_at": "2026-05-31T10:19:44Z",
+      "updated_at": "2026-05-31T10:19:44Z",
+      "body": "Still experiencing this issue on Arch Linux, both Python 3.12 and 3.14.\n\nCommand:\n```\npython -m swebench.harness.run_evaluation     --predictions_path gold     --max_workers 1     --instance_ids pvlib__pvlib-python-1707     --run_id validate-gold-pvlib --split dev --namespace swebench --instance_image_tag v1 --cache_level none\n```\n\nIn the log:\n```\nInstalling collected packages: pvlib\n  Attempting uninstall: pvlib\n    Found existing installation: pvlib 0.9.6.dev21+g40e9e97\n    Uninstalling pvlib-0.9.6.dev21+g40e9e97:\n      Successfully uninstalled pvlib-0.9.6.dev21+g40e9e97\nSuccessfully installed pvlib-0.9.6.dev22+g9b08bcc31.d20260531\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.\n+ git checkout 40e9e978c170bdde4eeee1547729417665dbc34c pvlib/tests/test_iam.py\nUpdated 0 paths from e6a4d8e\n+ git apply -v -\nChecking patch pvlib/tests/test_iam.py...\nApplied patch pvlib/tests/test_iam.py cleanly.\n+ : '>>>>> Start Test Output'\n+ pytest -rA pvlib/tests/test_iam.py\nImportError while loading conftest '/testbed/pvlib/tests/conftest.py'.\npvlib/__init__.py:3: in <module>\n    from pvlib import (  # noqa: F401\npvlib/ivtools/__init__.py:7: in <module>\n    from pvlib.ivtools import sde, sdm, utils  # noqa: F401\npvlib/ivtools/sdm.py:15: in <module>\n    from pvlib.pvsystem import calcparams_pvsyst, singlediode, v_from_i\npvlib/pvsystem.py:21: in <module>\n    from pvlib import (atmosphere, iam, inverter, irradiance,\npvlib/singlediode.py:59: in <module>\n    NsVbi=np.Inf, breakdown_factor=0., breakdown_voltage=-5.5,\n/opt/miniconda3/envs/testbed/lib/python3.9/site-packages/numpy/__init__.py:397: in __getattr__\n    raise AttributeError(\nE   AttributeError: `np.Inf` was removed in the NumPy 2.0 release. Use `np.inf` instead.\n+ : '>>>>> End Test Output'\n+ git checkout 40e9e978c170bdde4eeee1547729417665dbc34c pvlib/tests/test_iam.py\nUpdated 1 path from e6a4d8e\n```\n\nFails on modal too.\n\nDid a straight docker rmi + pull, and still failed. Inspecting the image shows we're using NumPy version 2.0.2. Seems docker hub image might be broken - it doesn't look like a binary image, and the Dockerfile commands have no pinned versions for NumPy, which means numpy will fetch latest."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/274#issuecomment-4768694662",
+      "user": "jiusanzhou",
+      "created_at": "2026-06-22T13:16:38Z",
+      "updated_at": "2026-06-22T13:16:38Z",
+      "body": "Adding a fresh data point for this — still broken on 2026-06-22, swebench 4.1.0 (latest pypi). All 5 pvlib instances in the dev split fail with the same `np.Inf` AttributeError that @id01 reported above.\n\n**Verified via gold patch sanity check**: ran the official answer for `pvlib__pvlib-python-1606` (not just the test patch) and it produces:\n\n```\npatch_successfully_applied: True\nresolved:                   False\nFAIL_TO_PASS: success=0, failure=1\nPASS_TO_PASS: success=0, failure=10\n```\n\nwith the same root cause in `test_output.txt`:\n\n```\nImportError while loading conftest '/testbed/pvlib/tests/conftest.py'.\n...\npvlib/singlediode.py:59: in <module>\n    NsVbi=np.Inf, breakdown_factor=0., breakdown_voltage=-5.5,\nE   AttributeError: `np.Inf` was removed in the NumPy 2.0 release.\n                   Use `np.inf` instead.\n```\n\nSo gold-patch verification still doesn't pass on these instances → they're unreachable for any agent regardless of patch quality.\n\n**Repro** (swebench 4.1.0, macOS arm64 / OrbStack):\n\n```bash\npython -m swebench.harness.run_evaluation \\\n  --predictions_path gold \\\n  --dataset_name SWE-bench/SWE-bench_Lite \\\n  --split dev \\\n  --max_workers 1 \\\n  --run_id validate-gold-pvlib \\\n  --instance_ids pvlib__pvlib-python-1606\n```\n\n**Suspected root cause** (matches @id01's analysis): the prebuilt eval image's environment install doesn't pin numpy, so `pip install` resolves to numpy 2.x, while pvlib 0.7-0.9's `singlediode.py` and `conftest.py` still reference `np.Inf`. Pinning `numpy<2` in the per-instance environment spec would fix all 5 instances.\n\nAffected instances (entire pvlib slice of the Lite dev split):\n- `pvlib__pvlib-python-1072` (version 0.7)\n- `pvlib__pvlib-python-1154` (version 0.8)\n- `pvlib__pvlib-python-1606` (version 0.8)\n- `pvlib__pvlib-python-1707` (version 0.9)\n- `pvlib__pvlib-python-1854` (version 0.9)\n\nHappy to PR a fix to the env spec if maintainers want — would just be a `numpy<2` pin in the relevant `MakeSpecs` entries. Reopen would be appreciated.\n\nFor context, this is also a data-quality issue for benchmark publishers: any model evaluated on the SWE-bench Lite dev split right now is taking a structural 5/23 (≈22%) penalty before any agent work happens. We worked around it on our end by reporting `12/18 = 66.7% adjusted` after gold-patch sanity-checking the broken slice ([context here](https://github.com/jiusanzhou/spore/pull/13)).\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2024-12-16T16:01:42Z",
+  "github_updated_at": "2026-06-22T13:16:38Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "pvlib gold-patch failure is tied to SWE-bench Lite dev split instances; current candidate benchmarks are swebench-verified and swebench_multilingual, so it cannot be counted here.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/274"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/37",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 37,
+  "title": "[紧急] 这些 Star 是买的吗",
+  "body": "如果 GitHub 举办最明显的刷星项目排行榜的话，你们应该能进前三。\n\n说正经的，用户名格式高度统一，像是同一个脚本生成的。Star 从 134 飙升到 8974，仅用了 6 天。\n\n你花在买星上的钱，够请人写好几个月的单元测试了。\n\n好了不开玩笑了，正经建议：\n1. 联系 GitHub 官方配合排查\n2. 发布一份正式声明\n3. 承诺今后以真实运营为增长策略\n\n相信诚意比数字更有力量。\n针对相关违规，循规检举，违规流量予以清除，项目予以关闭访问。",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-21T11:39:24Z",
+  "github_updated_at": "2026-06-21T11:39:24Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Repository star-manipulation accusation; outside benchmark defect scope.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/37"
+  ]
+}

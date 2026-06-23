@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/39",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 39,
+  "title": "刷星刷得这么明目张胆，是觉得没人看得出来吗？（望回应）",
+  "body": "一个技术群里突然好多人在讨论这个项目，一开始还挺有兴趣。然后我点开了 Stargazer 列表——\n\n我真的很愤怒，这种行为败坏了整个开源的风气。\n\n简单看了一下数据：Star 从 272 飙升到 2034，仅用了 2 天。这些账号的共同特征是：抽查了 50 个新增账号，其中 47 个是空壳号。\n\n我真的很愤怒，这种行为败坏了整个开源的风气。\n\n我的要求很简单：\n1. 自查自纠、清退假号\n2. 在 Readme 或 Discussion 里公开说明\n3. 以后靠真实内容和口碑去推广\n\n这件事拖得越久对你们越不利，趁早处理吧。\n违规一旦坐实，举报便正式发 GitHub，违规流量清空，项目访问停。",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-21T14:11:41Z",
+  "github_updated_at": "2026-06-21T14:11:41Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Repository star-manipulation accusation; outside benchmark defect scope.",
+  "reviewed_at": "2026-06-23T00:06:39.550Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/39"
+  ]
+}
