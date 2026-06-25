@@ -4,16 +4,17 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "found",
+  "resolution": "fixing",
   "title": "Make sure submitted patch doesn't modify tests",
   "summary": "SWE-bench allows submitted patches to modify tests; discussion says test edits should be disabled/filtered during evaluation.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/437",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/issues/437"
+    "https://github.com/SWE-bench/SWE-bench/issues/437",
+    "https://github.com/SWE-bench/SWE-bench/pull/606"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-07-05T14:56:10.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-06-25T00:06:42.362Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

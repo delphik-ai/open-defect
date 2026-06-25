@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-241",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "slack-clone",
+    "excel-clone",
+    "s3-clone",
+    "mastodon-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Inline, upstream-compatible CUA verifier for the 4 clone tasks",
+  "summary": "Four SWE-Marathon CUA clone tasks depended on fork-only multi-stage type=cua verifier plumbing; merged PR #241 inlines an upstream Harbor-compatible shell verifier using Computer1.",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/241",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/241",
+    "https://github.com/abundant-ai/swe-marathon/pull/241/commits/a167e175a70d24e16850fa21f9530c8621cfa071"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-21T17:49:34Z",
+  "last_reviewed_at": "2026-06-25T00:06:42.362Z",
+  "decision_note": "L2 source-read audit. The PR body and diff name the four clone tasks and replace fork-only [[verifiers]]/type=cua configuration with single shell verifiers that call upstream Harbor Computer1. GitHub shows PR #241 merged on 2026-06-24 with merge commit a167e175a70d24e16850fa21f9530c8621cfa071, giving social proof and fixed resolution. No existing swe-marathon artifact covers this root cause."
+}

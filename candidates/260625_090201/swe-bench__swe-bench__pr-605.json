@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/605",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 605,
+  "title": "fix(harness): pin setuptools 59.8.0 for astropy 3.1",
+  "body": "Fixes #584\n\nThe astropy 3.1 spec pins `setuptools==68.0.0`. Setuptools ≥60 ships a vendored `distutils` whose `LooseVersion` emits a `DeprecationWarning` at import time. Astropy 3.1 pytest config treats warnings as errors, so collection aborts before any test runs — gold patches for instances like `astropy__astropy-8872` always score `resolved: false`.\n\nPin `setuptools==59.8.0` for the 3.1 spec only so collection uses stdlib distutils without the warning.\n\nMade with [Cursor](https://cursor.com)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/constants/python.py b/swebench/harness/constants/python.py\nindex a99853164..8ac8477cc 100644\n--- a/swebench/harness/constants/python.py\n+++ b/swebench/harness/constants/python.py\n@@ -565,6 +565,9 @@\n     }\n     for k in [\"3.0\", \"3.1\", \"3.2\", \"4.1\", \"4.2\", \"4.3\", \"5.0\", \"5.1\", \"5.2\", \"v5.3\"]\n }\n+SPECS_ASTROPY[\"3.1\"][\"pip_packages\"] = [\n+    p.replace(\"setuptools==68.0.0\", \"setuptools==59.8.0\") for p in SPECS_ASTROPY[\"3.1\"][\"pip_packages\"]\n+]\n SPECS_ASTROPY.update(\n     {\n         k: {\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-24T11:30:31Z",
+  "github_updated_at": "2026-06-24T11:30:31Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-584",
+  "task_names": [
+    "astropy__astropy-8872"
+  ],
+  "resolution": "fixing",
+  "summary": "Open fix PR pins setuptools 59.8.0 for astropy 3.1, matching the existing astropy__astropy-8872 collection-failure defect.",
+  "decision_note": "L2 source-read audit. PR #605 explicitly fixes #584 and its diff replaces setuptools==68.0.0 with 59.8.0 for SPECS_ASTROPY[\"3.1\"], matching the existing canonical root cause for astropy__astropy-8872. The PR is open, so resolution is fixing rather than fixed.",
+  "reviewed_at": "2026-06-25T00:06:42.362Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/605",
+    "https://github.com/SWE-bench/SWE-bench/issues/584"
+  ]
+}

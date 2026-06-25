@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/198",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 198,
+  "title": "Request for Spider 2.0 Snowflake Data Share Access",
+  "body": "Dear Spider 2.0 Team: I sent an email last week regarding secure data sharing, but have not received a reply. My Email address : <seenyang@outlook.com>, Could you please share the data for me now that you see this message?",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-24T06:25:52Z",
+  "github_updated_at": "2026-06-24T06:25:52Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Thread requests Spider 2.0 Snowflake data share access. The watched candidate benchmark for xlang-ai/Spider2 here is spider2-dbt, and Snowflake/Snow access credentials belong to a different Spider2 variant, so it is outside the current benchmark scope.",
+  "reviewed_at": "2026-06-25T00:06:42.362Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/198"
+  ]
+}
