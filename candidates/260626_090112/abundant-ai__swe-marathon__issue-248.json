@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/248",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 248,
+  "title": "post-train-ifeval depends on decommissioned Llama-3.2-1B Tinker model",
+  "body": "## Summary\n\nThe `post-train-ifeval` task is still hard-coded to use `meta-llama/Llama-3.2-1B` through Tinker. That base model has been decommissioned, so the task can fail as infrastructure before it measures agent performance.\n\n## Affected paths\n\nThe model id appears in multiple solve and verifier paths, so this is not a one-line instruction update:\n\n- `tasks/post-train-ifeval/instruction.md`\n- `tasks/post-train-ifeval/task.toml`\n- `tasks/post-train-ifeval/solution/solve.sh`\n- `tasks/post-train-ifeval/solution/src/post_train_ifeval/eval.py`\n- `tasks/post-train-ifeval/tests/test.sh`\n- `tasks/post-train-ifeval/tests/tinker_util.py`\n- `tasks/post-train-ifeval/tests/evaluate.py`\n- `tasks/post-train-ifeval/tests/regression/suite.py`\n- related docs under `tasks/post-train-ifeval/solution/docs/`\n\n## Impact\n\nAgents are asked to LoRA SFT a base model remotely through Tinker and write a `tinker://...` sampler checkpoint to `/app/best_checkpoint.txt`. If `meta-llama/Llama-3.2-1B` is no longer available, both training and verifier-side sampling can fail for environment/model-availability reasons rather than task quality.\n\n## Suggested fix\n\n- Pick a currently supported Tinker base model. For a base-model SFT task, likely candidates are `Qwen/Qwen3.5-9B-Base` or `Qwen/Qwen3-8B-Base` rather than an already-instruct model.\n- Update the renderer configuration away from the Llama 3 renderer to the replacement model's recommended renderer.\n- Re-baseline the replacement model's IFEval score and reset the target threshold; `binary_strict >= 0.45` should not be carried over blindly.\n- Update the committed reference checkpoint, regression baseline metadata, and docs.\n- Re-check timeout/cost assumptions, since an 8B/9B replacement is materially more expensive than the original 1B model.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-25T07:44:23Z",
+  "github_updated_at": "2026-06-25T07:44:23Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "The thread claims the post-train-ifeval task depends on a decommissioned Tinker model. Public task.toml/instruction.md confirm the current task hard-codes meta-llama/Llama-3.2-1B and Tinker, but this run found no public GitHub maintainer acknowledgement, fix, or source diff proving that the Tinker model is decommissioned. External Tinker availability was not reproducible from public GitHub evidence, so the defect claim remains unverified.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/248",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/task.toml",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/instruction.md"
+  ],
+  "reviewed_at": "2026-06-26T00:04:48.880Z"
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/40",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 40,
+  "title": "suggested models",
+  "body": "Have you guys tested the Deepseek V4 Flash, Step 3.7 Flash? I know they might not do so well in the benchmark, but it would be nice to see some mention of whether they achieved any results or failed completely.\n\nAnother suggestion: it would be interesting to see the Chinese models being used within the Claude Code Harness (using the Claude Code Router with CLIproxy, it would be interesting to see the difference in scores).",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/40#issuecomment-4761294252",
+      "user": "duckfriend123",
+      "created_at": "2026-06-21T07:47:19Z",
+      "updated_at": "2026-06-21T07:47:19Z",
+      "body": "just get an openrouter account and run it yourself if it seems important to you"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/40#issuecomment-4793208745",
+      "user": "ColRuDev",
+      "created_at": "2026-06-24T20:09:35Z",
+      "updated_at": "2026-06-24T20:09:35Z",
+      "body": "@duckfriend123 Is it posible to use subscriptions or the models must use API?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/40#issuecomment-4795307348",
+      "user": "FrankieLiu04",
+      "created_at": "2026-06-25T02:30:55Z",
+      "updated_at": "2026-06-25T02:30:55Z",
+      "body": "Bad news, DeepSWE bench is not a toy benchmark, it actually use a lot tokens and money (but should be acceptable for model like v4flash). Maybe apply sponsorship from the llm provider is a way to solve it. And i believe using API for this benchmark would be more appropriate since for subscription plan you don't have full control on the model provider, they may route your model since the usage is too high or any reason. Using sub is more like a black box\n\nAlso this should be a good test to check whether if the same open weight model has been deployed properly by different provider on openrouter. The price should be more acceptable since we just run this for open weight model."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-17T21:15:29Z",
+  "github_updated_at": "2026-06-25T02:30:55Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks about suggested model coverage and API/subscription usage. It does not claim a task, harness, evaluator, dataset, or oracle defect in DeepSWE.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/40"
+  ],
+  "reviewed_at": "2026-06-26T00:04:48.880Z"
+}

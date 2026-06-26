@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/45",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 45,
+  "title": "[Bug] prometheus-transactional-reload-status: p2p_node_ids 包含不相关的 flaky TestQueryLog，导致误判 score=0",
+  "body": "## 问题\n`tasks/prometheus-transactional-reload-status/tests/config.json` 的 `p2p_node_ids` 包含了 25 个 `TestQueryLog` 相关条目（第 55-75 行），但该测试与本任务考察的 transactional reload 功能**完全无关**：\n- `solution.patch`（golden patch）不涉及 `query_log_test.go`\n- `test.patch` 对 `query_log_test.go` 的改动仅为端口分配方式优化，非功能测试\n- TestQueryLog 是 Prometheus 上游已知的 flaky 测试，在容器环境中高概率返回 404\n## 影响\n两次独立评估100% 复现：\n- f2p = 15/15 = 1.0（golden patch 正确）\n- p2p = 61/82 = 0.744（21 个失败全部来自 TestQueryLog）\n- **最终 reward = 0**（误判）",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-25T14:39:51Z",
+  "github_updated_at": "2026-06-25T14:39:51Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-45",
+  "task_names": [
+    "prometheus-transactional-reload-status"
+  ],
+  "resolution": "found",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Pass-to-pass whitelist includes unrelated flaky tests",
+  "summary": "The DeepSWE task prometheus-transactional-reload-status whitelists 25 unrelated TestQueryLog P2P node ids in config.json. The task patches target transactional reload behavior, so these unrelated flaky query-log tests can make a correct solution score 0.",
+  "decision_note": "L2 source-read audit. The issue names current DeepSWE task prometheus-transactional-reload-status. Public config.json includes TestQueryLog entries in p2p_node_ids at lines 55-75, while task.toml identifies the task as transactional reload status and solution/test patches target transactional reload behavior plus incidental port/test stability changes. No existing deep-swe artifact covers this root cause.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/45",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/config.json",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/solution/solution.patch",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/test.patch",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/grader.py"
+  ],
+  "reviewed_at": "2026-06-26T00:04:48.880Z"
+}
