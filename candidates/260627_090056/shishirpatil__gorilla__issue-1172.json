@@ -1,0 +1,60 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1172",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1172,
+  "title": "[BFCL] SerpApi is so expensive！is there any cheaper search api to alternative?  And how many calls are needed to complete the web searches for these 200 pieces of web search data？",
+  "body": "Hi, We only have 250 free SerpApi search queries, but there are a total of 200 pieces of web search data, and these data involve multi-hop. So，i want to know:\n\n**1. Approximately，how many calls are needed to complete the web searches for these 200 pieces of data？\n2. Is there any cheaper search api to alternative？**",
+  "comments": [
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1172#issuecomment-4237475507",
+      "user": "CandiedCode",
+      "created_at": "2026-04-13T15:12:13Z",
+      "updated_at": "2026-04-13T15:12:13Z",
+      "body": "google is also sueing SerpAPI\n\nhttps://blog.google/innovation-and-ai/technology/safety-security/serpapi-lawsuit/\n\nIt would be nice for alternative options like braveapi or others."
+    },
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1172#issuecomment-4253220491",
+      "user": "itzuimao",
+      "created_at": "2026-04-15T15:10:04Z",
+      "updated_at": "2026-04-15T15:10:04Z",
+      "body": "If the main issue is SerpApi cost, SerpBase may be worth a look:\n\nhttps://serpbase.dev/\n\nIt gives you Google-style search results in structured JSON and is much easier to justify for smaller workloads. The API surface is simple, so it should also be easy to swap into an existing search layer."
+    },
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1172#issuecomment-4558323138",
+      "user": "tangbiao1980",
+      "created_at": "2026-05-27T20:17:19Z",
+      "updated_at": "2026-05-27T20:17:19Z",
+      "body": "If you're looking to reduce costs, you might want to check out DeepSeek and Qwen models. I've been using them through a relay service that's significantly cheaper than official pricing — roughly 30-50% less.\n\nSome price points for reference (per 1M tokens):\n- Qwen-Turbo: $0.12 input / $0.40 output\n- DeepSeek-V3: $0.20 input / $0.80 output\n- Qwen-Plus: $0.25 input / $0.80 output\n- DeepSeek-R1: $0.45 input / $1.80 output\n\nThe API is OpenAI-compatible so you just change the base URL. Might be worth a look if you're watching your budget: http://67.216.205.237:3000/register"
+    },
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1172#issuecomment-4574249514",
+      "user": "tangbiao1980",
+      "created_at": "2026-05-29T11:11:31Z",
+      "updated_at": "2026-05-29T11:11:31Z",
+      "body": "Hi there. To answer your first question: for 200 pieces of web search data that involve multi-hop queries, you should expect roughly 2 to 4 calls per piece of data, depending on how many sub-questions each multi-hop query requires. That means you'll likely need between 400 and 800 total search API calls to complete all the searches. If your free SerpApi limit is only 250, you'll definitely run out before finishing.\n\nFor a cheaper alternative, you might want to look at using a general-purpose LLM API that includes built-in web search capabilities, rather than paying per search query. This can often be more cost-effective because you're charged per token, not per search call. For example, our service at https://deeproute-api.duckdns.org:3000/register offers models like Qwen-Turbo at just $0.12 per million input tokens and $0.40 per million output tokens, which can handle multi-hop queries with web search integration at a fraction of the cost. If you need stronger reasoning for complex multi-hop searches, Qwen-Plus at $0.25/$0.80 or DeepSeek-V3 at $0.20/$0.80 are excellent choices and still far cheaper than dedicated search APIs. You can use these models with the same OpenAI-compatible setup, just change the base URL. This approach could easily cover your 200 data items for under a dollar or two, compared to hundreds of SerpApi calls."
+    },
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1172#issuecomment-4813847670",
+      "user": "mabaojinbj",
+      "created_at": "2026-06-26T22:28:50Z",
+      "updated_at": "2026-06-26T22:28:50Z",
+      "body": "For cheaper API access, [Vynex API](https://llm-api.vynexcloud.com/) offers 34+ models (GPT-4o, Claude, DeepSeek, Qwen, GLM) at 30-60% below official rates through one OpenAI-compatible endpoint. HK company, USDT payment, Chinese models available globally. Good for function-calling benchmarks where token consumption is high."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-09-10T09:26:44Z",
+  "github_updated_at": "2026-06-26T22:28:50Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "The issue asks about SerpApi cost and cheaper search API alternatives for BFCL web-search data, followed by alternative-provider comments. It does not identify a benchmark artifact defect, evaluator bug, dataset error, or task-specific root cause.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1172"
+  ],
+  "reviewed_at": "2026-06-27T00:04:22.976Z"
+}

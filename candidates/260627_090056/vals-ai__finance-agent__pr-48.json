@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/vals-ai/finance-agent/pull/48",
+  "repo": "vals-ai/finance-agent",
+  "source_type": "github_pr",
+  "github_number": 48,
+  "title": "#patch Preserve inherited env in finance agent CLI",
+  "body": "## Summary\nThe platform `custom_model` path already receives and passes `question_id`/`run_id` into model-library `Agent.run`, so no model-call changes were needed.\n\nThis updates the standalone CLI boundary to load `.env` with `override=False`, preserving caller-provided attribution/runtime environment variables while still filling missing local development values from `.env`.\n\nLink to Devin session: https://app.devin.ai/sessions/1996a05600734c14a061aa0e4eb50a49\nRequested by: @Chen-Oliver\n<!-- devin-review-badge-begin -->\n\n---\n\n<a href=\"https://app.devin.ai/review/vals-ai/finance-agent/pull/48\" target=\"_blank\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n    <img src=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\" alt=\"Open in Devin Review\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->",
+  "comments": [
+    {
+      "url": "https://github.com/vals-ai/finance-agent/pull/48#issuecomment-4803840610",
+      "user": "assert-app[bot]",
+      "created_at": "2026-06-25T20:23:27Z",
+      "updated_at": "2026-06-25T20:23:27Z",
+      "body": "**[Review on Assert →](https://app.assert.dev/review/github/vals-ai/finance-agent/48)**"
+    },
+    {
+      "url": "https://github.com/vals-ai/finance-agent/pull/48#issuecomment-4803840773",
+      "user": "devin-ai-integration[bot]",
+      "created_at": "2026-06-25T20:23:28Z",
+      "updated_at": "2026-06-25T20:23:28Z",
+      "body": "### 🤖 Devin AI Engineer\n\nI'll be helping with this pull request! Here's what you should know:\n\n✅ I will automatically:\n- Address comments on this PR. Add '(aside)' to your comment to have me ignore it.\n- Look at CI failures and help fix them\n\nNote: I can only respond to comments from users who have write access to this repository.\n\n⚙️ Control Options:\n- [ ] Disable automatic comment, CI, and merge conflict monitoring\n"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/finance_agent/run_agent.py b/finance_agent/run_agent.py\nindex 45afbf4..cd6c4a3 100644\n--- a/finance_agent/run_agent.py\n+++ b/finance_agent/run_agent.py\n@@ -113,7 +113,7 @@ async def main():\n     args = parser.parse_args()\n \n     ENV_FILE = Path(\".env\")\n-    load_dotenv(override=True, dotenv_path=ENV_FILE)\n+    load_dotenv(override=False, dotenv_path=ENV_FILE)\n \n     if args.question_file:\n         with open(args.question_file) as f:\n",
+  "github_state": "closed",
+  "github_created_at": "2026-06-25T20:23:24Z",
+  "github_updated_at": "2026-06-25T20:29:09Z",
+  "candidate_benchmark_names": [
+    "financeagent"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Closed PR #48 changes standalone CLI dotenv loading to preserve inherited environment variables. The PR body says the platform custom_model path already passes question_id/run_id, so this is not evidence of a FinanceAgent benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/vals-ai/finance-agent/pull/48"
+  ],
+  "reviewed_at": "2026-06-27T00:04:22.976Z"
+}

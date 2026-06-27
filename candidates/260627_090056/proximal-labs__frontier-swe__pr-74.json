@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/pull/74",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_pr",
+  "github_number": 74,
+  "title": "[issues explanation]: Issues #66 and #69",
+  "body": "- Add scoring doc and script used for leaderboard scoring for reference\r\n- Fix SSIM threshold to match leaderboard scoring for revideo task\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Only relaxes verifier grading criteria in test.sh; no runtime product or security impact, though slightly looser visual correctness checks until the baseline is rebuilt.\n> \n> **Overview**\n> The revideo performance verifier’s **SSIM pass/fail gate** is lowered from **0.99 to 0.95** via a named `SSIM_THRESHOLD` constant, with comments noting this matches **leaderboard scoring** and is an interim fix for **pixel drift** when candidates optimize **v0.4.2** but are compared against a **v0.4.4** frozen baseline.\n> \n> Failure messages now report the dynamic threshold (e.g. `SSIM x < 0.95`) instead of a hardcoded 0.99.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 736ef2670a122025c087cce61b8d49a1a1a3970b. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/revideo-perf-opt/tests/test.sh b/tasks/revideo-perf-opt/tests/test.sh\nindex dc36a1a9..7f54c5e4 100644\n--- a/tasks/revideo-perf-opt/tests/test.sh\n+++ b/tasks/revideo-perf-opt/tests/test.sh\n@@ -358,12 +358,17 @@ for video_name in baseline_videos:\n         else:\n             ssim_val = 0.0\n \n-        correct = ssim_val >= 0.99\n+        # SSIM correctness threshold. Interim value 0.95 (matches the leaderboard\n+        # scorer) so honest optimizations of the v0.4.2 starting tree aren't failed\n+        # by inter-version pixel drift vs the v0.4.4 baseline. Root fix (rebuild the\n+        # baseline from the agent's starting version) is planned for the next release.\n+        SSIM_THRESHOLD = 0.95\n+        correct = ssim_val >= SSIM_THRESHOLD\n         results.append({\n             'scene': scene_name,\n             'correct': correct,\n             'ssim': round(ssim_val, 6),\n-            'reason': '' if correct else f'SSIM {ssim_val:.4f} < 0.99',\n+            'reason': '' if correct else f'SSIM {ssim_val:.4f} < {SSIM_THRESHOLD}',\n         })\n         status = 'PASS' if correct else 'FAIL'\n         print(f\"  {scene_name}: {status} (SSIM={ssim_val:.4f})\")\n",
+  "github_state": "closed",
+  "github_created_at": "2026-06-26T11:28:12Z",
+  "github_updated_at": "2026-06-26T11:29:23Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "frontier-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__issue-69",
+  "task_names": [
+    "revideo-perf-opt"
+  ],
+  "resolution": "fixed",
+  "summary": "The revideo-perf-opt v0.4.2-vs-v0.4.4 correctness drift defect is already canonicalized in issue #69; upstream merged an interim SSIM-threshold fix in PR #74.",
+  "decision_note": "L2 audit. PR #74 was merged on 2026-06-26 and changes tasks/revideo-perf-opt/tests/test.sh to lower the SSIM gate from 0.99 to 0.95 as an interim fix for the same v0.4.2 candidate versus v0.4.4 baseline drift already canonicalized in issue #69. It is duplicate/fix evidence, not a new root cause.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/pull/74",
+    "https://github.com/Proximal-Labs/frontier-swe/issues/69",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/tasks/revideo-perf-opt/tests/test.sh"
+  ],
+  "reviewed_at": "2026-06-27T00:04:22.976Z"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/66",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 66,
+  "title": "Leaderboard scores for ffmpeg-swscale-rewrite inconsistent with verifier's binary           correctness gate",
+  "body": "\n## Summary                                                                                      \n                                                                                                  \n  The leaderboard at https://www.frontierswe.com/ffmpeg-swscale-rewrite displays non-zero `Avg  \n  Score` / `Best Score` values for every model while showing `Correctness: 0/5` across the board. \n  This appears to contradict the scoring logic in                                                 \n  `tasks/ffmpeg-swscale-rewrite/tests/compute_reward.py`, which gates score=0 on any correctness  \n  failure.                                       \n                                                                                                  \n  ## Verifier behavior (per the published code)                                                   \n                                                                                                  \n  In `compute_reward.py`, `score` can only take one of two forms:                                 \n                        \n  1. `score = 0.0` — emitted on any of: integrity hard-fail (`--fail`), library load error,       \n  verifier crash, or `correctness_ok == False` (lines 580, 588, 596, 610, 635).  \n  2. `score = round(geo_mean_speedup, 6)` — emitted only when all hidden correctness workloads    \n  pass per-plane PSNR thresholds (60 dB convert / 40 dB scale) — line 685.                        \n                                                                                                  \n  `correctness_ok` is the AND-reduction over ~30 hidden workloads × all planes × PSNR ≥ threshold.\n   Any single plane below threshold → `score = 0`. \nThe `subscores[0].score = passed / total` field exists but is metadata only; it does not affect \n  |------|------------------|-------------|-----------|------------|                             \n  | 1    | GPT-5.5 Codex    | 0/5         | 0.273     | 0.317      |                              \n  | 2    | GPT-5.4 Codex    | 0/5         | 0.267     | 0.433      |\n  | 3    | Claude Opus 4.6  | 0/5         | 0.147     | 0.200      |\n  | ...  | ...              | 0/5         | ...       | ...        |\n\n  Two issues:\n\n  1. **Score should be 0 if correctness < 100%.** If `Correctness: 0/5` means \"0 of 5 trials\n  achieved full correctness\", every trial would emit `score = 0` per the verifier, so `Avg Score`\n  and `Best Score` should both be 0.\n\n  2. **`Best Score` values are not of the form `k/30`** (where 30 is the total number of hidden\n  correctness workloads in `sample_correctness_workloads`). Examples: `0.317` (≈ 9.51/30), `0.273`\n   (≈ 8.19/30), `0.137`, `0.117`, `0.043`. Since `Best Score = max` over trials and the verifier's\n   correctness subscore is always integer/30, this cannot be the correctness subscore either.\n\n  Together these rule out both `reward.json[\"score\"]` and `subscores[0].score` from the published\n  verifier as the source of the leaderboard values.\n\n  ## Questions\n\n  - Does the leaderboard use a different / modified version of `compute_reward.py` than the one\n  published in this repo?\n  - If so, can the actual scoring formula be documented (e.g., partial-credit rubric, weighted\n  workloads, or geometric mean of speedups computed even when some correctness workloads fail)?\n  - What exactly does \"0/5\" mean — number of trials, number of workload categories, or something\n  else?\n\n  Clarifying this would help anyone trying to reproduce reported scores locally or interpret the\n  relative rankings.\n\n\n## Reproduction\n\n  - File: `tasks/ffmpeg-swscale-rewrite/tests/compute_reward.py` (707 lines)\n  - Relevant lines: 580, 588, 596, 610, 635, 685 (all `emit_reward` call sites)\n  - Workload count: 23 convert pairs + 7 scale configs = 30 (`sample_correctness_workloads`, lines\n   120–224)",
+  "comments": [
+    {
+      "url": "https://github.com/Proximal-Labs/frontier-swe/issues/66#issuecomment-4809942798",
+      "user": "rishyanth-proximal",
+      "created_at": "2026-06-26T13:18:32Z",
+      "updated_at": "2026-06-26T13:18:32Z",
+      "body": "Hi, @TueVNguyen. thank you for taking time reporting this. tldr; the socring used for leaderboard is not the same as reward directly.\n\nWe've just updated the repo with some documentation: \n\n[SCORING.md](https://github.com/Proximal-Labs/frontier-swe/blob/main/SCORING.md) - the category-gated formula.\n[scripts/score_from_reward.py](https://github.com/Proximal-Labs/frontier-swe/blob/main/scripts/score_from_reward.py) - run it on any reward.json to print the leaderboard score.\n\nFor ffmpeg (performance category): correctness = correctness_passed / 30; score = 0.5 × correctness below full correctness, or 0.5 + 0.5 × geometric_mean_speedup at 100%. That reproduces your numbers - 0.317 = 0.5 × 19/30, 0.433 = 0.5 × 26/30, 0.200 = 0.5 × 12/30 (they're 0.5 × k/30, which is why they aren't k/30).\n\n\"0/5\" = the number of the 5 trials that reached 100% correctness (unlocking the speedup tier); it's not a per-trial score, so 0/5 with non-zero Avg/Best is expected when trials earn partial correctness. We'll also relabel that column to make it clearer.\n\nIn the next release the verifier will emit the final gated score directly, so reward.json[\"score\"] will match the leaderboard with no extra step. Closing this. please reopen if score_from_reward.py doesn't reproduce a number you're seeing."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-05-14T00:09:57Z",
+  "github_updated_at": "2026-06-26T13:18:32Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L2",
+  "decision_note": "L2 audit. The issue claimed ffmpeg-swscale-rewrite leaderboard scores contradicted the published verifier. The maintainer explained that leaderboard scoring intentionally uses a separate gated scorer with partial correctness, and merged PR #75 with SCORING.md and scripts/score_from_reward.py documenting/reproducing the numbers. The claimed benchmark artifact defect is therefore not present.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/66",
+    "https://github.com/Proximal-Labs/frontier-swe/pull/75",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/SCORING.md",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/scripts/score_from_reward.py"
+  ],
+  "reviewed_at": "2026-06-27T00:04:22.976Z"
+}
