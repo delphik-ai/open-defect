@@ -1,0 +1,43 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/248",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 248,
+  "title": "post-train-ifeval depends on decommissioned Llama-3.2-1B Tinker model",
+  "body": "## Summary\n\nThe `post-train-ifeval` task is still hard-coded to use `meta-llama/Llama-3.2-1B` through Tinker. That base model has been decommissioned, so the task can fail as infrastructure before it measures agent performance.\n\n## Affected paths\n\nThe model id appears in multiple solve and verifier paths, so this is not a one-line instruction update:\n\n- `tasks/post-train-ifeval/instruction.md`\n- `tasks/post-train-ifeval/task.toml`\n- `tasks/post-train-ifeval/solution/solve.sh`\n- `tasks/post-train-ifeval/solution/src/post_train_ifeval/eval.py`\n- `tasks/post-train-ifeval/tests/test.sh`\n- `tasks/post-train-ifeval/tests/tinker_util.py`\n- `tasks/post-train-ifeval/tests/evaluate.py`\n- `tasks/post-train-ifeval/tests/regression/suite.py`\n- related docs under `tasks/post-train-ifeval/solution/docs/`\n\n## Impact\n\nAgents are asked to LoRA SFT a base model remotely through Tinker and write a `tinker://...` sampler checkpoint to `/app/best_checkpoint.txt`. If `meta-llama/Llama-3.2-1B` is no longer available, both training and verifier-side sampling can fail for environment/model-availability reasons rather than task quality.\n\n## Suggested fix\n\n- Pick a currently supported Tinker base model. For a base-model SFT task, likely candidates are `Qwen/Qwen3.5-9B-Base` or `Qwen/Qwen3-8B-Base` rather than an already-instruct model.\n- Update the renderer configuration away from the Llama 3 renderer to the replacement model's recommended renderer.\n- Re-baseline the replacement model's IFEval score and reset the target threshold; `binary_strict >= 0.45` should not be carried over blindly.\n- Update the committed reference checkpoint, regression baseline metadata, and docs.\n- Re-check timeout/cost assumptions, since an 8B/9B replacement is materially more expensive than the original 1B model.\n",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/248#issuecomment-4813947792",
+      "user": "RishiDesai",
+      "created_at": "2026-06-26T22:53:45Z",
+      "updated_at": "2026-06-26T22:53:45Z",
+      "body": "Thank you for letting me know! \n\nMy plan is to actually rewrite the task to use 1xH100 instead of Tinker. While this is a bigger change to the task, I think it's more fair in the future models as the Tinker API evolves. :)  "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-25T07:44:23Z",
+  "github_updated_at": "2026-06-26T22:53:45Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swe-marathon",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swe-marathon__abundant-ai__swe-marathon__issue-248",
+  "task_names": [
+    "post-train-ifeval"
+  ],
+  "resolution": "fixing",
+  "summary": "Maintainer follow-up confirms the post-train-ifeval task will be rewritten away from the decommissioned Tinker-hosted Llama-3.2-1B dependency.",
+  "decision_note": "L2 audit. This updated thread is the same GitHub issue and same root cause as the existing canonical swe-marathon task-specific defect for post-train-ifeval. The new maintainer comment acknowledges the Tinker dependency problem and states a plan to rewrite the task to use 1xH100 instead of Tinker, so it is duplicate/follow-up evidence rather than a new canonical defect.",
+  "reviewed_at": "2026-06-28T00:03:24Z",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/248",
+    "https://github.com/abundant-ai/swe-marathon/issues/248#issuecomment-4813947792",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/task.toml",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/instruction.md"
+  ]
+}

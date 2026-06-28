@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/issues/529",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_issue",
+  "github_number": 529,
+  "title": "Request to Feature Our Work on the Reasoning Gym README.",
+  "body": "Hi Reasoning Gym maintainers,\n\nWe would like to share our recent work, **Actor-Curator**, which uses Reasoning Gym as a core benchmark suite for studying online curriculum learning in RL post-training. Our work was recently selected as an **Outstanding Paper** at LLM Reasoning@ICLR26'.\n\nActor-Curator trains a policy together with a learned curator. At each training round, the curator selects problems based on their estimated utility for improving the actor policy. The goal is to avoid wasting rollouts on problems that are already too easy or currently too hard, while still keeping enough exploration to find useful training problems as the policy changes over time.\n\nReasoning Gym is a natural fit for this setting because it provides procedurally generated tasks with controllable difficulty. In our experiments, we used tasks such as:\n\n* Countdown\n* Zebra\n* ARC-1D\n\nFor each task, we considered multiple difficulty levels, including easy, medium, hard, and very hard. This allowed us to test whether the curator can adapt to non-stationary problem utility during RL training.\n\nOur main findings on Reasoning Gym include:\n\n* Actor-Curator improves sample efficiency compared with vanilla RL post-training baselines.\n* The learned curator tends to sample near the actor policy’s current learning frontier.\n* The method improves generalization to held-out harder settings, such as very-hard task splits.\n* On ARC-1D, we observed up to **+30.5%** improvement over the baseline.\n* Across tasks, Actor-Curator can reach the same performance level with substantially fewer training steps.\n\nWe think this work may be useful to feature in the Reasoning Gym repository because it shows a concrete use case of Reasoning Gym beyond static evaluation. Using procedurally generated reasoning tasks as an adaptive training environment for RL post-training.\n\nPossible places to add it:\n\n* A “Papers using Reasoning Gym” section\n* A “Research using Reasoning Gym” section\n* The README, if you maintain a list of downstream uses\n\nPaper/project information:\n\n* Title: **Actor-Curator: Online Curriculum Learning for Efficient RL Post-Training**\n* Venue: **LLM Reasoning Workshop @ ICLR 2026, Oral**\n* Affliation: Caltech\n* Paper link: https://arxiv.org/abs/2602.20532\n* Contact: zhengyao.gu30@gmail.com\n\nThank you for building and maintaining Reasoning Gym. It has been very useful for our work on adaptive RL curricula.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-27T17:19:52Z",
+  "github_updated_at": "2026-06-27T17:21:20Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The thread requests adding a downstream Actor-Curator paper to the Reasoning Gym README and describes research usage of Reasoning Gym tasks. It does not report a defect in reasoning-gym-easy or reasoning-gym-hard benchmark tasks, data, harness, evaluator, or scoring.",
+  "reviewed_at": "2026-06-28T00:03:24Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/issues/529"
+  ]
+}
