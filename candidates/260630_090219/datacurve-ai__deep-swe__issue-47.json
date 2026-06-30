@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/47",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 47,
+  "title": "[MODEL] Run your tests on GPT‑OSS 120B.",
+  "body": "It would show how well an affordable open model performs compared to top models.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/47#issuecomment-4834535256",
+      "user": "luisKisters",
+      "created_at": "2026-06-29T16:02:21Z",
+      "updated_at": "2026-06-29T16:02:21Z",
+      "body": "Even models like Haiku 4.5 got 0%, so sadly I think it's unrealistic for GPT oss 120b to have more than 0%"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-29T10:44:45Z",
+  "github_updated_at": "2026-06-29T16:02:21Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread is a request/discussion about running GPT-OSS 120B on DeepSWE. It contains no defect claim against the current benchmark artifacts.",
+  "reviewed_at": "2026-06-30T00:05:08.953Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/47"
+  ]
+}

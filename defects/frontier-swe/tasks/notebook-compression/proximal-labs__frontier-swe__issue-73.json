@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-16T14:33:11Z",
-  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "last_reviewed_at": "2026-06-30T00:05:08.953Z",
   "decision_note": "Confirmed via thread read; concrete missing-path claim. L2."
 }

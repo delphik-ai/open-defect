@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/73",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 73,
+  "title": "Notebook-compression Task Missing data for setup.",
+  "body": "Currently, this task cannot be set up because of an incorrect Docker environment.\n\nThe `instruction.md` file mentions that the data should be located in `$DATA_ROOT/visible`, but this directory does not exist. I have opened several issues, but no one has replied. I also tried to DM the organizer, but I still have not received any response.\n\nIt is difficult for us to use `frontier-swe` when the organizers do not provide clear guidance to the community.\n",
+  "comments": [
+    {
+      "url": "https://github.com/Proximal-Labs/frontier-swe/issues/73#issuecomment-4829820708",
+      "user": "Rinnolo",
+      "created_at": "2026-06-29T07:02:09Z",
+      "updated_at": "2026-06-29T07:02:09Z",
+      "body": "I notice that as well. It seems that data was mounted at `/mnt/notebook-data`, but in fact there is no data.\n\nI cannot find any place to download or to fix this problem. So maybe `notebook-compression` task is not useable?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-16T14:33:11Z",
+  "github_updated_at": "2026-06-29T07:02:09Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "frontier-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__issue-73",
+  "task_names": [
+    "notebook-compression"
+  ],
+  "resolution": "found",
+  "summary": "Task notebook-compression cannot be set up because the expected visible data directory is absent from the task environment.",
+  "decision_note": "The issue and follow-up comment identify the current Frontier-SWE notebook-compression task and the same missing data root cause already represented by the existing canonical defect frontier-swe__proximal-labs__frontier-swe__issue-73. Rechecked thread evidence and kept it as duplicate/supporting evidence rather than a new canonical defect.",
+  "reviewed_at": "2026-06-30T00:05:08.953Z",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/73",
+    "https://github.com/Proximal-Labs/frontier-swe/issues/73#issuecomment-4829820708"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/241",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 241,
+  "title": "Fix hardcoded x86_64 platform in container creation (#arm64)",
+  "body": "Container creation in get_container(), run_patch_in_container(), and run_command_in_container() hardcoded platform=\"linux/x86_64\", ignoring the host architecture detection already wired through RepoProfile.pltf.\r\n\r\nOn arm64/aarch64 hosts this forces Docker to either fail or fall back to QEMU x86 emulation, defeating native execution on Graviton and other arm64 systems.\r\n\r\nReplace the three hardcoded strings with the existing self.pltf / rp.pltf property which resolves to \"linux/arm64/v8\" on arm64 and \"linux/x86_64\" on x86_64.\r\n\r\nTested: built and ran Python (addict, 128 tests) and Rust (rust-base64, 33 tests) SWE-smith containers natively on aarch64 with no QEMU.\r\n\r\nCo-developed-by: Kiro (Amazon Q Developer Agent) <kiro-dev@amazon.com>",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swesmith/harness/utils.py b/swesmith/harness/utils.py\nindex 1c77c43f..12ee9133 100644\n--- a/swesmith/harness/utils.py\n+++ b/swesmith/harness/utils.py\n@@ -147,7 +147,7 @@ def run_patch_in_container(\n             user=DOCKER_USER,\n             detach=True,\n             command=\"tail -f /dev/null\",\n-            platform=\"linux/x86_64\",\n+            platform=rp.pltf,\n             mem_limit=\"10g\",\n         )\n         container.start()\ndiff --git a/swesmith/issue_gen/get_from_tests.py b/swesmith/issue_gen/get_from_tests.py\nindex 6fae0dbd..2c9cd22e 100644\n--- a/swesmith/issue_gen/get_from_tests.py\n+++ b/swesmith/issue_gen/get_from_tests.py\n@@ -98,7 +98,7 @@ def run_command_in_container(instance: dict, command: str, rp: RepoProfile):\n         user=DOCKER_USER,\n         detach=True,\n         command=\"tail -f /dev/null\",\n-        platform=\"linux/x86_64\",\n+        platform=rp.pltf,\n         mem_limit=\"10g\",\n     )\n     container.start()\ndiff --git a/swesmith/profiles/base.py b/swesmith/profiles/base.py\nindex b4a32134..53d8aa23 100644\n--- a/swesmith/profiles/base.py\n+++ b/swesmith/profiles/base.py\n@@ -505,7 +505,7 @@ def get_container(self, instance: dict) -> Container:\n             user=DOCKER_USER,\n             detach=True,\n             command=\"tail -f /dev/null\",\n-            platform=\"linux/x86_64\",\n+            platform=self.pltf,\n             mem_limit=\"10g\",\n         )\n         container.start()\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-29T14:28:04Z",
+  "github_updated_at": "2026-06-29T14:31:34Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swesmith",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swesmith__swe-bench__swe-smith__pr-241",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-smith container execution helpers hardcode Docker platform=\"linux/x86_64\", ignoring RepoProfile.pltf and breaking or forcing emulation on arm64/aarch64 hosts.",
+  "decision_note": "L2 source-read audit. The PR body describes current SWE-smith harness/container creation paths get_container(), run_patch_in_container(), and run_command_in_container() hardcoding platform=\"linux/x86_64\" despite existing RepoProfile.pltf architecture detection. The linked PR diff replaces those hardcoded values in swesmith/profiles/base.py, swesmith/harness/utils.py, and swesmith/issue_gen/get_from_tests.py with self.pltf/rp.pltf. Existing canonical PR 198 covers image build architecture handling; this root cause is the later container execution path, so it is a distinct benchmark-level SWE-smith defect. PR is open, so resolution is fixing.",
+  "reviewed_at": "2026-06-30T00:05:08.953Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/241",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/swesmith/profiles/base.py",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/swesmith/harness/utils.py",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/swesmith/issue_gen/get_from_tests.py"
+  ],
+  "defect_type_main": "harness",
+  "defect_type_sub": "architecture_platform_handling"
+}
