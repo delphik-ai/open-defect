@@ -13,10 +13,11 @@
   "evidence_urls": [
     "https://github.com/abundant-ai/swe-marathon/issues/248",
     "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/task.toml",
-    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/instruction.md"
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/post-train-ifeval/instruction.md",
+    "https://github.com/abundant-ai/swe-marathon/pull/242"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-25T07:44:23Z",
-  "last_reviewed_at": "2026-06-29T00:04:13.601Z",
+  "last_reviewed_at": "2026-07-01T00:06:08.263Z",
   "decision_note": "L2 audit. The thread identifies concrete current task paths that hard-code the Tinker Llama-3.2-1B flow, and the maintainer responded with a plan to rewrite the task away from Tinker. This provides maintainer acknowledgement/social proof for the current swe-marathon task defect. No existing swe-marathon canonical artifact covers this root cause."
 }

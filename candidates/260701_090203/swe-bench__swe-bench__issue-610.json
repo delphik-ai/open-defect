@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/610",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 610,
+  "title": "sb-cli cloud evaluation marks all SWE-bench Lite test submissions as failed, while local official eval resolves same predictions",
+  "body": "### Describe the issue\n\nHi SWE-bench team,\n\nI submitted predictions to SWE-bench Lite test via sb-cli, but every submitted instance is marked as failed run, not unresolved.\n\nThe same predictions can be evaluated successfully with the local official SWE-bench harness.\n\nEnvironment:\n- sb-cli: 0.1.5\n- swebench: 4.1.0\n- subset/split: swe-bench_lite test\n\nCloud run:\n- run_id: qwen25-coder-7b-swesmith-stage2-v2-smoke5-dict-retry-20260630033410\n- submitted_instances: 5\n- completed_instances / successful runs: 0\n- failed_runs: 5\n- resolved_instances: 0\n- error_instances: 0\n\nFailed IDs:\n- django__django-10914\n- django__django-11039\n- django__django-11099\n- django__django-11133\n- django__django-11179\n\nLocal official eval on the same 5 predictions:\n- completed_instances: 5\n- resolved_instances: 5\n- error_instances: 0\n\nPrediction format follows the documented dict format:\n\n{\n  \"django__django-10914\": {\n    \"model_patch\": \"...\",\n    \"model_name_or_path\": \"qwen2.5-coder-7b-swesmith-stage2-v2\"\n  }\n}\n\nCould you help check why the cloud runner reports all submitted instances as failed runs?\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-30T03:39:58Z",
+  "github_updated_at": "2026-06-30T03:39:58Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "The issue explicitly concerns sb-cli cloud evaluation for the SWE-bench Lite test split. The current watch map for this repo only counts swebench-verified and swebench_multilingual, and the thread does not provide evidence that the claimed cloud-runner failure belongs to either current tracked benchmark variant.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/610"
+  ],
+  "reviewed_at": "2026-07-01T00:06:08.263Z"
+}

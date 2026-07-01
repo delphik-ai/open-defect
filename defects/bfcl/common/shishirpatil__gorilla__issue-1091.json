@@ -9,11 +9,12 @@
   "summary": "Issue identifies BFCL dot/underscore conversion as misnamed and incompletely applied, creating potential function-name matching conflicts.",
   "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1091",
   "evidence_urls": [
-    "https://github.com/ShishirPatil/gorilla/issues/1091"
+    "https://github.com/ShishirPatil/gorilla/issues/1091",
+    "https://github.com/ShishirPatil/gorilla/pull/1346"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-07-01T01:26:42.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-07-01T00:06:08.263Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

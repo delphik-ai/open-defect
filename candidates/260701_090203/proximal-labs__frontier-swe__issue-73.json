@@ -1,0 +1,49 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/73",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 73,
+  "title": "Notebook-compression Task Missing data for setup.",
+  "body": "Currently, this task cannot be set up because of an incorrect Docker environment.\n\nThe `instruction.md` file mentions that the data should be located in `$DATA_ROOT/visible`, but this directory does not exist. I have opened several issues, but no one has replied. I also tried to DM the organizer, but I still have not received any response.\n\nIt is difficult for us to use `frontier-swe` when the organizers do not provide clear guidance to the community.\n",
+  "comments": [
+    {
+      "url": "https://github.com/Proximal-Labs/frontier-swe/issues/73#issuecomment-4829820708",
+      "user": "Rinnolo",
+      "created_at": "2026-06-29T07:02:09Z",
+      "updated_at": "2026-06-29T07:02:09Z",
+      "body": "I notice that as well. It seems that data was mounted at `/mnt/notebook-data`, but in fact there is no data.\n\nI cannot find any place to download or to fix this problem. So maybe `notebook-compression` task is not useable?"
+    },
+    {
+      "url": "https://github.com/Proximal-Labs/frontier-swe/issues/73#issuecomment-4843396877",
+      "user": "rishyanth-proximal",
+      "created_at": "2026-06-30T12:21:28Z",
+      "updated_at": "2026-06-30T12:21:28Z",
+      "body": "Hi @TueVNguyen , @Rinnolo  - Thanks for flagging this, and apologies for the slow response.\n\nYes, the task wasn't standalone-runnable, sorry for the inconvenience, pushing an update to the task:  https://github.com/Proximal-Labs/frontier-swe/pull/78\n\nAlso, one caveat, the visible corpus consists of only 3 sample notebooks due to an initial bug, but we've kept it the same for fairness across runs. We're aware of this issue, more diverse visible set would make the task stronger, and that's planned for the next version. But to keep current results reproducible we're shipping exactly what the leaderboard used. The test set during verification is accurate - as available in the task and most models noticed missing visible data and wrote their own visible sets and tuned to that. \n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-16T14:33:11Z",
+  "github_updated_at": "2026-06-30T12:22:22Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "frontier-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__issue-73",
+  "task_names": [
+    "notebook-compression"
+  ],
+  "resolution": "fixed",
+  "summary": "Task notebook-compression was missing its expected data directory; maintainer acknowledged it and merged PR #78 to bake the data into the image.",
+  "decision_note": "L2 duplicate audit. The updated issue thread identifies notebook-compression and the missing $DATA_ROOT/visible or /mnt/notebook-data setup data root cause already represented by frontier-swe__proximal-labs__frontier-swe__issue-73. A maintainer acknowledged the task was not standalone-runnable and linked PR #78; GitHub shows PR #78 merged on 2026-06-30 with merge commit cdd68f280a7807773df4a49e67ad2b3c9ae08d45, so this candidate is duplicate evidence and the canonical resolution is fixed.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/73",
+    "https://github.com/Proximal-Labs/frontier-swe/issues/73#issuecomment-4843305067",
+    "https://github.com/Proximal-Labs/frontier-swe/pull/78"
+  ],
+  "reviewed_at": "2026-07-01T00:06:08.263Z"
+}

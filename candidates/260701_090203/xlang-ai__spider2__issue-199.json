@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/199",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 199,
+  "title": "Request for Snowflake access",
+  "body": "Dear Spider 2.0 Team,\nIn the past week, I've already submitted 3 forms with 3 of my different email addresses, but ended up receiving nothing. I'm sure that I've carefully checked all junk mails I received. Anyway, my tutor asked me to run the experiment and give a presentation this week as soon as I can, so I'm sincerely looking forward to my snowflake account. Please reply if you can see, otherwise I'm pretty sure somebody gonna kick my ass.\nMy email address is: ZUTOMAYO1215@outlook.com.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-30T12:40:51Z",
+  "github_updated_at": "2026-06-30T12:40:51Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "The issue is a request for Snowflake account access. The watched benchmark for xlang-ai/spider2 is spider2-dbt, and Snowflake credential/access requests belong to the Spider2-Snow/Snowflake side rather than the current spider2-dbt artifact scope.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/199"
+  ],
+  "reviewed_at": "2026-07-01T00:06:08.263Z"
+}

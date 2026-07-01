@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/611",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 611,
+  "title": "Fix IndexError in parse_log_seaborn on bare status lines",
+  "body": "## What's broken\r\n`parse_log_seaborn` (used to grade `mwaskom/seaborn` instances) indexes `line.split()[1]` / `parts[1]` without a length check. A log line that is just a bare status word — e.g. `PASSED` or `FAILED` on its own line, common when test output is interleaved or captured stdout contains the word — raises `IndexError`, which propagates out of `get_logs_eval` (`grading.py`) and crashes grading for that instance.\r\nparse_log_seaborn(\"tests/test_x.py::test_a PASSED\\nPASSED\\n\") # IndexError\r\n\r\n## Why it happens\r\nMissing length guard before positional indexing of `line.split()`, inconsistent with the sibling `parse_log_pytest`, which guards this exact case with `if len(test_case) <= 1: continue`.\r\n## Fix\r\nCompute `parts = line.split()` once and `continue` when `len(parts) < 2`, matching the other pytest-family parsers. Valid-line parsing is unchanged.\r\n## Test\r\nAdded `tests/test_log_parsers_python.py` feeding bare `PASSED`/`FAILED` lines (crashes before, parses cleanly after); valid output byte-identical. Mirrors the existing interleaved-logs test for the Java parser.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/log_parsers/python.py b/swebench/harness/log_parsers/python.py\nindex 7930a1e0b..9380a74bc 100644\n--- a/swebench/harness/log_parsers/python.py\n+++ b/swebench/harness/log_parsers/python.py\n@@ -181,16 +181,17 @@ def parse_log_seaborn(log: str, test_spec: TestSpec) -> dict[str, str]:\n     \"\"\"\n     test_status_map = {}\n     for line in log.split(\"\\n\"):\n+        parts = line.split()\n+        if len(parts) < 2:\n+            continue\n         if line.startswith(TestStatus.FAILED.value):\n-            test_case = line.split()[1]\n+            test_case = parts[1]\n             test_status_map[test_case] = TestStatus.FAILED.value\n         elif f\" {TestStatus.PASSED.value} \" in line:\n-            parts = line.split()\n             if parts[1] == TestStatus.PASSED.value:\n                 test_case = parts[0]\n                 test_status_map[test_case] = TestStatus.PASSED.value\n         elif line.startswith(TestStatus.PASSED.value):\n-            parts = line.split()\n             test_case = parts[1]\n             test_status_map[test_case] = TestStatus.PASSED.value\n     return test_status_map\ndiff --git a/tests/test_log_parsers_python.py b/tests/test_log_parsers_python.py\nnew file mode 100644\nindex 000000000..7792d79c1\n--- /dev/null\n+++ b/tests/test_log_parsers_python.py\n@@ -0,0 +1,38 @@\n+from swebench.harness.log_parsers.python import parse_log_seaborn\n+from swebench.harness.constants import TestStatus\n+\n+\n+class TestParseLogSeaborn:\n+    \"\"\"Tests for parse_log_seaborn used by mwaskom/seaborn.\"\"\"\n+\n+    def test_parse_pass_and_fail(self):\n+        \"\"\"Test parsing the three supported line formats.\"\"\"\n+        log = \"\"\"\\\n+test_a.py::test_one PASSED [ 50%]\n+PASSED test_b.py::test_two\n+FAILED test_c.py::test_three\n+\"\"\"\n+        result = parse_log_seaborn(log, test_spec=None)\n+\n+        assert result == {\n+            \"test_a.py::test_one\": TestStatus.PASSED.value,\n+            \"test_b.py::test_two\": TestStatus.PASSED.value,\n+            \"test_c.py::test_three\": TestStatus.FAILED.value,\n+        }\n+\n+    def test_bare_status_lines_do_not_crash(self):\n+        \"\"\"Status words on their own line (e.g. interleaved/captured output)\n+        must be ignored rather than raising IndexError.\"\"\"\n+        log = \"\"\"\\\n+test_a.py::test_one PASSED [ 50%]\n+PASSED\n+FAILED\n+ PASSED\n+test_b.py::test_two PASSED [100%]\n+\"\"\"\n+        result = parse_log_seaborn(log, test_spec=None)\n+\n+        assert result == {\n+            \"test_a.py::test_one\": TestStatus.PASSED.value,\n+            \"test_b.py::test_two\": TestStatus.PASSED.value,\n+        }\n",
+  "github_state": "open",
+  "github_created_at": "2026-06-30T06:04:35Z",
+  "github_updated_at": "2026-06-30T06:04:35Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-611",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench harness parse_log_seaborn can raise IndexError on bare PASSED/FAILED log lines, crashing grading for seaborn instances.",
+  "decision_note": "L2 source-read audit. The PR body identifies parse_log_seaborn as the current parser used for mwaskom/seaborn instances and gives a minimal crashing input. The diff shows the parser previously indexed line.split()[1] or parts[1] before checking line length, then adds a len(parts) < 2 guard plus regression tests for bare PASSED/FAILED lines. No existing swebench-verified artifact covers this parser crash root cause. The PR is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/611",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/log_parsers/python.py"
+  ],
+  "reviewed_at": "2026-07-01T00:06:08.263Z"
+}

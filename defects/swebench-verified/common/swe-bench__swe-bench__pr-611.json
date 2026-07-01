@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-611",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Fix IndexError in parse_log_seaborn on bare status lines",
+  "summary": "SWE-bench harness parse_log_seaborn can raise IndexError on bare PASSED/FAILED log lines, crashing grading for seaborn instances.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/611",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/611",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/log_parsers/python.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-30T06:04:35Z",
+  "last_reviewed_at": "2026-07-01T00:06:08.263Z",
+  "decision_note": "L2 source-read audit. The PR body identifies parse_log_seaborn as the current parser used for mwaskom/seaborn instances and gives a minimal crashing input. The diff shows the parser previously indexed line.split()[1] or parts[1] before checking line length, then adds a len(parts) < 2 guard plus regression tests for bare PASSED/FAILED lines. No existing swebench-verified artifact covers this parser crash root cause. The PR is open, so resolution is fixing."
+}
