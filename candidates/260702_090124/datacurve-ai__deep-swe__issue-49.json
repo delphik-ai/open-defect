@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/49",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 49,
+  "title": "Would it be possible to conduct testing on Sonnet 5?",
+  "body": "No issue body was provided; the thread title asks whether Deep-SWE testing can be conducted on Sonnet 5.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/49#issuecomment-4860155184",
+      "user": "coygeek",
+      "created_at": "2026-07-01T21:23:50Z",
+      "updated_at": "2026-07-01T21:23:50Z",
+      "body": "By the way, these are the thinking/effort parameters for Sonnet 5 ([source](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5)):\n\nLow\nMedium\nHigh (DEFAULT)\nXhigh\nMax"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-01T03:27:25Z",
+  "github_updated_at": "2026-07-01T21:23:50Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks whether maintainers can test Deep-SWE on Sonnet 5 and discusses model effort parameters. It does not claim a defect in current benchmark artifacts, task rows, harness behavior, scoring, or dataset contents.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/49"
+  ],
+  "reviewed_at": "2026-07-02T00:03:57.316Z"
+}

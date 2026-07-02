@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/612",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 612,
+  "title": "Test",
+  "body": "Test",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-01T08:41:59Z",
+  "github_updated_at": "2026-07-01T08:42:00Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The closed issue contains only the title and body text \"Test\". It provides no SWE-bench Verified or Multilingual benchmark attribution and no benchmark defect claim.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/612"
+  ],
+  "reviewed_at": "2026-07-02T00:03:57.316Z"
+}

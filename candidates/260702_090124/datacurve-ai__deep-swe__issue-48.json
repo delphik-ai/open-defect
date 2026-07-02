@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/48",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 48,
+  "title": "[Feature Request] arm64 (aarch64) support for pier task images",
+  "body": "\n## Summary\n\n`pier run` cannot execute deep-swe tasks on an arm64/aarch64 host because the\nper-task base images (`public.ecr.aws/d3j8x8q7/swe-bench-202605:<hash>-v1.1`)\nare published as **single-architecture amd64-only** manifests. On an arm64 host,\nDocker falls back to QEMU user-mode emulation, which crashes during the agent\nsetup layer. Please publish arm64 variants (multi-arch manifest lists) for the\ntask images, or document a supported path for running on arm64.\n\n## Environment\n\n| | |\n|---|---|\n| pier version | 0.3.0 |\n| Host arch | aarch64 (arm64/v8) |\n| Docker | client 29.4.3 / server 29.4.3 |\n| Docker Compose | v2.30.3 |\n| Task | `deep-swe/tasks/abs-stepped-slices` |\n| Agent | `mini-swe-agent` |\n\n## Reproduction\n\n```bash\npier run -p tasks/abs-module-cache-flags --agent mini-swe-agent\n# (also reproduces with tasks/abs-stepped-slices)\n```\n\n## Root cause\n\nThe task pins an amd64-only image in `task.toml`:\n\n```toml\n[environment]\ndocker_image = \"public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7d5m4ed35zfp7gyhx7wdahed82yw72-v1.1\"\nos = \"linux\"   # no architecture field\n```\n\nInspecting the manifest confirms it is a **single-arch amd64 image** (a plain\n`manifest.v2`, not a multi-arch `manifest.list`):\n\n```\n$ docker manifest inspect public.ecr.aws/d3j8x8q7/swe-bench-202605:kh7d5m4ed35zfp7gyhx7wdahed82yw72-v1.1\n\"mediaType\": \"application/vnd.docker.distribution.manifest.v2+json\"   # single arch, amd64 only\n```\n\n(For contrast, the lower-level `public.ecr.aws/x8v8d7g8/mars-base:latest` *is*\nmulti-arch — it exposes both `amd64` and `arm64` in a manifest list. The\nper-task `swe-bench-202605` images are the ones missing arm64.)\n\nOn an arm64 host, building/running against this image triggers QEMU emulation,\nwhich segfaults while installing `uv` / `mini-swe-agent` in the agent setup layer:\n\n```\nThe requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8)\n...\nx86_64-binfmt-P: QEMU internal SIGSEGV {code=MAPERR, addr=0x20}\nSegmentation fault (core dumped)\nSystem glibc version (`') is too old; checking alternatives\n```\n\nNote: the very first failure observed on this host was a separate, unrelated\ntooling gap (`docker compose` plugin missing → `unknown flag: --project-name`).\nThat has been resolved; the arm64/QEMU wall is the remaining blocker.\n\n## Impact\n\n- deep-swe tasks cannot be run at all on arm64 machines (Apple Silicon, AWS\n  Graviton, arm64 CI runners, etc.).\n- QEMU emulation, even where it does not crash outright, is slow and unreliable\n  for the `go test` verification phase, so any reward it produced would not be\n  trustworthy.\n- Each task pins its own uniquely-hashed image tag, so users cannot work around\n  this by self-building — the exact build recipe (upstream nix-style,\n  per-repository dependency snapshot) is not available, and a hand-rebuilt image\n  would not match what the verifier expects.\n\n## Requested outcome (any one of)\n\n1. **Publish arm64 variants** of the `swe-bench-202605:*` task images as\n   multi-arch manifest lists (amd64 + arm64), so Docker selects the native arch\n   automatically.\n2. Add an **architecture selector** to pier / `task.toml` and provide an arm64\n   image tag per task.\n3. If arm64 is not planned, **document the amd64-only requirement** clearly and\n   have `pier run` fail fast with an actionable message when the host arch does\n   not match the task image arch (instead of a QEMU segfault deep in the build).",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-01T03:15:32Z",
+  "github_updated_at": "2026-07-01T03:15:32Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests arm64/aarch64 support or clearer documentation for Deep-SWE task Docker images that are currently amd64-only. It does not show a benchmark data, task, harness, evaluator, or scoring defect for the supported current benchmark execution environment; it is a platform support/documentation feature request.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/48"
+  ],
+  "reviewed_at": "2026-07-02T00:03:57.316Z"
+}
