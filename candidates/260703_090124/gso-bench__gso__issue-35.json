@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/gso-bench/gso/issues/35",
+  "repo": "gso-bench/gso",
+  "source_type": "github_issue",
+  "github_number": 35,
+  "title": "Submission to Leaderboard",
+  "body": "Hi,\n\nWhat are the steps needed to create a submission to the GSO leaderboard?\n\nThanks",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-02T15:55:39Z",
+  "github_updated_at": "2026-07-02T15:55:39Z",
+  "candidate_benchmark_names": [
+    "gso"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-07-03T00:04:36Z",
+  "decision_note": "Issue asks for steps to submit to the GSO leaderboard. It is user-support/leaderboard process discussion, not a benchmark defect.",
+  "checked_urls": [
+    "https://github.com/gso-bench/gso/issues/35"
+  ]
+}

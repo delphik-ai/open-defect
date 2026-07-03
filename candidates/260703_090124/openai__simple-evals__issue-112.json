@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/112",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 112,
+  "title": "Dataset suggestion: option-chain + cue-swap benchmarks",
+  "body": "Two open benchmarks from Helium Trades that may fit simple-evals patterns:\n\n1. **Market Resolution** — 300 frozen option-chain prompts; deterministic scoring from chain data\n2. **Model Worldview** — 304 paired prompts; cue-swap consistency metrics\n\nBoth on Hugging Face with public splits + private holdout:\n- https://huggingface.co/datasets/HeliumTrades/helium-market-resolution-benchmark\n- https://huggingface.co/datasets/HeliumTrades/helium-model-worldview-benchmark\n\nLanding page with per-model charts: https://heliumtrades.com/benchmarks/\n\nWe can open a PR with eval adapters if maintainers want them.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-03T00:01:27Z",
+  "github_updated_at": "2026-07-03T00:01:27Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-07-03T00:04:36Z",
+  "decision_note": "Issue suggests adding external option-chain and cue-swap datasets to simple-evals. It is a dataset proposal and contains no SimpleQA current benchmark defect claim.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/112"
+  ]
+}

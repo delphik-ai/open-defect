@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/The-FinAI/PIXIU/issues/94",
+  "repo": "the-finai/pixiu",
+  "source_type": "github_issue",
+  "github_number": 94,
+  "title": "Related benchmark: live option-chain reading",
+  "body": "Sharing a complementary open benchmark for finance LLM evaluation.\n\n**Helium Market Resolution Benchmark**\n- 300 frozen prompts from live option chains (NVDA, SPY, TSLA, AAPL, QQQ, AMZN)\n- Tests IV, delta, arbitrage, rich-vs-average strike\n- Ground truth from the chain itself\n- Twelve frontier models scored; no model above 50%\n\nDataset: https://huggingface.co/datasets/HeliumTrades/helium-market-resolution-benchmark\nOverview: https://heliumtrades.com/benchmarks/\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-02T23:42:47Z",
+  "github_updated_at": "2026-07-02T23:42:47Z",
+  "candidate_benchmark_names": [
+    "pixiu"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-07-03T00:04:36Z",
+  "decision_note": "Issue promotes a related finance benchmark/dataset. It does not identify a PIXIU benchmark defect or affected PIXIU task/harness behavior.",
+  "checked_urls": [
+    "https://github.com/The-FinAI/PIXIU/issues/94"
+  ]
+}
