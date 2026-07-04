@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/610",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 610,
+  "title": "sb-cli cloud evaluation marks all SWE-bench Lite test submissions as failed, while local official eval resolves same predictions",
+  "body": "### Describe the issue\n\nHi SWE-bench team,\n\nI submitted predictions to SWE-bench Lite test via sb-cli, but every submitted instance is marked as failed run, not unresolved.\n\nThe same predictions can be evaluated successfully with the local official SWE-bench harness.\n\nEnvironment:\n- sb-cli: 0.1.5\n- swebench: 4.1.0\n- subset/split: swe-bench_lite test\n\nCloud run:\n- run_id: qwen25-coder-7b-swesmith-stage2-v2-smoke5-dict-retry-20260630033410\n- submitted_instances: 5\n- completed_instances / successful runs: 0\n- failed_runs: 5\n- resolved_instances: 0\n- error_instances: 0\n\nFailed IDs:\n- django__django-10914\n- django__django-11039\n- django__django-11099\n- django__django-11133\n- django__django-11179\n\nLocal official eval on the same 5 predictions:\n- completed_instances: 5\n- resolved_instances: 5\n- error_instances: 0\n\nPrediction format follows the documented dict format:\n\n{\n  \"django__django-10914\": {\n    \"model_patch\": \"...\",\n    \"model_name_or_path\": \"qwen2.5-coder-7b-swesmith-stage2-v2\"\n  }\n}\n\nCould you help check why the cloud runner reports all submitted instances as failed runs?\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/610#issuecomment-4872074832",
+      "user": "Sehlani042",
+      "created_at": "2026-07-03T02:31:38Z",
+      "updated_at": "2026-07-03T02:31:38Z",
+      "body": "I can help narrow this down, but I do not think the public details here are enough to distinguish a cloud runner problem from a submission-format/reporting problem yet.\n\nOne thing worth checking first: `sb-cli` accepts JSON dict/list input, while the local harness docs use JSONL rows with `instance_id`, `model_name_or_path`, and `model_patch`. Since this run used the dict-style input, the useful minimal repro bundle would be:\n\n```text\n1. the exact 5-instance predictions file passed to sb-cli, with full model_patch values\n2. the exact submit command/stdout, e.g.\n   sb-cli submit swe-bench_lite test --predictions_path ... --run_id qwen25-coder-7b-swesmith-stage2-v2-smoke5-dict-retry-20260630033410\n3. the report artifacts from:\n   sb-cli get-report swe-bench_lite test qwen25-coder-7b-swesmith-stage2-v2-smoke5-dict-retry-20260630033410\n4. the local harness command plus results.json / instance_results.jsonl for the same 5 predictions\n5. one failed instance log from cloud if the report includes per-instance stderr/log details\n```\n\nWith those, the first comparison can be very small: verify whether the cloud API received the same five `model_patch` strings that the local harness evaluated, then compare one instance result path such as `django__django-10914` before looking at broader runner behavior."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-30T03:39:58Z",
+  "github_updated_at": "2026-07-03T02:31:38Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The thread explicitly concerns sb-cli cloud evaluation for the SWE-bench Lite test split. The current repo watch candidates here are swebench-verified and swebench_multilingual, and the issue does not provide evidence tying the failure to either current tracked variant. Variant attribution therefore fails for this run.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/610"
+  ],
+  "reviewed_at": "2026-07-04T00:05:20.965Z"
+}

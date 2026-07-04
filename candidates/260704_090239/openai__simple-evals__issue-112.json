@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/112",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 112,
+  "title": "Dataset suggestion: option-chain + cue-swap benchmarks",
+  "body": "Two open benchmarks from Helium Trades that may fit simple-evals patterns:\n\n1. **Market Resolution** — 300 frozen option-chain prompts; deterministic scoring from chain data\n2. **Model Worldview** — 304 paired prompts; cue-swap consistency metrics\n\nBoth on Hugging Face with public splits + private holdout:\n- https://huggingface.co/datasets/HeliumTrades/helium-market-resolution-benchmark\n- https://huggingface.co/datasets/HeliumTrades/helium-model-worldview-benchmark\n\nLanding page with per-model charts: https://heliumtrades.com/benchmarks/\n\nWe can open a PR with eval adapters if maintainers want them.",
+  "comments": [
+    {
+      "url": "https://github.com/openai/simple-evals/issues/112#issuecomment-4872453797",
+      "user": "connerlambden",
+      "created_at": "2026-07-03T03:56:59Z",
+      "updated_at": "2026-07-03T03:56:59Z",
+      "body": "Closing — opened too broadly during outreach (Submit eval code via PR.).\n\nWe're cleaning up and focusing on:\n- Section-aware PRs to curated awesome benchmark lists\n- Real code integrations (lm-eval #3906, promptfoo #9950, opencompass #2507)\n\nSorry for the noise. — Helium Trades\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-03T00:01:27Z",
+  "github_updated_at": "2026-07-03T03:57:00Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The issue is a dataset/eval suggestion for option-chain and cue-swap benchmarks, then the reporter closed it as broad outreach/noise. It does not claim a defect in the current SimpleQA benchmark artifact, evaluator, task rows, or source dataset.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/112"
+  ],
+  "reviewed_at": "2026-07-04T00:05:20.965Z"
+}
