@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-615",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Filter Django test directives to test files",
+  "summary": "SWE-bench Django directive generation passed every changed Python file to runtests.py, so non-test support modules such as tests/file_storage/models.py could become invalid dotted test labels and cause loader failures instead of selecting the intended tests.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/615",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/615",
+    "https://github.com/SWE-bench/SWE-bench/issues/577"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-04T10:56:21Z",
+  "last_reviewed_at": "2026-07-05T00:05:57Z",
+  "decision_note": "Benchmark attribution is SWE-bench Verified because the PR body says the change was checked against Django instances listed in issue #577 from SWE-bench/SWE-bench_Verified, including django__django-16493. L2 source-read audit: PR #615 changes get_test_directives() to filter Django directives with is_django_test_file() before converting paths to dotted runtests.py labels, and adds a regression test where tests/file_storage/models.py is ignored while tests/file_storage/tests.py maps to file_storage.tests. Existing #577 was unverified for a broader _FailedTest claim, and no existing canonical artifact covers this narrower non-test-file directive root cause. PR is open, so resolution is fixing."
+}
