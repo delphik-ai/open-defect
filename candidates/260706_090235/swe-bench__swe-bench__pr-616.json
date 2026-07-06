@@ -1,0 +1,36 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/616",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 616,
+  "title": "Fix inconsistent test name whitespace in parse_log_jest",
+  "body": "#### What does this implement/fix? Explain your changes.\r\n\r\n`parse_log_jest`'s duration suffix group is optional, Jest only prints `(N ms)` above a small timing threshold and combined with the non-greedy test-name capture, this can leave a trailing space in the captured name depending on whether that suffix happened to be present. The same test can then map to two different dict keys across runs, which can hide a real fail-to-pass transition instead of surfacing it.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/log_parsers/javascript.py b/swebench/harness/log_parsers/javascript.py\nindex 495cc1204..c774bf68d 100644\n--- a/swebench/harness/log_parsers/javascript.py\n+++ b/swebench/harness/log_parsers/javascript.py\n@@ -196,6 +196,7 @@ def parse_log_jest(log: str, test_spec: TestSpec) -> dict[str, str]:\n         match = re.match(pattern, line.strip())\n         if match:\n             status_symbol, test_name, _duration = match.groups()\n+            test_name = test_name.strip()\n             if status_symbol == \"✓\":\n                 test_status_map[test_name] = TestStatus.PASSED.value\n             elif status_symbol == \"✕\":\ndiff --git a/tests/test_log_parsers_javascript.py b/tests/test_log_parsers_javascript.py\nnew file mode 100644\nindex 000000000..7b278be37\n--- /dev/null\n+++ b/tests/test_log_parsers_javascript.py\n@@ -0,0 +1,40 @@\n+from swebench.harness.log_parsers.javascript import parse_log_jest\n+from swebench.harness.constants import TestStatus\n+\n+\n+class TestParseLogJest:\n+    \"\"\"Tests for parse_log_jest used by Jest-based JS/TS repos.\"\"\"\n+\n+    def test_parse_pass_and_fail(self):\n+        \"\"\"Test parsing normal verbose Jest output.\"\"\"\n+        log = \"\"\"✓ adds two numbers (2 ms)\n+✕ subtracts two numbers\n+○ skipped test\n+\"\"\"\n+        result = parse_log_jest(log, test_spec=None)\n+\n+        assert len(result) == 3\n+        assert result[\"adds two numbers\"] == TestStatus.PASSED.value\n+        assert result[\"subtracts two numbers\"] == TestStatus.FAILED.value\n+        assert result[\"skipped test\"] == TestStatus.SKIPPED.value\n+\n+    def test_same_test_name_stable_with_and_without_duration(self):\n+        \"\"\"Jest only prints a \"(N ms)\" duration suffix above a small timing threshold,\n+        so the same test can appear with or without it across runs. The captured test\n+        name must be identical either way, otherwise it silently maps to two different\n+        dict keys and a real fail->pass transition can be missed.\"\"\"\n+        with_duration = \"✓ builds the correct query (105 ms)\"\n+        without_duration = \"✓ builds the correct query\"\n+\n+        result_with = parse_log_jest(with_duration, test_spec=None)\n+        result_without = parse_log_jest(without_duration, test_spec=None)\n+\n+        assert list(result_with.keys()) == [\"builds the correct query\"]\n+        assert list(result_with.keys()) == list(result_without.keys())\n+\n+    def test_strips_leading_and_trailing_whitespace(self):\n+        \"\"\"Indentation from nested describe blocks shouldn't leak into the test name.\"\"\"\n+        log = \"    ✓ works when nested (3 ms)\"\n+        result = parse_log_jest(log, test_spec=None)\n+\n+        assert result == {\"works when nested\": TestStatus.PASSED.value}\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-05T10:45:55Z",
+  "github_updated_at": "2026-07-05T10:45:55Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebench_multilingual",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench_multilingual__swe-bench__swe-bench__pr-616",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench Multilingual Jest parser can produce inconsistent test-name keys when Jest omits the duration suffix, hiding real fail-to-pass transitions.",
+  "decision_note": "L2 source-read audit. The PR body explains that parse_log_jest has an optional duration suffix and non-greedy test-name capture, so the same Jest test can be keyed with trailing whitespace depending on whether Jest prints timing. The current main parser still assigns test_name without strip(), and the PR diff adds test_name.strip() plus regression tests. Variant attribution is swebench_multilingual, not swebench-verified: the current Verified test split contains only Python repos, while the current SWE-bench Multilingual test split includes JavaScript repos using parse_log_jest through MAP_REPO_TO_PARSER_JS (for example babel/babel, facebook/docusaurus, and immutable-js/immutable-js-2006). No existing swebench_multilingual artifact covers this Jest whitespace root cause. PR #616 is open, so resolution is fixing.",
+  "reviewed_at": "2026-07-06T00:07:01.252Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/616",
+    "https://github.com/SWE-bench/SWE-bench/pull/616/files",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/log_parsers/javascript.py",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/constants/javascript.py",
+    "https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified",
+    "https://huggingface.co/datasets/SWE-bench/SWE-bench_Multilingual"
+  ]
+}

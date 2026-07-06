@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench_multilingual__swe-bench__swe-bench__pr-616",
+  "benchmark_name": "swebench_multilingual",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Fix inconsistent test name whitespace in parse_log_jest",
+  "summary": "SWE-bench Multilingual Jest parser can produce inconsistent test-name keys when Jest omits the duration suffix, hiding real fail-to-pass transitions.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/616",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/616",
+    "https://github.com/SWE-bench/SWE-bench/pull/616/files",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/log_parsers/javascript.py",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/constants/javascript.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-05T10:45:55Z",
+  "last_reviewed_at": "2026-07-06T00:07:01.252Z",
+  "decision_note": "L2 source-read audit. The PR body explains that parse_log_jest has an optional duration suffix and non-greedy test-name capture, so the same Jest test can be keyed with trailing whitespace depending on whether Jest prints timing. The current main parser still assigns test_name without strip(), and the PR diff adds test_name.strip() plus regression tests. Variant attribution is swebench_multilingual, not swebench-verified: the current Verified test split contains only Python repos, while the current SWE-bench Multilingual test split includes JavaScript repos using parse_log_jest through MAP_REPO_TO_PARSER_JS (for example babel/babel, facebook/docusaurus, and immutable-js/immutable-js-2006). No existing swebench_multilingual artifact covers this Jest whitespace root cause. PR #616 is open, so resolution is fixing."
+}

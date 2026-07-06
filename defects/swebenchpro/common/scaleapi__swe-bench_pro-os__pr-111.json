@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__pr-111",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Fix: raise docker client timeout so slow evals aren't silently scored unresolved",
+  "summary": "SWE-bench Pro local Docker evaluation can silently score long-running instances unresolved because the Docker SDK default 60s read timeout applies to container.wait().",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/pull/111",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/111",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/111/files",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/22",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/23",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/54"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-04T22:46:14Z",
+  "last_reviewed_at": "2026-07-06T00:07:01.252Z",
+  "decision_note": "L2 source-read audit. The PR body attributes silent unresolved false negatives on --use_local_docker to docker.from_env() using the SDK default 60s read timeout while container.wait() can exceed 60s on routine Go/JS suites. The diff changes swe_bench_pro_eval.py to pass an overridable DOCKER_CLIENT_TIMEOUT defaulting to 3600 seconds. Linked issues #22, #23, and #54 show current SWE-bench Pro instances with expected long eval runtimes, and #23 has maintainer acknowledgement plus a prior task-script fix for one subset. No existing swebenchpro artifact covers this Docker-client timeout root cause, so this is a new benchmark-level evaluator defect. PR #111 is open, so resolution is fixing."
+}
