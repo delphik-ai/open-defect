@@ -4,16 +4,17 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "found",
+  "resolution": "fixing",
   "title": "Truncated parametrized test names in SWE-bench_Verified",
   "summary": "SWE-bench Verified PASS_TO_PASS contains hundreds of truncated parametrized pytest names, making equality comparison to actual test names ambiguous; maintainer confirms legitimate issue.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/290",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/issues/290"
+    "https://github.com/SWE-bench/SWE-bench/issues/290",
+    "https://github.com/SWE-bench/SWE-bench/pull/617"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-01-16T03:50:12.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-07-07T00:03:26Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

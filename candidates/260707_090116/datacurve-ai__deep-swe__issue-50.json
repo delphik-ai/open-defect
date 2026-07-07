@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/50",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 50,
+  "title": "Add Meituan LongCat-2.0 to the DeepSWE leaderboard",
+  "body": "## Summary\n\nPlease consider benchmarking Meituan LongCat-2.0 and adding the results to the public DeepSWE leaderboard:\n\nhttps://deepswe.datacurve.ai/\n\nLongCat-2.0 is now fully open-source / MIT licensed, and the main Hugging Face model appears to include the actual weights rather than only a model card or placeholder assets.\n\nOfficial resources:\n\n- Announcement: https://x.com/Meituan_LongCat/status/2073768940078317713\n- Hugging Face: https://huggingface.co/meituan-longcat/LongCat-2.0\n- GitHub: https://github.com/meituan-longcat/LongCat-2.0\n- ModelScope collection: https://modelscope.ai/collections/meituan-longcat/LongCat-20\n\n## Why this would be useful\n\nDeepSWE measures frontier coding agents on original, long-horizon software engineering tasks, which makes it a good independent benchmark for LongCat-2.0's agentic coding claims.\n\nThe official model card describes LongCat-2.0 as a large-scale MoE model with 1.6T total parameters and about 48B activated parameters per token. It also highlights long-context training, LongCat Sparse Attention, and coding/agentic evaluation results, including Terminal-Bench 2.1, SWE-bench Pro, SWE-bench Multilingual, FORTE, BrowseComp, and RWSearch.\n\nA DeepSWE run would help answer whether LongCat-2.0's reported coding-agent performance transfers to DeepSWE's original, long-horizon repository tasks.\n\n## Current availability\n\nA quick check of the official Hugging Face repositories shows:\n\n- `meituan-longcat/LongCat-2.0`\n  - public\n  - ungated\n  - MIT licensed\n  - includes `safetensors` model shards\n\n- `meituan-longcat/LongCat-2.0-FP8`\n  - public\n  - ungated\n  - MIT licensed\n  - includes `safetensors` model shards\n\nThat makes this more actionable than a \"track once weights are available\" request.\n\n## Suggested model/run targets\n\nA practical order might be:\n\n1. `meituan-longcat/LongCat-2.0-FP8`\n   - Likely the most practical initial target for serving/inference infrastructure.\n   - The official model card's SGLang GPU deployment example references the FP8 model.\n\n2. `meituan-longcat/LongCat-2.0`\n   - Full official checkpoint, if infrastructure permits.\n\n3. A small smoke or subset run first\n   - For example, a limited DeepSWE subset to confirm prompt format, tool calling, context behavior, and serving stability before a full leaderboard run.\n\n## Serving notes\n\nThe official model card includes deployment notes for both GPU and NPU platforms. For GPU serving, it references SGLang support and an SGLang launch path using the FP8 model with `--trust-remote-code`, tensor/expert parallelism, long-context settings, and related serving flags.\n\nThe Hugging Face page also exposes library/local-app instructions for Transformers, vLLM, SGLang, and Docker Model Runner. If DeepSWE's existing Pier + `mini-swe-agent` setup can call an OpenAI-compatible endpoint, the SGLang/vLLM paths may be the easiest starting point.\n\n## Expected value\n\nAdding LongCat-2.0 would put a newly open, large MoE coding/agentic model on DeepSWE's contamination-resistant benchmark and make it easier to compare against the frontier closed models and other open coding-agent models already being discussed for the leaderboard.\n\nThanks for considering it.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-06T20:09:56Z",
+  "github_updated_at": "2026-07-06T20:09:56Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Issue requests adding Meituan LongCat-2.0 to the DeepSWE leaderboard. It is a model evaluation request, not a claim about a benchmark defect.",
+  "reviewed_at": "2026-07-07T00:03:26Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/50"
+  ]
+}
