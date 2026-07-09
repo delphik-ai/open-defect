@@ -16,16 +16,17 @@
     "task-6902ef3ab97fe23e2ad2727e",
     "task-6902ef3ab97fe23e2ad27229"
   ],
-  "resolution": "fixing",
+  "resolution": "fixed",
   "title": "SWE-Atlas data/image defects (oracle solutions fail their own verifier",
   "summary": "SWE-Atlas TW post-hoc manifests include non-test files, wrong paths/test names, mutation-surviving tests, or vague descriptions, causing verifier reward 0 on affected oracle tasks.",
   "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/issues/4",
   "evidence_urls": [
     "https://github.com/scaleapi/SWE-Atlas/issues/4",
-    "https://github.com/scaleapi/SWE-Atlas/tree/main/data/tw"
+    "https://github.com/scaleapi/SWE-Atlas/tree/main/data/tw",
+    "https://github.com/scaleapi/SWE-Atlas/pull/5"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-16T08:23:31Z",
-  "last_reviewed_at": "2026-06-25T00:06:42.362Z",
+  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
   "decision_note": "L2 source-read audit. The issue body separates RF and TW defect classes; only the TW classes are attributed to scale-ai__swe-atlas-tw. The maintainer acknowledges that TW manifests were generated post-hoc and some do not pass the verifier, and says fixes will be investigated for v1.1. GitHub tree paths confirm the affected TW task ids exist under data/tw. No existing SWE-Atlas artifact covers this root cause."
 }

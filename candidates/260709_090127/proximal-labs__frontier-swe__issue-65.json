@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/65",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 65,
+  "title": "Reward-hacking surfaces: hidden verifier material is readable in agent sandbox",
+  "body": "Several tasks place verifier-only material in the agent-visible sandbox, including hidden labels, hidden notebooks, hidden scenes, loose hidden Lua tests, and encrypted bundles with readable keys.  \nBecause protection is mostly source scans or task-specific anti-cheat, an agent can inspect the oracle material during the agent phase.  \nThis allows hardcoding, overfitting, or precomputing outputs instead of solving the task honestly.\n\nExamples include `pcqm4mv2-autoresearch`, `notebook-compression`, `revideo-perf-opt`, `lua-native-compiler`, `optimizer-design`, and `modular-stack-wan21`.  \nFix by keeping verifier-only data out of the agent phase, encrypting bundles with verifier-only keys, and removing agent-writable oracle bypass markers.  \nSource scans should remain defense-in-depth, but not be the primary protection. \n\nI’d be happy to help work on fixes if useful.",
+  "comments": [
+    {
+      "url": "https://github.com/Proximal-Labs/frontier-swe/issues/65#issuecomment-4914495194",
+      "user": "rishyanth-proximal",
+      "created_at": "2026-07-08T11:53:05Z",
+      "updated_at": "2026-07-08T11:53:05Z",
+      "body": "Thank you for raising this and apologies for very late response. We are aware of limitations of harbor version 0.4.0 which we use internally for evaluating this benchmark and we have post-rollout QA agents which read the traces and check for reward hacking. We've concluded thats easier than making the task setup complicated and also, for next release we are migrating to latest version of harbor which already has multi user support and more security features."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-05-12T12:25:25Z",
+  "github_updated_at": "2026-07-08T11:53:06Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "frontier-swe",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__issue-65",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Frontier-SWE tasks expose verifier-only material in the agent sandbox, and the maintainer acknowledged this as a Harbor 0.4.0 limitation handled by post-rollout QA rather than benchmark isolation.",
+  "defect_type_main": "Evaluation integrity",
+  "defect_type_sub": "Verifier material exposed to agent sandbox",
+  "decision_note": "L1 thread audit. The issue names current Frontier-SWE tasks and describes a shared sandbox/isolation root cause: hidden labels, notebooks, scenes, Lua tests, and encrypted bundles or keys are agent-readable. The maintainer acknowledges the Harbor 0.4.0 limitation and says they rely on post-rollout QA agents and plan to migrate later, providing social proof for a current benchmark-level evaluation-integrity defect. No existing frontier-swe artifact covers this root cause.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/65",
+    "https://github.com/Proximal-Labs/frontier-swe/issues/65#issuecomment-4914495194"
+  ],
+  "reviewed_at": "2026-07-09T00:06:00.436Z"
+}

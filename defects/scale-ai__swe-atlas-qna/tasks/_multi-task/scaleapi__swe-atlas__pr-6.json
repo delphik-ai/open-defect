@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-qna__scaleapi__swe-atlas__pr-6",
+  "benchmark_name": "scale-ai__swe-atlas-qna",
+  "scope": "task_specific",
+  "task_names": [
+    "task-6905333b74f22949d97ba9d8",
+    "task-6905333b74f22949d97ba9f1",
+    "task-6905333b74f22949d97ba9f4",
+    "task-6905333b74f22949d97ba9f5",
+    "task-6905333b74f22949d97baa0b",
+    "task-6905333b74f22949d97baa15",
+    "task-6905333b74f22949d97baa17",
+    "task-6905333b74f22949d97baa19"
+  ],
+  "resolution": "fixed",
+  "title": "data/qa: fix 8 gold answers so each passes its own verifier",
+  "summary": "Eight SWE-Atlas Q&A gold answer files failed their rubric verifiers until merged PR #6 added the missing facts, runtime evidence, or corrected names needed for each answer to pass.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Gold/reference answer fails verifier",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/6",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/6",
+    "https://github.com/scaleapi/SWE-Atlas/pull/6/files",
+    "https://github.com/scaleapi/SWE-Atlas/issues/4"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-08T22:22:39Z",
+  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
+  "decision_note": "L2 source-read audit. The PR body says it fixes eight existing Codebase Q&A gold answer.txt files so each passes its rubric verifier without changing rubrics. The diff is entirely under data/qa task solution/answer.txt files for the eight named current task ids, and GitHub PR metadata shows maintainer-authored PR #6 merged on 2026-07-08. Existing SWE-Atlas artifacts only cover the TW variant, so this is a new scale-ai__swe-atlas-qna canonical defect."
+}

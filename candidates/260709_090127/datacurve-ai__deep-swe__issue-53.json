@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/53",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 53,
+  "title": "[Bug] 3 tasks with wrong language tags",
+  "body": "Found 3 tasks with wrong language tags in their task.toml:\n|task name|language in task.toml|expected language|\n|-|-|-|\n|koota-entity-snapshot-rollback|python|javascript|\n|prometheus-transactional-reload-status|typescript|go|\n|httpx-deterministic-cookie-store|typescript|python|",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-08T07:16:59Z",
+  "github_updated_at": "2026-07-08T07:16:59Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-53",
+  "task_names": [
+    "koota-entity-snapshot-rollback",
+    "prometheus-transactional-reload-status",
+    "httpx-deterministic-cookie-store"
+  ],
+  "resolution": "found",
+  "summary": "Three DeepSWE v1.1 tasks have incorrect language metadata in task.toml: Koota is labeled python, Prometheus is labeled typescript, and HTTPX is labeled typescript despite their upstream repositories being TypeScript, Go, and Python respectively.",
+  "defect_type_main": "Dataset metadata correctness",
+  "defect_type_sub": "Incorrect task language tag",
+  "decision_note": "L2 source-read audit. The issue names three current DeepSWE task ids. Reading each public task.toml confirms language values python/typescript/typescript, while the linked upstream repositories are primarily TypeScript for pmndrs/koota, Go for prometheus/prometheus, and Python for encode/httpx. No existing DeepSWE artifact covers incorrect language tags across these task rows.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/53",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/koota-entity-snapshot-rollback/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/httpx-deterministic-cookie-store/task.toml",
+    "https://github.com/pmndrs/koota",
+    "https://github.com/prometheus/prometheus",
+    "https://github.com/encode/httpx"
+  ],
+  "reviewed_at": "2026-07-09T00:06:00.436Z"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/52",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 52,
+  "title": "Auditing DeepSWE v1.1",
+  "body": "An independent audit of DeepSWE v1.1. Full write-up with receipts and reproduce steps: https://june.kim/auditing-deepswe-v1-1. Posting the summary here too; #21 shows these issues do get read, even if the team is slow to respond.\n\nCredit up front. The node-id re-grade fixed most of what v1 got wrong. I re-ran every reference solution through its own verifier on native amd64 (Pier 0.3.0, `deep-swe@3cda4081`): 112 of 113 golds now pass, versus 4 failing in v1. Flaky tests are gone, the CIs are now real run-to-run variance, and the denominator drift is at least visible in the per-config counts. The specs also hold up: an independent determinacy audit finds only a ~2.7% underdetermination floor, tighter than mined-PR benchmarks. This is a real step up.\n\n### Findings\n\n| finding | status | detail |\n|---|---|---|\n| Four reference golds fail their own verifiers | 3 of 4 fixed | oracle rerun: `langchain`, `narwhals`, `skrub` golds now pass; `prometheus-transactional-reload-status` still fails (f2p 15/15, p2p 72/82, 10 pass-to-pass regressions), confirmed in isolation. No new broken golds: 4/113 → 1/113 |\n| Clustered CIs off a single run | fixed | run-to-run variance across repeated whole-benchmark passes |\n| Footer denominator 113 vs math 111 | partly | per-config counts now published and self-consistent; the global footer still reads 113 while one config ran 111 |\n| Verdict receipts not retrievable | open | `has_model_patch: true`, but the patch / `ctrf.json` / `reward.json` contents are not published, so no verdict can be re-graded. The same receipts would also settle #21's cost accounting |\n| `tasks.json` too thin to audit scoring | open | no full prompt, hidden tests, or node IDs |\n| Exclusions only partly disclosed | open | 122 trials excluded in `trials.json`; the blog names 73 |\n| `reasoning_effort` not normalized | open | mixed `null` to `xhigh`; independently flagged for DeepSeek in #21 |\n| No conflicts-of-interest statement | open | none added |\n| Two typos in `tasks.json` | open | `koota-entity-snapshot-rollback` `base_commit_hash` is 39 chars (`72ebef44b8e024d877250f055eea60cdfaa4506`, a SHA with one char dropped); `csstree-shorthand-expansion-compression`'s test expects lowercase `currentcolor` where CSS and the repo use `currentColor` |\n| `heatmap.json` charts 8 of 10 ranked models | new | `claude-sonnet-5` and `glm-5-2` dropped from the grid |\n| Trials scored `pass` while flagged `agent_timeout` | new | contradicts the stated rule that agent timeouts are scored failures |\n| Spec determinacy | clear | ~2.7% floor; the specs are tight |\n\n### Recommendations, cheapest first\n\n- [ ] Publish per-trial receipts (the model patch, `ctrf.json`, `reward.json`) plus a manifest pinning the task repo commit, verifier image digest, node IDs, scoring script, and timeout/exclusion policy. These are already written on every run (Pier emits them per trial), so this is uploading files that already exist. It is the keystone, and it also settles #21's cost/token accounting.\n- [ ] Disclose every excluded trial with reasons (122, not the 73 named).\n- [ ] Add one conflicts-of-interest sentence.\n- [ ] Fix the two typos, and fix or exclude `prometheus-transactional-reload-status`.\n- [ ] Fill out `tasks.json` (prompt, hidden tests, node IDs), and reconcile the heatmap, timeout, and denominator inconsistencies.\n\nReproduce the oracle rerun and browse the full ledgers, artifact snapshots, and determinacy audit: https://github.com/kimjune01/deepswe-run",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-08T03:26:47Z",
+  "github_updated_at": "2026-07-08T03:32:09Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-45",
+  "task_names": [
+    "prometheus-transactional-reload-status"
+  ],
+  "resolution": "found",
+  "summary": "The DeepSWE v1.1 audit repeats that prometheus-transactional-reload-status still fails its own verifier via pass-to-pass regressions, matching the existing canonical defect for that task.",
+  "decision_note": "L1 thread audit. The broad audit summary contains several non-counting transparency items, but its concrete current benchmark defect evidence says prometheus-transactional-reload-status still fails with f2p 15/15 and p2p 72/82, i.e. pass-to-pass regressions. That is duplicate/follow-up evidence for the existing canonical DeepSWE prometheus pass-to-pass whitelist/root-cause artifact, not a separate canonical defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/52",
+    "https://github.com/datacurve-ai/deep-swe/issues/45"
+  ],
+  "reviewed_at": "2026-07-09T00:06:00.436Z"
+}

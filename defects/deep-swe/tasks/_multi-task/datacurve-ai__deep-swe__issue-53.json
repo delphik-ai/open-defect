@@ -1,0 +1,30 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-53",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "koota-entity-snapshot-rollback",
+    "prometheus-transactional-reload-status",
+    "httpx-deterministic-cookie-store"
+  ],
+  "resolution": "found",
+  "title": "[Bug] 3 tasks with wrong language tags",
+  "summary": "Three DeepSWE v1.1 tasks have incorrect language metadata in task.toml: Koota is labeled python, Prometheus is labeled typescript, and HTTPX is labeled typescript despite their upstream repositories being TypeScript, Go, and Python respectively.",
+  "defect_type_main": "Dataset metadata correctness",
+  "defect_type_sub": "Incorrect task language tag",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/53",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/53",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/koota-entity-snapshot-rollback/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/prometheus-transactional-reload-status/task.toml",
+    "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/httpx-deterministic-cookie-store/task.toml",
+    "https://github.com/pmndrs/koota",
+    "https://github.com/prometheus/prometheus",
+    "https://github.com/encode/httpx"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-08T07:16:59Z",
+  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
+  "decision_note": "L2 source-read audit. The issue names three current DeepSWE task ids. Reading each public task.toml confirms language values python/typescript/typescript, while the linked upstream repositories are primarily TypeScript for pmndrs/koota, Go for prometheus/prometheus, and Python for encode/httpx. No existing DeepSWE artifact covers incorrect language tags across these task rows."
+}

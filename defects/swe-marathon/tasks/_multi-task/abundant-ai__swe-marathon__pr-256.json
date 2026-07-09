@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-256",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "slack-clone",
+    "excel-clone",
+    "s3-clone",
+    "mastodon-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Make CUA clone rewards binary",
+  "summary": "Four SWE-Marathon CUA clone wrappers wrote fractional blended rewards into reward.json; merged PR #256 makes trial rewards binary and moves the blend to metrics.json.partial_score.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Non-binary reward encoding",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/256",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/256",
+    "https://github.com/abundant-ai/swe-marathon/pull/256/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-08T08:32:28Z",
+  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
+  "decision_note": "L2 source-read audit. The PR body and diff name the four current CUA clone tasks and change their cua_blend.sh scripts from blended reward.json rewards to binary rewards, retaining the fractional blend only as metrics.json.partial_score. GitHub PR metadata shows maintainer-authored PR #256 merged on 2026-07-08 with merge commit 1c4bc099a56b4a80d7ba0a1f61314a8d5aefef5e. Existing PR #241 covers fork-only CUA verifier plumbing, not this reward encoding root cause."
+}

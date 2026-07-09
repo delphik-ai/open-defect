@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/255",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 255,
+  "title": "JARVS ZERO public evidence review A10049R2_BENCHMARK_KNOCK_20260708_031116",
+  "body": "JARVS ZERO external benchmark/review knock.\n\nRun: A10049R2_BENCHMARK_KNOCK_20260708_031116\nPublic evidence: https://gist.github.com/hele2asd/9b883716ae8fba62b999f24d21c0d71e\nProof SHA256: 74109B5CBEAC14D48219DE44C6BAEF513BC49F54F8C68B054E48A2F6AEA1B4E2\nReceiver attestation: YES\nReceiver signature verified: YES\n\nRequest: please point this to the right submission/review path if issues are not the accepted route.\n\nNo leaderboard score or capability upgrade is claimed here. This is only a public, readbackable external benchmark knock for long-horizon agent OS evidence.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-08T00:11:14Z",
+  "github_updated_at": "2026-07-08T11:34:17Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is an external JARVS ZERO benchmark/review knock and routing request. It does not allege a benchmark artifact, task, harness, dataset, or evaluator defect in the current SWE-Marathon benchmark.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/255"
+  ],
+  "reviewed_at": "2026-07-09T00:06:00.436Z"
+}

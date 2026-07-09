@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-07-02T22:31:27Z",
-  "last_reviewed_at": "2026-07-08T00:10:01.979Z",
+  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
   "decision_note": "L2 audit. The PR title/body identify the current swe-marathon task rust-c-compiler, and the diff changes tasks/rust-c-compiler/task.toml from allow_internet=true to false while replacing runtime git clones and apt reinstall in tests/test.sh with sealed verifier assets and a baked toolchain manifest. The open draft fix PR is social proof for a task-specific current benchmark defect; no existing swe-marathon artifact covers this root cause."
 }

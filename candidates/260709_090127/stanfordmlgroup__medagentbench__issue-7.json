@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/stanfordmlgroup/MedAgentBench/issues/7",
+  "repo": "stanfordmlgroup/medagentbench",
+  "source_type": "github_issue",
+  "github_number": 7,
+  "title": "Clinical safety gate layer for virtual EHR medical agents",
+  "body": "Hello MedAgentBench team,\n\nI am a physician from Turkey building MedFailBench, an open source clinical AI safety benchmark based on synthetic clinician authored cases.\n\nProject:\n\nhttps://github.com/goktugozkanmd/medical-ai-failure-atlas\n\nMedAgentBench looks highly relevant because simulated EHR agents need safety gates around actions, advice, and output wording.\n\nI am looking for technical collaboration with medical AI benchmark teams. The goal is to add a small clinical safety boundary evaluation layer that can complement existing medical benchmark scores.\n\nMedFailBench focuses on cases where a model response may sound clinically fluent but crosses a safety boundary: missed urgent escalation, unsafe remote advice, unsupported certainty, weak source support, or unsafe safety net wording.\n\nNo patient data is involved. This is not clinical advice, not clinical validation, and not a deployment claim.\n\nWould your team be open to discussing a safety gate layer for simulated EHR medical agent tasks?\n\nBest,\nGoktug Ozkan\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-08T10:59:01Z",
+  "github_updated_at": "2026-07-08T10:59:01Z",
+  "candidate_benchmark_names": [
+    "medagentbench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a collaboration request about adding a future clinical safety gate layer and does not allege a defect in the current MedAgentBench artifact, task set, harness, dataset, or evaluator.",
+  "checked_urls": [
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/7"
+  ],
+  "reviewed_at": "2026-07-09T00:06:00.436Z"
+}
