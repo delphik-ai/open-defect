@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-200",
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "spider2-dbt: duckdb_match with ignore_order=true accepts row-scrambled tables (cross-column alignment never checked)",
+  "summary": "Spider2-DBT duckdb_match accepts row-scrambled tables when ignore_order=true because it compares sorted columns independently rather than row tuples.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Evaluator accepts incorrect output",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/200",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/200",
+    "https://github.com/xlang-ai/Spider2/blob/main/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-07-09T23:36:44Z",
+  "last_reviewed_at": "2026-07-10T00:06:11.228Z",
+  "decision_note": "L3 source-function reproduction. Harbor preflight was not applicable because this audit directly exercised the upstream Spider2-DBT evaluator function rather than a Harbor adapter. Command: temp venv with duckdb/pandas, curl upstream spider2-dbt/evaluation_suite/eval_utils.py from GitHub, create gold table (alice=100,bob=250,carol=375) and predicted table with the same column values but all revenue pairings shifted, then call duckdb_match on condition_cols [[0,1]]. Observed ignore_order_true=1 and ignore_order_false=0, matching the claim that the order-insensitive path loses row alignment. No sampled task rows were needed because this is benchmark-level evaluator behavior."
+}

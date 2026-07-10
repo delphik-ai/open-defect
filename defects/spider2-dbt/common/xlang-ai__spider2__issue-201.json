@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-201",
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "spider2-dbt: evaluate.py averages over submitted instances only; published scores mix /64 and /68 denominators",
+  "summary": "Spider2-DBT evaluate.py averages only over submitted instance ids, so partial submissions omit missing tasks from the denominator.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Score aggregation bug",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/201",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/201",
+    "https://github.com/xlang-ai/Spider2/blob/main/spider2-dbt/evaluation_suite/evaluate.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-07-09T23:36:57Z",
+  "last_reviewed_at": "2026-07-10T00:06:11.228Z",
+  "decision_note": "L3 minimal-fixture reproduction. Harbor preflight was not applicable because this audit directly exercised upstream Spider2-DBT evaluate.py rather than a Harbor adapter. Source-read confirmed evaluate.py intersects gold and result ids, builds evaluation_data from that intersection, and prints score / len(output_list). Command: temp venv with duckdb/pandas/tqdm/regex, curl upstream evaluate.py and eval_utils.py from GitHub, create gold spider2_eval.jsonl with two answer instances but results_metadata.jsonl with only one correct instance, then run evaluate.run_evaluation(result, gold). Observed output length 1 and final score line 1.0 1 1, confirming the missing gold instance was excluded instead of counted as 0. No sampled task rows were needed because this is benchmark-level aggregation behavior."
+}

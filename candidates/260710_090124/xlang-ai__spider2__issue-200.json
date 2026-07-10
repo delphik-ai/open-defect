@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/200",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 200,
+  "title": "spider2-dbt: duckdb_match with ignore_order=true accepts row-scrambled tables (cross-column alignment never checked)",
+  "body": "## Summary\n\nIn `evaluation_suite/eval_utils.py`, `compare_pandas_table` → `vectors_match` sorts the two vectors **independently** when `ignore_order` is set (L116-117), and gold columns are matched one at a time against *any* column of the predicted table (L141-142). The combined effect: the scorer verifies that each required column contains the right multiset of values, but never verifies that values line up into the right rows.\n\nA submission with every column correct but the rows scrambled — i.e., every row-level fact wrong — scores 1.\n\n## Reproduction\n\nRun from `spider2-dbt/evaluation_suite/` (the stubs neutralize unrelated cloud imports; only `duckdb` and `pandas` are needed):\n\n```python\nimport duckdb, tempfile, os, types, sys, importlib\nfor m in ['google','google.cloud','google.cloud.bigquery','google.oauth2',\n          'snowflake','snowflake.connector','psycopg2','mysql','mysql.connector']:\n    sys.modules.setdefault(m, types.ModuleType(m))\nsys.path.insert(0, '.')\neval_utils = importlib.import_module('eval_utils')\n\nd = tempfile.mkdtemp()\ngold_db, pred_db = os.path.join(d,'gold.duckdb'), os.path.join(d,'pred.duckdb')\n\ncon = duckdb.connect(gold_db)\ncon.execute(\"CREATE TABLE report AS SELECT * FROM (VALUES ('alice', 100.0), ('bob', 250.0), ('carol', 375.0)) t(customer, revenue)\")\ncon.close()\n# same values, every pairing wrong\ncon = duckdb.connect(pred_db)\ncon.execute(\"CREATE TABLE report AS SELECT * FROM (VALUES ('alice', 375.0), ('bob', 100.0), ('carol', 250.0)) t(customer, revenue)\")\ncon.close()\n\nprint(eval_utils.duckdb_match(pred_db, gold_db, condition_tabs=['report'], condition_cols=[[0,1]], ignore_orders=[True]))   # -> 1\nprint(eval_utils.duckdb_match(pred_db, gold_db, condition_tabs=['report'], condition_cols=[[0,1]], ignore_orders=[False]))  # -> 0\n```\n\n## Scope\n\nAll **119 table comparisons across all 68 instances** in `evaluation_suite/gold/spider2_eval.jsonl` set `ignore_order: true`, so the strict path is never exercised in the dbt suite. The lax path is the only path.\n\nRelated: the inner `for j, pred ... break` loop (asked about in #71) also never sets aside matched predicted columns, so a single predicted column can satisfy several gold columns.\n\n## Suggestion\n\nWith `ignore_order=true`, sort **row tuples** (restricted to `condition_cols`) rather than sorting each column independently — this keeps order-insensitivity while preserving row structure. If the current semantics are intentional, documenting them would help; agents can currently pass with tables whose row-level facts are wrong.\n\nFound while reproducing the evaluation for a training project; fuller notes: https://teilo.xyz/posts/quaero-spider2-negative-result/#2-reproducing-the-spider-20-dbt-evaluation",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-09T23:36:44Z",
+  "github_updated_at": "2026-07-09T23:36:44Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-200",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Spider2-DBT duckdb_match accepts row-scrambled tables when ignore_order=true because it compares sorted columns independently rather than row tuples.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Evaluator accepts incorrect output",
+  "decision_note": "L3 source-function reproduction. Harbor preflight was not applicable because this audit directly exercised the upstream Spider2-DBT evaluator function rather than a Harbor adapter. Command: temp venv with duckdb/pandas, curl upstream spider2-dbt/evaluation_suite/eval_utils.py from GitHub, create gold table (alice=100,bob=250,carol=375) and predicted table with the same column values but all revenue pairings shifted, then call duckdb_match on condition_cols [[0,1]]. Observed ignore_order_true=1 and ignore_order_false=0, matching the claim that the order-insensitive path loses row alignment. No sampled task rows were needed because this is benchmark-level evaluator behavior.",
+  "reviewed_at": "2026-07-10T00:06:11.228Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/200",
+    "https://github.com/xlang-ai/Spider2/blob/main/spider2-dbt/evaluation_suite/eval_utils.py"
+  ]
+}

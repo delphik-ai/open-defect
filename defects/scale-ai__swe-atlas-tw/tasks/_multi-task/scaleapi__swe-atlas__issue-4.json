@@ -27,6 +27,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-16T08:23:31Z",
-  "last_reviewed_at": "2026-07-09T00:06:00.436Z",
+  "last_reviewed_at": "2026-07-10T00:06:11.228Z",
   "decision_note": "L2 source-read audit. The issue body separates RF and TW defect classes; only the TW classes are attributed to scale-ai__swe-atlas-tw. The maintainer acknowledges that TW manifests were generated post-hoc and some do not pass the verifier, and says fixes will be investigated for v1.1. GitHub tree paths confirm the affected TW task ids exist under data/tw. No existing SWE-Atlas artifact covers this root cause."
 }

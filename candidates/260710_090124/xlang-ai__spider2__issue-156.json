@@ -1,0 +1,48 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/156",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 156,
+  "title": "Missing gold truth for dbt questions",
+  "body": "https://github.com/xlang-ai/Spider2/issues/101 this issue is marked closed, but the problem is not fixed. Also there is the `danish_democracy_data001` gold folder, which does not have a question for it, which might be unwanted behavior. ",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/156#issuecomment-3581250583",
+      "user": "pickleerik",
+      "created_at": "2025-11-26T13:07:43Z",
+      "updated_at": "2025-11-26T13:07:43Z",
+      "body": "Also the `conditional_tabs` for `chinook001` seems broken."
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/156#issuecomment-4930521595",
+      "user": "teilomillet",
+      "created_at": "2026-07-09T23:36:24Z",
+      "updated_at": "2026-07-09T23:36:24Z",
+      "body": "Verified against a fresh setup (June 2026): after running `setup.py` with the official `dbt_gold.zip`, exactly four instances from `spider2_eval.jsonl` have no gold DuckDB in `evaluation_suite/gold/`:\n\n- `airbnb002`\n- `biketheft001`\n- `gitcoin001`\n- `google_ads001`\n\nThese four score 0 unconditionally — `duckdb_match` cannot open a gold database that does not exist — so the maximum achievable on the 68-instance suite is 64/68. This also affects comparability of published results: some appear to be computed over 64 (42/64 = 65.62%) and others over 68 (41/68 = 60.29%).\n\n(`danish_democracy_data001` is the reverse case, as noted above: a gold folder present in `examples/` with no corresponding entry in either jsonl.)\n\nFuller notes from reproducing the evaluation end-to-end: https://teilo.xyz/posts/quaero-spider2-negative-result/#2-reproducing-the-spider-20-dbt-evaluation"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-11-23T09:13:54Z",
+  "github_updated_at": "2026-07-09T23:36:24Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-156",
+  "task_names": [
+    "airbnb002"
+  ],
+  "resolution": "found",
+  "summary": "Fresh Spider2-DBT reproduction notes add evidence for the existing missing-gold-truth defect.",
+  "decision_note": "L1 thread re-audit. The thread is explicitly about Spider2-DBT gold truth missing from the official dbt_gold.zip setup, which is the same root cause as the existing canonical artifact. The new comment reports a fresh June 2026 setup and names missing gold DuckDBs; this run records it as duplicate/follow-up evidence for the existing canonical defect rather than a new root cause.",
+  "reviewed_at": "2026-07-10T00:06:11.228Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/156",
+    "https://github.com/xlang-ai/Spider2/issues/156#issuecomment-4930521595"
+  ]
+}
