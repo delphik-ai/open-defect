@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-34",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "118-50"
+  ],
+  "resolution": "found",
+  "title": "Incorrect answer position for 118-50 (drops the first result row)",
+  "summary": "SpreadsheetBench task 118-50 scores C2:D5000 even though the golden answer starts at C1:D1, dropping the first result pair from evaluation.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Answer range bug",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/34",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/34",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-10T09:10:16Z",
+  "last_reviewed_at": "2026-07-11T00:04:29.363Z",
+  "decision_note": "L2 source-read audit. The issue names current SpreadsheetBench Verified-400 task 118-50. GitHub source data/spreadsheetbench_verified_400.tar.gz contains dataset.json with id 118-50 and answer_position set to Sheet1!C2:D5000, while spreadsheet/118-50/1_118-50_golden.xlsx has the first expected pair at C1:D1 and rows 1-12 populated. Existing spreadsheetbench-verified artifacts cover other answer-position/evaluator issues but not task 118-50 dropping the first row."
+}

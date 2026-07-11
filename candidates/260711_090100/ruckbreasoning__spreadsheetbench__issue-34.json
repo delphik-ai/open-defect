@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/34",
+  "repo": "ruckbreasoning/spreadsheetbench",
+  "source_type": "github_issue",
+  "github_number": 34,
+  "title": "Incorrect answer position for 118-50 (drops the first result row)",
+  "body": "**Task:** `118-50` (Verified-400)\n\n**Field:** `answer_position` = `'Sheet1'!C2:D5000` — should be `'Sheet1'!C1:D5000`.\n\n### Problem\n\nThe instruction ends with *\"Do not add any extra headings or formatting to\nSheet1\"*, so the results have **no header row** and the golden answer places its\n**first result pair in row 1** (`C1`=`TABORING`, `D1`=`ABORTING`). But\n`answer_position` starts at **C2**, so the first result pair (`C1:D1`) is\nexcluded from scoring.\n\nConsequences:\n1. The first result pair is never checked — a submission can put anything in row 1.\n2. The scored range is inconsistent with the golden's own layout: a solver that\n   correctly starts output at row 1 (per the \"no headings\" instruction) has its\n   first pair ignored.\n\n### Evidence — `1_118-50_golden.xlsx`, sheet `Sheet1`\n\n\nC1  = TABORING   D1  = ABORTING   <-- first result pair, OUTSIDE answer_position C2:D5000\nC2  = TAVERING   D2  = AVERTING\nC3  = HEARTING   D3  = EARTHING\n...\nC12 = HEARTILY   D12 = EARTHILY\n\n\nThe golden holds **12** result pairs in rows **1–12**; `answer_position`\n`C2:D5000` covers only rows 2–12.\n\n### Suggested fix\n\nSet `answer_position` for task `118-50` to `'Sheet1'!C1:D5000`.\n\n*(The task itself is well-defined and the golden's 12 pairs look correct — this\nis purely the scoring range dropping the first row.)*",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-10T09:10:16Z",
+  "github_updated_at": "2026-07-10T09:10:16Z",
+  "candidate_benchmark_names": [
+    "spreadsheetbench-verified"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spreadsheetbench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-34",
+  "task_names": [
+    "118-50"
+  ],
+  "resolution": "found",
+  "summary": "SpreadsheetBench task 118-50 scores C2:D5000 even though the golden answer starts at C1:D1, dropping the first result pair from evaluation.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Answer range bug",
+  "decision_note": "L2 source-read audit. The issue names current SpreadsheetBench Verified-400 task 118-50. GitHub source data/spreadsheetbench_verified_400.tar.gz contains dataset.json with id 118-50 and answer_position set to Sheet1!C2:D5000, while spreadsheet/118-50/1_118-50_golden.xlsx has the first expected pair at C1:D1 and rows 1-12 populated. Existing spreadsheetbench-verified artifacts cover other answer-position/evaluator issues but not task 118-50 dropping the first row.",
+  "reviewed_at": "2026-07-11T00:04:29.363Z",
+  "checked_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/34",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ]
+}

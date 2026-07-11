@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/79",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 79,
+  "title": "How to run FrontierSWE locally with self-hosted Docker sandbox instead of Modal?",
+  "body": "Hi, I'd like to test FrontierSWE on my own infrastructure via Docker & sandbox instead of the default cloud backend. I notice the `tasks/*/job.yaml` currently uses `harbor_ext.modal_managed:ManagedModalEnvironment`. \n\nWould the author be able to provide some guidance on running locally — e.g. is there a supported way to switch the environment to a local Docker/sandbox backend? Any pointers would be appreciated.\n\nThanks!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-10T03:10:03Z",
+  "github_updated_at": "2026-07-10T03:10:03Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks how to run FrontierSWE locally with a self-hosted Docker sandbox instead of Modal. It is a support/usage question, not evidence of a benchmark task, harness, dataset, evaluator, or scoring defect.",
+  "reviewed_at": "2026-07-11T00:04:29.363Z",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/79"
+  ]
+}

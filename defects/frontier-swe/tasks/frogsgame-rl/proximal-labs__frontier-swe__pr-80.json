@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__pr-80",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "frogsgame-rl"
+  ],
+  "resolution": "fixed",
+  "title": "add grok cli harness and minor fix on frogsgamerl task",
+  "summary": "FrontierSWE frogsgame-rl verifier failed scoring when Step 0 checkpoint audit-preservation download failed, even though scoring uses Tinker sampling from the checkpoint path.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Verifier setup failure",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/pull/80",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/pull/80",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/tasks/frogsgame-rl/tests/compute_reward.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-10T05:42:21Z",
+  "last_reviewed_at": "2026-07-11T00:04:29.363Z",
+  "decision_note": "L2 PR diff/source audit. The merged maintainer PR changes tasks/frogsgame-rl/tests/compute_reward.py so a failed checkpoint audit-preservation download warns and continues to Tinker evaluation, because scoring uses Tinker sampling of the tinker:// checkpoint path rather than the downloaded archive. This is task-specific to frogsgame-rl and no existing frontier-swe artifact covers this root cause."
+}

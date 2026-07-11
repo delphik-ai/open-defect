@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/201",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 201,
+  "title": "spider2-dbt: evaluate.py averages over submitted instances only; published scores mix /64 and /68 denominators",
+  "body": "## Summary\n\nTwo related reporting problems in the dbt evaluation make published scores hard to compare.\n\n**1. Partial submissions inflate the average.** `evaluation_suite/evaluate.py` builds `evaluation_data` from the *intersection* of gold instance ids and the ids present in the submission's `results_metadata.jsonl` (L38-39), and the final line reports `score / len(output_list)` (L123). A submission containing only its strongest instances is averaged only over those instances. Instances missing from the submission should arguably count as 0 in the headline number.\n\n**2. Published results appear to use different denominators.** Four instances have no gold DuckDB in `dbt_gold.zip` (#156) and score 0 unconditionally, so the effective maximum is 64/68. Scores on the public leaderboard are exact multiples of different denominators — e.g., 65.62% = 42/64, 60.29% = 41/68, 37.50% = 24/64 — which suggests they are not computed over the same instance set and are not directly comparable.\n\n## Suggestion\n\nHave `evaluate.py` score non-submitted instances as 0 and report both `x/68` and `x/64-scoreable` explicitly. That would make leaderboard entries comparable at a glance and remove the ambiguity for anyone reporting new results.\n\nFound while reproducing the evaluation for a training project; fuller notes: https://teilo.xyz/posts/quaero-spider2-negative-result/#2-reproducing-the-spider-20-dbt-evaluation",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-09T23:36:57Z",
+  "github_updated_at": "2026-07-09T23:36:57Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-201",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Spider2-DBT evaluate.py averages only over submitted instance ids, so partial submissions omit missing tasks from the denominator.",
+  "decision_note": "Existing canonical defect spider2-dbt__xlang-ai__spider2__issue-201 already covers this same GitHub issue and root cause. Prior L3 reproduction confirmed evaluate.py intersects gold/result ids and divides by submitted output_list length; this run rechecked the same GitHub issue and upstream evaluate.py source URL as duplicate evidence, not a new canonical defect.",
+  "reviewed_at": "2026-07-11T00:04:29.363Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/201",
+    "https://github.com/xlang-ai/Spider2/blob/main/spider2-dbt/evaluation_suite/evaluate.py"
+  ]
+}
