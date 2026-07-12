@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/242",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 242,
+  "title": "fix: setup.sh installs no dependencies — use 'uv sync --extra all'",
+  "body": "## What\n\nOne-line fix: `setup.sh` now runs `uv sync --extra all` instead of plain `uv sync`.\n\n## Why\n\nFollowing the README setup instructions:\n\n```bash\ngit clone https://github.com/SWE-bench/SWE-smith\ncd SWE-smith\n./setup.sh\n```\n\nproduces a virtual environment containing only the editable `swesmith` package and **zero dependencies**, so any subsequent command fails immediately:\n\n```\n$ python -m swesmith.build_repo.try_install_py Instagram/MonkeyType configs/install_repo.sh \\\n    --commit 70c3acf62950be5dfb28743c7a719bfdecebcd84\n...\n  File \".../swesmith/profiles/base.py\", line 8, in <module>\n    import docker\nModuleNotFoundError: No module named 'docker'\n```\n\n### Root cause\n\n#192 (commit `6ace4b4`) moved all dependencies out of the base `dependencies` list into the `all` optional dependency group, to accommodate `modal.pip_install_from_pyproject`:\n\n```toml\n# Base dependencies are empty to allow granular dependency groups for Modal images\ndependencies = []\n\n[project.optional-dependencies]\nall = [\n    \"astor\",\n    \"datasets\",\n    \"docker\",\n    ...\n]\n```\n\nThe same PR introduced `setup.sh` with a plain `uv sync`, which resolves the lockfile but installs nothing beyond the editable `swesmith` package — so the script has been broken since it was introduced.\n\n## Verification\n\nAfter this change, `uv sync --extra all` installs the full dependency set and both of these succeed in the fresh venv:\n\n```python\nimport docker\nfrom swesmith.profiles.python import PythonProfile\n```\n\nand the `try_install_py` command above runs past the import stage.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/setup.sh b/setup.sh\nindex 006923dc..7183628d 100755\n--- a/setup.sh\n+++ b/setup.sh\n@@ -4,4 +4,4 @@ curl -LsSf https://astral.sh/uv/install.sh | sh\n # Create and activate virtual environment\n uv venv --python 3.12\n source .venv/bin/activate\n-uv sync\n\\ No newline at end of file\n+uv sync --extra all\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-11T17:47:32Z",
+  "github_updated_at": "2026-07-11T17:48:23Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swesmith",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swesmith__swe-bench__swe-smith__pr-242",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-smith setup.sh runs plain uv sync even though pyproject.toml keeps runtime dependencies only in the all optional extra, leaving fresh installs without required packages.",
+  "decision_note": "L2 source-read audit. The PR is for the SWE-smith repo and the linked diff changes setup.sh from uv sync to uv sync --extra all. Current setup.sh still runs plain uv sync, while current pyproject.toml has dependencies = [] and places docker, datasets, jinja2, swebench, and other runtime packages under [project.optional-dependencies].all. This is a benchmark-level setup/infrastructure defect with no existing canonical artifact for the same root cause; the open fix PR makes the resolution fixing.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/242",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/setup.sh",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/pyproject.toml"
+  ],
+  "reviewed_at": "2026-07-12T00:04:55.191Z"
+}

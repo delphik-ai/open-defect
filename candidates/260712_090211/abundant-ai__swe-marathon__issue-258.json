@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/258",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 258,
+  "title": "Rerun request: Fable 5 tasks zeroed due to the access ban (access restored)",
+  "body": "Hi, thanks for the benchmark and for the transparent footnotes on the leaderboard.\n\nThe leaderboard (https://www.swemarathon.org/) currently notes for Claude Fable 5 (as of 2026-07-11): \"due to the ban we were unable to run trials on `nextjs-vite-rewrite`, `kubernetes-rust-rewrite`, and `s3-clone`. These tasks are counted as 0.0.\"\n\nThe US export controls on Fable 5 were lifted on June 30 and API access has been restored since July 1 (https://www.anthropic.com/news/redeploying-fable-5), so these three tasks should be runnable now.\n\nWould you consider rerunning them when budget allows? With 3 of 20 tasks auto-zeroed for access reasons, Fable's 24.0% has a 15pp lower ceiling than other entries, which affects how the top of the leaderboard reads. I understand these runs are expensive and n=5 error bars are wide either way, so this is just a request to put it on the radar, not an urgency claim.\n\nThe two refused tasks (`embedding-eval`, `trimul-cuda`) are a separate matter since refusals are model behavior and fair to score, though the post-redeployment safety classifier may have changed that behavior too.\n\nThanks!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-11T15:52:38Z",
+  "github_updated_at": "2026-07-11T15:52:38Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks maintainers to rerun public leaderboard entries for Claude Fable 5 after external model access was restored. It does not identify a defect in the SWE-Marathon task set, harness, evaluator, or benchmark artifact; the zeroed runs are an operational/model-access leaderboard condition rather than a benchmark defect.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/258"
+  ],
+  "reviewed_at": "2026-07-12T00:04:55.191Z"
+}

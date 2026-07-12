@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__pr-242",
+  "benchmark_name": "swesmith",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix: setup.sh installs no dependencies — use 'uv sync --extra all'",
+  "summary": "SWE-smith setup.sh runs plain uv sync even though pyproject.toml keeps runtime dependencies only in the all optional extra, leaving fresh installs without required packages.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/pull/242",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/242",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/setup.sh",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/pyproject.toml"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-11T17:47:32Z",
+  "last_reviewed_at": "2026-07-12T00:04:55.191Z",
+  "decision_note": "L2 source-read audit. The PR is for the SWE-smith repo and the linked diff changes setup.sh from uv sync to uv sync --extra all. Current setup.sh still runs plain uv sync, while current pyproject.toml has dependencies = [] and places docker, datasets, jinja2, swebench, and other runtime packages under [project.optional-dependencies].all. This is a benchmark-level setup/infrastructure defect with no existing canonical artifact for the same root cause; the open fix PR makes the resolution fixing."
+}
