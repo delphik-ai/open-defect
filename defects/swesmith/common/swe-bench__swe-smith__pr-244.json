@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__pr-244",
+  "benchmark_name": "swesmith",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix: docker build fails with passphrase-protected SSH keys — prefer ssh-agent",
+  "summary": "SWE-smith RepoProfile._docker_ssh_arg passes a discovered private key path to docker build before considering ssh-agent forwarding, so passphrase-protected keys can make BuildKit fail before building even public repo images.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "ssh_key_handling",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/pull/244",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/244",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/swesmith/profiles/base.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-12T17:45:58Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
+  "decision_note": "L2 source-read audit. The PR is for SWE-smith and changes RepoProfile._docker_ssh_arg to prefer --ssh default when SSH_AUTH_SOCK is set. Current main first returns --ssh default=<key_file> whenever a default private key exists, before checking whether the repo is private or whether ssh-agent is available. That matches the reported BuildKit parse failure for passphrase-protected keys. No existing swesmith artifact covers this ssh-agent/private-key root cause; PR is open, so resolution is fixing."
+}

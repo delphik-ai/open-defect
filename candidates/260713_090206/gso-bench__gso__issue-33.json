@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/gso-bench/gso/issues/33",
+  "repo": "gso-bench/gso",
+  "source_type": "github_issue",
+  "github_number": 33,
+  "title": "GSO abetlen__llama-cpp-python-218d361 reference patch fails functional equivalence check",
+  "body": "### Instance\n\n- Benchmark: GSO\n- Instance ID: `abetlen__llama-cpp-python-218d361`\n- Repo: `abetlen/llama-cpp-python`\n- API: `llama_cpp.gen_a`\n- Base commit: `9dc5e20fb6b0992b4eab6608b36548346ac3eb25`\n- Opt commit: `218d3610ae6e8f4849eb7b7661a0239ef3351aea`\n\n### Problem\n\nWhen replaying the dataset-provided `gt_diff` / reference patch, the patch applies successfully and the package installs successfully, but the benchmark does not produce a valid score because the functional equivalence check fails.\n\nThe failure is a deterministic completion mismatch for prompt 0.\n\n### Observed result\n\nThe evaluation reaches the patched test run, then fails in `check_equivalence`:\n\n```text\nAssertionError: Prompt 0 completions mismatch:\nReference:  I'm not here to waste anyone's time.\nCurrent:  I'm not going to be a jerk about it, but I do want you to know that I stand behind my work.\nRelevant traceback:\n\ntext\n\n\nTraceback (most recent call last):\n  File \"/gso_test_0.py\", line 391, in <module>\n    main()\n  File \"/gso_test_0.py\", line 384, in main\n    execution_time = run_test(args.eqcheck, args.reference, args.file_prefix)\n  File \"/gso_test_0.py\", line 368, in run_test\n    check_equivalence(ref_result, result)\n  File \"/gso_test_0.py\", line 350, in check_equivalence\n    raise AssertionError(...)\nAssertionError: Prompt 0 completions mismatch\n```\n\n### Expected behavior\nThe dataset-provided reference patch should either preserve the benchmark's functional output under the GSO equivalence check, or the task/equivalence oracle should be adjusted if exact string equality is too strict for this LLM generation workload.\n",
+  "comments": [
+    {
+      "url": "https://github.com/gso-bench/gso/issues/33#issuecomment-4950002511",
+      "user": "manishshettym",
+      "created_at": "2026-07-12T04:50:48Z",
+      "updated_at": "2026-07-12T04:50:48Z",
+      "body": "Thanks for the detailed report. This is expected behavior for tasks whose reference optimization is a submodule content change. Please check: #28 "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-14T02:57:09Z",
+  "github_updated_at": "2026-07-12T04:50:48Z",
+  "candidate_benchmark_names": [
+    "gso"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "gso",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "gso__gso-bench__gso__issue-33",
+  "task_names": [
+    "gso-abetlen--llama-cpp-python-218d361"
+  ],
+  "resolution": "found",
+  "summary": "Task gso-abetlen--llama-cpp-python-218d361 reaches the GSO functional-equivalence check but reports a deterministic completion mismatch for prompt 0; the follow-up maintainer comment points to submodule-content-change behavior rather than a merged fix.",
+  "decision_note": "L1 thread audit. Existing canonical gso__gso-bench__gso__issue-33 already covers this task/root cause. The updated thread adds maintainer context that the behavior is expected for tasks whose reference optimization is a submodule content change and points to #28; there is no merged fix evidence for this equivalence-mismatch artifact in the thread, so this candidate is duplicate/follow-up evidence and the resolution remains found.",
+  "checked_urls": [
+    "https://github.com/gso-bench/gso/issues/33",
+    "https://github.com/gso-bench/gso/issues/28"
+  ],
+  "reviewed_at": "2026-07-13T00:07:13.663Z"
+}

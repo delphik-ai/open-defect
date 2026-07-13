@@ -6,7 +6,7 @@
   "task_names": [
     "gso-uploadcare--pillow-simd-2818b90"
   ],
-  "resolution": "found",
+  "resolution": "fixed",
   "title": "Wikimedia thumbnail URL now returns HTTP 400",
   "summary": "Task gso-uploadcare--pillow-simd-2818b90 cannot be graded: gso_test_10.py requests a Wikimedia thumbnail URL that now returns HTTP 400, so the dataset reference patch cannot be evaluated reproducibly.",
   "defect_type_main": "environment",
@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-14T02:55:48Z",
-  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
   "decision_note": "Confirmed via thread read; reporter includes the HTTPError traceback. L2 (not re-run in Harbor)."
 }

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__issue-27",
+  "benchmark_name": "gso",
+  "scope": "task_specific",
+  "task_names": [
+    "gso-huggingface--tokenizers-fc76ad4"
+  ],
+  "resolution": "fixed",
+  "title": "BUG: huggingface__tokenizers-fc76ad4 Test Script Bug",
+  "summary": "Task gso-huggingface--tokenizers-fc76ad4 used a test fixture that wrote sentence entries containing internal newlines to mixed.txt, then read them back line-by-line, causing BASE and PATCH tokenizer training inputs to diverge and no-op/reference runs to fail equivalence.",
+  "defect_type_main": "oracle",
+  "defect_type_sub": "test_fixture_serialization",
+  "canonical_source_url": "https://github.com/gso-bench/gso/issues/27",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/issues/27",
+    "https://github.com/gso-bench/gso/issues/27#issuecomment-4069964836",
+    "https://github.com/gso-bench/gso/issues/27#issuecomment-4114369391"
+  ],
+  "audit_level": "L1",
+  "first_reported_at": "2026-03-13T02:12:16Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
+  "decision_note": "L1 thread audit. The issue names GSO instance huggingface__tokenizers-fc76ad4 and reports reference/no-op mismatch. Reporter narrows the root cause to mixed.txt serialization: entries containing internal newlines are written with newline separators then read as separate lines. Maintainer acknowledged, summarized the same root cause, stated the official dataset and Docker image were updated, and verified no-op BASE/PATCH phases now exit 0. No existing gso artifact covers this task/root cause, so this is a new task-specific fixed defect."
+}

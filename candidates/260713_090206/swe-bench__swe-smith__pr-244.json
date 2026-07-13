@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/244",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 244,
+  "title": "fix: docker build fails with passphrase-protected SSH keys — prefer ssh-agent",
+  "body": "## What\r\n\r\nIn `RepoProfile._docker_ssh_arg`, forward the ssh-agent (`--ssh default`) when `SSH_AUTH_SOCK` is set, instead of passing a private key file path to `docker build`.\r\n\r\n## Why\r\n\r\n`_docker_ssh_arg` currently passes the first key file found in `~/.ssh` as `--ssh default=<path>` whenever one exists — even for public repos that don't need SSH at all. If that key is **passphrase-protected** (a common and recommended setup), BuildKit rejects it at config-parse time and the build dies before doing anything:\r\n\r\n```\r\n$ python -m swesmith.build_repo.create_images -r MonkeyType\r\nError building swebench/swesmith.arm64.instagram_1776_monkeytype.70c3acf6: Command\r\n'docker build ... --ssh default=/Users/me/.ssh/id_ed25519 -t ...' returned non-zero exit status 1.\r\n```\r\n\r\n`build_image.log`:\r\n\r\n```\r\nERROR: failed to build: failed to convert agent config {default [/Users/me/.ssh/id_ed25519] false}:\r\nfailed to convert agent config for ID: \"default\":\r\nfailed to parse /Users/me/.ssh/id_ed25519: ssh: this private key is passphrase protected\r\n```\r\n\r\nBuildKit cannot prompt for a passphrase during a build. The standard mechanism for this case is `--ssh default` with no path, which forwards the host's ssh-agent — the agent serves keys already decrypted, so passphrase-protected keys work transparently, and private-repo clones inside the build keep working.\r\n\r\n## Behavior change\r\n\r\n- `SSH_AUTH_SOCK` set (typical interactive shells on macOS/Linux): forward the agent.\r\n- No agent: unchanged — fall back to a discovered key file, then to `--ssh default` for private repos, then to no `--ssh` arg.\r\n\r\n## Verification\r\n\r\nWith a passphrase-protected `~/.ssh/id_ed25519` (key loaded in the agent): `create_images -r MonkeyType` fails as above before the change, builds successfully after it.\r\n\r\nRelated: #242, #243 (other local env-construction/setup fixes).\r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swesmith/profiles/base.py b/swesmith/profiles/base.py\nindex b4a32134..3bb23882 100644\n--- a/swesmith/profiles/base.py\n+++ b/swesmith/profiles/base.py\n@@ -195,6 +195,10 @@ def _source_read_url(self) -> str:\n \n     @property\n     def _docker_ssh_arg(self) -> str:\n+        # Prefer the ssh-agent: BuildKit cannot read passphrase-protected key\n+        # files, and the agent serves those keys already decrypted.\n+        if os.getenv(\"SSH_AUTH_SOCK\"):\n+            return \"--ssh default\"\n         key_file = _find_ssh_key()\n         if key_file:\n             return f\"--ssh default={key_file}\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-12T17:45:58Z",
+  "github_updated_at": "2026-07-12T18:02:41Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swesmith",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swesmith__swe-bench__swe-smith__pr-244",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-smith RepoProfile._docker_ssh_arg passes a discovered private key path to docker build before considering ssh-agent forwarding, so passphrase-protected keys can make BuildKit fail before building even public repo images.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "ssh_key_handling",
+  "decision_note": "L2 source-read audit. The PR is for SWE-smith and changes RepoProfile._docker_ssh_arg to prefer --ssh default when SSH_AUTH_SOCK is set. Current main first returns --ssh default=<key_file> whenever a default private key exists, before checking whether the repo is private or whether ssh-agent is available. That matches the reported BuildKit parse failure for passphrase-protected keys. No existing swesmith artifact covers this ssh-agent/private-key root cause; PR is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/244",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/swesmith/profiles/base.py"
+  ],
+  "reviewed_at": "2026-07-13T00:07:13.663Z"
+}

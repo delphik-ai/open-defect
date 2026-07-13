@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/243",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 243,
+  "title": "fix: explicitly install pip when creating testbed env in install_repo.sh",
+  "body": "## What\n\nOne-line fix: explicitly request `pip` when creating the `testbed` env in `configs/install_repo.sh`:\n\n```diff\n-conda create -n testbed \"python=${PYTHON_VERSION}\" -yq\n+conda create -n testbed \"python=${PYTHON_VERSION}\" pip -yq\n```\n\n## Why\n\nOn conda installs where `add_pip_as_python_dependency` is `false` — which includes recent **miniforge** releases out of the box — `conda create -n testbed python=3.10` produces an environment **without pip**, and the very next line of the script fails:\n\n```\n++ python -m pip install -e .\n/Users/.../envs/testbed/bin/python: No module named pip\n> Installation procedure failed: Command '['bash', '-lc', '. .../configs/install_repo.sh']' returned non-zero exit status 1.\n```\n\nBackground: conda-forge `python` packages no longer carry `pip` as a run dependency; whether pip lands in a fresh env is now decided by the client-side `add_pip_as_python_dependency` setting, which defaults to `false` in newer miniforge/conda builds. The script currently only works for users whose local conda happens to have the flag on (e.g. Anaconda/miniconda defaults).\n\nListing `pip` explicitly is a no-op where the flag is on, and fixes env construction everywhere else.\n\n## Verification\n\nReproduced with miniforge 26.3.2 (flag off): script fails as above. With this change, `python -m swesmith.build_repo.try_install_py Instagram/MonkeyType configs/install_repo.sh --commit 70c3acf6` completes: repo installs, smoke test runs, env YAML is exported.\n\nRelated: #242 (another local env-construction fix in `setup.sh`).\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/configs/install_repo.sh b/configs/install_repo.sh\nindex 37636094..e2c087e6 100644\n--- a/configs/install_repo.sh\n+++ b/configs/install_repo.sh\n@@ -17,7 +17,7 @@ fi\n \n PYTHON_VERSION=\"${SWESMITH_PYTHON_VERSION:-3.10}\"\n echo \"> Creating conda env 'testbed' with python=${PYTHON_VERSION}\"\n-conda create -n testbed \"python=${PYTHON_VERSION}\" -yq\n+conda create -n testbed \"python=${PYTHON_VERSION}\" pip -yq\n conda activate testbed\n \n echo \"> Installing repo in editable mode\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-12T17:12:27Z",
+  "github_updated_at": "2026-07-12T17:14:07Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swesmith",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swesmith__swe-bench__swe-smith__pr-243",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-smith configs/install_repo.sh creates the testbed conda environment with only python, then immediately runs python -m pip; conda-forge/miniforge installs can omit pip unless it is requested explicitly.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "missing_pip_dependency",
+  "decision_note": "L2 source-read audit. The PR is for SWE-smith and changes configs/install_repo.sh from conda create -n testbed \"python=${PYTHON_VERSION}\" -yq to explicitly include pip. Current main still creates the testbed env with only python and then runs python -m pip install -e ., matching the reported failure mode on conda installs where pip is not auto-added. No existing swesmith artifact covers missing pip in install_repo.sh; PR is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/243",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/configs/install_repo.sh"
+  ],
+  "reviewed_at": "2026-07-13T00:07:13.663Z"
+}

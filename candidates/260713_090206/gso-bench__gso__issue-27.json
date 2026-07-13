@@ -1,0 +1,58 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/gso-bench/gso/issues/27",
+  "repo": "gso-bench/gso",
+  "source_type": "github_issue",
+  "github_number": 27,
+  "title": "BUG: huggingface__tokenizers-fc76ad4 Test Script Bug",
+  "body": "For the instance: huggingface__tokenizers-fc76ad4, running the provided test script with `--reference` and without produces an error saying results don't match.\n\nIt seems that when constructing mixed.txt and when reading it from disk on subsequent runs, the results you get are different, and therefore the UnigramTrainer will produce different results.\n\nI have seen this problem fail pretty consistently, even on an empty patch.",
+  "comments": [
+    {
+      "url": "https://github.com/gso-bench/gso/issues/27#issuecomment-4068396480",
+      "user": "manishshettym",
+      "created_at": "2026-03-16T15:12:20Z",
+      "updated_at": "2026-03-16T15:12:20Z",
+      "body": "Hi Ryan, interesting and thanks for flagging. Surprisingly haven't seen this before. I will allocate some time to debug this maybe this week. Just making sure, have you:\n1. used the latest gso codebase, dataset, and dockers?\n2. seen any other examples of this?\n\n"
+    },
+    {
+      "url": "https://github.com/gso-bench/gso/issues/27#issuecomment-4069964836",
+      "user": "ryandeng1",
+      "created_at": "2026-03-16T19:09:34Z",
+      "updated_at": "2026-03-16T19:09:34Z",
+      "body": "Hi Manish,\n\nJust now I pulled the latest docker image and essentially a no-op patch and it failed the test.\n\nI think there is a logic bug in the test script, mostly in the usage of `mixed.txt`. Let's say `mixed` is a list with one item: `[\"foo\\nbar\"]`. What `setup` writes to disk is `\"\\n\".join(mixed)` which is just `\"foo\\nbar\"`, but then what gets read back in on subsequent runs is [\"foo\", \"bar\"] since you are iterating over the lines in `mixed.txt`. So if any of the entries in the `mixed` list contain newlines, there should be issues.\n\nOne hack is to just re-read `mixed.txt` in the setup phase after you write it to disk with the code:\n```\nwith open(mixed_path, 'w', encoding='utf-8') as f:\n    f.write('\\n'.join(mixed))\nwith open(mixed_path, 'r', encoding='utf-8') as f:\n    mixed = [line.strip() for line in f if line.strip()]\n```\n\nto at least make it consistent. There are probably better ways like storing it in json instead of text, but what I put here seems to work.\n\nI think this is the only instance that I came across that had this issue, but I haven't been looking too carefully."
+    },
+    {
+      "url": "https://github.com/gso-bench/gso/issues/27#issuecomment-4114369391",
+      "user": "manishshettym",
+      "created_at": "2026-03-23T23:26:31Z",
+      "updated_at": "2026-03-23T23:26:31Z",
+      "body": "Hi @ryandeng1, again thanks for flagging this. I have taken a look and fixed this in the official dataset and docker images. Quick summary:\n\n**Root cause**: Sentences extracted from Project Gutenberg texts (War and Peace, Les Misérables) via re.split(r'(?<=[.?!])\\s+', text) contain internal newlines from paragraph wrapping. Writing with '\\n'.join(mixed) made these indistinguishable from the separator, so reading back line-by-line inflated 14,000 entries to ~40,700 fragments. The BASE phase (which creates mixed.txt) trained on the original 14K sentences, while the PATCH phase (which reads it back) trained on 40K fragments — producing completely different tokenizer outputs.\n\n**Fix**: Normalize sentences by replacing internal \\r\\n/\\n with spaces before writing to mixed.txt, ensuring one sentence per line. Applied to tests[0] and prob_script.\n\nVerified: No-op patch now passes both BASE (--reference) and PATCH (--eqcheck) phases with exit code 0.\n\n**Artifacts updated:**\n  - HuggingFace dataset gso-bench/gso — pushed\n  - Docker image slimshetty/gso:gso.eval.x86_64.huggingface__tokenizers-fc76ad4 — rebuilt and pushed"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-03-13T02:12:16Z",
+  "github_updated_at": "2026-07-12T04:43:33Z",
+  "candidate_benchmark_names": [
+    "gso"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "gso",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "gso__gso-bench__gso__issue-27",
+  "task_names": [
+    "gso-huggingface--tokenizers-fc76ad4"
+  ],
+  "resolution": "fixed",
+  "summary": "Task gso-huggingface--tokenizers-fc76ad4 used a test fixture that wrote sentence entries containing internal newlines to mixed.txt, then read them back line-by-line, causing BASE and PATCH tokenizer training inputs to diverge and no-op/reference runs to fail equivalence.",
+  "defect_type_main": "oracle",
+  "defect_type_sub": "test_fixture_serialization",
+  "decision_note": "L1 thread audit. The issue names GSO instance huggingface__tokenizers-fc76ad4 and reports reference/no-op mismatch. Reporter narrows the root cause to mixed.txt serialization: entries containing internal newlines are written with newline separators then read as separate lines. Maintainer acknowledged, summarized the same root cause, stated the official dataset and Docker image were updated, and verified no-op BASE/PATCH phases now exit 0. No existing gso artifact covers this task/root cause, so this is a new task-specific fixed defect.",
+  "checked_urls": [
+    "https://github.com/gso-bench/gso/issues/27",
+    "https://github.com/gso-bench/gso/issues/27#issuecomment-4069964836",
+    "https://github.com/gso-bench/gso/issues/27#issuecomment-4114369391"
+  ],
+  "reviewed_at": "2026-07-13T00:07:13.663Z"
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/43",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 43,
+  "title": "[MODEL] Add Sakana Fugu and Fugu Ultra to DeepSWE benchmark 😎",
+  "body": "Hi DeepSWE team,\n\nFirst of all, thanks for releasing DeepSWE. The benchmark looks very interesting, especially because it focuses on long-horizon software engineering tasks and tries to avoid the contamination issues seen in some public coding benchmarks.\n\nI would like to request evaluation support for the following Sakana AI models:\n\n* `sakana/fugu`\n* `sakana/fugu-ultra`\n\n**Why these models would be interesting to test**\n\nSakana Fugu is positioned as a multi-agent orchestration system for foundation models, with a strong focus on coding, mathematics, scientific reasoning, and complex multi-step problem solving. Since DeepSWE evaluates long-horizon software engineering tasks rather than short coding prompts, it seems like a good fit to measure how well Fugu’s orchestration approach performs in a realistic agentic coding benchmark.\n\n`fugu-ultra` would be especially interesting because it appears to be designed for deeper reasoning and more complex tasks, which matches the kind of problems DeepSWE is trying to evaluate.\n\n**Suggested benchmark goal**\n\nIt would be useful to compare:\n\n* `sakana/fugu` vs `sakana/fugu-ultra`\n* Fugu models vs other frontier coding agents already present on the leaderboard\n* Performance across the different DeepSWE languages: TypeScript, Go, Python, JavaScript, and Rust\n* Success rate on long-horizon tasks where planning, debugging, repository understanding, and test-driven iteration matter\n\n**Expected output**\n\nIdeally, the benchmark could report:\n\n* Pass rate / solve rate\n* Cost per solved task, if available\n* Runtime / latency\n* Failure modes, especially where the model fails due to planning, repo navigation, tool use, or patch quality\n* Any difference between standard Fugu and Fugu Ultra on the hardest tasks\n\nThanks again for the work on DeepSWE. I think adding Sakana Fugu and Fugu Ultra would make the leaderboard more useful, especially for comparing traditional coding agents with orchestration-based systems.\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/43#issuecomment-4795283501",
+      "user": "FrankieLiu04",
+      "created_at": "2026-06-25T02:25:17Z",
+      "updated_at": "2026-06-25T02:25:17Z",
+      "body": "Although Fugu looks good from the released benchmark, but i think there would be some big issue for it, especially the caching. Since the system is a multi-agent orchestration system, prompt caching becomes almost impossible and will require extreme hight price to complete a single task. Ideally this model or agent will locate at the left part of the graph."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/43#issuecomment-4951761789",
+      "user": "Atlantic83",
+      "created_at": "2026-07-12T15:40:17Z",
+      "updated_at": "2026-07-12T15:40:17Z",
+      "body": "I tried it on several examples separately - , no more than 50"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-22T18:39:00Z",
+  "github_updated_at": "2026-07-12T15:40:18Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a request to add Sakana Fugu/Fugu Ultra model evaluations to the DeepSWE leaderboard, not a claim that the current DeepSWE benchmark artifact, task set, harness, dataset, evaluator, or oracle is defective. It is outside the benchmark defect scope.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/43"
+  ],
+  "reviewed_at": "2026-07-13T00:07:13.663Z"
+}

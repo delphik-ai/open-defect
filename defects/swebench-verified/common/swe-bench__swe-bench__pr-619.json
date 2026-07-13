@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-619",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix(harness): reset new test files in the common eval-script builder (follow-up to #539)",
+  "summary": "The common SWE-bench eval-script builder resets only files returned by get_modified_files(test_patch), so new-file-only gold tests in non-Python paths are not removed before applying the official test patch and can be pre-planted by a submission.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "test_patch_reset",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/619",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/619",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/test_spec/utils.py",
+    "https://github.com/SWE-bench/SWE-bench/issues/538",
+    "https://github.com/SWE-bench/SWE-bench/pull/539"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-07-12T08:14:32Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
+  "decision_note": "L3 equivalent reproduction. Current swebench/harness/test_spec/utils.py on main builds reset_tests_command from get_modified_files(test_patch) and emits echo \"No test files to reset\" when that list is empty. Command run: python tmp/l3-260713_090206/repro_new_file_reset.py. A /dev/null-source new-file-only patch produced modified_files=[] and reset_command=echo \"No test files to reset\", matching PR #619. Existing issue #538 covers the Python builder/task-specific django__django-16877 case fixed by #539; this candidate is the remaining common builder path for JavaScript/Go/Java/etc., so it is a distinct benchmark-level SWE-bench Verified harness defect. PR #619 is open, so resolution is fixing."
+}

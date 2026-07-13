@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__pr-243",
+  "benchmark_name": "swesmith",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix: explicitly install pip when creating testbed env in install_repo.sh",
+  "summary": "SWE-smith configs/install_repo.sh creates the testbed conda environment with only python, then immediately runs python -m pip; conda-forge/miniforge installs can omit pip unless it is requested explicitly.",
+  "defect_type_main": "environment",
+  "defect_type_sub": "missing_pip_dependency",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/pull/243",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/243",
+    "https://github.com/SWE-bench/SWE-smith/blob/main/configs/install_repo.sh"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-12T17:12:27Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
+  "decision_note": "L2 source-read audit. The PR is for SWE-smith and changes configs/install_repo.sh from conda create -n testbed \"python=${PYTHON_VERSION}\" -yq to explicitly include pip. Current main still creates the testbed env with only python and then runs python -m pip install -e ., matching the reported failure mode on conda installs where pip is not auto-added. No existing swesmith artifact covers missing pip in install_repo.sh; PR is open, so resolution is fixing."
+}

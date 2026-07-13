@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/gso-bench/gso/issues/32",
+  "repo": "gso-bench/gso",
+  "source_type": "github_issue",
+  "github_number": 32,
+  "title": "GSO uploadcare__pillow-simd-2818b90 fails due to invalid Wikimedia thumbnail URL",
+  "body": "### Instance\n\n- Benchmark: GSO\n- Instance ID: `uploadcare__pillow-simd-2818b90`\n- Repo: `uploadcare/pillow-simd`\n- API: `ImagingFilter`\n- Base commit: `2818b908e851ff15e1b097132447d84503441471^`\n- Opt commit: `2818b908e851ff15e1b097132447d84503441471`\n\n### Problem\n\nWhen replaying the dataset-provided `gt_diff` / reference patch, the evaluation fails before a valid score is produced because a benchmark test requests a Wikimedia thumbnail URL that now returns HTTP 400.\n\n### Observed error\n\nThe failing test is `gso_test_10.py`:\n\n```text\nrequests.exceptions.HTTPError: 400 Client Error:\nUse thumbnail sizes listed on https://w.wiki/GHai for url:\nhttps://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fronalpstock_big.jpg/800px-Fronalpstock_big.jpg\nRelevant traceback:\n\ntext\n\n\n  File \"/gso_test_10.py\", line 249, in run_test\n    test_image = setup()\n  File \"/gso_test_10.py\", line 155, in setup\n    response.raise_for_status()\n  File \".../requests/models.py\", line 1026, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\n```\n### Expected behavior\nThe benchmark should use a valid pinned image fixture or a cached copy instead of relying on a live Wikimedia thumbnail URL whose accepted sizes may change.",
+  "comments": [
+    {
+      "url": "https://github.com/gso-bench/gso/issues/32#issuecomment-4950030724",
+      "user": "manishshettym",
+      "created_at": "2026-07-12T05:03:14Z",
+      "updated_at": "2026-07-12T05:03:14Z",
+      "body": "Fixed in new release: https://github.com/gso-bench/gso/releases/tag/v0.1.8"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-14T02:55:48Z",
+  "github_updated_at": "2026-07-12T05:03:14Z",
+  "candidate_benchmark_names": [
+    "gso"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "gso",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "gso__gso-bench__gso__issue-32",
+  "task_names": [
+    "gso-uploadcare--pillow-simd-2818b90"
+  ],
+  "resolution": "fixed",
+  "summary": "Task gso-uploadcare--pillow-simd-2818b90 cannot be graded because gso_test_10.py requests a Wikimedia thumbnail URL that now returns HTTP 400; maintainer later marked it fixed in v0.1.8.",
+  "decision_note": "L1 thread audit. This is the same root cause as existing canonical gso__gso-bench__gso__issue-32. The new maintainer comment says it was fixed in release v0.1.8, so this candidate updates duplicate/follow-up evidence and resolution to fixed.",
+  "checked_urls": [
+    "https://github.com/gso-bench/gso/issues/32",
+    "https://github.com/gso-bench/gso/issues/32#issuecomment-4950030724",
+    "https://github.com/gso-bench/gso/releases/tag/v0.1.8"
+  ],
+  "reviewed_at": "2026-07-13T00:07:13.663Z"
+}

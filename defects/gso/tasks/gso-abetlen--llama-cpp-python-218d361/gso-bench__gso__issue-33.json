@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-14T02:57:09Z",
-  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
   "decision_note": "Confirmed via thread read; reporter includes the AssertionError. L2 (not re-run in Harbor)."
 }

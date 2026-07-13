@@ -6,7 +6,7 @@
   "task_names": [
     "gso-uploadcare--pillow-simd-0514e20"
   ],
-  "resolution": "found",
+  "resolution": "fixed",
   "title": "External image URL no longer returns a valid image",
   "summary": "Task gso-uploadcare--pillow-simd-0514e20 cannot be graded: gso_test_11.py downloads an external image whose URL no longer returns a valid image (PIL.UnidentifiedImageError), so even the dataset reference patch fails before a score is produced.",
   "defect_type_main": "environment",
@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-14T02:54:01Z",
-  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
   "decision_note": "Confirmed via thread read; reporter includes the full failing traceback. L2 (not re-run in Harbor)."
 }
