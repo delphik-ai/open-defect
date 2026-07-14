@@ -1,0 +1,27 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiberCoders/FeatureBench/issues/5",
+  "repo": "libercoders/featurebench",
+  "source_type": "github_issue",
+  "github_number": 5,
+  "title": "Interface Description defects in lite split — gold tests exercise APIs absent from the Problem Statement (L1 + L2)",
+  "body": "---\n\nThanks for FeatureBench — the test-driven, feature-level design is a genuinely useful benchmark. While evaluating the **lite split** we found what look like systematic defects in the Interface Description / Problem Statement generation: several gold tests exercise APIs that are **absent from — or contradict — the provided Problem Statement**, so no implementer (agent or human) can produce them from the spec alone.\n\n**Dataset revision:** `LiberCoders/FeatureBench` @ SHA `e99d6ef` (lastModified 2026-03-27) — the current `main`.\n\n## Affected instances\n\n### L2 — `pydata__xarray.97f3a746.test_treenode.aa8ba777.lv2` (27+ tests)\n- **`NamedNode` class missing** — gold tests import `agent_code.NamedNode` (concrete class: `name` ctor param, `__repr__`, `__str__`, `children` kwarg), but the Interface Description lists only `TreeNode` and the `AnyNamedNode` Protocol. `NamedNode` appears only in the narrative, never in the spec. (15 tests)\n- **`TreeNode(children={...})` ctor not specified** — spec shows only the zero-arg `TreeNode()`; the `children` kwarg is never defined. (8 tests)\n- **`TreeNode.__delitem__` not specified** — gold uses `del john[\"Mary\"]`; spec describes deletion only via `ChildrenProxy`. (1 test)\n- **Root path value wrong** — spec states 3× that the root path is `\"\"` (with example `(\"\", root_node)`); gold expects `\".\"`. Following the spec faithfully yields the wrong value. (cascaded)\n- **`depth` self-contradictory** — one paragraph: depth measured *from this node* (leaf→0); Notes 3 lines later: *from the root* (leaf→tree depth). Gold follows the Notes. (cascaded)\n- **Error-message strings not specified** — gold uses `pytest.raises(match=...)` for specific substrings; spec gives only exception types. (3 tests)\n\n### L1 — `mlflow__mlflow.93dab383.test_judge_tool_search_traces.cad8fc4b.lv1` (7+ tests)\nThe masking patch **fully deletes transitive dependencies that the Interface Description never covers**, yet the gold test exercises them: `TraceData.request` / `.response` / `_get_root_span` (trace_data.py), `Span.parent_id` (span.py), `AssessmentSource.__init__` / `_parse` / `__str__` (assessment_source.py). The spec scopes the work to 5 functions across 3 other files; there is no documented path from \"implement `invoke()` in `search_traces.py`\" to \"also restore `TraceData.response`.\" (The gold test file itself is deleted by masking, and the repo's 536 test files / 30–60 min suite runtime make discovery infeasible within the 1-hour budget.)\n\n### L1 — `huggingface__transformers.e2e8dbed.test_serve.4e7860c7.lv1` (3 tests)\n- **`system_fingerprint`** — gold asserts it in `MANDATORY_FIELDS` for every `ChatCompletionChunk`; absent from `build_chat_completion_chunk`'s signature, docstring, and notes. (1 test, 4 sub-cases)\n- **`GET /health`** — gold starts a server and expects `200 {\"status\":\"ok\"}`; the spec explicitly enumerates the 4 endpoints the server \"exposes\" and `/health` is not among them. (1 test)\n- **VLM image key `\"url\"`** — gold expects `{\"type\":\"image\",\"url\":filepath}`; the spec says only \"with appropriate data\" and never fixes the key name. (1 test)\n\n## Root cause\nThe Interface Description generation doesn't capture the full **dependency closure** of the tested functions:\n- **L2**: concrete classes used by gold tests are dropped from the spec (e.g. `NamedNode`).\n- **L1**: the masking patch operates on transitive deps the spec doesn't cover.\n\n## Suggested fixes\n1. L2: ensure every public class/function in gold-test imports appears in the Interface Description.\n2. L1: limit masking to functions listed in the spec, **or** expand the spec to cover everything masking deletes.\n3. Add a contradiction check for self-opposing docstrings (the `depth` case).\n4. Cross-check concrete values in the spec vs gold assertions (the root-path `\"\"` vs `\".\"` case).\n\nHappy to share the full per-defect report (with test names and line references) and additional L1 instances showing the same transitive-masking pattern.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T21:04:24Z",
+  "github_updated_at": "2026-07-13T21:04:24Z",
+  "candidate_benchmark_names": [
+    "featurebench",
+    "featurebench-lite",
+    "featurebench-lite-modal",
+    "featurebench-modal"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/LiberCoders/FeatureBench/issues/5"
+  ],
+  "decision_note": "L1 thread audit. The issue names FeatureBench lite split tasks and describes interface-description/gold-test mismatches, but it is a high-fanout third-party claim without maintainer acknowledgement, merged fix, upstream test, or source diff. Runbook rules require L3 reproduction for this class before confirmation; no L3 reproduction was performed in this run.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

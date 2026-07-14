@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__issue-82",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "dart-style-haskell"
+  ],
+  "resolution": "found",
+  "title": "dart-style-haskell: instruction.md references `/app/reference/test/` but this directory is not shipped in the environment",
+  "summary": "Frontier-SWE task dart-style-haskell tells agents to test against /app/reference/test/, but the shipped reference directory contains no test subdirectory.",
+  "defect_type_main": "task_packaging",
+  "defect_type_sub": "missing_visible_reference_tests",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/82",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/82",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/tasks/dart-style-haskell/instruction.md",
+    "https://github.com/Proximal-Labs/frontier-swe/tree/main/tasks/dart-style-haskell/environment/reference"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-13T08:53:18Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "decision_note": "L2 source-read audit. The current task instruction.md explicitly says to test the formatter against /app/reference/test/, while GitHub contents for tasks/dart-style-haskell/environment/reference list only deps, lib, and pubspec.yaml. This is task-specific to dart-style-haskell and no existing frontier-swe artifact covers this root cause."
+}

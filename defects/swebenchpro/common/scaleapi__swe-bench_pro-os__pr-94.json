@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__pr-94",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Remove Future Git History from Dockerfiles",
+  "summary": "SWE-bench Pro instance Dockerfiles retain future git history after checkout, allowing agents to mine future commits, branches, or tags for reference fixes.",
+  "defect_type_main": "contamination",
+  "defect_type_sub": "future_git_history",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/pull/94",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/94",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/93",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/tree/main/dockerfiles/instance_dockerfile"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-05T23:18:32Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "decision_note": "L2 PR diff/source audit. PR #94 is explicitly tied to issue #93 and states all SWE-bench Pro images retain future git history, enabling reward hacks from future main commits, feature branches, and tags. The diff adds cleanup commands to hundreds of instance Dockerfiles and reworks the harness to fetch gold tests without relying on image git history. A maintainer comment thanks the reporter and says the team is actively reviewing the fix, providing social proof. No existing swebenchpro artifact covers this git-history leakage root cause; PR is open, so resolution is fixing."
+}

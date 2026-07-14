@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__pr-81",
+  "benchmark_name": "frontier-swe",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "fix: use logs/unified.jsonl for token usage",
+  "summary": "Frontier-SWE Grok adapter omitted token usage because headless Grok JSON lacks counts; the merged PR aggregates usage from logs/unified.jsonl into result and ATIF metrics.",
+  "defect_type_main": "metrics",
+  "defect_type_sub": "missing_token_usage",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/pull/81",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/pull/81",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/harbor_ext/grok_cli.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-13T07:59:38Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "decision_note": "L2 PR diff/source audit. The merged PR states Grok headless output omitted token counts, so Harbor scoring result.json and ATIF final_metrics missed usage. The diff adds aggregation from grok-home/logs/unified.jsonl and writes input/cache/output token totals. No existing frontier-swe artifact covers this metrics root cause; PR #81 merged on 2026-07-13, so resolution is fixed."
+}

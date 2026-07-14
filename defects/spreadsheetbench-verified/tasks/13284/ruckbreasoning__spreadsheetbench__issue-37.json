@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-37",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "13284"
+  ],
+  "resolution": "found",
+  "title": "Task 13284: init/golden mismatch (Streets End filled with 9999) + instruction contradicts golden",
+  "summary": "SpreadsheetBench task 13284 golden fills missing Streets End values before lookup, while the init leaves them blank and the instruction says to only use populated Start/End rows.",
+  "defect_type_main": "task_spec",
+  "defect_type_sub": "init_golden_mismatch",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/37",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/37",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-13T07:10:28Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "decision_note": "L2 source-read audit. Current verified archive contains task 13284 with instruction requiring both Start and End populated. Workbook inspection shows initial.xlsx Streets rows 5, 8, 10, 12, 15, and 18 have blank End cells, while golden.xlsx fills those End cells with 9999 or single-value sentinels that produce the scored Base!E results. This is a current task-specific init/golden/instruction mismatch with no existing spreadsheetbench-verified artifact for the root cause."
+}

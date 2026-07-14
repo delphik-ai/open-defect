@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/46",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 46,
+  "title": "Add DeepReinforce Ornith-1.0 to the DeepSWE leaderboard",
+  "body": "## Summary\n\nPlease consider benchmarking DeepReinforce's Ornith-1.0 models and adding the results to the public DeepSWE leaderboard:\n\nhttps://deepswe.datacurve.ai/\n\nOrnith-1.0 is a newly released open-source model family specialized for agentic coding. The Hugging Face collection includes 9B, 35B, and 397B checkpoints, plus GGUF and FP8 variants:\n\n- https://huggingface.co/collections/deepreinforce-ai/ornith-10\n- https://huggingface.co/deepreinforce-ai/Ornith-1.0-9B\n- https://huggingface.co/deepreinforce-ai/Ornith-1.0-35B\n- https://huggingface.co/deepreinforce-ai/Ornith-1.0-397B\n\n## Why this would be useful\n\nDeepSWE measures coding agents on original, long-horizon software engineering tasks and publishes results at:\n\nhttps://deepswe.datacurve.ai/\n\nThat makes it a useful independent benchmark for Ornith-1.0. The Ornith model cards describe the models as optimized specifically for agentic coding, including tool-calling and coding-agent usage. They also report strong results on related benchmarks such as SWE-bench Verified, SWE-bench Pro, Terminal-Bench 2.1, NL2Repo, OpenClaw/ClawEval, SWE Atlas, and similar agentic coding evaluations.\n\nA DeepSWE leaderboard run would help clarify whether Ornith's reported gains transfer to DeepSWE's original, contamination-resistant, long-horizon repository tasks.\n\n## Suggested models to test\n\nA practical test order might be:\n\n1. `deepreinforce-ai/Ornith-1.0-9B`\n   - Most accessible starting point.\n   - The model card describes it as a dense ~9B model, around 19 GB bf16.\n   - GGUF variant is also available: `deepreinforce-ai/Ornith-1.0-9B-GGUF`.\n\n2. `deepreinforce-ai/Ornith-1.0-35B`\n   - More capable open model while still much easier to test than the 397B variant.\n   - FP8 and GGUF variants are available:\n     - `deepreinforce-ai/Ornith-1.0-35B-FP8`\n     - `deepreinforce-ai/Ornith-1.0-35B-GGUF`\n\n3. `deepreinforce-ai/Ornith-1.0-397B`\n   - Highest-end checkpoint, if infrastructure permits.\n   - FP8 variant is available: `deepreinforce-ai/Ornith-1.0-397B-FP8`.\n\n## Serving notes from the model cards\n\nThe model cards describe Ornith as usable through OpenAI-compatible endpoints via vLLM or SGLang, which may make it a reasonable fit for DeepSWE's existing agent/evaluation setup.\n\nFor vLLM, the cards recommend using:\n\n- `--reasoning-parser qwen3`\n- `--enable-auto-tool-choice`\n- `--tool-call-parser qwen3_xml`\n- `--trust-remote-code`\n- long context, e.g. `--max-model-len 262144`\n\nFor SGLang, they recommend:\n\n- `--reasoning-parser qwen3`\n- `--tool-call-parser qwen3_coder`\n- long context, e.g. `--context-length 262144`\n\nThe cards also mention recommended sampling parameters of `temperature=0.6`, `top_p=0.95`, and `top_k=20`, while their reported benchmark setup often uses `temperature=1.0` for reproduction.\n\n## Proposed DeepSWE run\n\nIt would be helpful to see one or more of the following added to the public leaderboard:\n\n- A full DeepSWE run for `Ornith-1.0-9B`.\n- A follow-up run for `Ornith-1.0-35B` or `Ornith-1.0-35B-FP8` if the 9B result is promising.\n- A 397B or 397B-FP8 run if infrastructure permits.\n- At minimum, a small smoke run or partial run to confirm compatibility with the DeepSWE evaluation harness.\n\n## Expected value\n\nAdding Ornith-1.0 would put a new open-source, agentic-coding-specialized model family alongside the current DeepSWE leaderboard models. It would also help the community compare Ornith against frontier closed models on DeepSWE's original long-horizon tasks, rather than relying only on SWE-bench-style or terminal-benchmark results.\n\nThanks for considering it.\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/46#issuecomment-4962978681",
+      "user": "coygeek",
+      "created_at": "2026-07-13T21:43:32Z",
+      "updated_at": "2026-07-13T21:43:32Z",
+      "body": " Ornith-1.0 model family has crossed 3M downloads on huggingface in two weeks of release."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-27T21:28:00Z",
+  "github_updated_at": "2026-07-13T21:43:32Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/46"
+  ],
+  "decision_note": "L1 thread audit. The issue requests adding Ornith-1.0 model results to the DeepSWE leaderboard. It does not identify a current benchmark artifact or evaluator defect.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

@@ -14,10 +14,11 @@
     "https://github.com/SWE-bench/SWE-bench/pull/608",
     "https://github.com/SWE-bench/SWE-bench/issues/601",
     "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/grading.py",
-    "https://github.com/SWE-bench/SWE-bench/pull/608#issuecomment-4950494143"
+    "https://github.com/SWE-bench/SWE-bench/pull/608#issuecomment-4950494143",
+    "https://github.com/SWE-bench/SWE-bench/pull/620"
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-06-24T15:56:59Z",
-  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
   "decision_note": "L3 equivalent reproduction. Current swebench/harness/grading.py on main still selects content.split(START_TEST_OUTPUT)[1].split(END_TEST_OUTPUT)[0] and has no test-exit-code guard. Command run: python tmp/l3-260713_090206/repro_stdout_marker.py. The forged log with an early START/END block and later real Test Exit Code: 1 produced selected_test_content=\"1 passed in 0.01s\" and contains_real_exit_code_check=False, matching PR #608 / issue #601. The open PR adds exit-code/tampering checks but has not merged, and a PR comment notes the current head still misses duplicate-marker variants, so resolution is fixing. Benchmark attribution is swebench-verified because this is the shared SWE-bench harness used by the current SWE-bench Verified artifact; no existing swebench-verified artifact covers stdout-forging grading."
 }

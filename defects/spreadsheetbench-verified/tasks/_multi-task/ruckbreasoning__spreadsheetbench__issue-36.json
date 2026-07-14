@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-36",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "60-7",
+    "283-32",
+    "41-47"
+  ],
+  "resolution": "found",
+  "title": "Malformed answer_position / answer_sheet in tasks 41-47, 60-7, 283-32",
+  "summary": "SpreadsheetBench Verified tasks 60-7, 283-32, and 41-47 contain malformed answer_sheet or answer_position metadata that makes the scorer target invalid sheet/range strings.",
+  "defect_type_main": "metadata",
+  "defect_type_sub": "malformed_answer_range",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/36",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/36",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-13T06:21:48Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "decision_note": "L2 source-read audit. Current verified dataset.json matches the reported malformed metadata: 60-7 has one range A3:E11 but answer_sheet lists four sheet names; 283-32 has answer_position Sheet3'!A:G without the leading quote while answer_sheet quotes both sheets; 41-47 has the first OUT CAS range missing its leading quote. These are current task-specific metadata defects and no existing spreadsheetbench-verified artifact covers this root cause set."
+}

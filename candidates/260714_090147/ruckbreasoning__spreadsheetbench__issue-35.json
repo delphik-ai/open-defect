@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/35",
+  "repo": "ruckbreasoning/spreadsheetbench",
+  "source_type": "github_issue",
+  "github_number": 35,
+  "title": "Incorrect question/answer for 12864 (prompt asks for dates + column C, golden has neither)",
+  "body": "**Task:** `12864` (Verified-400)\r\n\r\nThe prompt is inconsistent with the golden answer in two ways:\r\n\r\n1. **\"dates\" that don't exist.** The prompt says *\"retrieve corresponding\r\n   **dates** from Column B on sheet 2 by matching Column D on sheet 1.\"* But the\r\n   value actually returned (Sheet1 Column B, header **\"Deal Name\"**) is\r\n   `Monthly` / `Daily` / `Quarterly` — these are reporting frequencies, and\r\n   there are **no dates anywhere** in the workbook. The word \"dates\" mislabels\r\n   the lookup target and makes the task ambiguous.\r\n\r\n2. **Column C is requested but absent from the golden.** The prompt says *\"I\r\n   require the associated data from **both Column B and C** on sheet 2.\"* The\r\n   golden's `Sheet2` has **no Column C at all** (not even a header) — it fills\r\n   only `Sheet2!B2:B12` with\r\n   `=INDEX(Sheet1!B$2:B$17, MATCH($A2, Sheet1!$D$2:$D$17, 0))`.\r\n\r\n`answer_position` is `'Sheet2'!B2:B12`, so scoring only checks Column B — that\r\npart is self-consistent and scoreable. But the prompt's references to \"dates\"\r\nand \"Column C\" match neither the data nor the golden, which makes the intended\r\ntask ambiguous.\r\n\r\n**Suggested fix:**\r\n- Replace **\"dates\"** with **\"deal name\"** (the actual header of the looked-up\r\n  column, `Sheet1!B1` / `Sheet2!B1`), so the prompt matches the workbook's own\r\n  labels and the golden. (If a value-accurate term is preferred, the values are\r\n  reporting frequencies, e.g. \"reporting frequency\".)\r\n- Either **drop the \"Column C\"** clause, or **extend the golden** to include the\r\n  Column C the prompt asks for.\r\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T04:38:57Z",
+  "github_updated_at": "2026-07-13T04:38:57Z",
+  "candidate_benchmark_names": [
+    "spreadsheetbench-verified"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "linked_defect_id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-35",
+  "task_names": [
+    "12864"
+  ],
+  "resolution": "found",
+  "summary": "SpreadsheetBench task 12864 asks for dates and Column C data, but the workbook/golden only produce Sheet2 column B deal-name values and Sheet2 has no Column C.",
+  "defect_type_main": "task_spec",
+  "defect_type_sub": "prompt_golden_mismatch",
+  "checked_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/35",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "decision_note": "L2 source-read audit. Current data/spreadsheetbench_verified_400.tar.gz dataset.json contains task 12864 with instruction asking for corresponding dates and associated data from both Column B and C on sheet 2, but answer_position is only Sheet2!B2:B12. The current init/golden workbooks show Sheet1 column B is Deal Name with Monthly/Daily/Quarterly values, Sheet2 column B is deal name formulas, and Sheet2 column C is empty. No existing spreadsheetbench-verified artifact covers this task/root cause.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

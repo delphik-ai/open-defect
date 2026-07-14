@@ -1,0 +1,36 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/82",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 82,
+  "title": "dart-style-haskell: instruction.md references `/app/reference/test/` but this directory is not shipped in the environment",
+  "body": "### Task\n`tasks/dart-style-haskell`\n\n### Description\n\n`instruction.md` for this task tells the agent to validate its formatter against visible reference tests:\n\n> Test your formatter against the reference files in `/app/reference/test/` as you go.\n\nHowever, tracing how `/app/reference/` is populated in the built image, only `deps/`, `lib/`, and `pubspec.yaml` are copied in — there is no `test/` subdirectory:\n\n- `environment/Dockerfile` only does `COPY reference/ /app/reference/`.\n- The repo directory `tasks/dart-style-haskell/environment/reference/` currently contains only `deps/`, `lib/`, `pubspec.yaml` — no `test/` folder.\n\nThis means the guidance in `instruction.md` points agents to a path that does not exist in the actual task environment, so agents cannot use it to self-test the short/tall style pipelines during development (they only have the hidden `tests/golden.tar.gz` for final scoring, no visible dart_style test corpus to iterate against).\n\n### Expected behavior\nEither:\n1. Ship the upstream `dart_style` `test/` directory (e.g. `short/`, `tall/` golden samples from https://github.com/dart-lang/dart_style/tree/main/test) under `environment/reference/test/` so the instruction is accurate, or\n2. Update `instruction.md` to remove/correct the reference to `/app/reference/test/` if visible tests are intentionally not provided.\n\n### Steps to reproduce\n1. Build the `dart-style-haskell` task image per `environment/Dockerfile`.\n2. Inside the container, run `ls /app/reference/` — only `deps/`, `lib/`, `pubspec.yaml` are present.\n3. Compare against `instruction.md`, which references `/app/reference/test/`.\n\n### Additional context\nConfirmed against the current `main` branch as of 2026-07-13; the `environment/reference/` directory has not changed since commit `4bddd4d` (Mar 31, 2026).",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T08:53:18Z",
+  "github_updated_at": "2026-07-13T08:53:18Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "benchmark_name": "frontier-swe",
+  "scope": "task_specific",
+  "linked_defect_id": "frontier-swe__proximal-labs__frontier-swe__issue-82",
+  "task_names": [
+    "dart-style-haskell"
+  ],
+  "resolution": "found",
+  "summary": "Frontier-SWE task dart-style-haskell tells agents to test against /app/reference/test/, but the shipped reference directory contains no test subdirectory.",
+  "defect_type_main": "task_packaging",
+  "defect_type_sub": "missing_visible_reference_tests",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/82",
+    "https://github.com/Proximal-Labs/frontier-swe/blob/main/tasks/dart-style-haskell/instruction.md",
+    "https://github.com/Proximal-Labs/frontier-swe/tree/main/tasks/dart-style-haskell/environment/reference"
+  ],
+  "decision_note": "L2 source-read audit. The current task instruction.md explicitly says to test the formatter against /app/reference/test/, while GitHub contents for tasks/dart-style-haskell/environment/reference list only deps, lib, and pubspec.yaml. This is task-specific to dart-style-haskell and no existing frontier-swe artifact covers this root cause.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

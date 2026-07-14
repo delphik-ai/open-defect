@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-35",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "12864"
+  ],
+  "resolution": "found",
+  "title": "Incorrect question/answer for 12864 (prompt asks for dates + column C, golden has neither)",
+  "summary": "SpreadsheetBench task 12864 asks for dates and Column C data, but the workbook/golden only produce Sheet2 column B deal-name values and Sheet2 has no Column C.",
+  "defect_type_main": "task_spec",
+  "defect_type_sub": "prompt_golden_mismatch",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/35",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/35",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-13T04:38:57Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "decision_note": "L2 source-read audit. Current data/spreadsheetbench_verified_400.tar.gz dataset.json contains task 12864 with instruction asking for corresponding dates and associated data from both Column B and C on sheet 2, but answer_position is only Sheet2!B2:B12. The current init/golden workbooks show Sheet1 column B is Deal Name with Monthly/Daily/Quarterly values, Sheet2 column B is deal name formulas, and Sheet2 column C is empty. No existing spreadsheetbench-verified artifact covers this task/root cause."
+}

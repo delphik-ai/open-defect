@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/37",
+  "repo": "ruckbreasoning/spreadsheetbench",
+  "source_type": "github_issue",
+  "github_number": 37,
+  "title": "Task 13284: init/golden mismatch (Streets End filled with 9999) + instruction contradicts golden",
+  "body": "**Task:** `13284` (Verified-400)\r\n\r\nThe task is unsolvable as shipped: the golden answer depends on reference data that is **not in the init file** and is **not in the scored range**, and the instruction contradicts what the golden actually does.\r\n\r\n### 1. The golden was computed against a modified `Streets` sheet not given to the agent\r\n\r\n`Base!E` looks up `Streets!F` where `Base!D` falls within `[Streets!C, Streets!D]`. In the **init**, several `Streets!D` (End) cells are **blank**. In the **golden**, those same cells have been **filled in** (highlighted) with values that do not exist in the init:\r\n\r\n| Streets row | street | Start (C) | End (D) init → golden | note (col G) |\r\n|---|---|---|---|---|\r\n| 5  | Avenida Braz De Pina      | 1358 | *(blank)* → **9999** | |\r\n| 8  | Avenida Meriti            | 920  | *(blank)* → **920**  | Conjunto Habitacional |\r\n| 10 | Avenida Meriti            | 2301 | *(blank)* → **9999** | |\r\n| 12 | Avenida Oliveira Belo     | 701  | *(blank)* → **9999** | |\r\n| 15 | Avenida Vicente De Carvalho | 1179 | *(blank)* → **1179** | Conjunto Habitacional |\r\n| 18 | Avenida Vicente De Carvalho | 1501 | *(blank)* → **9999** | |\r\n\r\nSo the open-ended \"last segment\" of each street was given an End sentinel (`9999`, i.e. \"no upper limit\"), and two rows were closed to a single number. The golden's `Base!E` values (`E5=Sonia`, `E8=Mariza`, `E10=Marcy`, `E13=Carlos`, `E16=Fontana`) **only exist because of these fills**.\r\n\r\nBut `answer_position` is `'Base'!E2:E26` — only column E is scored. The agent receives the init (blank End cells), is never told to fill `Streets!D`, and could not derive the `9999` sentinel (nor the two `Conjunto Habitacional` single-value fills). It therefore cannot reproduce the golden's E values.\r\n\r\n### 2. The instruction contradicts the golden\r\n\r\n> \"Only consider rows where both the Start (column C) and End (column D) values are populated.\"\r\n\r\nThe golden does the **opposite**: it makes the blank End cells populated (fills `9999`) and includes those open-ended segments. Read against the init (where those cells are blank), the sentence tells a solver to **exclude** exactly the rows the golden **includes**. Any faithful implementation returns `\"\"` for the five queries that only match an open-ended segment (Base rows for house numbers 2354, 920, 820, 1179, 1691) and is scored wrong on `E5, E8, E10, E13, E16`.\r\n\r\n### Reproduction\r\n\r\nAny correct `INDEX/MATCH` (or `XLOOKUP`) that honors \"both Start and End populated\" over the **init** data returns `\"\"` at `Base!E5/E8/E10/E13/E16`, while the golden has `Sonia/Mariza/Marcy/Carlos/Fontana`. 5-cell mismatch → fail, deterministically.\r\n\r\n### Suggested fix\r\n\r\nEither ship the filled `Streets!D` values (the `9999` sentinels + the two single-value rows) **in the init**, or reword the instruction so it matches the golden (treat a blank End as open-ended; only exclude rows where **both** Start and End are blank). As written, `init`, `golden`, and the instruction are mutually inconsistent.\r\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T07:10:28Z",
+  "github_updated_at": "2026-07-13T07:10:28Z",
+  "candidate_benchmark_names": [
+    "spreadsheetbench-verified"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "linked_defect_id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-37",
+  "task_names": [
+    "13284"
+  ],
+  "resolution": "found",
+  "summary": "SpreadsheetBench task 13284 golden fills missing Streets End values before lookup, while the init leaves them blank and the instruction says to only use populated Start/End rows.",
+  "defect_type_main": "task_spec",
+  "defect_type_sub": "init_golden_mismatch",
+  "checked_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/37",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "decision_note": "L2 source-read audit. Current verified archive contains task 13284 with instruction requiring both Start and End populated. Workbook inspection shows initial.xlsx Streets rows 5, 8, 10, 12, 15, and 18 have blank End cells, while golden.xlsx fills those End cells with 9999 or single-value sentinels that produce the scored Base!E results. This is a current task-specific init/golden/instruction mismatch with no existing spreadsheetbench-verified artifact for the root cause.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

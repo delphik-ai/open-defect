@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/56",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 56,
+  "title": "GPT 5.6 Cache Write Price Likely Not Included",
+  "body": "Looking through the individual tasks and calculating the price manually, it seems like the cache write pricing isn't included into the price. For example this [task](https://deepswe.datacurve.ai/data/v1.1/trials/happy-dom-abort-pending-body-rea__ZzkQGcc):\n\n<img width=\"1209\" height=\"953\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6a33049d-e2bf-4df0-8541-75e20e68fd7d\" />\n\n70060 output tokens (0.07006 * $15) = $1.0509\n11831808 cached tokens (11.831808 * 0.25) = $2.957952\n12582990 input tokens of which (12582990−11831808) 751182 aren't cached (0.751182 * 2.5) = 1.877955\n\n---\n\n**Total:** 1.877955 + 2.957952 + 1.0509 = $5.886807\n\nThis matches the $5.89 on the site, but it doesn't account for cache writes. With cache writing, if I understood correctly, the price will also have to include:\n\nBetween non-zero and 751182 cache write tokens, pushing the total up to ~$6.36\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T11:38:10Z",
+  "github_updated_at": "2026-07-13T11:38:10Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/56"
+  ],
+  "decision_note": "L1 thread audit. The issue plausibly claims DeepSWE leaderboard pricing excludes cache-write cost for one displayed task, but the GitHub thread provides only a screenshot/arithmetic and no maintainer acknowledgement, source diff, or repository artifact showing the pricing implementation. Current benchmark defect status could not be verified from public GitHub evidence in this run.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

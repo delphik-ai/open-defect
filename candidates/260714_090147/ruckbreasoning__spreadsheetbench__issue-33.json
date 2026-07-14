@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/33",
+  "repo": "ruckbreasoning/spreadsheetbench",
+  "source_type": "github_issue",
+  "github_number": 33,
+  "title": "Bug: answer_position.split(',') breaks evaluation for sheet names containing commas",
+  "body": "### Description\n\nIn `evaluation/evaluation.py`, the `compare_workbooks()` function splits the `answer_position` string on commas to handle multiple sheet/range pairs:\n\n```python\n# Line 169\nsheet_cell_ranges = answer_position.split(',')\n```\n\nThis assumes commas only appear as delimiters between separate sheet/range entries. However, Excel sheet names can legally contain commas (e.g. `b2b, sez, de`), and when they do, the `answer_position` wraps them in single quotes per Excel convention:\n\n```\n'b2b, sez, de'!A5:V10\n```\n\nThe naive `.split(',')` does not respect the quoting and tears the string apart incorrectly.\n\n### Steps to reproduce\n\n1. Run evaluation on task `130-9`, which has:\n   - `answer_position`: `'b2b, sez, de'!A5:V10`\n   - `answer_sheet`: `b2b, sez, de`\n2. Provide a correct output file (verified by cell-by-cell comparison against the golden file — all values, formats, and structure match perfectly).\n3. Evaluation returns `False` (score 0).\n\n### Root cause\n\n`\"'b2b, sez, de'!A5:V10\".split(',')` produces:\n\n```python\n[\"'b2b\", \" sez\", \" de'!A5:V10\"]\n```\n\nThe loop then processes the third fragment `\" de'!A5:V10\"`, splits on `!`, strips quotes, and looks for a sheet named `de` — which does not exist. Result: `False`.\n\nThe first two fragments (`'b2b` and ` sez`) have no `!`, so they fall through to the else branch on line 177 and get treated as cell ranges on the first sheet, which is also incorrect.\n\n### Suggested fix\n\nReplace line 169 with a regex that respects single-quoted sheet names:\n\n```python\nimport re\nsheet_cell_ranges = re.findall(r\"(?:'[^']*'![^,]+|[^,]+)\", answer_position)\n```\n\nThis matches either a single-quoted name followed by `!` and a range, or a plain comma-free token — keeping `'b2b, sez, de'!A5:V10` intact as a single entry.\n\n### Impact\n\nAll tasks whose sheet names contain commas will silently score 0 even when the model output is fully correct. This affects the reliability of benchmark results without any visible error or warning.",
+  "comments": [
+    {
+      "url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/33#issuecomment-4955022044",
+      "user": "swenyang",
+      "created_at": "2026-07-13T06:21:47Z",
+      "updated_at": "2026-07-13T06:21:47Z",
+      "body": "Confirming this on `130-9` — a correct output is scored 0 purely because of the naive `.split(',')`.\r\n\r\nWhile working around it we hit **two adjacent parsing gaps in the same `compare_workbooks` / `parse_cell_range` path**, which might be worth fixing together:\r\n\r\n1. **Whitespace after a range separator.** When `answer_position` lists multiple ranges with a space after the comma, the fragments keep a leading space and mis-parse. Example task **`45944`**:\r\n   ```\r\n   answer_position = \"G4:G6, G11:G13, G20:G22\"\r\n   \"G4:G6, G11:G13, G20:G22\".split(',') -> ['G4:G6', ' G11:G13', ' G20:G22']\r\n   ```\r\n   `' G11:G13'` then parses to a bogus column (the leading space is not stripped), so `ws[...]` returns a row tuple and scoring throws `'tuple' object has no attribute 'value'`.\r\n\r\n2. **Whole-column / whole-row ranges.** `parse_cell_range()` does `int(start_row)`, which raises on an open range that has no row number. Example task **`283-32`**:\r\n   ```\r\n   answer_position = \"'Sheet3'!A:G,'Sheet4'!A:G\"\r\n   parse_cell_range(\"A:G\") -> int('')  # ValueError: invalid literal for int() with base 10: ''\r\n   ```\r\n\r\nA robust fix for all three (this issue's comma-in-sheet case + the two above) is to split on commas only *outside* single quotes, strip whitespace/quotes per part, and expand open ranges (`A:G`, `3:11`) to the sheet's used extent before comparing.\r\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-04-02T23:49:04Z",
+  "github_updated_at": "2026-07-13T06:21:47Z",
+  "candidate_benchmark_names": [
+    "spreadsheetbench-verified"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "linked_defect_id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-33",
+  "task_names": [
+    "130-9"
+  ],
+  "resolution": "found",
+  "summary": "SpreadsheetBench evaluator splits answer_position on commas, which breaks legal Excel sheet names containing commas.",
+  "checked_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/33",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "decision_note": "L2 source-read audit. The current verified archive dataset.json still has task 130-9 answer_position set to a single-quoted sheet name containing commas. This is the same root cause as the existing canonical spreadsheetbench-verified issue #33 artifact, so this run records updated duplicate/follow-up evidence rather than a new defect.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}

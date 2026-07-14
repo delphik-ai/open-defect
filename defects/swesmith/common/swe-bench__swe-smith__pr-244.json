@@ -16,6 +16,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-07-12T17:45:58Z",
-  "last_reviewed_at": "2026-07-13T00:07:13.663Z",
+  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
   "decision_note": "L2 source-read audit. The PR is for SWE-smith and changes RepoProfile._docker_ssh_arg to prefer --ssh default when SSH_AUTH_SOCK is set. Current main first returns --ssh default=<key_file> whenever a default private key exists, before checking whether the repo is private or whether ssh-agent is available. That matches the reported BuildKit parse failure for passphrase-protected keys. No existing swesmith artifact covers this ssh-agent/private-key root cause; PR is open, so resolution is fixing."
 }

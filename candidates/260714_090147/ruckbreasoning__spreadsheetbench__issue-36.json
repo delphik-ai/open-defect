@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/36",
+  "repo": "ruckbreasoning/spreadsheetbench",
+  "source_type": "github_issue",
+  "github_number": 36,
+  "title": "Malformed answer_position / answer_sheet in tasks 41-47, 60-7, 283-32",
+  "body": "Three Verified-400 tasks have malformed `answer_position` / `answer_sheet` **values** in `dataset.json` (independent of the parser bug in #33 — these are wrong data, not just naive parsing). Each makes the golden fail its own self-comparison, so the task is effectively unscoreable.\r\n\r\n### `60-7` — `answer_sheet` lists every mentioned sheet instead of the destination\r\n\r\n```\r\nanswer_position = \"A3:E11\"\r\nanswer_sheet    = \"Consolidated Tracker,Existing Task,Additions,Retired\"\r\n```\r\n\r\nThe prompt says the answer is written to the **Consolidated Tracker** tab starting at A3 (`Consolidated Tracker = Existing Task + Additions - Retired`). Only that one sheet is the answer location, but `answer_sheet` lists all four sheets named in the task. Combined with the single range `A3:E11`, the harness builds an invalid `Consolidated Tracker,Existing Task,Additions,Retired!A3:E11`.\r\n\r\n**Fix:** `answer_sheet = \"Consolidated Tracker\"`.\r\n\r\n### `283-32` — `answer_position` missing the leading quote on the first sheet\r\n\r\n```\r\nanswer_position = \"Sheet3'!A:G,'Sheet4'!A:G\"     (Sheet3 has a trailing quote but no leading quote)\r\nanswer_sheet    = \"'Sheet3','Sheet4'\"\r\n```\r\n\r\n**Fix:** `answer_position = \"'Sheet3'!A:G,'Sheet4'!A:G\"`. (This task also needs the whole-column-range handling noted in #33.)\r\n\r\n### `41-47` — same missing-leading-quote defect\r\n\r\n```\r\nanswer_position = \"OUT CAS'!A2:C1529,'OUT CAS'!E2:G586,'OUT CAS'!I2:K13,'OUT CAS'!L2:O8\"\r\n```\r\n\r\nThe first `OUT CAS'` is missing its leading quote (the other three are correctly `'OUT CAS'`). It happens to still evaluate today because the naive per-part quote stripping tolerates it, but it is malformed and breaks any quote-aware parser.\r\n\r\n**Fix:** `answer_position = \"'OUT CAS'!A2:C1529,'OUT CAS'!E2:G586,'OUT CAS'!I2:K13,'OUT CAS'!L2:O8\"`.\r\n\r\n---\r\n\r\nAll three golden files are otherwise correct — only the `answer_position` / `answer_sheet` metadata is wrong. After the fixes, each golden passes self-comparison and the tasks become scoreable.\r\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T06:21:48Z",
+  "github_updated_at": "2026-07-13T06:21:48Z",
+  "candidate_benchmark_names": [
+    "spreadsheetbench-verified"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "task_specific",
+  "linked_defect_id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-36",
+  "task_names": [
+    "60-7",
+    "283-32",
+    "41-47"
+  ],
+  "resolution": "found",
+  "summary": "SpreadsheetBench Verified tasks 60-7, 283-32, and 41-47 contain malformed answer_sheet or answer_position metadata that makes the scorer target invalid sheet/range strings.",
+  "defect_type_main": "metadata",
+  "defect_type_sub": "malformed_answer_range",
+  "checked_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/36",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz"
+  ],
+  "decision_note": "L2 source-read audit. Current verified dataset.json matches the reported malformed metadata: 60-7 has one range A3:E11 but answer_sheet lists four sheet names; 283-32 has answer_position Sheet3'!A:G without the leading quote while answer_sheet quotes both sheets; 41-47 has the first OUT CAS range missing its leading quote. These are current task-specific metadata defects and no existing spreadsheetbench-verified artifact covers this root cause set.",
+  "reviewed_at": "2026-07-14T00:07:18.273Z"
+}
