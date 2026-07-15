@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/pull/42",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_pr",
+  "github_number": 42,
+  "title": "Include environment stopping condition system prompt, capture reasoning for potential logging",
+  "body": "#41 ",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/bash_agent.py b/bash_agent.py\nindex 4d5c302b..f2306483 100644\n--- a/bash_agent.py\n+++ b/bash_agent.py\n@@ -103,6 +103,7 @@ def __init__(\n         self._timestamped_markers: List[Tuple[float, str]] = []  # For asciinema debugging\n         self._total_input_tokens = 0\n         self._total_output_tokens = 0\n+        self._last_reasoning = None\n         \n         # Initialize OpenAI client (api_key=\"EMPTY\" is a placeholder for vLLM-compatible APIs)\n         self.client = OpenAI(\n@@ -129,11 +130,12 @@ def perform_task(\n         \"\"\"\n         # Reset conversation state for new task\n         self._conversation_history = [\n-            {\"role\": \"system\", \"content\": \"You are an expert technical assistant with access to bash tools. You can execute bash commands to help solve complex technical problems. When you need to run commands, use the bash tool with the following format:\\n\\n<tool_call>\\n{\\\"name\\\": \\\"bash\\\", \\\"arguments\\\": {\\\"command\\\": \\\"your_command_here\\\"}}\\n</tool_call>\\n\\nAlways think through problems step by step, analyze the situation, and then execute appropriate commands to solve the task. You can run one command at a time and analyze its output to make informed decisions.\"},\n+            {\"role\": \"system\", \"content\": \"You are an expert technical assistant with access to bash tools. You can execute bash commands to help solve complex technical problems. When you need to run commands, use the bash tool with the following format:\\n\\n<tool_call>\\n{\\\"name\\\": \\\"bash\\\", \\\"arguments\\\": {\\\"command\\\": \\\"your_command_here\\\"}}\\n</tool_call>\\n\\nAlways think through problems step by step, analyze the situation, and then execute appropriate commands to solve the task. You can run one command at a time and analyze its output to make informed decisions. When the task is complete, include the phrase 'Task is complete.' in your response and do not make any further tool calls.\"},\n         ]\n         self._timestamped_markers = []\n         self._total_input_tokens = 0\n         self._total_output_tokens = 0\n+        self._last_reasoning = None\n         self.has_tool_call = True  # Track if agent is proposing tool calls\n         \n         try:\n@@ -378,6 +380,9 @@ def _query_qwen_model(\n             # Save response to file if logging enabled\n             if response_path is not None:\n                 response_path.write_text(response)\n+                _r = getattr(self, \"_last_reasoning\", None)\n+                if _r:\n+                    (response_path.parent / \"reasoning.txt\").write_text(_r)\n                 \n             return response\n             \n@@ -433,10 +438,11 @@ def _call_qwen_model(self, prompt: str, is_observation: bool) -> str:\n             # vLLM and some Qwen deployments put content in reasoning_content instead of content\n             message = chat_response.choices[0].message\n             response_content = message.content\n+            self._last_reasoning = getattr(message, 'reasoning_content', None) or getattr(message, 'reasoning', None)\n             \n             # Fallback to reasoning_content if content is None (vLLM format)\n-            if response_content is None and hasattr(message, 'reasoning_content'):\n-                response_content = message.reasoning_content\n+            if response_content is None:\n+                response_content = self._last_reasoning\n                 self._logger.debug(f\"Using reasoning_content: {response_content}\")\n             else:\n                 self._logger.debug(f\"Using content: {response_content}\")\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-14T20:17:56Z",
+  "github_updated_at": "2026-07-14T20:17:56Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "termigen-environments",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "termigen-environments__ucsb-mlsec__terminal-bench-env__issue-41",
+  "task_names": [],
+  "resolution": "fixing",
+  "reviewed_at": "2026-07-15T00:06:38Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/pull/42",
+    "https://github.com/ucsb-mlsec/terminal-bench-env/pull/42/files",
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/41"
+  ],
+  "summary": "PR #42 is fix evidence for issue #41, adding an explicit task-completion instruction to the shared terminal-bench-env system prompt.",
+  "decision_note": "L2 duplicate audit. PR #42 explicitly references issue #41 and its diff changes bash_agent.py to tell the model to include Task is complete. and stop making tool calls when done. This is the same root cause canonicalized by termigen-environments__ucsb-mlsec__terminal-bench-env__issue-41, so the PR is duplicate/fix evidence with resolution fixing while it remains open."
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ucsb-mlsec/terminal-bench-env/issues/41",
+  "repo": "ucsb-mlsec/terminal-bench-env",
+  "source_type": "github_issue",
+  "github_number": 41,
+  "title": "The system prompt does not clearly tell the model how to finish",
+  "body": "There are circumstances where the model will successfully pass a test but still get a timeout. The culprit seems to be that the model is never explicitly told how to finish. The current logic for the environment to finish involves looking for a key phrase or looking for the absence of a tool call. Both of these things should be included in the system prompt.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-14T20:15:16Z",
+  "github_updated_at": "2026-07-14T20:15:16Z",
+  "candidate_benchmark_names": [
+    "termigen-environments"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "termigen-environments",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "termigen-environments__ucsb-mlsec__terminal-bench-env__issue-41",
+  "task_names": [],
+  "resolution": "fixing",
+  "reviewed_at": "2026-07-15T00:06:38Z",
+  "checked_urls": [
+    "https://github.com/ucsb-mlsec/terminal-bench-env/issues/41",
+    "https://github.com/ucsb-mlsec/terminal-bench-env/pull/42",
+    "https://github.com/ucsb-mlsec/terminal-bench-env/pull/42/files"
+  ],
+  "summary": "terminal-bench-env did not clearly tell the model how to finish, so successful task completion could still time out; open PR #42 adds an explicit completion phrase to the system prompt.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "agent_termination_prompt",
+  "decision_note": "L2 source-read audit. The issue reports that the environment can time out after a successful test because the system prompt does not tell the model how to finish. PR #42 links #41 and changes bash_agent.py to add the completion phrase Task is complete. to the system prompt, which is maintainer-authored fix evidence. No existing termigen-environments artifact covers this root cause; the fix PR is open, so resolution is fixing."
+}

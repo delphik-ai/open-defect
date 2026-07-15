@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-620",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix(grading): detect stdout spoofing via test exit code (model can forge PASSED lines)",
+  "summary": "SWE-bench Python grading trusts parsed pytest stdout and does not record the test command exit code, so forged PASSED lines can make an unfixed patch resolve as RESOLVED_FULL.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "grading_spoofing",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/620",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/620",
+    "https://github.com/SWE-bench/SWE-bench/pull/620/files",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/log_parsers/python.py",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/grading.py",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/run_evaluation.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-07-13T23:29:49Z",
+  "last_reviewed_at": "2026-07-15T00:06:38Z",
+  "decision_note": "L3 equivalent reproduction. Source inspection of current main shows run_evaluation.py calls exec_run_with_timeout and writes only stdout, grading.py parses the log without an exit-code check, and log_parsers/python.py records any line starting with PASSED as a passing test. Reproduction command run: python3 - <<PY with the current parse_log_pytest/get_eval_tests_report/get_resolution_status logic and spoofed stdout containing PASSED tests/test_bug.py::test_regression plus PASSED tests/test_existing.py::test_still_ok. Observed status_map marked both tests PASSED and resolution=RESOLVED_FULL, matching PR #620. The PR is open, so resolution is fixing. This is attributed to swebench-verified following existing SWE-bench harness-level artifacts; no existing canonical covers stdout test-runner capture spoofing."
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-tw__scaleapi__swe-atlas__pr-8",
+  "benchmark_name": "scale-ai__swe-atlas-tw",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Add TW Modal keepalive run flag",
+  "summary": "SWE-Atlas TW Modal run configs lacked the keepalive environment kwarg needed for containers to stay alive under the latest Harbor runtime; merged PR #8 adds it to all three TW run scripts.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "runtime_config",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/8",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/8",
+    "https://github.com/scaleapi/SWE-Atlas/pull/8/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-14T19:01:35Z",
+  "last_reviewed_at": "2026-07-15T00:06:38Z",
+  "decision_note": "L2 source-read audit. The PR title/body identify the Test Writing variant and state that the Modal keepalive environment kwarg is needed so containers stay alive under the latest Harbor runtime. The diff changes only run_config/tw/*.sh, and GitHub PR metadata shows maintainer-authored PR #8 merged on 2026-07-14. Existing scale-ai__swe-atlas-tw issue #4 artifact covers TW oracle/data-image defects, not Modal run-config lifetime."
+}

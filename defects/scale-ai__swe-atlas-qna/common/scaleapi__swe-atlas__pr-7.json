@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-qna__scaleapi__swe-atlas__pr-7",
+  "benchmark_name": "scale-ai__swe-atlas-qna",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Add QnA Modal keepalive run flag",
+  "summary": "SWE-Atlas QnA Modal run configs lacked the keepalive environment kwarg needed for containers to stay alive under the latest Harbor runtime; merged PR #7 adds it to all three QnA run scripts.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "runtime_config",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/7",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/7",
+    "https://github.com/scaleapi/SWE-Atlas/pull/7/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-14T16:39:00Z",
+  "last_reviewed_at": "2026-07-15T00:06:38Z",
+  "decision_note": "L2 source-read audit. The PR title/body identify the QnA variant and state that the Modal keepalive environment kwarg is needed so containers stay alive under the latest Harbor runtime. The diff changes only run_config/qa/*.sh, and GitHub PR metadata shows maintainer-authored PR #7 merged on 2026-07-14. Existing scale-ai__swe-atlas-qna artifact PR #6 covers gold answer verifier failures, not Modal run-config lifetime."
+}

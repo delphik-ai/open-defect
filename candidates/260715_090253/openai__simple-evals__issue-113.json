@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/113",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 113,
+  "title": "Related eval: REFUTE scientific claim dataset (HF + Inspect)",
+  "body": "Adjacent to simple-evals spirit:\n\n- Dataset: https://huggingface.co/datasets/BGPT-OFFICIAL/refute\n- Inspect: https://github.com/connerlambden/refute-inspect\n\nClose if simple-evals stays OpenAI-internal suite only.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-14T22:47:20Z",
+  "github_updated_at": "2026-07-14T22:47:20Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-07-15T00:06:38Z",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/113"
+  ],
+  "decision_note": "L1 thread audit. The issue proposes an adjacent REFUTE scientific-claim dataset and Inspect implementation, and explicitly says to close it if simple-evals stays an OpenAI-internal suite. It does not report a SimpleQA task, dataset, harness, scorer, or evaluator defect."
+}
