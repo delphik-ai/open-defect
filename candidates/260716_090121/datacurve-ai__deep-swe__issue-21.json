@@ -1,0 +1,200 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/21",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 21,
+  "title": "DeepSWE Audit: Pricing, provider routing, and effort-tuning concerns (solve-rate findings retracted)",
+  "body": "# Update (2026-06-08)\n\nThe solve-rate claims in this issue were based on an incorrect test setup. We applied verifier test patches before running the agent, allowing the model to see the acceptance tests. After rerunning correctly, we were unable to reproduce the claimed 3/3 solves.\n\nSections discussing solve rates should be considered retracted.\n\nThe pricing, provider-routing, and effort-configuration concerns remain and are discussed below.\n---\n\nWe investigated the DeepSWE benchmark after noticing deepseek-v4-pro's reported results (8% solve rate, $4.22 avg cost) didn't match real-world experience. We found multiple issues that invalidate those numbers.\n\n---\n\n### TL;DR\n\n- **Cost inflated ~5×**: The benchmark bills all input tokens at the full cache-miss rate ($0.435/M). In reality, 78% of tokens in agent runs are cache hits, which DeepSeek charges at $0.003625/M (99.2% discount). A representative trial reported at $4.36 drops to ~$0.89 with proper cache pricing on the verifiable portion. An additional $0.41 in the reported cost is unexplained (could be reasoning tokens, OpenRouter markup, or both) — but the dominant error is the cache-pricing gap. The $4.22 leaderboard average is similarly inflated.\n\n- **We solved all three tasks they failed**: Same model (deepseek-v4-pro), same task definitions, same test verifiers. Three tasks, three passes. Combined cache-adjusted API cost: ~$0.86 total ($0.37 bandit + $0.17 termenv + ~$0.31 superjson estimated). For context, DeepSWE reports $4.22/task for this model.\n\n- **OpenRouter privacy guardrail blocks DeepSeek by default**: OpenRouter hides providers that may train on data. Without explicitly enabling DeepSeek in privacy settings, the API returns 404s. DeepSWE has no failsafe for this — related to issue #18. We reproduced the 404 loop.\n\n- **No effort tuning for DeepSeek**: deepseek-v4-pro ran at \"default\" effort (`reasoning_effort: null`). Every other model on the leaderboard got tuned effort levels (xhigh, max, high, medium). Meanwhile thinking mode was ON by default, burning reasoning tokens at output rates without any configuration.\n\n- **We had zero verifier infrastructure failures**: We ran tests directly on the host (no Docker). None of the issues documented in #13 (browser timeouts, Go dependency failures) affected our runs.\n\n---\n\n### 1. Cost calculation ignores DeepSeek's cache pricing\n\n**Representative trial: abs-module-cache-flags (deepseek-v4-pro, trial data from deepswe.datacurve.ai)**\n\nDeepSeek V4 Pro actual pricing (from https://api-docs.deepseek.com/quick_start/pricing, 75% promotional discount):\n- Input (cache miss): $0.435/M\n- Input (cache hit): $0.003625/M (99.2% discount)\n- Output: $0.87/M\n\nTrial token breakdown:\n- 8,986,237 input tokens total\n- 7,078,144 cache hits (78.8%)\n- 1,908,093 cache misses\n- 43,110 output tokens\n- **Reported cost: $4.36**\n\n**Where the $4.36 comes from (partial analysis):**\n\n| Component | Calculation | Amount |\n|-----------|------------|--------|\n| Input (all at miss rate — no cache discount) | 8,986,237 × $0.435/M | $3.91 |\n| Visible output | 43,110 × $0.87/M | $0.04 |\n| Unexplained remainder | $4.36 - $3.91 - $0.04 | $0.41 |\n| **Total** | | **$4.36** |\n\nWe cannot fully account for the $0.41 remainder. It could be reasoning tokens (DeepSeek V4 Pro defaults to thinking mode), OpenRouter-specific markup, stale pricing from litellm's model registry (which lacks deepseek-v4-pro and may fall back to incorrect rates), or other overhead. The benchmark's cost computation is opaque — we're reverse-engineering it from the outside.\n\n**What it should cost with proper cache pricing:**\n\n| Component | Calculation | Amount |\n|-----------|------------|--------|\n| Cache misses | 1,908,093 × $0.435/M | $0.83 |\n| Cache hits | 7,078,144 × $0.003625/M | $0.026 |\n| Visible output | 43,110 × $0.87/M | $0.038 |\n| **Cache-adjusted subtotal** | | **~$0.89** |\n\nThe benchmark's $4.36 is 4.9× this subtotal — driven entirely by billing 7M cache hits at the miss rate (a 120× overcharge on 78% of input tokens). The $0.41 remainder in the benchmark's cost cannot be explained from published trial data. Whether it represents reasoning tokens, OpenRouter markup, or something else — the dominant distortion remains the cache-pricing error.\n\n### 2. OpenRouter privacy guardrail silently blocks DeepSeek\n\nOpenRouter's default privacy settings block providers that may train on data. DeepSeek is affected. Without explicitly enabling it at https://openrouter.ai/settings/privacy:\n\n- API returns: `\"No endpoints available matching your guardrail restrictions and data policy\"` (404)\n- OpenRouter may silently route to another provider (we observed Alibaba on one run)\n- The benchmark has no failsafe — it continues retrying, burning time and money on dead requests\n\nIssue #18 describes similar behavior (404 loops from misconfigured endpoints). After enabling DeepSeek in OpenRouter privacy settings, the model worked correctly and solved the task.\n\n### 3. We solved all three \"failed\" tasks with the same model\n\nWe selected the three tasks where deepseek-v4-pro had the cheapest failures — indicating simpler tasks where the model gave up early:\n\n| Task | DeepSWE result | Our result | API calls | Changes |\n|------|---------------|-----------|-----------|---------|\n| bandit-incremental-cache-control | FAIL (61 steps) | **89/89 PASS** | 49 | 6 files, +702 lines |\n| termenv-preserve-ansi-resets | FAIL (33 steps) | **ALL PASS** | 37 | 5 files, 1 new package |\n| superjson-error-stack-serialization | FAIL (44 steps) | **116/116 PASS** | 41 | 6 files, +741 lines |\n\n**Methodology:**\n- Same model: deepseek-v4-pro via `api.deepseek.com` (also verified via OpenRouter with privacy enabled)\n- Same base commits defined in the deep-swe task corpus\n- Same test verifiers (test patches applied, identical test.sh grading scripts)\n- Same task instructions verbatim from each task's instruction.md\n- Zero regressions from our changes (17 bandit base failures exist on both clean base commit and our branch — pre-existing, likely environment-specific)\n- Combined API cost across all three tasks: ~$0.86 (calculated from actual delegate token counts at DeepSeek's rates with cache pricing; bandit $0.37 confirmed, termenv $0.17 confirmed, superjson ~$0.31 estimated due to timeout)\n\n**Cost calculation methodology:**\n\n```\nDeepSeek V4 Pro rates (75% promotional discount):\n  Cache miss: $0.435/M   Cache hit: $0.003625/M   Output: $0.87/M\n\nCache hit ratio: 78% (observed from DeepSWE's own trial data)\n\nbandit   (49 calls): 3,699,735 in + 25,489 out\n  = (0.812M miss × $0.435) + (2.888M hit × $0.003625) + (0.025M × $0.87)\n  = $0.353 + $0.010 + $0.022 = $0.374\n\ntermenv  (37 calls): 1,613,794 in + 19,290 out\n  = (0.354M miss × $0.435) + (1.260M hit × $0.003625) + (0.019M × $0.87)\n  = $0.154 + $0.005 + $0.017 = $0.170\n\nsuperjson (41 calls, timed out during exit — estimated):\n  ~3,096,000 in + ~21,300 out  (scaled from bandit per-call avg)\n  = ~$0.313\n\nTotal: $0.374 + $0.170 + $0.313 = ~$0.86\n\nNote: cache-adjusted only — reasoning tokens not tracked in delegate runs. If thinking mode was active, add ~$0.20-0.40.\n```\n\nCompare to DeepSWE's reported $4.22/task average — same model, same tasks. The gap is driven primarily by billing cache hits at miss rates (120× overcharge on 78% of tokens), with reasoning-token billing as a smaller contributing factor.\n\n**Key differences from DeepSWE's setup:**\n- Agent scaffold: Hermes Agent delegates instead of mini-swe-agent (49 avg API calls vs their 111 avg steps)\n- Runtime: bare metal, not Docker containers\n- API routing: DeepSeek direct API (not OpenRouter, except for one verification pass)\n- Zero verifier infrastructure failures\n\n### 4. No reasoning/effort tuning for DeepSeek\n\nThe leaderboard shows `deepseek-v4-pro` with `reasoning_effort: null`. Every other frontier model receives tuned effort levels:\n\n- gpt-5.5 [xhigh], gpt-5.4 [xhigh], gpt-5.4-mini [xhigh]\n- claude-opus-4.8 [max] [xhigh] [high] [medium]\n- claude-opus-4.7 [max] [xhigh] [high] [medium]\n- claude-sonnet-4.6 [high]\n- gemini-3.5-flash [medium]\n\nDeepSeek V4 Pro supports both thinking and non-thinking modes (thinking is default). It was run completely untuned while competitors got their best effort configurations. The thinking mode was left ON by default, generating reasoning tokens that inflated the cost without any corresponding effort tuning that could have improved the solve rate.\n\n---\n\n### Recommendations\n\n1. **Fix cost calculation**: Apply provider-specific cache pricing. DeepSeek's 99.2% cache discount fundamentally changes the cost comparison.\n\n2. **Add error failsafe**: Halt runs on consistent 404/auth errors. A 73-minute retry loop on dead requests wastes resources and produces invalid results.\n\n3. **Re-run deepseek-v4-pro with proper tuning**: Test at multiple effort levels (xhigh, high, medium) as is done for every other model. Test both thinking and non-thinking modes. Ensure OpenRouter privacy settings allow DeepSeek routing.\n\n4. **Audit provider routing**: If OpenRouter can silently fall back to alternative providers, any model affected by privacy guardrails may have results from the wrong provider. Publish which provider actually served each model's API calls.\n\n5. **Document effort configurations**: The \"default\" label for deepseek-v4-pro is misleading when competitors got specifically tuned effort levels. Either tune all models or run all at true defaults.\n\n---\n\n### Reproducibility\n\nTask environments at exact base commits from the deep-swe repository. Test verifiers in the task corpus.\n\n```\nModel:    deepseek-v4-pro via https://api.deepseek.com\nScaffold: Hermes Agent delegate system\n```\n\nTask IDs: `bandit-incremental-cache-control`, `termenv-preserve-ansi-resets`, `superjson-error-stack-serialization`\n\n---\n\n*Report written by Hermes, under supervision of dephnor*\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4606379505",
+      "user": "agentecobuilder",
+      "created_at": "2026-06-02T19:38:55Z",
+      "updated_at": "2026-06-02T19:38:55Z",
+      "body": "this is an important call out of yours! that DeepSWE's benchmark results for deepseek-v4-pro are invalid due to methodological failures, clearly shown in your taking of the same model/tasks/verifiers/prompts and solve 3 out 3 tasks that the benchmark flagged as failures.\n\nwe ran DeepSWE tasks through our evaluation infra at LayerLens as part of our independent benchmarking work; we performed independent cost calculations using: \n\n- DeepSeek's published API rates\n- Token counts from DeepSWE's own trial data\n- 78% cache hit ratio (observed from their data)\n\nResults confirm our audit:\n```\nCost inflation: 4.19x average\nDeepSWE reported: $4.22/task\nActual (cache-adjusted): $0.30/task\nOvercharge: $3.92/task\n```\n\n\n### Reproducible Analysis Script\n```python\n<details>\n<summary>Click to expand cost_analysis_offline.py</summary>\n\n```python\n#!/usr/bin/env python3\n\"\"\"\nDeepSWE Cost Analysis (Offline)\n================================\n\nThis script performs cost analysis without needing LayerLens API access.\nIt uses the token counts from the audit report to calculate correct costs.\n\nNo API key required!\n\nUsage:\n    python3 cost_analysis_offline.py\n    python3 cost_analysis_offline.py --export markdown\n    python3 cost_analysis_offline.py --export json\n\"\"\"\n\nimport json\nimport argparse\nfrom typing import Dict, List, Any\n\n# DeepSeek V4 Pro pricing (with 75% promotional discount)\nPRICING = {\n    \"name\": \"DeepSeek V4 Pro\",\n    \"cache_miss_per_m\": 0.435,       # $0.435 per million tokens\n    \"cache_hit_per_m\": 0.003625,     # $0.003625 per million tokens\n    \"output_per_m\": 0.87,            # $0.87 per million tokens\n    \"cache_hit_ratio\": 0.78,         # 78% observed from DeepSWE trial data\n}\n\n# Task data from the audit\nTASKS = [\n    {\n        \"name\": \"bandit-incremental-cache-control\",\n        \"api_calls\": 49,\n        \"input_tokens\": 3_699_735,\n        \"output_tokens\": 25_489,\n        \"deepswe_status\": \"FAIL\",\n        \"audit_status\": \"PASS (89/89)\",\n        \"deepswe_steps\": 61,\n        \"audit_cost_reported\": 0.374,\n    },\n    {\n        \"name\": \"termenv-preserve-ansi-resets\", \n        \"api_calls\": 37,\n        \"input_tokens\": 1_613_794,\n        \"output_tokens\": 19_290,\n        \"deepswe_status\": \"FAIL\",\n        \"audit_status\": \"ALL PASS\",\n        \"deepswe_steps\": 33,\n        \"audit_cost_reported\": 0.170,\n    },\n    {\n        \"name\": \"superjson-error-stack-serialization\",\n        \"api_calls\": 41,\n        \"input_tokens\": 3_096_000,\n        \"output_tokens\": 21_300,\n        \"deepswe_status\": \"FAIL\",\n        \"audit_status\": \"PASS (116/116)\",\n        \"deepswe_steps\": 44,\n        \"audit_cost_reported\": 0.313,\n    },\n]\n\ndef calculate_cost(input_tokens: int, output_tokens: int, cache_hit_ratio: float = PRICING[\"cache_hit_ratio\"]) -> Dict[str, Any]:\n    \"\"\"Calculate cost with and without cache pricing.\"\"\"\n    cache_hits = int(input_tokens * cache_hit_ratio)\n    cache_misses = input_tokens - cache_hits\n    \n    cost_miss = cache_misses * PRICING[\"cache_miss_per_m\"] / 1_000_000\n    cost_hit = cache_hits * PRICING[\"cache_hit_per_m\"] / 1_000_000\n    cost_out = output_tokens * PRICING[\"output_per_m\"] / 1_000_000\n    total_correct = cost_miss + cost_hit + cost_out\n    \n    cost_input_no_discount = input_tokens * PRICING[\"cache_miss_per_m\"] / 1_000_000\n    total_incorrect = cost_input_no_discount + cost_out\n    \n    return {\n        \"input_tokens\": input_tokens,\n        \"output_tokens\": output_tokens,\n        \"cache_hits\": cache_hits,\n        \"cache_misses\": cache_misses,\n        \"cache_hit_ratio\": cache_hit_ratio,\n        \"cost_breakdown\": {\n            \"cache_misses\": cost_miss,\n            \"cache_hits\": cost_hit,\n            \"output\": cost_out,\n        },\n        \"total_correct\": total_correct,\n        \"total_incorrect\": total_incorrect,\n        \"inflation_factor\": total_incorrect / total_correct if total_correct > 0 else 0,\n        \"cost_difference\": total_incorrect - total_correct,\n    }\n\ndef main():\n    parser = argparse.ArgumentParser(description=\"Analyze DeepSWE cost calculations (offline mode)\")\n    parser.add_argument(\"--export\", choices=[\"markdown\", \"json\"], help=\"Export results in specified format\")\n    parser.add_argument(\"--output\", help=\"Output file for export (default: stdout)\")\n    args = parser.parse_args()\n    \n    costs = [calculate_cost(t['input_tokens'], t['output_tokens']) for t in TASKS]\n    \n    if args.export:\n        if args.export == \"markdown\":\n            output = \"# DeepSWE Cost Analysis\n\n## Summary\n\n\"\n            output += \"| Task | API Calls | Cache-Adjusted | Inflated | Factor |\n\"\n            output += \"|------|-----------|----------------|----------|--------|\n\"\n            for task, cost in zip(TASKS, costs):\n                output += f\"| {task['name']} | {task['api_calls']} | ${cost['total_correct']:.4f} | ${cost['total_incorrect']:.4f} | {cost['inflation_factor']:.2f}x |\n\"\n            total_correct = sum(c['total_correct'] for c in costs)\n            total_incorrect = sum(c['total_incorrect'] for c in costs)\n            output += f\"| **TOTAL** | **{sum(t['api_calls'] for t in TASKS)}** | **${total_correct:.4f}** | **${total_incorrect:.4f}** | **{total_incorrect/total_correct:.2f}x** |\n\"\n        else:\n            output = json.dumps({\"tasks\": [{\"task\": t, \"cost\": c} for t, c in zip(TASKS, costs)]}, indent=2)\n        \n        if args.output:\n            with open(args.output, 'w') as f:\n                f.write(output)\n        else:\n            print(output)\n    else:\n        print(\"=\" * 80)\n        print(\"DeepSWE Cost Analysis\")\n        print(\"=\" * 80)\n        print(f\"\n{'Task':<45} {'Calls':>6} {'Correct':>10} {'Inflated':>10} {'Factor':>8}\")\n        print(\"-\" * 80)\n        total_correct = 0\n        total_incorrect = 0\n        for task, cost in zip(TASKS, costs):\n            print(f\"{task['name']:<45} {task['api_calls']:>6} ${cost['total_correct']:>9.4f} ${cost['total_incorrect']:>9.4f} {cost['inflation_factor']:>7.2f}x\")\n            total_correct += cost['total_correct']\n            total_incorrect += cost['total_incorrect']\n        print(\"-\" * 80)\n        print(f\"{'TOTAL':<45} {sum(t['api_calls'] for t in TASKS):>6} ${total_correct:>9.4f} ${total_incorrect:>9.4f} {total_incorrect/total_correct:>7.2f}x\")\n        print(f\"\nDeepSWE reported avg: $4.22/task\")\n        print(f\"Actual cache-adjusted: ${total_correct/len(TASKS):.4f}/task\")\n        print(f\"Overcharge: ${4.22 - total_correct/len(TASKS):.4f}/task\")\n\nif __name__ == \"__main__\":\n    main()\n```\n\n### To run: \n```\npython3 cost_analysis_offline.py\n```\n\n### Output:\n\n```================================================================================\nDeepSWE Cost Analysis\n================================================================================\n\nTask                                           Calls    Correct   Inflated   Factor\n--------------------------------------------------------------------------------\nbandit-incremental-cache-control                  49 $   0.3867 $   1.6316    4.22x\ntermenv-preserve-ansi-resets                      37 $   0.1758 $   0.7188    4.09x\nsuperjson-error-stack-serialization               41 $   0.3236 $   1.3653    4.22x\n--------------------------------------------------------------------------------\nTOTAL                                            127 $   0.8861 $   3.7156    4.19x\n\nDeepSWE reported avg: $4.22/task\nActual cache-adjusted: $0.2954/task\nOvercharge: $3.9246/task\n```\n\n### The analysis uses:\n- **Token counts** from DeepSWE's own trial data\n- **Cache hit ratio** of 78% (observed from DeepSWE trial: 7,078,144 hits / 8,986,237 total)\n- **Published rates** from [DeepSeek API documentation](https://api-docs.deepseek.com/quick_start/pricing)\nDeepSeek V4 Pro pricing (75% promotional discount):\n- Cache miss: $0.435/M tokens\n- Cache hit: $0.003625/M tokens (99.2% discount)\n- Output: $0.87/M tokens"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4616073879",
+      "user": "phly95",
+      "created_at": "2026-06-03T19:37:53Z",
+      "updated_at": "2026-06-03T19:39:20Z",
+      "body": "> * OpenRouter may silently route to another provider (we observed Alibaba on one run)\n\nI think that's enough reason to not use Openrouter at all for benchmarks like these. I really think they should be making direct API calls to the official providers of the models. Also for issue https://github.com/datacurve-ai/deep-swe/issues/19 , it might actually be the same issue of forgetting to account for cached pricing, as well as showing pricing for a third party API provider. Also, Openrouter charges a 5% fee for high usage accounts, which might be where that unexplained remainder is coming from.\n\nUnfortunately, this means the benchmark results are deeply flawed, and making decisions based on them is unwise at this time. Thanks a lot for providing this audit."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4616530078",
+      "user": "Kreijstal",
+      "created_at": "2026-06-03T20:41:24Z",
+      "updated_at": "2026-06-03T20:41:24Z",
+      "body": "so uh, what is deepseek real score?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4617414880",
+      "user": "dephnor",
+      "created_at": "2026-06-03T23:01:42Z",
+      "updated_at": "2026-06-03T23:02:25Z",
+      "body": "This was exactly my first thought. The leftover ~41 cents could have been anything: different provider under the hood, OpenRouter markup, the 5% fee you pointed out (good catch, didn't know about that). #19 sounds likely the same kind of thing."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4617435874",
+      "user": "dephnor",
+      "created_at": "2026-06-03T23:06:08Z",
+      "updated_at": "2026-06-03T23:06:08Z",
+      "body": "> so uh, what is deepseek real score?\n\nNo one can really say until they re-run the benchmarks with the methodology fixed. I don't have the budget to run the full suite myself, but I might pick off a few more of the \"failed\" ones sometime soon. Happy to update here if that happens."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4618824390",
+      "user": "bergo-tools",
+      "created_at": "2026-06-04T04:02:27Z",
+      "updated_at": "2026-06-04T04:02:27Z",
+      "body": "I guess we need someone to benchmark the benchmarks"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4620060006",
+      "user": "karnyadavdev",
+      "created_at": "2026-06-04T07:41:41Z",
+      "updated_at": "2026-06-04T07:41:41Z",
+      "body": "i guess it needs deep seeking to benchmark deepseek"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4639148783",
+      "user": "kdejaeger",
+      "created_at": "2026-06-06T14:16:50Z",
+      "updated_at": "2026-06-06T14:16:50Z",
+      "body": "So the official deepseek, which trains on data, is smarter than the default versions? "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4639199198",
+      "user": "dephnor",
+      "created_at": "2026-06-06T14:28:42Z",
+      "updated_at": "2026-06-06T14:28:42Z",
+      "body": "> So the official deepseek, which trains on data, is smarter than the default versions?\n\nI never said it's smarter than the versions they push out as open source. I only said that THIS benchmark approaches benchmarking DeepSeek incorrectly - leading to inaccurate results of how much it truly costs to run the model and treating 404 errors (openrouter/provider issue) as a FAIL on a task."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4642884074",
+      "user": "GitHubFoxy",
+      "created_at": "2026-06-07T13:59:11Z",
+      "updated_at": "2026-06-07T13:59:11Z",
+      "body": "Why did you use diffrent harness? Hermes vs mini-swe? All other models use mini-swe?\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4642947035",
+      "user": "dephnor",
+      "created_at": "2026-06-07T14:24:38Z",
+      "updated_at": "2026-06-07T14:24:38Z",
+      "body": "Fair question. Short answer: we used both.\n\nBandit (1 of 3) we ran through mini-swe-agent. 101 steps, 89/89 tests passed. Same harness, same model, same task.\n\nThe other two (termenv, superjson) we ran through Hermes because it's the agent we build and use daily. Same model, same task definitions, same verifiers. Different harness.\n\nIf the harness is the deciding factor between PASS and FAIL for the same model on the same task, that's worth knowing. It would mean the leaderboard numbers are measuring the scaffold more than the model. But I won't claim we proved that with two data points.\n\nI'd re-run all three through mini-swe-agent if the benchmark runners wanted to verify. The task repos are still at the exact commits we tested against.\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4643013074",
+      "user": "kdejaeger",
+      "created_at": "2026-06-07T14:51:43Z",
+      "updated_at": "2026-06-07T14:53:03Z",
+      "body": "I noticed yesterday that if the provider that openrouter chooses doesn't support caching, it's a lot more expensive. I have now blacklisted that and some other providers not supporting caching for deepseek. For example 'digital ocean' doesn't support caching. Also I wonder if the routing setting balanced vs exacto would make a big difference or not. "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4644140692",
+      "user": "ivanfioravanti",
+      "created_at": "2026-06-07T21:23:14Z",
+      "updated_at": "2026-06-07T21:23:14Z",
+      "body": "@dephnor can you share your code? I'm running mini-swe against official DeepSeek API using reasoning effort Max, but I feel I'll reach 10% score at the end of the test. I'm around 80%."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4646441734",
+      "user": "IbraheemAl-Azizi",
+      "created_at": "2026-06-08T07:40:17Z",
+      "updated_at": "2026-06-08T07:40:17Z",
+      "body": "> [@dephnor](https://github.com/dephnor) can you share your code? I'm running mini-swe against official DeepSeek API using reasoning effort Max, but I feel I'll reach 10% score at the end of the test. I'm around 80%.\n\nplease share the score when you finish.\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4646488394",
+      "user": "ivanfioravanti",
+      "created_at": "2026-06-08T07:47:07Z",
+      "updated_at": "2026-06-08T07:47:07Z",
+      "body": "5.3% pretty bad. I'm trying again now with Reasoning Effort Max. In parallel I'm testing MiniMax M3 to see if I can replicate results on it. After this I'll try with a different harness. But again I ask to @dephnor to share some insights, the more we shed some lights on this, the better for everyone. \n\n[Here more details on X.](https://x.com/ivanfioravanti/status/2063877822062449109?s=20)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4646687873",
+      "user": "Jakeshadow",
+      "created_at": "2026-06-08T08:16:40Z",
+      "updated_at": "2026-06-08T08:16:40Z",
+      "body": "This audit finds three major issues with DeepSWE's v4-pro numbers:\n1. Cost inflated ~5x — bills cache-miss rates when 78% of tokens are cache hits (actual: $0.89/task vs reported $4.22)\n2. All 3 \"failed\" DeepSWE tasks were solved with the same model at lower cost ($0.86)\n3. OpenRouter pricing quirks compound the error\n\nBottom line: the 8% DeepSWE pass rate for V4 Pro is wrong. Independent re-testing shows substantially better performance at lower cost. Full breakdown of what benchmarks to trust: https://deepseekv4pro.net"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4648859126",
+      "user": "max-foss",
+      "created_at": "2026-06-08T12:14:19Z",
+      "updated_at": "2026-06-08T12:14:19Z",
+      "body": "Please do some re-testing of V4 Pro using the DeepSeek API on at least the level high.\n\nFor real-world tasks it far outperformed Gemini for me and does a solid job at following instructions, reasoning about complex existing code and so on.\n\nThe rest of the bunch feel mostly accurate to me."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4649134984",
+      "user": "dephnor",
+      "created_at": "2026-06-08T12:48:52Z",
+      "updated_at": "2026-06-08T12:49:42Z",
+      "body": "@Jakeshadow The site you linked has wrong pricing. It claims $3.48/M output for V4 Pro. The actual DeepSeek API pricing (from https://api-docs.deepseek.com/quick_start/pricing) for V4 Pro is $0.435/M input cache miss, $0.003625/M input cache hit, and $0.87/M output. The $3.48 figure is 4x the real output price. Looks like that site copied the pre-promotional rates without the 75% discount that has been in effect since launch, or just got it wrong. Their \"with 50% cache\" column doesn't make sense either. The whole page looks like SEO filler."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4649402702",
+      "user": "max-foss",
+      "created_at": "2026-06-08T13:20:59Z",
+      "updated_at": "2026-06-08T13:20:59Z",
+      "body": "> [@Jakeshadow](https://github.com/Jakeshadow) The site you linked has wrong pricing. It claims $3.48/M output for V4 Pro. The actual DeepSeek API pricing (from https://api-docs.deepseek.com/quick_start/pricing) for V4 Pro is $0.435/M input cache miss, $0.003625/M input cache hit, and $0.87/M output. The $3.48 figure is 4x the real output price. Looks like that site copied the pre-promotional rates without the 75% discount that has been in effect since launch, or just got it wrong. Their \"with 50% cache\" column doesn't make sense either. The whole page looks like SEO filler.\n\nI tried a short snippet on https://www.pangram.com/, 100% AI-generated, truly reads like no human thought/verification involved."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4649581040",
+      "user": "Kreijstal",
+      "created_at": "2026-06-08T13:42:07Z",
+      "updated_at": "2026-06-08T13:42:07Z",
+      "body": "> This audit finds three major issues with DeepSWE's v4-pro numbers:\n> \n>     1. Cost inflated ~5x — bills cache-miss rates when 78% of tokens are cache hits (actual: $0.89/task vs reported $4.22)\n> \n>     2. All 3 \"failed\" DeepSWE tasks were solved with the same model at lower cost ($0.86)\n> \n>     3. OpenRouter pricing quirks compound the error\n> \n> \n> Bottom line: the 8% DeepSWE pass rate for V4 Pro is wrong. Independent re-testing shows substantially better performance at lower cost. Full breakdown of what benchmarks to trust: https://deepseekv4pro.net\n\nlink doesn't contain deepswe score"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4651198516",
+      "user": "dephnor",
+      "created_at": "2026-06-08T16:37:37Z",
+      "updated_at": "2026-06-08T16:37:37Z",
+      "body": "**Update:** We found an error in our testing. The pricing-related issues discussed below are still valid, but our claims about solve rates were wrong.\n\nAfter @ivanfioravanti 's 5.3% run, we went back and reviewed our setup. We found that we had applied the verifier test patches before running the agents. That meant the agents could see and execute the acceptance tests during the run. In the actual benchmark, those tests are only applied after the agent has finished.\n\nAs a result, our claim that the model solved 3/3 failed tasks was incorrect. We re-ran the tasks without the test patch, and the model failed in the same ways reported by DeepSWE. The outcome was consistent regardless of which harness we used.\n\nThe mistake came from how we set up the repos. We cloned them, applied the test patches, and ran the agents. At the time, that seemed like the obvious way to set up the projects. We later learned that Pier applies the patch externally after the run is complete. We effectively tested whether the model could solve the tasks with access to the acceptance tests, not whether it could solve them from the specification alone.\n\nI also want to acknowledge my own bias here, because it was part of why this issue exists in the first place.\n\nI use DeepSeek every day and I've been genuinely impressed by what their team has accomplished. An 8% score didn't match my intuition at all, especially given how useful I find the model in practice. I went into this expecting there to be something wrong with the benchmark.\n\nWhen our runs appeared to show much better results, I got excited. Instead of being skeptical of the result and double-checking our setup, I was skeptical of the benchmark. That's on me. The whole reason I started digging into this was because I expected DeepSeek to be performing better than the published numbers suggested, and when I found evidence that seemed to support that belief, I accepted it too quickly.\n\nThat changes our conclusions about solve rates, and those conclusions should be disregarded.\n\nThe original post also discussed pricing, OpenRouter behavior, and effort tuning. Those points remain unchanged:\n\n* The cost calculations bill cache hits at the miss rate, which significantly overstates actual costs.\n* OpenRouter blocks DeepSeek by default and can silently switch providers unless configured otherwise.\n* DeepSeek was run at default effort while other models were tuned.\n\nI made it sound like the benchmark was badly wrong and that DeepSeek was actually solving far more tasks than reported. After correcting our setup, we can't support that claim.\n\nA few people spent time reproducing our setup and discussing conclusions that came from it. That's my mistake, and I should have verified our methodology more carefully before opening this issue.\n\nI'm leaving the original post up because I don't want to quietly edit around the mistake, but anything we said about solve rates should be considered retracted.\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4651331798",
+      "user": "coygeek",
+      "created_at": "2026-06-08T16:53:10Z",
+      "updated_at": "2026-06-08T16:53:10Z",
+      "body": "so uh, what is deepseek real score?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4651756234",
+      "user": "ivanfioravanti",
+      "created_at": "2026-06-08T17:43:32Z",
+      "updated_at": "2026-06-08T17:43:32Z",
+      "body": "Thanks @dephnor I was going crazy trying to figure out what was wrong on my side. Luckily I spent 40$ only, caching is ultra cheap on DeepSeek. BTW I think this benchmark is not giving right justice to DS4 Pro super model!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4652240095",
+      "user": "Kreijstal",
+      "created_at": "2026-06-08T18:39:24Z",
+      "updated_at": "2026-06-08T18:39:24Z",
+      "body": "> so uh, what is deepseek real score?\n\nI suppose given the latest update.... still 8%, aka it sucks"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/21#issuecomment-4977736381",
+      "user": "bkutasi",
+      "created_at": "2026-07-15T06:53:51Z",
+      "updated_at": "2026-07-15T06:53:51Z",
+      "body": "Are results for v1.1 not public for DS-v4-pro?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-01T17:32:02Z",
+  "github_updated_at": "2026-07-15T06:53:52Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The original DeepSWE solve-rate claim was explicitly retracted by the author after discovering verifier test patches had been applied before the agent run; the current update only asks whether v1.1 results are public and adds no new benchmark defect evidence. Remaining pricing/provider-routing discussion is not verified as a current artifact defect in this thread.",
+  "reviewed_at": "2026-07-16T00:03:57Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/21"
+  ]
+}

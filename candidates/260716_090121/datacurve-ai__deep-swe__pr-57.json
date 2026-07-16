@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/57",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 57,
+  "title": "fix: repin unpublished drizzle-kit snapshot so the task environment builds",
+  "body": "## Summary\nThe `drizzle-orm-window-function-builders` task pinned `drizzle-kit@0.25.0-b1faa33` in its lockfile, a snapshot version that was never published to npm, so `pnpm install --frozen-lockfile` failed and the task environment could not build. This repins only that snapshot to the published `0.25.0` across the lockfile and any manifest that references it, verifies the snapshot is gone, and installs with `--no-frozen-lockfile` so pnpm can refresh its resolution without discarding the rest of the locked graph.\n\nCloses #51\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/drizzle-orm-window-function-builders/environment/Dockerfile b/tasks/drizzle-orm-window-function-builders/environment/Dockerfile\nindex d935dba..6e2097c 100644\n--- a/tasks/drizzle-orm-window-function-builders/environment/Dockerfile\n+++ b/tasks/drizzle-orm-window-function-builders/environment/Dockerfile\n@@ -16,7 +16,15 @@ RUN git clone https://github.com/drizzle-team/drizzle-orm . \\\n  && git gc --prune=now \\\n  && (git submodule update --init --recursive || true)\n \n-RUN pnpm install --frozen-lockfile\n+# drizzle-kit@0.25.0-b1faa33 was never published. Repin only that snapshot in\n+# the lockfile and any manifest that references it, then let pnpm refresh its\n+# resolution and integrity without discarding the rest of the locked graph.\n+RUN grep -q '0\\.25\\.0-b1faa33' pnpm-lock.yaml \\\n+ && sed -i 's/0\\.25\\.0-b1faa33/0.25.0/g' pnpm-lock.yaml \\\n+ && find . -name package.json -type f -exec sed -i 's/0\\.25\\.0-b1faa33/0.25.0/g' {} + \\\n+ && ! grep -R --include='pnpm-lock.yaml' --include='package.json' '0\\.25\\.0-b1faa33' .\n+\n+RUN pnpm install --no-frozen-lockfile\n \n # v1.1 node-id scoring (CTRF route): vitest's built-in JUnit reporter is used\n # at verify time (`--reporter=junit --outputFile=...`) and the XML is converted\ndiff --git a/tasks/drizzle-orm-window-function-builders/tests/test.sh b/tasks/drizzle-orm-window-function-builders/tests/test.sh\nindex 24c3ded..eede062 100755\n--- a/tasks/drizzle-orm-window-function-builders/tests/test.sh\n+++ b/tasks/drizzle-orm-window-function-builders/tests/test.sh\n@@ -23,7 +23,9 @@ run_log() { echo \"+ $*\" >> \"$RUN_LOG\" 2>/dev/null; \"$@\" 2>&1 | tee -a \"$RUN_LOG\"\n # (scan-config rationale:)\n # Cheating signal (recorded only): package manifests/lockfiles, pnpm workspace config,\n # vitest/vite runner config, or vendored node_modules. The golden never touches\n-# these. Out-of-scope signal (recorded only): paths outside the task's expected fix scope\n+# these. The environment Dockerfile repins the unavailable drizzle-kit snapshot,\n+# so its manifest/lockfile diffs are environment-baked, not model-authored.\n+# Out-of-scope signal (recorded only): paths outside the task's expected fix scope\n # (drizzle-orm/src/**).\n \n require_cmd() { command -v \"$1\" >/dev/null 2>&1 || { log \"ERROR: missing $1; PATH=$PATH\"; exit 127; }; }\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-15T16:04:30Z",
+  "github_updated_at": "2026-07-15T16:04:30Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-51",
+  "task_names": [
+    "drizzle-orm-window-function-builders"
+  ],
+  "resolution": "fixing",
+  "summary": "Open DeepSWE PR #57 fixes the drizzle-orm-window-function-builders build failure by replacing unpublished drizzle-kit@0.25.0-b1faa33 with the published 0.25.0 package before pnpm install.",
+  "decision_note": "L2 PR diff audit. The PR body says it closes #51 and the diff edits tasks/drizzle-orm-window-function-builders/environment/Dockerfile to replace 0.25.0-b1faa33 with 0.25.0 before running pnpm install. This is fix evidence for the existing canonical defect deep-swe__datacurve-ai__deep-swe__issue-51, not a new root cause.",
+  "reviewed_at": "2026-07-16T00:03:57Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/57",
+    "https://github.com/datacurve-ai/deep-swe/pull/57/files",
+    "https://github.com/datacurve-ai/deep-swe/issues/51"
+  ]
+}

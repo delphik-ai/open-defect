@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/51",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 51,
+  "title": "[Bug] `drizzle-orm-window-function-builders` is unbuildable: pnpm lockfile pins `drizzle-kit@0.25.0-b1faa33`, which returns 404 on the public npm registry",
+  "body": "## Summary\n\nThe `environment/Dockerfile` for **`drizzle-orm-window-function-builders`** fails to build. The `RUN pnpm install --frozen-lockfile` step aborts because the repo's `pnpm-lock.yaml` (at the pinned `BASE_SHA`) locks **`drizzle-kit@0.25.0-b1faa33`** — a commit-hash snapshot version that **does not exist on `registry.npmjs.org`** (HTTP 404). Because `--frozen-lockfile` forbids resolving to a different version, the build cannot proceed.\n\nThis makes the task **unbuildable in any environment**, not specific to any harness — the same failure occurs on a plain `docker build` of the official `environment/Dockerfile`.\n\n## Affected task\n\n- `drizzle-orm-window-function-builders`\n- `environment/Dockerfile` → `FROM public.ecr.aws/x8v8d7g8/mars-base:latest`, then `git clone https://github.com/drizzle-team/drizzle-orm` at `BASE_SHA=e8e6edfef5ca69c6188d320388ad440265911057`, then `RUN pnpm install --frozen-lockfile`.\n\n## Build error\n\n```text\n#7 12.11  ERR_PNPM_FETCH_404  GET https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.25.0-b1faa33.tgz: Not Found - 404\n#7 12.11\n#7 12.11 No authorization header was set for the request.\n#7 ERROR: process \"/bin/sh -c pnpm install --frozen-lockfile\" did not complete successfully: exit code: 1\n------\nDockerfile:19\n--------------------\n  17 |      && (git submodule update --init --recursive || true)\n  18 |\n  19 | >>> RUN pnpm install --frozen-lockfile\n--------------------\n```\n\nThe failure is deterministic. The install downloads ~1588 packages successfully (network/registry reachable) and only fails on this one missing tarball.\n\n## Root cause\n\n`drizzle-kit@0.25.0-b1faa33` is a snapshot/prerelease version (note the `-b1faa33` git-hash suffix). It was **never published to the public npm registry**. Verified:\n\n```bash\n# snapshot version pinned by the lockfile — 404\n$ curl -s -o /dev/null -w \"%{http_code}\\n\" \\\n    https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.25.0-b1faa33.tgz\n404\n\n# the corresponding released version exists — 200\n$ curl -s -o /dev/null -w \"%{http_code}\\n\" \\\n    https://registry.npmjs.org/drizzle-kit/-/drizzle-kit-0.25.0.tgz\n200\n\n# npm metadata does not list the snapshot version at all\n$ curl -s https://registry.npmjs.org/drizzle-kit | jq '.versions[\"0.25.0-b1faa33\"] // \"NOT PUBLISHED\"'\n\"NOT PUBLISHED\"\n```\n\n## Impact\n\nGuaranteed build failure for this task: the reference/oracle solution and any candidate solution all fail before evaluation even starts, because the environment image cannot be built. This is the same class of \"task is broken independent of the agent\" issue as #14 (corrupt prebuilt image) and #17 (stale snapshot in base image).\n\n## Suggested fix (any of)\n\n1. Regenerate the task's `pnpm-lock.yaml` at `BASE_SHA` so it pins publicly-resolvable versions (e.g. `drizzle-kit@0.25.0` instead of the `-b1faa33` snapshot), or\n2. Provide / point the build at a registry that actually hosts the `drizzle-kit@0.25.0-b1faa33` snapshot (e.g. a private / monorepo registry), or\n3. Disable this task's prebuilt image / exclude it from the benchmark until the lockfile is fixed (as was done for the broken image in #14).\n\n## Environment\n\n- Reproduced by building the official `environment/Dockerfile` directly (`docker build`); no harness-specific behavior involved.\n- Public network reachable (1588 packages fetched before the failing one).",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/51#issuecomment-4982706738",
+      "user": "mvanhorn",
+      "created_at": "2026-07-15T16:04:32Z",
+      "updated_at": "2026-07-15T16:04:32Z",
+      "body": "Opened a PR with a fix: https://github.com/datacurve-ai/deep-swe/pull/57"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-07T07:05:10Z",
+  "github_updated_at": "2026-07-15T16:04:32Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-51",
+  "task_names": [
+    "drizzle-orm-window-function-builders"
+  ],
+  "resolution": "fixing",
+  "summary": "DeepSWE task drizzle-orm-window-function-builders is unbuildable because its Dockerfile runs pnpm install --frozen-lockfile at a pinned drizzle-orm base commit whose lockfile requires unpublished drizzle-kit@0.25.0-b1faa33.",
+  "decision_note": "L2 follow-up audit. The same root cause is already canonical as deep-swe__datacurve-ai__deep-swe__issue-51. This updated issue thread adds an explicit fix PR link (#57), so it is duplicate/follow-up evidence and the canonical resolution should move to fixing while the PR remains open.",
+  "reviewed_at": "2026-07-16T00:03:57Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/51",
+    "https://github.com/datacurve-ai/deep-swe/pull/57"
+  ]
+}

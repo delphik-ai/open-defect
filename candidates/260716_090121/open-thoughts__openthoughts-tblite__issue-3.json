@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/3",
+  "repo": "open-thoughts/openthoughts-tblite",
+  "source_type": "github_issue",
+  "github_number": 3,
+  "title": "Dependency Drift in Dockerfiles Causes Many Tasks to Fail",
+  "body": "## Summary\nMany openthoughts-tblite environment/Dockerfiles are not hermetic: they sit on ubuntu:22.04 with unpinned apt-get install and the deadsnakes PPA. Builds that worked at release time now fail on clean hosts and on Daytona, and results stop being comparable across users who build on different days.\n\nObserved 2026-05 on a clean host; failures cluster around add-apt-repository ppa:deadsnakes/ppa + the following apt-get update.\n\n## Reproduction\n\ndocker build evals/.../openthoughts-tblite/<task>/environment\nAffects any task using the Ubuntu 22.04 + deadsnakes preamble (e.g. symlink-chain-traversal, sales-data-csv-analysis, network-log-normalization, image-tile-identification, tsl-test-case-generation).\n\n## Root cause\nubuntu:22.04 is a mutable tag; indexes change continuously.\napt-get install -y python3.11 ... is unpinned — resolves to whatever the mirror serves now.\ndeadsnakes PPA is an external dependency outside this dataset's control.\n\n## Proposed fix\nMake each task hermetic, in order of effort:\n\nPin base by digest: FROM docker.io/ubuntu:22.04@sha256:<digest>.\nPin apt to a snapshot date via http://snapshot.ubuntu.com/ubuntu/<YYYYMMDDT000000Z>.\nDrop deadsnakes — tasks needing Python 3.11 can use python:3.11-slim-bookworm (same Python, stable base, no PPA); several TBLite tasks already do this.\nOptionally publish pre-built images to a content-addressed registry (e.g. ghcr.io/<org>/openthoughts-tblite:<env-hash>) so consumers pull instead of build.",
+  "comments": [
+    {
+      "url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/3#issuecomment-4363578523",
+      "user": "ronskoro",
+      "created_at": "2026-05-02T10:20:02Z",
+      "updated_at": "2026-05-02T10:20:02Z",
+      "body": "Hi, @neginraoof and Openthoughts team, Thanks a lot for creating this benchmark! When I was reproducing it and building on Daytona, I noticed the above issue. Hopefully, I've outlined the issue and solution quite clearly. Let me know if you need any more information from my side or if there is any way I can help you."
+    },
+    {
+      "url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/3#issuecomment-4980710801",
+      "user": "kschweig",
+      "created_at": "2026-07-15T12:45:10Z",
+      "updated_at": "2026-07-15T12:45:10Z",
+      "body": "Ran into the same issue and would greatly appreciate a fix as well!"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-05-02T10:18:11Z",
+  "github_updated_at": "2026-07-15T12:45:10Z",
+  "candidate_benchmark_names": [
+    "openthoughts-tblite"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "High-fanout Docker dependency-drift claim across many OpenThoughts-TBLite tasks has no maintainer acknowledgement, merged fix, maintainer-authored fix PR, regression test, or clear upstream diff. L3 was required, but npm run l3:preflight failed because Docker daemon was unavailable (docker version --format {{.Server.Version}} could not connect to unix:///Users/jongwon/.docker/run/docker.sock). No reproduction was run, so the claim remains unverified.",
+  "reviewed_at": "2026-07-16T00:03:57Z",
+  "checked_urls": [
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/3"
+  ]
+}

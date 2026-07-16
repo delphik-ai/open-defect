@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/113",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_issue",
+  "github_number": 113,
+  "title": "Reference compute/time requirements and SWE-bench Pro Verified status",
+  "body": "\nThanks for maintaining SWE-bench Pro. We are reproducing the public set and\nwould appreciate guidance on the reference compute and time budgets for two\ncases:\n\n1. **Grading only:** apply a submitted/gold patch and run the evaluator.\n2. **Agent + grading:** run an agent harness in the task environment, then grade\n   its patch.\n\nFor each case, what CPU, memory, writable disk, and phase-specific time budgets\nshould be allocated per instance? Is there one supported envelope or do heavier\ntasks need per-instance/per-repository overrides? For fanned-out runs, is there\na recommended concurrency or host-sizing rule?\n\nThe [current Modal evaluator](https://github.com/scaleapi/SWE-bench_Pro-os/blob/ca10a60a5fcae51e6948ffe1485d4153d421e6c5/swe_bench_pro_eval.py#L309-L316)\nuses `cpu=(1, 4)`, `memory=(5 * 1024, 30 * 1024)`, and a one-hour sandbox\nlifetime, while the\n[local-Docker path](https://github.com/scaleapi/SWE-bench_Pro-os/blob/ca10a60a5fcae51e6948ffe1485d4153d421e6c5/swe_bench_pro_eval.py#L377-L414)\ndoes not set equivalent limits. Should the Modal envelope be treated as the\nreference grading configuration?\n\nFor context, our repeated gold-patch runs at 1 vCPU / 4 GB with a 600-second\ngrading cutoff (T600) produced:\n\n- 593 / 731 rows with every expected F2P and P2P status passing in every\n  observed replica;\n- 4 rows with complete expected-test vectors containing explicit non-pass\n  results, plus 1 row with both a non-pass result and missing status;\n- 35 rows with missing expected statuses but no observed non-pass result; and\n- 98 unevaluable rows, 94 of which produced no complete replica at T600.\n\nAcross the full 731-row artifact, 133 of the 138 excluded T600 rows were\nmissing-status-only or unevaluable rather than demonstrated test failures, so\nmatching the intended resource and timeout contract matters.\n\nIntersecting its stable rows with our public-dev split retains 229 / 294 rows.\n\nThanks as well for sharing in your recent\n[announcement](https://x.com/ScaleAILabs/status/2075375253732409723) that v1.1\nis already underway and SWE-bench Pro Verified is coming soon. When convenient,\ncould you share any update on its status and whether the release will include\nupdated instance IDs plus reference resource and timeout guidance for\ngrading-only and agent-harness runs? Any guidance would be very helpful—thank\nyou.\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-15T00:28:15Z",
+  "github_updated_at": "2026-07-15T00:28:15Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests reference compute/time budgets and status guidance for SWE-bench Pro Verified. The included T600 reproduction context motivates the question but does not identify a current benchmark artifact root cause to count as a defect.",
+  "reviewed_at": "2026-07-16T00:03:57Z",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/113"
+  ]
+}
