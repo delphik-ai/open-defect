@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/dbt-labs/ade-bench/pull/152",
+  "repo": "dbt-labs/ade-bench",
+  "source_type": "github_pr",
+  "github_number": 152,
+  "title": "Fix typos in CONTRIBUTING.md, dataset.py, and harness.py",
+  "body": "## Summary\n\n- CONTRIBUTING.md: \"evaulate\" -> \"evaluate\"\n- dataset.py: \"directorygs\" -> \"directory\"\n- harness.py: \"Terminal-Bench\" -> \"ADE-bench\" (leftover project name in docstring)\n\n## Test plan\n\n- [x] Changes are cosmetic/documentation only — no behavior change\n- [x] Verified patterns exist before fixing",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/ade_bench/harness.py b/ade_bench/harness.py\nindex 9099b4d1..4661bd80 100644\n--- a/ade_bench/harness.py\n+++ b/ade_bench/harness.py\n@@ -71,7 +71,7 @@ def __init__(\n         with_profiling: bool = False,\n     ):\n         \"\"\"\n-        Runs the Terminal-Bench harness.\n+        Runs the ADE-bench harness.\n \n         Args:\n             dataset_path: The path to the dataset.\ndiff --git a/ade_bench/utils/dataset.py b/ade_bench/utils/dataset.py\nindex ccacf32d..d4640f8b 100644\n--- a/ade_bench/utils/dataset.py\n+++ b/ade_bench/utils/dataset.py\n@@ -16,7 +16,7 @@ def __init__(\n         \"\"\"Initialize the dataset.\n \n         Args:\n-            dataset_path: Path to the dataset directorygs\n+            dataset_path: Path to the dataset directory\n             task_ids: Optional list of specific task IDs to load\n             excluded_task_ids: Optional set of task IDs to exclude\n         \"\"\"\ndiff --git a/docs/CONTRIBUTING.md b/docs/CONTRIBUTING.md\nindex 42346fef..fb963aa5 100644\n--- a/docs/CONTRIBUTING.md\n+++ b/docs/CONTRIBUTING.md\n@@ -100,7 +100,7 @@ The script automatically:\n \n ### dbt tests\n \n-For an overview of how dbt tests are used to evaulate trials, see the [README](README.md#how-trials-are-evaluated). This section describes advanced ways to configure tests.\n+For an overview of how dbt tests are used to evaluate trials, see the [README](README.md#how-trials-are-evaluated). This section describes advanced ways to configure tests.\n \n #### Configuring different environments\n \n",
+  "github_state": "open",
+  "github_created_at": "2026-07-16T20:41:41Z",
+  "github_updated_at": "2026-07-16T20:52:56Z",
+  "candidate_benchmark_names": [
+    "ade-bench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: the PR explicitly describes cosmetic typo/docstring fixes with no behavior change, so it is outside benchmark defect scope.",
+  "checked_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/152"
+  ],
+  "reviewed_at": "2026-07-17T00:06:57.153Z"
+}

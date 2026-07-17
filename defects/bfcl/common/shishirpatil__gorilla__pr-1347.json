@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1347",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "[BFCL] Fix ZeroDivisionError in memory kv backend when searching an empty memory",
+  "summary": "BFCL memory kv backend raised ZeroDivisionError when key_search ran against an empty memory store, surfacing a backend error to models instead of an empty result; open PR #1347 guards the empty corpus path.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1347",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1347",
+    "https://github.com/ShishirPatil/gorilla/pull/1347/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-16T07:15:01Z",
+  "last_reviewed_at": "2026-07-17T00:06:57.153Z",
+  "decision_note": "L2 audit: PR #1347 includes reproduction, impact on BFCL multi-turn memory evaluation, and a diff in bfcl_eval/eval_checker/multi_turn_eval/func_source_code/memory_kv.py returning an empty ranked_results list before BM25Plus on empty corpus. Existing BFCL ZeroDivisionError artifact is a different weighted-accuracy root cause. PR is open, so resolution is fixing."
+}

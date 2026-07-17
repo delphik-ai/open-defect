@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "arc_agi_2__arcprize__arc-agi-2__pr-75",
+  "benchmark_name": "arc_agi_2",
+  "scope": "task_specific",
+  "task_names": [
+    "d931c21c_0"
+  ],
+  "resolution": "fixing",
+  "title": "Remove extra outer border in d931c21c",
+  "summary": "ARC-AGI-2 task d931c21c includes an unsupported extra outer border in a training output; open PR #75 edits data/training/d931c21c.json to remove it.",
+  "canonical_source_url": "https://github.com/arcprize/ARC-AGI-2/pull/75",
+  "evidence_urls": [
+    "https://github.com/arcprize/ARC-AGI-2/pull/75",
+    "https://github.com/arcprize/ARC-AGI-2/pull/75/files",
+    "https://github.com/arcprize/ARC-AGI-2/issues/58"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-16T04:59:47Z",
+  "last_reviewed_at": "2026-07-17T00:06:57.153Z",
+  "decision_note": "L2 audit: PR #75 names task d931c21c, issue #58 describes the unsupported extra red outline, and the PR diff edits data/training/d931c21c.json. No existing arc_agi_2 defect uses this task/root cause. PR is open, so resolution is fixing."
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/60",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 60,
+  "title": "claude-code-by-agents-recursive-delegation: OS-level watchdog so a hung patch fails instead of stalling the verifier",
+  "body": "## Problem\n\nA submitted implementation of the recursive-delegation feature can recurse synchronously forever. Vitest's per-test timeout runs on the Node event loop, so it can never fire when that event loop is the thing spinning — grading such a patch hangs indefinitely instead of failing.\n\nThis is not hypothetical: we run this task in a crowdtest deployment, and on 2026-07-15 a single organically-bad submission (no malice, just a buggy patch) wedged a verifier worker for 40+ minutes until an outer harness timeout killed it.\n\n## Fix\n\nWrap each of the three vitest invocations in `test.sh` with an OS-level `timeout` (SIGTERM at 300s, SIGKILL 10s later). A timed-out suite is treated as a test failure, not an infrastructure error: the missing/partial JUnit report is already scored as failed by the grader further down the script, so no grader change is needed.\n\n## Verification\n\nRe-ran the incident patch with this change: it settles as hidden tests 0/7, base tests 31/31 (reward=0) in about 5 minutes, instead of hanging. Well-behaved submissions are unaffected — the three suites normally finish far under 300s.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/claude-code-by-agents-recursive-delegation/tests/test.sh b/tasks/claude-code-by-agents-recursive-delegation/tests/test.sh\nindex 177fefe..723a0ad 100755\n--- a/tasks/claude-code-by-agents-recursive-delegation/tests/test.sh\n+++ b/tasks/claude-code-by-agents-recursive-delegation/tests/test.sh\n@@ -34,25 +34,41 @@ run_log() { echo \"+ $*\" >> \"$RUN_LOG\" 2>/dev/null; \"$@\" 2>&1 | tee -a \"$RUN_LOG\"\n require_cmd() { command -v \"$1\" >/dev/null 2>&1 || { log \"ERROR: missing $1; PATH=$PATH\"; exit 127; }; }\n require_cmd bunx; require_cmd python3; require_cmd junit-to-ctrf\n \n+# A submitted implementation can recurse synchronously forever. Vitest's own\n+# test timeout runs on the Node event loop, so it cannot fire when that event\n+# loop is the thing spinning (production incident 2026-07-15). Keep an OS-level\n+# watchdog around every suite: timeout is a test failure, not an infrastructure\n+# error, and the missing/partial report is deliberately scored as failed by the\n+# grader below.\n+SUITE_TIMEOUT_SEC=300\n+run_vitest() {\n+  timeout --signal=TERM --kill-after=10s \"${SUITE_TIMEOUT_SEC}s\" bunx vitest \"$@\"\n+  _rc=$?\n+  if [ \"$_rc\" -eq 124 ] || [ \"$_rc\" -eq 137 ]; then\n+    log \"ERROR: vitest suite exceeded ${SUITE_TIMEOUT_SEC}s (possible infinite loop)\"\n+  fi\n+  return \"$_rc\"\n+}\n+\n # --- Run base/new with reporter (mode_command_adapter: the inner /app/test.sh\n # hardcodes --reporter=verbose and set -e between its two base cwds, so we run\n # the same vitest commands directly — identical --exclude globs — with vitest's\n # built-in junit reporter and the script-level fail-fast stripped; one XML per\n # invocation, grader unions all three) ---\n set +e\n-( cd /app/backend && bunx vitest run --reporter=junit --outputFile=/logs/verifier/base_backend.xml \\\n+( cd /app/backend && run_vitest run --reporter=junit --outputFile=/logs/verifier/base_backend.xml \\\n     --exclude=\"**/tests/new/**\" \\\n     --exclude=\"**/tests/providers/openai.test.ts\" \\\n     --exclude=\"**/tests/handlers/multiAgentChat.test.ts\" \\\n     --exclude=\"**/tests/handlers/recursiveDelegation.test.ts\" \\\n     --exclude=\"**/tests/integration/happyPath.test.ts\" \\\n     --exclude=\"**/tests/utils/imageHandling.test.ts\" )\n-( cd /app/frontend && bunx vitest run --reporter=junit --outputFile=/logs/verifier/base_frontend.xml \\\n+( cd /app/frontend && run_vitest run --reporter=junit --outputFile=/logs/verifier/base_frontend.xml \\\n     --exclude=\"**/tests/new/**\" \\\n     --exclude=\"**/src/App.test.tsx\" \\\n     --exclude=\"**/src/hooks/useClaudeStreaming.test.ts\" \\\n     --exclude=\"**/src/hooks/chat/usePermissions.test.ts\" )\n-( cd /app/backend && bunx vitest run --reporter=junit --outputFile=/logs/verifier/new.xml tests/handlers/recursiveDelegation.test.ts )\n+( cd /app/backend && run_vitest run --reporter=junit --outputFile=/logs/verifier/new.xml tests/handlers/recursiveDelegation.test.ts )\n set -e\n \n # --- Convert per-mode JUnit XML(s) -> CTRF with the official ctrf-io\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-16T11:52:34Z",
+  "github_updated_at": "2026-07-16T11:52:34Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__pr-60",
+  "task_names": [
+    "claude-code-by-agents-recursive-delegation"
+  ],
+  "resolution": "fixing",
+  "summary": "DeepSWE task claude-code-by-agents-recursive-delegation can hang the verifier when a submitted patch recurses synchronously; open PR #60 wraps Vitest suites in an OS-level timeout.",
+  "decision_note": "L2 audit: PR #60 names the DeepSWE task path, documents an observed verifier-worker hang, and its diff changes tasks/claude-code-by-agents-recursive-delegation/tests/test.sh to run vitest under timeout. Existing DeepSWE defects have different root causes. PR is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/60",
+    "https://github.com/datacurve-ai/deep-swe/pull/60/files"
+  ],
+  "reviewed_at": "2026-07-17T00:06:57.153Z"
+}

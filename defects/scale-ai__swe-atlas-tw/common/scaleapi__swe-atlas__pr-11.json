@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-tw__scaleapi__swe-atlas__pr-11",
+  "benchmark_name": "scale-ai__swe-atlas-tw",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Restrict TW agent network access",
+  "summary": "SWE-Atlas Test Writing tasks lacked agent-phase network allowlists to prevent solution lookup; merged PR #11 adds network_mode allowlist settings to TW task files and passes the allowed agent host in TW run configs.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/11",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/11",
+    "https://github.com/scaleapi/SWE-Atlas/pull/11/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-16T18:18:47Z",
+  "last_reviewed_at": "2026-07-17T00:06:57.153Z",
+  "decision_note": "L2 audit: PR #11 is explicitly for TW, was merged, and its diff applies agent network allowlists to data/tw task.toml files plus TW run-config host forwarding. Existing SWE-Atlas TW common defects cover Modal keepalive and oracle task data, not unrestricted agent network access."
+}

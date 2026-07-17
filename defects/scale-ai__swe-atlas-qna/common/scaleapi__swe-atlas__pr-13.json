@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-qna__scaleapi__swe-atlas__pr-13",
+  "benchmark_name": "scale-ai__swe-atlas-qna",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Remove hardcoded Harbor paths from oracle scripts",
+  "summary": "SWE-Atlas QnA oracle run config defaulted HARBOR_BIN to a maintainer-specific absolute path, making the oracle script non-portable until merged PR #13 switched it to PATH-resolved harbor.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/13",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/13",
+    "https://github.com/scaleapi/SWE-Atlas/pull/13/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-16T20:41:36Z",
+  "last_reviewed_at": "2026-07-17T00:06:57.153Z",
+  "decision_note": "L2 audit: PR #13 was merged and its diff changes run_config/qa/oracle.sh from a hardcoded /mnt/efs maintainer path to harbor from PATH. The same PR also touches RF, but only the QnA path belongs to watched benchmark scale-ai__swe-atlas-qna. No existing QnA common defect covers this root cause."
+}

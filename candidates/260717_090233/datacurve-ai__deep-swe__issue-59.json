@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/59",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 59,
+  "title": "[Bug] v1.1 GPT-5.6 artifact URLs return HTTP 403 despite available trial metadata",
+  "body": "## Summary\n\nSome v1.1 trial artifact URLs return `403 AccessDenied` even though the corresponding trial metadata reports that the artifacts are available.\n\nThe v1.1 release manifest documents the following artifact URL patterns:\n\n- trajectory\n- model patch\n- agent log\n- verifier output\n\nFor a GPT-5.6 trial, all of these documented URLs return HTTP 403 without authentication. The same URL pattern works for a Claude Fable 5 trial, so this appears to be model-, configuration-, or batch-specific rather than a general URL-construction problem.\n\n## Reproduction\n\nI tested the URLs with unauthenticated HTTP GET requests, without cookies or authorization headers.\n\n### GPT-5.6 Luna, xhigh\n\nTrial metadata:\n\n- Trial: `abs-module-cache-flags__AEwzdq5`\n- Model: `gpt-5-6-luna`\n- Configuration: `mini_swe_agent_gpt_5_6_luna_xhigh`\n- Harness: `mini-swe-agent`\n- `has_model_patch: true`\n- `has_agent_log: true`\n- `has_trajectory: true`\n- `has_verifier_output: true`\n\nRelease manifest:\n\nhttps://deepswe.datacurve.ai/artifacts/v1.1/release.json\n\nRepresentative trial page:\n\nhttps://deepswe.datacurve.ai/data/v1.1/trials/abs-module-cache-flags__AEwzdq5\n\nRepresentative trajectory URL:\n\nhttps://d3ujjcmjq6o8v6.cloudfront.net/v1.1/trial-artifacts/abs-module-cache-flags__AEwzdq5/agent/trajectory.json\n\nObserved result:\n\n```text\nHTTP 403\n<Error>\n  <Code>AccessDenied</Code>\n  <Message>Access Denied</Message>\n</Error>\n```\n\nThe other documented artifact paths for the same trial also return HTTP 403:\n\n```text\n/v1.1/trial-artifacts/abs-module-cache-flags__AEwzdq5/artifacts/model.patch\n/v1.1/trial-artifacts/abs-module-cache-flags__AEwzdq5/agent/mini-swe-agent.txt\n/v1.1/trial-artifacts/abs-module-cache-flags__AEwzdq5/verifier/test-stdout.txt\n```\n\n## Comparison: Claude Fable 5\n\nTrial: `abs-module-cache-flags__4kU2tLe`\n\nhttps://deepswe.datacurve.ai/data/v1.1/trials/abs-module-cache-flags__4kU2tLe\n\nThe same artifact paths return HTTP 200 for this trial. For example:\n\nhttps://d3ujjcmjq6o8v6.cloudfront.net/v1.1/trial-artifacts/abs-module-cache-flags__4kU2tLe/agent/trajectory.json\n\nThe trajectory, model patch, agent log, and verifier output were all retrievable.\n\n## Additional observations\n\nThe same 403 behavior was also observed for representative raw trajectory URLs from:\n\n- `gpt-5-6-luna` `max`\n- `gpt-5-6-sol` `max`\n- `glm-5-2` `high`\n\n## Expected behavior\n\nOne of the following seems appropriate:\n\n1. The documented artifact URLs return the corresponding files; or\n2. The trial metadata clearly indicates that the artifacts require authentication or are not publicly available; or\n3. The site provides signed URLs or another documented access method.\n\n## Questions\n\n1. Is the 403 response intentional for particular models, configurations, or execution batches?\n2. Are signed URLs or authentication required to retrieve these artifacts?\n3. If the artifacts are intentionally restricted, should the `has_*` metadata fields or the release manifest indicate that restriction?\n4. Is a downloadable artifact bundle or research-access mechanism planned for auditing paired successes and failures?\n\nThis is related to [#52](https://github.com/datacurve-ai/deep-swe/issues/52), which notes that per-trial receipts are not currently retrievable. This report provides a concrete HTTP-level reproduction for one class of unavailable receipts.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/59#issuecomment-4988427711",
+      "user": "lydakis",
+      "created_at": "2026-07-16T05:11:06Z",
+      "updated_at": "2026-07-16T05:11:06Z",
+      "body": "Confirmed independently on 2026-07-16 while auditing the v1.1 release for a reproducibility analysis.\n\nTwo additional observations may help narrow this down:\n\n1. The current public trial-detail frontend reads `artifact_base_url` and `artifact_patterns` from `/artifacts/v1.1/release.json`, concatenates them directly, and retrieves the resulting URL with an ordinary unauthenticated `fetch`. I did not find a signed-URL or authentication step in the public client bundle.\n2. Repeating the request with `Origin: https://deepswe.datacurve.ai` and a matching `Referer` still produced the same S3/CloudFront `403 AccessDenied`, so this does not appear to be simple hotlink protection.\n\nI also updated a clean clone of `datacurve-ai/deep-swe` to current `main` (`6db64a4`) and confirmed that the repository contains the task packages and documentation, but not the trial trajectories or agent logs as an alternate access path.\n\nThis currently blocks trajectory-level comparisons that cannot be identified from four binary outcomes per task alone, such as distinguishing heterogeneous per-task competence from genuinely different diagnoses, patches, or strategy pivots across repeated attempts.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-16T05:07:52Z",
+  "github_updated_at": "2026-07-16T05:11:06Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: the report concerns public leaderboard trial artifact URL access for a model run. It may affect reproducibility analysis, but it is not a current DeepSWE benchmark task, dataset, harness, or evaluator defect for health counting.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/59"
+  ],
+  "reviewed_at": "2026-07-17T00:06:57.153Z"
+}

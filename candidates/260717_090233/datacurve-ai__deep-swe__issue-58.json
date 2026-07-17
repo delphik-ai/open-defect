@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/58",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 58,
+  "title": "Benchmark Thinking Machines Lab's Inkling on DeepSWE v1.1",
+  "body": "## Summary\n\nPlease consider benchmarking Thinking Machines Lab's new Inkling model on the current DeepSWE v1.1 leaderboard.\n\nOfficial resources:\n\n- Announcement: https://thinkingmachines.ai/news/introducing-inkling/\n- BF16 model: https://huggingface.co/thinkingmachines/Inkling\n- NVFP4 model: https://huggingface.co/thinkingmachines/Inkling-NVFP4\n- SGLang recipe: https://docs.sglang.io/cookbook/autoregressive/ThinkingMachines/Inkling\n- vLLM integration: https://github.com/vllm-project/vllm/pull/48768\n\n## Why this would be useful\n\nInkling is an Apache-2.0 open-weights, natively multimodal Mixture-of-Experts model with 975B total parameters, 41B active parameters, and a context window of up to 1M tokens. Thinking Machines Lab positions it as a general-purpose model for agentic systems, tool use, and coding.\n\nThe official model card reports the following agentic-coding results at `effort=0.99`:\n\n- SWE-bench Verified: 77.6%\n- SWE-bench Pro (Public): 54.3%\n- Terminal-Bench 2.1 (best harness): 63.8\n\nDeepSWE is a particularly useful independent follow-up because its 113 original, long-horizon tasks differ from the public coding benchmarks reported at launch. The current v1.1 leaderboard uses the same `mini-swe-agent` harness across models and does not yet include Inkling, so an official run would provide a cleaner apples-to-apples comparison with the other frontier models already listed.\n\n## Suggested run target\n\nPlease test:\n\n- Model: `thinkingmachines/Inkling` or the official `thinkingmachines/Inkling-NVFP4` checkpoint if that is the practical serving target\n- Benchmark: DeepSWE v1.1\n- Harness: the same `mini-swe-agent` configuration used for the existing official leaderboard\n- Reasoning configuration: `reasoning_effort=\"max\"` / `0.99` for the first run, matching the effort used for the launch evaluation results\n\nIf resources permit, a second run at `reasoning_effort=\"medium\"` / `0.7` would also be valuable for measuring the cost-performance tradeoff enabled by Inkling's controllable reasoning effort.\n\n## Serving and compatibility notes\n\nThe official model card lists local support through SGLang and vLLM, both of which can expose OpenAI-compatible endpoints. Inkling's Hugging Face chat template includes tool declarations, tool-call messages, interleaved reasoning content, and a numeric `reasoning_effort` control from `0.0` to `0.99`.\n\nA small smoke or subset run could first confirm:\n\n- chat-template compatibility with `mini-swe-agent`\n- tool-call round trips\n- reasoning-effort propagation\n- context and output-token limits\n- serving stability for the chosen BF16 or NVFP4 checkpoint\n\n## Requested leaderboard metadata\n\nIf a full run is completed, it would be helpful to publish the same fields shown for other models:\n\n- Pass@1 and confidence interval\n- Average cost per task, or clearly stated self-hosted compute/accounting assumptions\n- Average output tokens\n- Average agent steps\n- Reasoning effort and sampling settings\n- Serving backend and checkpoint revision\n\nInkling is one of the most substantial open-weights releases aimed at coding and tool-using agents, and an official DeepSWE result would make its launch claims much easier to compare on original long-horizon engineering tasks.\n\nThanks for considering it.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/58#issuecomment-4991146716",
+      "user": "Quackster",
+      "created_at": "2026-07-16T11:11:21Z",
+      "updated_at": "2026-07-16T11:11:21Z",
+      "body": "I second this, very curious where it lands. I suspect around Kimi K2.7 level."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-16T00:48:39Z",
+  "github_updated_at": "2026-07-16T11:11:21Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: this is a request to benchmark a new model on the DeepSWE leaderboard, not a benchmark task, dataset, harness, or evaluator defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/58"
+  ],
+  "reviewed_at": "2026-07-17T00:06:57.153Z"
+}

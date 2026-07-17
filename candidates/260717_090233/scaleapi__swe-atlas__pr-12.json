@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-Atlas/pull/12",
+  "repo": "scaleapi/swe-atlas",
+  "source_type": "github_pr",
+  "github_number": 12,
+  "title": "Fix inverted QnA rubric polarity",
+  "body": "Fixes the inverted polarity of two negative rubrics in `task-6905333b74f22949d97baa22`.\n\nFixes #10.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/data/qa/task-6905333b74f22949d97baa22/tests/rubrics.json b/data/qa/task-6905333b74f22949d97baa22/tests/rubrics.json\nindex 7902c7c..15189ee 100644\n--- a/data/qa/task-6905333b74f22949d97baa22/tests/rubrics.json\n+++ b/data/qa/task-6905333b74f22949d97baa22/tests/rubrics.json\n@@ -49,7 +49,7 @@\n   },\n   {\n     \"id\": \"76104ea06b5e0bbe2a31cd91f7dc6939\",\n-    \"title\": \"2.1 Avoids attributing the behavior to external factors outside the executor (e.g., OS scheduling jitter, Go runtime quirks, network latency, test script errors)\",\n+    \"title\": \"2.1 Attributes the behavior to external factors outside the executor (e.g., OS scheduling jitter, Go runtime quirks, network latency, test script errors)\",\n     \"annotations\": {\n       \"type\": \"negative hli verifier\",\n       \"importance\": \"must have\"\n@@ -57,10 +57,10 @@\n   },\n   {\n     \"id\": \"10d75e60499d852aea62086ebdbd13c9\",\n-    \"title\": \"2.2 Avoids dismissing the user's observations as invalid or suggesting the test configuration is incorrect \",\n+    \"title\": \"2.2 Dismisses the user's observations as invalid or suggests the test configuration is incorrect\",\n     \"annotations\": {\n       \"type\": \"negative hli verifier\",\n       \"importance\": \"must have\"\n     }\n   }\n-]\n\\ No newline at end of file\n+]\n",
+  "github_state": "closed",
+  "github_created_at": "2026-07-16T18:26:21Z",
+  "github_updated_at": "2026-07-16T18:27:19Z",
+  "candidate_benchmark_names": [
+    "scale-ai__swe-atlas-qna",
+    "scale-ai__swe-atlas-tw"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "scale-ai__swe-atlas-qna",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "scale-ai__swe-atlas-qna__scaleapi__swe-atlas__issue-10",
+  "task_names": [
+    "task-6905333b74f22949d97baa22"
+  ],
+  "resolution": "fixed",
+  "summary": "Merged PR #12 is the fix evidence for the SWE-Atlas QnA task-6905333b74f22949d97baa22 inverted negative-rubric polarity defect tracked by issue #10.",
+  "decision_note": "L2 audit: PR #12 says it fixes #10 and its diff rewrites the two affected rubric titles in data/qa/task-6905333b74f22949d97baa22/tests/rubrics.json. Same benchmark, task, and root cause as canonical issue #10, so this is duplicate/fix evidence.",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/12",
+    "https://github.com/scaleapi/SWE-Atlas/pull/12/files",
+    "https://github.com/scaleapi/SWE-Atlas/issues/10"
+  ],
+  "reviewed_at": "2026-07-17T00:06:57.153Z"
+}
