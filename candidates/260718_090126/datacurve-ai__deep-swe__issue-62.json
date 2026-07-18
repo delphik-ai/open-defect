@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/62",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 62,
+  "title": "benching GPT-5.6 Sol Pro?",
+  "body": "Curious to know why is the 5.6 Sol Pro is not part of the benchmark. Thank you so much for your work :)\n\nhttps://openrouter.ai/openai/gpt-5.6-sol-pro",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-17T02:43:19Z",
+  "github_updated_at": "2026-07-17T02:43:19Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks why GPT-5.6 Sol Pro is absent from the DeepSWE leaderboard. It is a model coverage request and does not claim a benchmark data, harness, evaluator, or task defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/62"
+  ],
+  "reviewed_at": "2026-07-18T00:04:50.001Z"
+}

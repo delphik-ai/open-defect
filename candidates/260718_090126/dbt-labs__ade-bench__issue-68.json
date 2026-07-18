@@ -1,0 +1,55 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/dbt-labs/ade-bench/issues/68",
+  "repo": "dbt-labs/ade-bench",
+  "source_type": "github_issue",
+  "github_number": 68,
+  "title": "`uv` installation instructions",
+  "body": "### Proposal\n\nReplace `pip` installation instructions with `uv` installation instructions.\n\n### Current instructions\n\n### What I'm currently doing\n\nI'm currently doing something like this:\n\n```shell\ngit clone https://github.com/thedatamates/ade-bench.git\ncd ade-bench\npython -m venv .venv\nsource .venv/bin/activate\npython -m pip install --upgrade pip\npython -m pip install -e .\nsource .venv/bin/activate\n```\n\n### What I want to be doing\n\nBut I'd rather do something like this:\n\n```shell\ngit clone https://github.com/thedatamates/ade-bench.git\ncd ade-bench\nuv tool install .\n```\n\nand to re-install:\n\n```shell\nuv tool install . --reinstall\n```\n\n### Error I'm getting with `uv`\n\n```shell\n$ ade --help\n```\n\n```\nTraceback (most recent call last):\n  File \"/Users/dbeatty/.local/bin/ade\", line 4, in <module>\n    from ade_bench.cli.ab.main import app\n  File \"/Users/dbeatty/.local/share/uv/tools/ade-bench/lib/python3.12/site-packages/ade_bench/cli/ab/main.py\", line 14, in <module>\n    from scripts_python.summarize_results import display_detailed_results\nModuleNotFoundError: No module named 'scripts_python'\n```",
+  "comments": [
+    {
+      "url": "https://github.com/dbt-labs/ade-bench/issues/68#issuecomment-3614220051",
+      "user": "VDFaller",
+      "created_at": "2025-12-04T20:34:06Z",
+      "updated_at": "2025-12-04T20:34:06Z",
+      "body": "You should be able to do it with `--editable`."
+    },
+    {
+      "url": "https://github.com/dbt-labs/ade-bench/issues/68#issuecomment-3632718463",
+      "user": "dbeatty10",
+      "created_at": "2025-12-09T15:00:42Z",
+      "updated_at": "2025-12-09T15:00:42Z",
+      "body": "Thank you @VDFaller, this worked brilliantly:\n\n```shell\nuv tool install . --reinstall --editable\n```\n\nAlthough I didn't try it directly, I'm assuming this would have worked for a first-time editable install:\n\n```shell\nuv tool install . --editable\n```"
+    },
+    {
+      "url": "https://github.com/dbt-labs/ade-bench/issues/68#issuecomment-3635007017",
+      "user": "joellabes",
+      "created_at": "2025-12-10T01:48:34Z",
+      "updated_at": "2025-12-10T01:48:34Z",
+      "body": "The [quickstart uses uv to install](https://github.com/dbt-labs/ade-bench?tab=readme-ov-file#3-create-a-virtual-environment-and-install-the-ade-cli) (admittedly, wrapping pip) - does that work? feel free to edit that to better match the way you'd like it to be "
+    },
+    {
+      "url": "https://github.com/dbt-labs/ade-bench/issues/68#issuecomment-4996658847",
+      "user": "arijitroy003",
+      "created_at": "2026-07-16T21:15:10Z",
+      "updated_at": "2026-07-16T21:15:10Z",
+      "body": "The README now covers installation instructions including uv. The solution in the comments above also addresses this. Could this be closed as resolved?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-12-04T18:34:24Z",
+  "github_updated_at": "2026-07-16T21:15:10Z",
+  "candidate_benchmark_names": [
+    "ade-bench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L2",
+  "decision_note": "Issue reports that uv tool install . fails with a missing scripts_python import, but current ADE-bench README instructs uv venv plus uv pip install -e . and comments identify editable install as the working path. This is an unsupported install-mode/docs request, not a current benchmark defect artifact.",
+  "checked_urls": [
+    "https://github.com/dbt-labs/ade-bench/issues/68",
+    "https://github.com/dbt-labs/ade-bench/blob/main/README.md",
+    "https://github.com/dbt-labs/ade-bench/blob/main/pyproject.toml"
+  ],
+  "reviewed_at": "2026-07-18T00:04:50.001Z"
+}
