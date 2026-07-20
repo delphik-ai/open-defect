@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/bigcode-project/bigcodebench/issues/121",
+  "repo": "bigcode-project/bigcodebench",
+  "source_type": "github_issue",
+  "github_number": 121,
+  "title": "On BigCodeBench-Hard (n=148), ~55 of the leaderboard's models are statistically tied with #1 — consider showing significance tiers",
+  "body": "Thanks for BigCodeBench — it's one of the more honest code benchmarks out there, which is exactly why I ran a statistical-significance check on the leaderboard rather than a weaker target. This is a constructive note about how to *read* the ranking, not a criticism of the benchmark.\n\n## The check\n\nFor a pass@1 leaderboard, whether a ranking is *real* depends on the number of tasks. I took the published scores (`bigcode-bench.github.io/results.json` and `results-hard.json`) and, for each model, ran a two-proportion test of its pass@1 against the #1 model's, at the benchmark's task count (Hard = 148, Full = 1140). Models whose gap to #1 is not significant (p ≥ 0.05) are statistically tied with the leader.\n\n| split | metric | N | #1 | models **not significantly different from #1** (p ≥ 0.05) |\n|---|---|---:|---|---:|\n| **Hard** | complete | 148 | Gemini-Exp-1206 (40.5%) | **55 of 199** |\n| **Hard** | instruct | 148 | o3-mini (33.1%) | **62 of 173** |\n| Full | complete | 1140 | Gemini-Exp-1206 (62.4%) | 12 of 153 |\n| Full | instruct | 1140 | GPT-4o (51.1%) | 15 of 126 |\n\nOn **BigCodeBench-Hard, roughly a quarter to a third of the leaderboard is statistically indistinguishable from #1.** Two things compound: only 148 tasks, and accuracies sit near 40% — the region of maximum binomial variance. Together the minimum detectable gap is ~16 points, so a model 10 points behind #1 on Hard cannot be shown to be worse from this data.\n\n## Why this is a resolution issue, not a flaw\n\nThe **Full** split (1140 tasks) resolves much better — only ~12–15 models tie with #1. Same method, larger N → finer resolution. The Hard split is deliberately small and curated (148 tasks), which is a feature for difficulty but means it can't finely *rank* near-matched models. This isn't \"the benchmark is wrong\"; it's \"the top of Hard is one tier.\"\n\n## Suggestion\n\nConsider showing a significance band / tier grouping alongside the strict rank, at least for Hard — e.g. \"these N models are tied with the leader (Δ not significant at n=148).\" It's a ~40-line two-proportion pass and would stop small pass@1 differences from being read as a real ordering.\n\n## Reproduce ($0, public data)\n\n```python\nimport json, urllib.request, math\nd = json.load(urllib.request.urlopen(\"https://bigcode-bench.github.io/results-hard.json\"))\nrows = sorted(([k, v[\"pass@1\"][\"complete\"]] for k, v in d.items()\n               if v.get(\"pass@1\", {}).get(\"complete\") is not None), key=lambda r: -r[1])\nn, top = 148, rows[0][1]\ndef two_prop_p(p1, p2, n):\n    p = (p1 + p2) / 2 / 100\n    se = math.sqrt(p * (1 - p) * 2 / n)\n    return math.erfc(abs((p1 - p2) / 100) / se / math.sqrt(2)) if se else 1.0\ntied = sum(1 for _, s in rows if two_prop_p(top, s, n) >= 0.05)\nprint(f\"#1 = {rows[0][0]} @ {top}%;  {tied}/{len(rows)} models not significantly different (p>=0.05)\")\n```\n\nN (Hard=148, Full=1140) are the documented task counts (`bigcode/bigcodebench-hard`, `bigcode/bigcodebench`). pass@1 with greedy decoding is one Bernoulli trial per task, so the two-proportion bound applies directly.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-18T05:53:10Z",
+  "github_updated_at": "2026-07-18T05:53:10Z",
+  "candidate_benchmark_names": [
+    "bigcodebench-hard-complete"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread is a leaderboard presentation/statistical-significance suggestion for BigCodeBench-Hard. It does not claim a wrong task, dataset row, evaluator, harness, oracle, or current benchmark artifact defect, so it is outside the benchmark-defect counting scope.",
+  "checked_urls": [
+    "https://github.com/bigcode-project/bigcodebench/issues/121"
+  ],
+  "reviewed_at": "2026-07-20T00:04:54.192Z"
+}

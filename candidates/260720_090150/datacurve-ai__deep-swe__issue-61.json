@@ -1,0 +1,67 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/61",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 61,
+  "title": "[MODEL] Benchmark Kimi K3 on DeepSWE v1.1 at all supported reasoning levels",
+  "body": "## Summary\n\nPlease benchmark Moonshot AI's newly released Kimi K3 on DeepSWE v1.1 and add the results to the public leaderboard at every supported reasoning-effort level.\n\nOfficial resources:\n\n- OpenRouter model page: https://openrouter.ai/moonshotai/kimi-k3\n- Kimi K3 quickstart: https://platform.kimi.ai/docs/guide/kimi-k3-quickstart\n- Official pricing: https://platform.kimi.ai/docs/pricing/chat-k3\n- Thinking-effort documentation: https://platform.kimi.ai/docs/guide/use-thinking-effort\n\nModel IDs:\n\n- OpenRouter: `moonshotai/kimi-k3`\n- Moonshot API: `kimi-k3`\n\n## Why this would be useful\n\nKimi K3 is Moonshot AI's new flagship model for long-horizon coding, end-to-end knowledge work, and deep reasoning. It has 2.8 trillion parameters, native visual understanding, and a 1,048,576-token context window.\n\nDeepSWE's 113 original, long-horizon software-engineering tasks would provide a valuable independent measure of Kimi K3's coding-agent performance using the same `mini-swe-agent` harness and v1.1 methodology as the other official leaderboard results.\n\nReasoning effort can materially change solve rate, cost, output-token usage, agent steps, and latency. Publishing a separate result for every supported effort level would therefore be more useful than reporting only an unlabeled default configuration.\n\n## Reasoning-level coverage\n\nKimi's launch documentation says that K3 always reasons and uses the top-level `reasoning_effort` field. At launch, the only supported value is:\n\n- `max` — also the default\n\nMoonshot says that more effort levels are coming soon. Please run `max` now, and add separate benchmark rows for every additional reasoning-effort level when it becomes publicly available. This request is for all levels actually supported by the API; it is not asking the benchmark to send currently unsupported values such as `low`, `medium`, or `high` before Moonshot enables them.\n\n## Requested run target\n\n| Model | Benchmark | Reasoning effort | Availability |\n|---|---|---|---|\n| `moonshotai/kimi-k3` | DeepSWE v1.1 | `max` | Supported now; default |\n| `moonshotai/kimi-k3` | DeepSWE v1.1 | Every additional documented effort level | Run when publicly supported |\n\nPlease use:\n\n- the current DeepSWE v1.1 task set;\n- the same `mini-swe-agent` harness and official leaderboard methodology used for existing results;\n- the exact model snapshot and provider route used for each run; and\n- an explicit `reasoning_effort` value in the run metadata, even when it matches the API default.\n\n## Cost and serving context\n\nMoonshot's official API pricing for Kimi K3 is currently:\n\n- Input, cache hit: $0.30 per 1M tokens\n- Input, cache miss: $3.00 per 1M tokens\n- Output: $15.00 per 1M tokens\n\nOpenRouter lists the same model with a 1,048,576-token context window and an OpenAI-compatible API route, which may make it a practical initial serving target for DeepSWE.\n\nA small smoke or subset run could first confirm:\n\n- `mini-swe-agent` tool-call compatibility;\n- preservation of K3's reasoning content across tool-call turns;\n- propagation and recording of `reasoning_effort=\"max\"`;\n- context and output-token limits; and\n- provider stability before the full 113-task run.\n\n## Suggested reporting\n\nFor each reasoning-effort configuration, please publish:\n\n- Pass@1 and confidence interval\n- Average cost per task\n- Average output tokens\n- Average agent steps\n- Exact `reasoning_effort`\n- Exact model ID or dated snapshot\n- Provider/serving route and relevant sampling settings\n\n## Acceptance criteria\n\n- [ ] Kimi K3 is benchmarked on DeepSWE v1.1 with `mini-swe-agent`.\n- [ ] The currently supported `max` reasoning-effort level is run and labeled explicitly.\n- [ ] Every additional reasoning-effort level is benchmarked as Moonshot makes it publicly available.\n- [ ] Each effort level appears as a separate result in the leaderboard's all-effort-level view.\n- [ ] Each result records its effort, model snapshot, provider route, Pass@1, confidence interval, average cost, output tokens, and agent steps.\n\nKimi K3 is aimed directly at long-horizon coding and agentic work, so an official DeepSWE v1.1 result—and eventually a complete effort-level sweep—would make the leaderboard substantially more useful for evaluating its capability/cost tradeoffs.\n\nThanks for considering it.\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/61#issuecomment-4994900269",
+      "user": "coygeek",
+      "created_at": "2026-07-16T17:43:39Z",
+      "updated_at": "2026-07-16T19:07:49Z",
+      "body": "![image](https://github.com/user-attachments/assets/d687900c-5153-4b05-85be-7bc4b91a5600)\n\nPosted benchmarks show its 67.5% for DeepSWE. \n\nSource:\n\nhttps://x.com/kimi_moonshot/status/2077830229968683203?s=46\n\nBlog:\n\nhttps://www.kimi.com/blog/kimi-k3"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/61#issuecomment-4995728792",
+      "user": "coygeek",
+      "created_at": "2026-07-16T19:20:57Z",
+      "updated_at": "2026-07-16T19:20:57Z",
+      "body": "AA posted their results. Currently 3rd best. This is incredible. We need this tested on DeepSWE ASAP!\n\n![image](https://github.com/user-attachments/assets/76899c01-0f57-47df-a1a3-3a414a8db43e)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/61#issuecomment-5006000234",
+      "user": "coygeek",
+      "created_at": "2026-07-17T17:55:59Z",
+      "updated_at": "2026-07-17T17:55:59Z",
+      "body": "Thanks DeepSWE!\n\nThe results are posted:\n\n<img width=\"997\" height=\"818\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b9d770ba-19eb-4970-bed3-8ad29f93f9df\" />\n\nMoonshot said it was 67.5%\nDeepSWE confirmed its 69%\n\nAmazing!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/61#issuecomment-5006173993",
+      "user": "darthShadow",
+      "created_at": "2026-07-17T18:14:28Z",
+      "updated_at": "2026-07-17T18:14:28Z",
+      "body": "Looks like only the max reasoning level is updated as of now. Would it be possible to add the others as well?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/61#issuecomment-5006440794",
+      "user": "coygeek",
+      "created_at": "2026-07-17T18:41:39Z",
+      "updated_at": "2026-07-17T18:41:39Z",
+      "body": "Alright, I'll re-open, for future reasoning levels to be added. "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/61#issuecomment-5008441913",
+      "user": "coygeek",
+      "created_at": "2026-07-17T23:19:23Z",
+      "updated_at": "2026-07-17T23:19:23Z",
+      "body": "Artificial Analysis posted their DeepSWE for Kimi K3 (i'm guessing max reasoning) using Kimi Code CLI => Result 64%.\nhttps://artificialanalysis.ai/agents/coding-agents?coding-agents-performance-chart=deep-swe\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-16T16:04:14Z",
+  "github_updated_at": "2026-07-17T23:19:23Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread requests adding Kimi K3 benchmark results to the DeepSWE leaderboard. It is a model-evaluation request, not evidence of a defective current benchmark task, dataset, evaluator, harness, or oracle.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/61"
+  ],
+  "reviewed_at": "2026-07-20T00:04:54.192Z"
+}
