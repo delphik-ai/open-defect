@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "featurebench-lite__libercoders__featurebench__issue-5",
+  "benchmark_name": "featurebench-lite",
+  "scope": "task_specific",
+  "task_names": [
+    "pydata__xarray.97f3a746.test_treenode.aa8ba777.lv2",
+    "mlflow__mlflow.93dab383.test_judge_tool_search_traces.cad8fc4b.lv1",
+    "huggingface__transformers.e2e8dbed.test_serve.4e7860c7.lv1"
+  ],
+  "resolution": "found",
+  "title": "Interface Description defects in lite split — gold tests exercise APIs absent from the Problem Statement (L1 + L2)",
+  "summary": "FeatureBench lite interface descriptions omit or contradict APIs and concrete values that the gold tests require, leaving affected tasks underspecified relative to their tests.",
+  "canonical_source_url": "https://github.com/LiberCoders/FeatureBench/issues/5",
+  "evidence_urls": [
+    "https://github.com/LiberCoders/FeatureBench/issues/5",
+    "https://github.com/LiberCoders/FeatureBench/issues/5#issuecomment-5018626607"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-13T21:04:24Z",
+  "last_reviewed_at": "2026-07-22T00:07:30.850Z",
+  "decision_note": "L2 audit: issue title/body explicitly attribute the report to the lite split at current SHA e99d6ef and name three affected task ids. Maintainer acknowledgement agrees that Interface Description/gold-test discrepancies can affect fairness and requests the full per-defect report, providing social proof. No existing FeatureBench lite canonical artifact covers this root cause."
+}

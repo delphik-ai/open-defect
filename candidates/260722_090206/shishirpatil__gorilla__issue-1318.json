@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1318",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1318,
+  "title": "Clarvia: AEO quality scores for API/function call readiness",
+  "body": "## Clarvia — API/Agent Readiness Scoring for Function Calls\n\nHi Gorilla team 👋\n\nGorilla's mission is training and evaluating LLMs for function calls. We've built **Clarvia** (https://clarvia.art), a complementary tool that scores APIs and MCP servers for **agent-engine optimization (AEO)** — essentially measuring how well a service is designed to be called by AI agents.\n\n### What Clarvia provides\n\n- **AEO Score (0–100)**: Measures documentation quality, schema completeness, error handling, auth clarity, and rate limit transparency — exactly what matters for LLM function calling\n- **27,000+ indexed tools**: Every major API and MCP server already scored\n- **MCP server** (npm: ): Agents can query scores and find alternatives before making calls\n- **Gate-check tool**: Validate tool readiness before adding to agent workflows\n\n### Why this is relevant to Gorilla\n\nGorilla evaluates LLM accuracy on function calls — but the *quality of the API documentation* directly affects LLM performance. Clarvia's AEO scores could be a useful signal for:\n- Selecting which APIs to include in Gorilla's training/eval sets (higher AEO = cleaner docs = better LLM comprehension)\n- Filtering out poorly-documented APIs that introduce noise\n- Benchmarking API documentation quality alongside function call accuracy\n\n### Integration idea\n\nUsing Clarvia MCP tools to pre-screen APIs before adding them to eval sets:\n```\nnpx clarvia-mcp-server\n# Tools: search_tools, aeo_score, gate_check, get_alternatives\n```\n\nAPI: https://clarvia-api.onrender.com/docs\n\nWould love to discuss how Clarvia's quality scores could complement Gorilla's function call evaluations.\n\n— Clarvia team",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-03-31T16:13:53Z",
+  "github_updated_at": "2026-07-21T13:19:33Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Closed promotional issue for an external API/function-call readiness product. It does not report a BFCL benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1318"
+  ],
+  "reviewed_at": "2026-07-22T00:07:30.850Z"
+}

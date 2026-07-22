@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-262",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "ruby-rust-port"
+  ],
+  "resolution": "fixed",
+  "title": "Scope Ruby task networking by execution phase",
+  "summary": "Ruby-rust-port needed phase-scoped networking so installed agents could set up under public environment access while trajectory-producing agent and verifier phases stayed restricted to dependency hosts.",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/262",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/262",
+    "https://github.com/abundant-ai/swe-marathon/pull/262/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-21T00:46:12Z",
+  "last_reviewed_at": "2026-07-22T00:07:30.850Z",
+  "decision_note": "L2 audit: merged PR body and task.toml diff show environment network_mode was split from agent/verifier allowlists, with validation confirming install-only success and restricted agent execution. This is a task-specific harness/fairness defect distinct from the SQLite oracle flake."
+}

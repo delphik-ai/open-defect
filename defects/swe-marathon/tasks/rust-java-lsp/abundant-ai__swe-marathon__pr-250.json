@@ -6,17 +6,18 @@
   "task_names": [
     "rust-java-lsp"
   ],
-  "resolution": "fixing",
+  "resolution": "fixed",
   "title": "Make rust-java-lsp closed internet",
   "summary": "Task rust-java-lsp still used unrestricted internet; open PR #250 documents restricted networking and replaces allow_internet=true with a minimal crate/GitHub allowlist.",
   "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/250",
   "evidence_urls": [
     "https://github.com/abundant-ai/swe-marathon/pull/250",
     "https://github.com/abundant-ai/swe-marathon/pull/250/files",
-    "https://github.com/abundant-ai/swe-marathon/pull/250#issuecomment-4871116657"
+    "https://github.com/abundant-ai/swe-marathon/pull/250#issuecomment-4871116657",
+    "https://github.com/abundant-ai/swe-marathon/pull/263"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-07-02T22:54:42Z",
-  "last_reviewed_at": "2026-07-03T00:04:36Z",
+  "last_reviewed_at": "2026-07-22T00:07:30.850Z",
   "decision_note": "L2 audit. The PR title/body identify the current swe-marathon task rust-java-lsp, and the diff changes tasks/rust-java-lsp/task.toml from allow_internet=true to network_mode=allowlist with only crate registry/GitHub hosts plus task-facing restricted-network guidance. The PR remains open and static checks currently fail on asset/reviewer/verifier packaging, so resolution is fixing rather than fixed. No existing swe-marathon artifact covers this root cause."
 }

@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-246",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "biofabric-rust-rewrite",
+    "embedding-eval",
+    "find-network-alignments",
+    "jax-pytorch-rewrite",
+    "nextjs-vite-rewrite",
+    "ruby-rust-port",
+    "rust-c-compiler",
+    "rust-java-lsp",
+    "vliw-kernel-optimization",
+    "wasm-simd",
+    "zstd-decoder"
+  ],
+  "resolution": "fixed",
+  "title": "Convert long-horizon tasks to closed internet (keep 4 CUA open)",
+  "summary": "Merged SWE-Marathon PR converted non-CUA long-horizon tasks from open internet to closed or dependency-allowlisted execution, removing a fairness leak where agents could use public internet during task runs.",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/246",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/246",
+    "https://github.com/abundant-ai/swe-marathon/pull/246/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-23T01:54:14Z",
+  "last_reviewed_at": "2026-07-22T00:07:30.850Z",
+  "decision_note": "L2 audit: PR #246 is merged to main and its body/diff show task.toml network policy changes plus README/CHANGELOG documenting closed-internet rollout. The task list is taken from changed task.toml files excluding CUA/browser clone tasks that the PR explicitly kept open; existing rust task artifacts cover narrower follow-up PRs but not the suite-level rollout."
+}

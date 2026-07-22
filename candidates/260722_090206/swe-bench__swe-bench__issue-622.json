@@ -1,0 +1,57 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/622",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 622,
+  "title": "psf/requests instances: httpbin.org sheds load ~10.5 h every day (05:00–15:35 UTC), zeroing verify tests in that window",
+  "body": "While root-causing flaky results on the four SWE-bench Verified psf/requests instances whose test suites hit live httpbin.org (`psf__requests-1724`, `-1766`, `-1921`, `-2317`), we probed all 21 httpbin endpoints those suites touch, about once a minute for 72+ h from two unrelated networks (a datacenter and a consumer ISP).\n\n- httpbin.org sheds 85–95 % of requests in a **daily window, ~05:00–15:35 UTC — ~44 % of every day** — reproduced on consecutive days (weekends and weekdays) from both vantages, with edges agreeing to within a minute.\n- The 503s carry `Server: awselb/2.0` — the load balancer self-answers and the origin (`gunicorn/19.9.0`) is never reached — and they hit **every endpoint** (66–97 % each), so no test touching httpbin survives the window.\n- Effect: inside the window these four instances score 0 regardless of patch quality — the same patchset scored 0/20 trial passes inside vs 19/20 outside. Even outside the window, ~0.4 % background 5xx can zero individual runs.\n\nResults on these instances are therefore a function of evaluation clock time — related reports: #484 (gold-patch validation failures on these same instances, closed), #167 (intermittent failures incl. 2317), #488 (same dependency bites in network-restricted setups).\n\nSuggested fix, echoing the debug-gym approach in #484: host httpbin inside the eval container (these suites honor `HTTPBIN_URL`); that also fixes setups like #488.\n\nHappy to share the probe CSVs (~120 k requests) if useful.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/622#issuecomment-5034911980",
+      "user": "piojanu",
+      "created_at": "2026-07-21T13:54:49Z",
+      "updated_at": "2026-07-21T13:54:49Z",
+      "body": "We patched it in https://github.com/NVIDIA-NeMo/Evaluator/pull/1120 for your reference 🙂"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-20T13:51:14Z",
+  "github_updated_at": "2026-07-21T13:54:49Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "resolution": "found",
+  "summary": "Additional SWE-bench Verified evidence for psf/requests httpbin-driven gold-patch instability already represented in the L3-audited Verified instability canonical defect.",
+  "decision_note": "L2 audit: issue #622 explicitly names SWE-bench Verified and the psf/requests httpbin root cause, and links related issue #484 which is already evidence on canonical defect swebench-verified__swe-bench__swe-bench__issue-294. Because that canonical captures the existing L3-audited Verified gold-patch instability including psf/requests tasks, this thread is duplicate evidence rather than a new canonical.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/622",
+    "https://github.com/SWE-bench/SWE-bench/issues/484",
+    "https://github.com/SWE-bench/SWE-bench/issues/294"
+  ],
+  "reviewed_at": "2026-07-22T00:07:30.850Z"
+}

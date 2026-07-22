@@ -1,0 +1,56 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/pull/250",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_pr",
+  "github_number": 250,
+  "title": "No-op: rust-java-lsp closed internet superseded",
+  "body": "<!-- CURSOR_AGENT_PR_BODY_BEGIN -->\n## Summary\n\nThis PR is now intentionally a no-op. The `rust-java-lsp` closed-internet changes were reverted so the active closed-internet work is isolated to the C compiler PR: https://github.com/abundant-ai/swe-marathon/pull/249.\n\n## Checklist\n\n- [x] This PR updates exactly one task directory. (It now updates no task files.)\n- [x] All behavior checked in `tests/` is described in `instruction.md`. (No behavior changes remain.)\n- [x] All required output files are named in `instruction.md`. (No behavior changes remain.)\n- [x] `instruction.md` uses absolute paths. (No behavior changes remain.)\n- [x] `environment/Dockerfile` does not copy `solution/` or `tests/`. (No behavior changes remain.)\n- [x] `task.toml` has non-placeholder `difficulty_explanation`, `solution_explanation`, and `verification_explanation`. (No behavior changes remain.)\n- [x] `reward.txt` is binary (0 or 1). Partial scores go to `metrics.json`. (No behavior changes remain.)\n- [x] `solution/` contains readable code files (no `.patch`/`.diff`; no `patch -p` in `solve.sh`). (No behavior changes remain.)\n- [x] I ran the local static checks for this task. (Previously run before revert; no task diff remains.)\n- [x] I ran `harbor run -p tasks/<task> --agent oracle`. (Previously run before revert; no task diff remains.)\n- [x] I ran `harbor run -p tasks/<task> --agent nop`. (Previously run before revert; no task diff remains.)\n\n## Local Validation\n\n- Reverted commit `64f2aad7`, leaving no file changes against `main` on this branch.\n- Verified the C compiler PR branch remains the task-scoped change for closed internet.\n\n## Agent Notes\n\nKeep this PR out of review/merge flow; use PR #249 for the isolated C compiler change.\n<!-- CURSOR_AGENT_PR_BODY_END -->\n\n<div><a href=\"https://cursor.com/agents/bc-9f0852f4-9608-4f3e-8668-7d0c0b758a65\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cursor.com/assets/images/open-in-web-dark.png\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://cursor.com/assets/images/open-in-web-light.png\"><img alt=\"Open in Web\" width=\"114\" height=\"28\" src=\"https://cursor.com/assets/images/open-in-web-dark.png\"></picture></a>&nbsp;<a href=\"https://cursor.com/background-agent?bcId=bc-9f0852f4-9608-4f3e-8668-7d0c0b758a65\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://cursor.com/assets/images/open-in-cursor-dark.png\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://cursor.com/assets/images/open-in-cursor-light.png\"><img alt=\"Open in Cursor\" width=\"131\" height=\"28\" src=\"https://cursor.com/assets/images/open-in-cursor-dark.png\"></picture></a>&nbsp;</div>\n\n",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/pull/250#issuecomment-4871116657",
+      "user": "github-actions[bot]",
+      "created_at": "2026-07-02T22:55:09Z",
+      "updated_at": "2026-07-02T22:55:09Z",
+      "body": "### Static Checks ❌\n\nSome static checks failed. See details below and the [workflow run](https://github.com/abundant-ai/swe-marathon/actions/runs/28626701531) for full output.\n\n| Check | Result |\n|-------|--------|\n| Canary strings | ✅ |\n| Dockerfile base image | ✅ |\n| Dockerfile references | ✅ |\n| Dockerfile sanity | ✅ |\n| Absolute paths | ✅ |\n| Test file references | ✅ |\n| test.sh sanity | ✅ |\n| Task field validation | ✅ |\n| Task resources | ✅ |\n| Timer | ✅ |\n| Closed internet | ✅ |\n| Solution format | ✅ |\n| Reward format | ✅ |\n| metrics.json partial_score | ✅ |\n| Anti-cheat soundness | ✅ |\n| Asset encryption | ❌ |\n| Reviewer-visible tests | ❌ |\n| Verifier artifacts | ❌ |\n\n<sub>Ran on <a href=\"https://github.com/abundant-ai/swe-marathon/commit/64f2aad792375257aaf7da89068a64941dae7888\"><code>64f2aad</code></a>. Automatically runs on each push.</sub>\n\n<!-- Sticky Pull Request Commentstatic-checks -->"
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/pull/250#issuecomment-4871122238",
+      "user": "github-actions[bot]",
+      "created_at": "2026-07-02T22:55:46Z",
+      "updated_at": "2026-07-02T22:55:46Z",
+      "body": "## 📋 Task Implementation Rubric Review\n\n⚠️ Review not available (job may have failed)\n\n\n📋 [View run logs](https://github.com/abundant-ai/swe-marathon/actions/runs/28626701550)\n\n<sub>Ran on <a href=\"https://github.com/abundant-ai/swe-marathon/commit/64f2aad792375257aaf7da89068a64941dae7888\"><code>64f2aad</code></a>. Automatically runs on each push. See <a href=\"https://github.com/abundant-ai/swe-marathon/blob/main/resources/task-implementation.toml\">task-implementation.toml</a>.</sub>\n\n<!-- Sticky Pull Request Commentrubric-review -->"
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/pull/250#issuecomment-4871131880",
+      "user": "github-actions[bot]",
+      "created_at": "2026-07-02T22:57:09Z",
+      "updated_at": "2026-07-02T22:57:09Z",
+      "body": "## 🔍 Task Validation Results\n\n| Task | Similarity | Docker | Oracle | Nop | Metrics | Harbor Check | AI Detection |\n|------|------------|--------|--------|-----|---------|--------------|--------------|\n| `rust-java-lsp` | ✅ | ✅ | ⏭️ | ⏭️ | ⏭️ | ⏭️ | ⏭️ |\n\n📋 [View run summary for detailed output](https://github.com/abundant-ai/swe-marathon/actions/runs/28626701580)\n\n<details>\n<summary>Legend</summary>\n\n- **Similarity**: Task instruction is not too similar to existing tasks (TF-IDF cosine ≥ 80% fails)\n- **Docker**: Environment builds successfully\n- **Oracle**: Solution (`solve.sh`) produces reward 1.0\n- **Nop**: Doing nothing produces reward 0.0\n- **Metrics**: `metrics.json` parses, has numeric `partial_score` ∈ [0, 1], and oracle's score = 1.0\n- **Harbor Check**: `harbor check` passes all structural validations\n- **AI Detection**: Instruction and solve.sh don't look primarily LLM-drafted (Claude judge, 70% threshold)\n- ⏭️ = Skipped (prerequisite failed)\n\n</details>\n\n<sub>Ran on <a href=\"https://github.com/abundant-ai/swe-marathon/commit/64f2aad792375257aaf7da89068a64941dae7888\"><code>64f2aad</code></a>. Automatically runs on each push.</sub>\n\n<!-- Sticky Pull Request Commenttask-validation -->"
+    }
+  ],
+  "linked_pr_diff": "",
+  "github_state": "closed",
+  "github_created_at": "2026-07-02T22:54:42Z",
+  "github_updated_at": "2026-07-20T22:51:09Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swe-marathon",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swe-marathon__abundant-ai__swe-marathon__pr-250",
+  "task_names": [
+    "rust-java-lsp"
+  ],
+  "resolution": "fixed",
+  "summary": "Follow-up evidence for the rust-java-lsp open-internet defect; this no-op PR was closed after merged PR #263 supplied the phase-scoped network fix.",
+  "decision_note": "L2 audit: current candidate is the same source/root cause already canonicalized as swe-marathon__abundant-ai__swe-marathon__pr-250. The PR title/body say it was superseded, and merged PR #263 adds the runtime allowlist policy for rust-java-lsp, so it is duplicate evidence with fixed resolution.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/250",
+    "https://github.com/abundant-ai/swe-marathon/pull/250/files",
+    "https://github.com/abundant-ai/swe-marathon/pull/263"
+  ],
+  "reviewed_at": "2026-07-22T00:07:30.850Z"
+}

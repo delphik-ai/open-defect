@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-261",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "ruby-rust-port"
+  ],
+  "resolution": "fixed",
+  "title": "Prevent Ruby port oracle SQLite lock flakes",
+  "summary": "Ruby-rust-port oracle verification could flake from in-process SQLite writer contention in the Ruby reference, causing valid oracle runs to lose a gate until merged PR #261 shared DB pools and added busy handling.",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/261",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/261",
+    "https://github.com/abundant-ai/swe-marathon/pull/261/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-21T00:06:45Z",
+  "last_reviewed_at": "2026-07-22T00:07:30.850Z",
+  "decision_note": "L2 audit: merged PR body gives the root-cause signature SQLite3::BusyException/database is locked, reports oracle/nop validation, and the diff changes the ruby-rust-port reference DB pooling plus regression coverage. No existing swe-marathon artifact has this SQLite oracle flake root cause."
+}

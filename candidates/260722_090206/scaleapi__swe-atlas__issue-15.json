@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-Atlas/issues/15",
+  "repo": "scaleapi/swe-atlas",
+  "source_type": "github_issue",
+  "github_number": 15,
+  "title": "evaluate_rubrics.py fails to parse valid JSON when string values contain Markdown code fences",
+  "body": "## Question Description\n\nThe LLM response parsing logic in `rf/task_id/tests/evaluate_rubrics.py` does not fully account for Markdown code fences appearing inside JSON string values.\n\nThe parser currently uses logic like:\n```python\n    if \"```json\" in text:\n        after = text[text.find(\"```json\") + 7:]\n        end = after.find(\"```\")\n        if end != -1:\n            text = after[:end].strip()\n```\nThis assumes that the first closing-code-fence sequence after the outer \\`\\`\\`json marker terminates the JSON block. However, an LLM may include a fenced code example inside a JSON string, especially in a justification field.\n**For example:**\n```\n```json\n{\n  \"ratings\": [\n    {\n      \"status\": \"YES\",\n      \"justification\": \"The diff shows that a new `CannotSetMailbox` exception class is created in `app/user_settings.py` with a `msg` attribute, following the exact same pattern as the existing `CannotSetAlias` class. The code added is:\\n\\n```python\\nclass CannotSetMailbox(Exception):\\n    def **init**(self, msg: str):\\n        self.msg = msg\\n```\\n\\nThis mirrors the existing `CannotSetAlias` class structure which has the same `**init**` method signature and `msg` attribute assignment.\"\n    }\n  ]\n}```\n```\n\nIn this case, after.find(\"\\`\\`\\`\") finds the **\\`\\`\\`python** fence inside the justification value instead of the closing fence surrounding the JSON response. The extracted JSON is therefore truncated and cannot be parsed.\n### Impact\nThe JSON parsing fails even though the LLM response contains a usable ratings object. As a result, the response may be skipped and the evaluation is not performed.\n### Suggested fix\nThe simplest fix is to use end = after.rfind(\"```\") so that the outermost closing code fence is used to extract the complete response.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-20T09:43:45Z",
+  "github_updated_at": "2026-07-20T09:43:45Z",
+  "candidate_benchmark_names": [
+    "scale-ai__swe-atlas-qna",
+    "scale-ai__swe-atlas-tw"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "The defect claim targets `rf/task_id/tests/evaluate_rubrics.py`, which belongs to SWE-Atlas Refactoring. The current watch-map candidates for this repo are SWE-Atlas QnA and TW only, so benchmark attribution cannot be made to an in-scope benchmark.",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/issues/15"
+  ],
+  "reviewed_at": "2026-07-22T00:07:30.850Z"
+}

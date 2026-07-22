@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-264",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "rust-java-lsp"
+  ],
+  "resolution": "fixed",
+  "title": "Fix Java LSP golden corpus Docker copy",
+  "summary": "Rust-java-lsp image builds failed after Docker interpreted an inline COPY comment as extra source paths; merged PR #264 stages the corpus and copies it without invalid Docker syntax.",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/264",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/264",
+    "https://github.com/abundant-ai/swe-marathon/pull/264/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-21T17:52:12Z",
+  "last_reviewed_at": "2026-07-22T00:07:30.850Z",
+  "decision_note": "L2 audit: merged PR body states the image-build failure signature `copy_tree: source path does not exist`, and the diff replaces the invalid inline-comment COPY with a staged copy/encrypt/remove sequence. This build-regression root cause is not present in existing rust-java-lsp artifacts."
+}
