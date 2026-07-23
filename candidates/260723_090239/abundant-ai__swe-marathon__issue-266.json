@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/266",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 266,
+  "title": "Published results include multiple agent self-termination failures",
+  "body": "Hi, and thank you for maintaining and publishing this benchmark.\n\nWhile reviewing the raw artifacts, I noticed several trials that may represent harness-induced failures rather than genuine model results.\n\nAn audit of the current 1,797 published trials found at least nine confirmed self-termination cases across four task families:\n\n  - `nextjs-vite-rewrite`: 277, 279, 280, 281, 286, 421\n  - `find-network-alignments`: 188\n  - `parameter-golf`: 437\n  - `embedding-eval`: 375\n\nThe affected models include Opus 4.8 and GLM 5.2. Their trajectories end at broad process-kill commands such as `pkill -f \"vinext dev\"` or `pkill -f \"train_gpt\"`, followed by exit 143/SIGTERM or 137/SIGKILL.\n\nThe matched terms also occur in the task instruction passed through the agent process argv, apparently causing the agents to terminate themselves. This is related to:\n\n  https://github.com/harbor-framework/harbor/issues/2198\n\nWould you please consider reviewing these trials, marking or excluding invalid ones, and rerunning them with the fixed launcher if appropriate?\n\nI may have missed relevant context about the publication process, so please let me know if these results are already handled elsewhere. Thank you!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-22T08:45:15Z",
+  "github_updated_at": "2026-07-22T08:45:15Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swe-marathon",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swe-marathon__abundant-ai__swe-marathon__issue-266",
+  "task_names": [
+    "nextjs-vite-rewrite",
+    "find-network-alignments",
+    "parameter-golf",
+    "embedding-eval"
+  ],
+  "resolution": "found",
+  "summary": "Published SWE-Marathon trials for four task families include agent self-termination failures where broad pkill patterns matched the Claude Code process argv, making valid or partially valid runs appear as model failures.",
+  "decision_note": "L2 audit. The issue identifies current SWE-Marathon tasks and concrete trial ids ending in pkill-triggered SIGTERM/SIGKILL. The linked Harbor issue #2198 documents the same argv/pkill root cause, and merged Harbor PR #2200 fixes Claude Code prompt delivery with regression coverage. Existing swe-marathon artifacts cover different task/config root causes, so this is a new canonical defect. SWE-Marathon has not yet marked or rerun the affected published trials, so resolution remains found.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/266",
+    "https://github.com/harbor-framework/harbor/issues/2198",
+    "https://github.com/harbor-framework/harbor/pull/2200",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/nextjs-vite-rewrite/task.toml",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/find-network-alignments/task.toml",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/parameter-golf/task.toml",
+    "https://github.com/abundant-ai/swe-marathon/blob/main/tasks/embedding-eval/task.toml"
+  ],
+  "reviewed_at": "2026-07-23T00:06:34.018Z"
+}

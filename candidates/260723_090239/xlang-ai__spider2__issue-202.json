@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/202",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 202,
+  "title": "Sent a request 12+ hours ago and no response - please advise",
+  "body": "Dear Spider 2.0 Team,\n\nI sent a request for access 12+ hours ago and haven't had a response.\n\nPlease could you advise or check for me? My email is benhummerston@gmail.com\n\nThanks!",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5029427920",
+      "user": "selina0609",
+      "created_at": "2026-07-21T02:11:36Z",
+      "updated_at": "2026-07-21T02:11:36Z",
+      "body": "same issue. My email is **selina4231@gmail.com** and **selina_luo@phison.com**\nThanks!"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5052348083",
+      "user": "sby854905420-netizen",
+      "created_at": "2026-07-22T22:41:06Z",
+      "updated_at": "2026-07-22T22:41:06Z",
+      "body": "same issue. I fill the form for three times. Please reply me. My email is sby854905420@gmail.com"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-20T16:08:37Z",
+  "github_updated_at": "2026-07-22T22:41:06Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Issue asks for access-request support and includes user contact details. It is an operational access/request handling issue, not a benchmark artifact, task, harness, evaluator, or dataset defect.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/202"
+  ],
+  "reviewed_at": "2026-07-23T00:06:34.018Z"
+}

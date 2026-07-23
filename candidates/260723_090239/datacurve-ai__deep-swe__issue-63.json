@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/63",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 63,
+  "title": "Benchmark Qwen3.8 Max Preview on DeepSWE v1.1",
+  "body": "(empty GitHub body)",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/63#issuecomment-5041246171",
+      "user": "coygeek",
+      "created_at": "2026-07-22T02:47:00Z",
+      "updated_at": "2026-07-22T02:47:00Z",
+      "body": "The real model won't have a 'preview' in the name, so this specific model is shortlived. "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-21T12:10:06Z",
+  "github_updated_at": "2026-07-22T02:47:01Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Issue requests benchmarking a short-lived model variant on DeepSWE v1.1. It does not claim a benchmark artifact, task, harness, or evaluator defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/63"
+  ],
+  "reviewed_at": "2026-07-23T00:06:34.018Z"
+}

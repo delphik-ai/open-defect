@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/PatrickHua/ResearchCodeBench/issues/2",
+  "repo": "patrickhua/researchcodebench",
+  "source_type": "github_issue",
+  "github_number": 2,
+  "title": "Are task-level without-paper results and raw generations available?",
+  "body": "Hi, thank you for creating and open-sourcing ResearchCodeBench!\n\nI am conducting a complementary diagnostic analysis inspired by the benchmark and am looking for two artifacts that I could not locate in the repository:\n\n1. **Task-level, model-level pass/fail results for the without-paper condition**, corresponding to the runs produced by `scripts/run_greedy_wo_paper.sh`. These would allow us to reconstruct the \"better with paper (86)\" and \"better without paper (75)\" subsets from Figure 4 at the task level.\n\n2. **Raw code generations for each task and model**, if saved. These would support analyses measuring overlap with the pseudocode and other implementation-relevant content in the source papers.\n\nThe directories under `outputs/20llms_greedy/` appear to contain only `overall_stats.json`. Are the artifacts above available elsewhere, or would it be possible to add them to the release? The original files or a CSV/JSON export would both be very helpful.\n\nWe will appropriately cite and acknowledge ResearchCodeBench in any resulting work. Thank you for your time!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-22T16:34:41Z",
+  "github_updated_at": "2026-07-22T16:34:41Z",
+  "candidate_benchmark_names": [
+    "researchcodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Issue asks whether task-level without-paper results and raw generations are available. It is an artifact availability request for analysis, not a defect claim about the current benchmark.",
+  "checked_urls": [
+    "https://github.com/PatrickHua/ResearchCodeBench/issues/2"
+  ],
+  "reviewed_at": "2026-07-23T00:06:34.018Z"
+}

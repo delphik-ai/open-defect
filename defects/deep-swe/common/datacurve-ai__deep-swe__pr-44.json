@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__pr-44",
+  "benchmark_name": "deep-swe",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "feat: use harbor's network_mode",
+  "summary": "DeepSWE task configs used the older Harbor allow_internet schema; merged PR #44 migrates the suite to schema_version 1.3 with explicit agent and verifier network_mode settings.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/pull/44",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/44",
+    "https://github.com/datacurve-ai/deep-swe/pull/44/files",
+    "https://github.com/datacurve-ai/deep-swe/pull/44#issuecomment-5051913852"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-06-24T10:11:18Z",
+  "last_reviewed_at": "2026-07-23T00:06:34.018Z",
+  "decision_note": "L2 audit. The merged PR updates 100 task.toml files from schema_version 1.1/allow_internet to schema_version 1.3 with explicit [agent] and [verifier] network_mode settings, and the maintainer acknowledged the change after merge. Existing DeepSWE artifacts cover grading, task metadata, and task-specific build/verifier issues, not the suite-wide Harbor network schema migration. Because the PR is merged, resolution is fixed."
+}

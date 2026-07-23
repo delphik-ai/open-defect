@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/203",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 203,
+  "title": "Spider 2.0 Snow sf012: Execution of gold query lead to different results",
+  "body": "Hi there, if you run the sf012 gold SQL against Snowflake, you get a different result compared to the exec_result csv. Hence, measuring EX against the gold exec_result leads to a wrong result. Could you either update the data on snowflake or extend the exec_result for that case? Best, Niklas",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-22T09:59:51Z",
+  "github_updated_at": "2026-07-22T09:59:51Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Issue explicitly concerns Spider 2.0 Snow/Snowflake task sf012 and mismatched Snowflake execution results. The watched benchmark for xlang-ai/Spider2 in this repository is spider2-dbt, so this belongs to a different Spider2 variant and is outside the current benchmark scope.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/203"
+  ],
+  "reviewed_at": "2026-07-23T00:06:34.018Z"
+}
