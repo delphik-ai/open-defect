@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/586",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 586,
+  "title": "[Infrastructure Audit] Systematic baseline unreachability in SWE-bench Pro (Public dataset) — 62.5% failure rate observed",
+  "body": "### Describe the bug\n\nI have been stress-testing a native-substrate hypervisor (Hiyal) to optimize SWE-bench evaluation performance. During an audit of the unsolved-by-all bucket (the 281-instance subset where all 9 published baselines fail), I identified that a significant percentage of these instances are not \"hard\" for models, but are fundamentally unreachable due to environment-level failures.\n\nMy audit indicates that 5 of 8 sampled instances (62.5%) are baseline-broken. They fail during the test pipeline setup—long before any model patch could be applied. Current SWE-bench evaluators treat the pipeline as a black box (Patch → npm test/pytest → pass-or-fail bit). Because the pipeline crashes during setup (e.g., before-all hooks or missing file collection), the assertions are never reached, and the failure is logged as \"model-unsolved\" rather than \"infrastructure-unreachable.\"\n\nThis suggests that a meaningful portion of the \"unsolved-by-all\" bucket consists of unreachable instances, which effectively understates the pass rate of all SOTA models.\n\n### Steps/Code to Reproduce\n\nThe issues are reproducible inside the official jefzda/sweap-images registry (the canonical images per the scaleapi/SWE-bench_Pro-os README).\n\nClass A: Module-load failure (e.g., NodeBB__NodeBB-00c70ce7...)\n\nBash\n# Verify bare-require failure\ndocker run --rm jefzda/sweap-images:nodebb.nodebb-NodeBB__NodeBB-00c70ce7b0541cfc94afe567921d7668cdc8f4ac \\\n    sh -c 'cd /app && node -e \"console.log(require.resolve(\\\"spider-detector\\\"))\"'\n# Result: Error: Cannot find module 'spider-detector'\nClass B: Missing Test Files (e.g., element-hq__element-web-1077729a...)\n\nBash\n# Verify test paths existance\nIMG=jefzda/sweap-images:element-hq.element-web-1077729a2886f4a86f9f38c36398f6d3f23a6699\ndocker run --rm $IMG sh -c 'cd /app && for f in $(cat selected_test_files_to_run); do [ -f \"$f\" ] && echo EXISTS $f || echo MISSING $f; done'\n\n### Expected Results\n\nThe test pipeline should reach the assertion phase. If a failure occurs, the harness should provide visibility into stderr (e.g., MODULE_NOT_FOUND or \"file not found\" errors) so that the environment health can be distinguished from model performance.\n\n### Actual Results\n\nThe evaluation harness reports a failure (bit 0), and the specific cause of the bootstrap failure (e.g., before-all hook errors or missing test files) is swallowed by the black-box evaluation process.\n\n### System Information\n\nThis audit was performed on a MacBook Air (M1, MacOS), utilizing a custom substrate-layer hypervisor (Hiyal) to inspect the unmodified official images (Scale AI/jefzda registry).",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/586#issuecomment-5054174500",
+      "user": "kimjune01",
+      "created_at": "2026-07-23T03:59:27Z",
+      "updated_at": "2026-07-23T03:59:27Z",
+      "body": "I found a related problem in the same dataset. About a quarter of all 728 public Pro tasks can fail because the problem description does not say what the hidden test wants, not because the model got it wrong. The results are here: https://github.com/kimjune01/swebench-pro-audit#6-results . Like the setup crashes you found, these get logged as model failures when they should not be. Both make the real pass rate look lower than it is."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-05-23T17:34:12Z",
+  "github_updated_at": "2026-07-23T03:59:27Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "The issue explicitly concerns SWE-bench Pro public dataset images/tasks, including jefzda/sweap-images and Pro task examples. This repo mapping for SWE-bench/SWE-bench only covers current swebench-verified and swebench_multilingual candidates, so the claimed Pro infrastructure failures are outside these benchmark variants.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/586",
+    "https://github.com/SWE-bench/SWE-bench/issues/586#issuecomment-5054174500"
+  ],
+  "reviewed_at": "2026-07-24T00:04:59.374Z"
+}

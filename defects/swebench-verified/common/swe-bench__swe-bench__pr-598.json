@@ -4,7 +4,7 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "found",
+  "resolution": "fixing",
   "title": "Pytest SKIPPED lines mis-parsed during grading",
   "summary": "The SWE-bench harness mis-parses pytest output: 'nodeid SKIPPED ...' lines lose their real node id, and 'SKIPPED [N] path:line: reason' summary lines are recorded as a fake [N] test, distorting grading for tasks with skipped tests.",
   "defect_type_main": "grading",
@@ -15,6 +15,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-17T03:56:47Z",
-  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "last_reviewed_at": "2026-07-24T00:04:59.374Z",
   "decision_note": "Confirmed via PR diff describing the parsing bug. Fix PR OPEN, no maintainer ack -> resolution found. L2."
 }
