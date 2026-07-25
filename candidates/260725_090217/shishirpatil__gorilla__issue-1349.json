@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1349",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1349,
+  "title": "EvalScope integration: one-command evaluation support for BFCL-v3 and BFCL-v4",
+  "body": "Hi ShishirPatil/gorilla maintainers,\n\nEvalScope now supports BFCL-v3 and BFCL-v4. This gives users another way to run the benchmark when they want a standardized evaluation workflow around OpenAI-compatible model endpoints, saved predictions, scoring, and report generation.\n\nThis may be useful for users who find this repository while setting up BFCL-v3 and BFCL-v4 and want a quick path to evaluate a hosted or locally served model.\n\nExample:\n\n```bash\nevalscope eval \\\n  --model YOUR_MODEL \\\n  --api-url OPENAI_API_COMPAT_URL \\\n  --api-key EMPTY_TOKEN \\\n  --datasets bfcl_v4 bfcl_v3 \\\n  --limit 10\n```\n\nDocs: https://evalscope.readthedocs.io/en/latest/third_party/bfcl_v4.html  \nAdditional guide: https://evalscope.readthedocs.io/en/latest/third_party/bfcl_v3.html  \nEvalScope repo: https://github.com/modelscope/evalscope\n\nWe can also open a small PR adding this as a README/Docs note, linked to this issue.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-24T07:13:08Z",
+  "github_updated_at": "2026-07-24T07:13:08Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The issue announces EvalScope support for BFCL-v3/v4. It does not claim a BFCL benchmark artifact defect.",
+  "reviewed_at": "2026-07-25T00:06:51.967Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1349"
+  ]
+}

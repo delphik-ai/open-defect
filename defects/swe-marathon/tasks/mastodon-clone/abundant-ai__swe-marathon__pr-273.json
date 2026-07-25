@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-273",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "mastodon-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Show mastodon-clone zero notification badge",
+  "summary": "The mastodon-clone oracle hid the notifications badge at zero unread, causing the CUA notifications criterion to PARTIAL even though the template rendered a muted zero badge.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_false_negative",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/273",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/273",
+    "https://github.com/abundant-ai/swe-marathon/pull/273/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T20:28:56Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #273 is merged and names mastodon-clone trial mastodon-clone-e9964b7a-521 as an oracle miss with correctness 1.0 where notifications PARTIALed because .badge[data-count=\"0\"] hid the nav unread badge. The diff removes that hide rule in tasks/mastodon-clone/solution/static/styles.css. Existing SWE-Marathon clone artifacts do not cover this task-specific badge visibility root cause."
+}

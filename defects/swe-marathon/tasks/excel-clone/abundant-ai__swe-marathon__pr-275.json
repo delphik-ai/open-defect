@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-275",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "excel-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Harden excel-clone sheet-tabs CUA storage proof",
+  "summary": "The excel-clone CUA sheet_tabs criterion could PARTIAL valid oracle runs unless the judge used one narrow distinct-content proof for independent per-sheet storage.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_flake",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/275",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/275",
+    "https://github.com/abundant-ai/swe-marathon/pull/275/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T21:56:05Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #275 is merged and hardens excel-clone CUA instructions against two flakes. The persistence part overlaps PR #274, but the diff also changes the sheet_tabs criterion from requiring all enumerated actions to accepting either distinct-content back-and-forth or asymmetric /cells API evidence for independent sheet storage. Existing PR #272 covers visual active-tab styling, not this sheet storage proof rule, so this candidate is counted for the sheet_tabs proof root cause."
+}

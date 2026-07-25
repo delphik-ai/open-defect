@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/66",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 66,
+  "title": "Version 1.1 tag",
+  "body": "My company needs proof of version with a tag in order for us to be able to download oss software. If you could create a version 1.1 tag it would be very much appreciated.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-24T19:17:33Z",
+  "github_updated_at": "2026-07-24T19:17:33Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The issue requests a version 1.1 Git tag for software download compliance. That is release-management metadata, not a benchmark defect.",
+  "reviewed_at": "2026-07-25T00:06:51.967Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/66"
+  ]
+}

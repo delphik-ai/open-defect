@@ -18,6 +18,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-07-23T23:35:00Z",
-  "last_reviewed_at": "2026-07-24T00:04:59.374Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
   "decision_note": "L2 audit. PR #268 is merged and changes only tasks/excel-clone/tests/cua_instruction.md plus rubric.json. The PR body reports a Modal nop/oracle validation where excel-clone-685bff89-546 had correctness 1.0 but failed the binary reward because the CUA skipped the mandatory column-header/drag-range polish probe. The diff removes that mandatory affordance from the polish PASS definition. Existing SWE-Marathon artifacts cover CUA verifier plumbing and binary reward encoding, not this task-specific flaky polish probe. Merged PR gives fixed resolution."
 }

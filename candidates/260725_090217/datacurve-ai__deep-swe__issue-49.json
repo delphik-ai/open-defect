@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/49",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 49,
+  "title": "Would it be possible to conduct testing on Sonnet 5?",
+  "body": "No body provided in the GitHub issue.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/49#issuecomment-4860155184",
+      "user": "coygeek",
+      "created_at": "2026-07-01T21:23:50Z",
+      "updated_at": "2026-07-01T21:23:50Z",
+      "body": "By the way, these are the thinking/effort parameters for Sonnet 5 ([source](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-sonnet-5)):\n\nLow\nMedium\nHigh (DEFAULT)\nXhigh\nMax"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/49#issuecomment-4863007021",
+      "user": "coygeek",
+      "created_at": "2026-07-02T06:56:49Z",
+      "updated_at": "2026-07-02T06:56:49Z",
+      "body": "Results are in:\n\n<img width=\"903\" height=\"1062\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/929600a8-e376-446d-b29b-0f2d606c6bd8\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/49#issuecomment-4863046047",
+      "user": "coygeek",
+      "created_at": "2026-07-02T07:01:50Z",
+      "updated_at": "2026-07-02T07:01:50Z",
+      "body": "Sonnet 5 will burn more tokens and cost you more than if you're using any other model.\n\nI dont know who Sonnet 5 was made for, but its a waste of money, literally.\n\nGPT-5.5-medium is literally 10x cheaper than Sonnet-5-max.\n\nAnthropic produced is training slop now. \n\nThanks to DeepSWE for showing us how ridiculously stupid this model is."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-01T03:27:25Z",
+  "github_updated_at": "2026-07-24T17:51:26Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The thread asks whether Sonnet 5 testing can be conducted and discusses model effort parameters/results. It does not identify a DeepSWE artifact defect.",
+  "reviewed_at": "2026-07-25T00:06:51.967Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/49"
+  ]
+}

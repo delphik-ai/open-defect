@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-272",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "excel-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Harden excel-clone active sheet-tab styling",
+  "summary": "The excel-clone oracle could fail a CUA realism clause because active and inactive sheet tabs were visually too similar in the reference implementation.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_false_negative",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/272",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/272",
+    "https://github.com/abundant-ai/swe-marathon/pull/272/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T19:06:47Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #272 is merged and states excel-clone oracle trial excel-clone-685bff89-594 had correctness 1.0 but UX 0.956 because realism clause 6 PARTIALed on active vs inactive sheet tabs looking identical. The diff changes tasks/excel-clone/solution/static/styles.css to give active tabs distinct background, border, weight, and color. Existing excel-clone artifacts cover other rubric roots, not active tab styling."
+}

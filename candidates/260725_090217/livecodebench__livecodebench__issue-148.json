@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/148",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 148,
+  "title": "EvalScope integration: one-command evaluation support for Live-Code-Bench",
+  "body": "Hi LiveCodeBench/LiveCodeBench maintainers,\n\nEvalScope now supports Live-Code-Bench. This gives users another way to run the benchmark when they want a standardized evaluation workflow around OpenAI-compatible model endpoints, saved predictions, scoring, and report generation.\n\nThis may be useful for users who find this repository while setting up Live-Code-Bench and want a quick path to evaluate a hosted or locally served model.\n\nExample:\n\n```bash\nevalscope eval \\\n  --model YOUR_MODEL \\\n  --api-url OPENAI_API_COMPAT_URL \\\n  --api-key EMPTY_TOKEN \\\n  --datasets live_code_bench \\\n  --limit 10\n```\n\nDocs:\n- Live-Code-Bench: https://evalscope.readthedocs.io/en/latest/benchmarks/live_code_bench.html\n\nEvalScope repo: https://github.com/modelscope/evalscope\n\nSome benchmarks may require additional assets, Docker, media files, or judge-model configuration for a full run; the EvalScope guide above includes the benchmark-specific setup notes.\n\nIf this is useful for your community, we can follow up with a small README/Docs PR linking to the EvalScope usage guide.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-24T09:54:24Z",
+  "github_updated_at": "2026-07-24T09:54:24Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The issue announces EvalScope support for LiveCodeBench. It does not report a defect in LiveCodeBench tasks, data, harness, oracle, or scoring.",
+  "reviewed_at": "2026-07-25T00:06:51.967Z",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/148"
+  ]
+}

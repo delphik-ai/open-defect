@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-269",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "excel-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Darken excel-clone oracle headers to satisfy CUA realism threshold",
+  "summary": "The excel-clone oracle could fail the CUA realism rubric because reference grid headers were only about 4 percentage points darker than cells while the rubric required at least 10.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_false_negative",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/269",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/269",
+    "https://github.com/abundant-ai/swe-marathon/pull/269/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T00:23:44Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #269 is merged and names excel-clone plus a concrete oracle trial with correctness 1.0 but binary reward 0 from a realism PARTIAL. The diff changes tasks/excel-clone/solution/static/styles.css header background from #f3f4f7 to #e0e0e0, matching the claimed contrast root cause. Existing excel-clone artifact #268 covers a polish affordance probe, not header contrast, so this is a new fixed task-specific defect."
+}

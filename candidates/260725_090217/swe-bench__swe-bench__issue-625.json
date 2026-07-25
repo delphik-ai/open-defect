@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/625",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 625,
+  "title": "EvalScope integration: one-command evaluation support for SWE-bench Verified and SWE-bench Lite",
+  "body": "Hi SWE-bench/SWE-bench maintainers,\n\nEvalScope now supports SWE-bench Verified and SWE-bench Lite. This gives users another way to run the benchmark when they want a standardized evaluation workflow around OpenAI-compatible model endpoints, saved predictions, scoring, and report generation.\n\nThis may be useful for users who find this repository while setting up SWE-bench Verified and SWE-bench Lite and want a quick path to evaluate a hosted or locally served model.\n\nExample:\n\n```bash\nevalscope eval \\\n  --model YOUR_MODEL \\\n  --api-url OPENAI_API_COMPAT_URL \\\n  --api-key EMPTY_TOKEN \\\n  --datasets swe_bench_verified swe_bench_lite \\\n  --limit 10\n```\n\nDocs: https://evalscope.readthedocs.io/en/latest/third_party/swe_bench.html  \nEvalScope repo: https://github.com/modelscope/evalscope\n\nWe can also open a small PR adding this as a README/Docs note, linked to this issue.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-24T07:53:36Z",
+  "github_updated_at": "2026-07-24T07:53:36Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The issue announces EvalScope support for SWE-bench Verified and Lite. It is integration documentation rather than a SWE-bench benchmark defect.",
+  "reviewed_at": "2026-07-25T00:06:51.967Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/625"
+  ]
+}

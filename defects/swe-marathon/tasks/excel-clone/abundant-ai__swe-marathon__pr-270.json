@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-270",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "excel-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Relax excel-clone dependent recompute CUA reload proof",
+  "summary": "The excel-clone CUA dependent_recompute criterion could mark valid oracle runs PARTIAL when the judge proved live recompute but skipped the hard-reload/bash portion.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_flake",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/270",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/270",
+    "https://github.com/abundant-ai/swe-marathon/pull/270/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T16:38:55Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #270 is merged and its body reports excel-clone oracle misses with correctness 1.0 where polish and realism passed, but dependent_recompute PARTIALed because the CUA skipped hard reload/bash after proving live A1 to B1 recompute. The diff changes tasks/excel-clone/tests/cua_instruction.md to make the required proof narrower. Existing excel-clone defects cover polish and header contrast, not this dependent_recompute proof flake."
+}

@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-274",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "excel-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Accept URL reload for excel-clone persistence CUA",
+  "summary": "The excel-clone CUA persistence criterion could PARTIAL valid oracle runs when the judge used same-origin URL navigation instead of an explicit hard reload or omitted a blank pre-write screenshot.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_flake",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/274",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/274",
+    "https://github.com/abundant-ai/swe-marathon/pull/274/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T21:24:12Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #274 is merged and its body reports excel-clone v29 oracle failure excel-clone-685bff89-611 where Save, post-reload UI, and /cells API proved persistence but the CUA rubric still PARTIALed. The diff relaxes tasks/excel-clone/tests/cua_instruction.md for persistence proof. Existing excel-clone artifacts cover polish, header contrast, dependent recompute, fanout budget, and active tab styling, not this persistence reload-proof root cause."
+}

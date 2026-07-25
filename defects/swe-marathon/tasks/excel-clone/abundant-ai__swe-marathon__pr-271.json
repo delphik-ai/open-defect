@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-271",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "excel-clone"
+  ],
+  "resolution": "fixed",
+  "title": "Bump excel-clone fanout performance budget",
+  "summary": "The excel-clone wide-fanout performance gate used a 3 second budget that could fail valid oracle runs on Modal single-vCPU timing even when UX and other correctness checks passed.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "flaky_timeout",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/271",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/271",
+    "https://github.com/abundant-ai/swe-marathon/pull/271/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-24T18:24:42Z",
+  "last_reviewed_at": "2026-07-25T00:06:51.967Z",
+  "decision_note": "L2 audit. PR #271 is merged and identifies excel-clone trial excel-clone-685bff89-578 as an oracle miss with UX 1.0 and correctness 0 solely because test_wide_fanout_propagation took 3.22s against a 3.0s budget. The diff updates tasks/excel-clone/tests/test_perf.py and related text to a 5.0s budget. No existing excel-clone artifact covers this performance-budget root cause."
+}

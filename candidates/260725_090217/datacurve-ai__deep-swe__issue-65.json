@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/65",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 65,
+  "title": "Benchmark Claude Opus 5 at all effort levels on DeepSWE v1.1",
+  "body": "## Summary\n\nPlease officially benchmark Claude Opus 5 across **all five supported effort levels** on the current DeepSWE v1.1 leaderboard:\n\n- `low`\n- `medium`\n- `high` (API default)\n- `xhigh`\n- `max`\n\nModel/API reference:\n\n- Model: Claude Opus 5\n- API model ID: `claude-opus-5`\n- Released: July 24, 2026\n- API price: $5 / $25 per million input/output tokens\n- Anthropic launch announcement: https://www.anthropic.com/news/claude-opus-5\n\n## Why the complete effort sweep matters\n\nAnthropic's current [effort documentation](https://platform.claude.com/docs/en/build-with-claude/effort) explicitly says Claude Opus 5 supports all five levels and recommends running a fresh effort sweep rather than carrying settings over from an earlier model. It recommends `xhigh` as the starting point for coding and agentic work, while noting that Opus 5 is stronger at `low` and `medium` than earlier Opus models.\n\nA single best-effort result would not show the practical capability/cost curve. Five official DeepSWE configurations would let users compare:\n\n- Pass@1 and confidence intervals\n- Average and median cost\n- Output-token usage\n- Agent steps\n- Runtime\n- The marginal gain from each higher effort level\n\nThe live DeepSWE v1.1 artifact does not currently contain a `claude-opus-5` row.\n\n## Suggested run target\n\nPlease run:\n\n- DeepSWE v1.1\n- `claude-opus-5`\n- The same `mini-swe-agent` harness and leaderboard methodology used for the existing official results\n- One separately reported configuration for each supported API value:\n  - `output_config.effort = \"low\"`\n  - `output_config.effort = \"medium\"`\n  - `output_config.effort = \"high\"`\n  - `output_config.effort = \"xhigh\"`\n  - `output_config.effort = \"max\"`\n\nFor `xhigh` and `max`, Anthropic recommends allowing a large output budget so the model has room to think and act through tool calls.\n\nIf any provider routing or safety-classifier fallback occurs, it would also be useful to record that alongside the configuration so the leaderboard row remains reproducible.\n\n## Official references\n\n- Opus 5 launch: https://www.anthropic.com/news/claude-opus-5\n- Prompting Claude Opus 5: https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5\n- Effort levels: https://platform.claude.com/docs/en/build-with-claude/effort\n- Claude Opus 5 system card: https://www.anthropic.com/claude-opus-5-system-card\n- DeepSWE leaderboard: https://deepswe.datacurve.ai/\n- DeepSWE v1.1 live artifact: https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json\n\nThanks for considering a full five-level run.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/65#issuecomment-5072554686",
+      "user": "coygeek",
+      "created_at": "2026-07-24T17:18:25Z",
+      "updated_at": "2026-07-24T17:18:25Z",
+      "body": "## Anthropic-published DeepSWE v1.1 comparison\n\nAnthropic's official [Claude Opus 5 launch comparison](https://www.anthropic.com/news/claude-opus-5) includes the following **DeepSWE v1.1** results:\n\n| Model | DeepSWE v1.1 |\n|---|---:|\n| Claude Opus 5 | **68.8%** |\n| Claude Fable 5 | 69.7% |\n| Claude Opus 4.8 | 59.0% |\n| GPT-5.6 Sol | 72.7% |\n\nSources:\n\n- [Anthropic's official capability-comparison graphic](https://www-cdn.anthropic.com/images/4zrzovbb/website/bea7c5121f3408659bee2aeedee2189419d02c8f-2600x2578.png)\n- [Claude Opus 5 launch announcement](https://www.anthropic.com/news/claude-opus-5)\n- [Claude Opus 5 system card](https://www.anthropic.com/claude-opus-5-system-card)\n\nThe system card's DeepSWE section says Opus 5's 68.8% is an average over five trials. Its capability-table methodology says Opus 5 results use adaptive thinking at `max` effort and default sampling settings unless otherwise noted.\n\nThis gives a useful Anthropic-published anchor, but it does not replace the requested Datacurve run:\n\n1. Anthropic reports one headline Opus 5 score, while this issue requests all five supported effort levels: `low`, `medium`, `high`, `xhigh`, and `max`.\n2. Reproducing the result through DeepSWE's official leaderboard pipeline would provide directly comparable cost, output-token, step, duration, and confidence-interval data.\n3. The current live DeepSWE v1.1 artifact does not yet contain a `claude-opus-5` configuration.\n\nAnthropic's [effort documentation](https://platform.claude.com/docs/en/build-with-claude/effort) explicitly recommends a fresh effort sweep for Opus 5 instead of reusing settings chosen for an earlier model."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-24T17:17:55Z",
+  "github_updated_at": "2026-07-24T17:18:25Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The issue requests official Claude Opus 5 effort-level leaderboard runs for DeepSWE v1.1. It is a benchmark-result request, not a defect claim.",
+  "reviewed_at": "2026-07-25T00:06:51.967Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/65"
+  ]
+}
