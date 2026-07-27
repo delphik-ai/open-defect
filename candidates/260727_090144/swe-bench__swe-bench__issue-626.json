@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/626",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 626,
+  "title": "Idea: analyzing test_pass ≠ human_annotation disagreement patterns",
+  "body": "# Idea: analyzing test_pass ≠ human_annotation disagreement patterns\n\nSWE-bench evaluates patches via test-pass. SWE-bench Verified adds human annotation to catch cases where tests pass but the fix is wrong. This two-layer approach — mechanical + human — is sound methodology.\n\nI've been running dual-layer verification for AI coding sessions (different context: agent safety, not benchmark eval), and have data on *when* the second layer catches what the first misses. The failure-mode pattern may generalize.\n\n## The pattern\n\nMechanical checks and semantic review have **non-overlapping blind spots**:\n\n| Layer | Catches | Misses |\n|-------|---------|--------|\n| Mechanical (deterministic rules) | Rule violations | Rules aging, semantic drift |\n| Semantic (independent review) | Stale rules, intent mismatches | Rater drift (single-rater κ→0) |\n| Both combined | Joint false negatives → 0 | — |\n\nThey fail for different reasons, so they rarely fail together on the same instance — the core property of defense-in-depth applied to evaluation.\n\n## Data from a different domain\n\n339 verification logs, 9 sessions (agent safety, not benchmark eval — sharing for the pattern, not claiming direct transfer):\n\n- Mechanical checks (filesystem/OS facts): 0% false positives on 34+ triggers\n- Single-layer semantic check (text-based): 295 triggers, 100% noise\n- Combined: mechanical catches what semantic misses; semantic catches stale rules that mechanical misses\n\n## Relevance to SWE-bench\n\nSWE-bench already has dual-layer verification:\n\n| Layer | Implementation |\n|-------|---------------|\n| Mechanical | test_pass (deterministic) |\n| Semantic | Verified human annotation (93 developers, 1,699 samples, 3 annotators each) |\n| Combined | ✅ Already doing it |\n\nI've been following recent evaluation integrity discussions (#620 on stdout spoofing, #621-#624 on leaderboard statistical validity, #608 on spoofing detection). These are asking the right questions — how do we know the numbers mean what we think they mean?\n\nOne thing I noticed: the Verified paper describes the annotation protocol (0-3 severity, conservative ensembling via highest-severity-wins) but I couldn't find reported inter-annotator agreement metrics (Cohen's κ, Krippendorff's α, or even simple pairwise agreement). Three annotators per sample is the right design — the question is what the agreement rates reveal about annotation difficulty and evaluation confidence.\n\nSpecifically:\n\n- Instances where all 3 annotators agree → high-confidence labels\n- Instances where 2/3 agree → moderate confidence, worth reviewing the split\n- Instances where all 3 disagree → the task specification may be ambiguous\n- **Disagreement between test_pass and human annotation** → either a test coverage gap or an annotation error\n\nThis analysis could help prioritize future Verified rounds: annotate the instances with maximum disagreement first.\n\n## The ask\n\n1. **Has inter-annotator agreement for Verified been analyzed/published somewhere I missed?** (I read the technical report but may have overlooked follow-up work.)\n\n2. **Would a lightweight analysis of agreement patterns be useful?** I'd run it on public data — not proposing a framework, just offering to contribute the analysis.\n\nHappy to do the homework first (Artstein & Poesio 2008 on inter-coder agreement, Zheng et al. 2023 on LLM-as-judge).\n\n---\n\n*Context: undergrad, running AI coding reliability experiments. Not proposing a framework — have data and want to contribute where useful.*\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-26T09:25:41Z",
+  "github_updated_at": "2026-07-26T09:25:41Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread is an analysis proposal about SWE-bench Verified inter-annotator agreement and test_pass versus human_annotation disagreement patterns. It does not identify a concrete current SWE-bench Verified or multilingual benchmark defect, affected task row, harness issue, or dataset error.",
+  "reviewed_at": "2026-07-27T00:04:22.752Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/626"
+  ]
+}

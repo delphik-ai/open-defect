@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bixbench__future-house__bixbench__pr-46",
+  "benchmark_name": "bixbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix(graders): record refused verdicts from the LLM graders",
+  "summary": "Open PR fixes BixBench open-ended LLM graders so <grade>refused</grade> is parsed as a refusal instead of incorrect, restoring refusal metrics for both LLM grading paths.",
+  "canonical_source_url": "https://github.com/Future-House/BixBench/pull/46",
+  "evidence_urls": [
+    "https://github.com/Future-House/BixBench/pull/46",
+    "https://github.com/Future-House/BixBench/pull/46/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-26T16:26:40Z",
+  "last_reviewed_at": "2026-07-27T00:04:22.752Z",
+  "decision_note": "Candidate maps to core BixBench rather than bixbench-cli because the PR changes bixbench/graders.py and tests for the benchmark grader behavior. L2 audit checked the PR body and linked diff: _parse_grade_response previously returned CORRECT only for correct and INCORRECT for every other parsed verdict, so <grade>refused</grade> could never set GradeResult.refusal on open-ended LLM verifier paths. The diff adds explicit REFUSED parsing plus regression tests for llm_verifier and range_verifier. Existing BixBench artifacts cover MCQ refusal handling, missing evaluation_mode, zip extraction, and range verifier errors, but not this open-ended refused-verdict parser root cause. PR is open, so resolution is fixing."
+}

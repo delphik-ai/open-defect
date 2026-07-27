@@ -1,0 +1,60 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/54",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 54,
+  "title": "Benchmark Grok 4.5 on DeepSWE v1.1",
+  "body": "## Summary\n\nPlease consider officially benchmarking Grok 4.5 on the current DeepSWE leaderboard, especially the v1.1 benchmark.\n\nModel/API reference:\n\n- OpenRouter model page: https://openrouter.ai/x-ai/grok-4.5\n- Model slug: `x-ai/grok-4.5`\n- Released: July 8, 2026\n- Context: 500K\n- Listed price: `$2 / $6 per 1M` input/output tokens\n\nRelated launch/benchmark context:\n\n- Cursor's official X post for Grok 4.5: https://x.com/cursor_ai/status/2074915744999969059\n\n## Why this would be useful\n\nDeepSWE is one of the most useful public benchmarks for long-horizon software engineering work, and the public site currently defaults to the v1.1 leaderboard.\n\nGrok 4.5 is now available through an OpenAI-compatible API route on OpenRouter. Cursor's official Grok 4.5 post includes a DeepSWE 1.0 result, but that is not the same as an official DeepSWE v1.1 leaderboard result from Datacurve.\n\nAn official DeepSWE v1.1 run would make the comparison much more useful for people evaluating current frontier coding agents.\n\n## Suggested run target\n\nPlease test:\n\n- `x-ai/grok-4.5`\n- DeepSWE v1.1\n- The same `mini-swe-agent` setup and leaderboard methodology used for the existing official results\n\nIf possible, it would be helpful to include the same public leaderboard fields as the other models:\n\n- Pass@1\n- Average cost\n- Output tokens\n- Agent steps\n- Any effort/reasoning configuration used, if applicable\n\n## Context\n\nThe current leaderboard already includes recent frontier models such as `claude-fable-5`, `gpt-5.5`, `claude-opus-4.8`, and `claude-sonnet-5`, but not Grok 4.5.\n\nSince Grok 4.5 is now available via API and is being positioned for coding, knowledge work, and STEM, a DeepSWE v1.1 result would help clarify where it ranks on Datacurve's official long-horizon software engineering benchmark rather than relying on the Cursor-published DeepSWE 1.0 comparison alone.\n\nThanks for considering it.\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/54#issuecomment-4918248163",
+      "user": "coygeek",
+      "created_at": "2026-07-08T18:58:08Z",
+      "updated_at": "2026-07-08T18:58:08Z",
+      "body": "There are 3 reasoning levels:\nhttps://docs.x.ai/developers/grok-4-5\n- Low, medium, high (default)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/54#issuecomment-4918264826",
+      "user": "coygeek",
+      "created_at": "2026-07-08T19:00:19Z",
+      "updated_at": "2026-07-08T19:00:19Z",
+      "body": "## DeepSWE Comparison\n\nAdding a compact comparison table to clarify why an official DeepSWE v1.1 run would still be useful.\n\n| Source / benchmark version | Grok 4.5 | Opus | GPT-5.5 | Composer 2.5 | Fable 5 | Notes |\n|---|---:|---:|---:|---:|---:|---|\n| Cursor official Grok 4.5 post, DeepSWE 1.0 | 62.0% `high` | 55.8% `opus-4.8 max` | 64.3% `xhigh` | 18.0% | 66.1% `max` | Cursor-published comparison: https://x.com/cursor_ai/status/2074915744999969059 |\n| Datacurve official DeepSWE v1 snapshot | - | 54% +/- 5% `claude-opus-4.7 max` | 70% +/- 3% `xhigh` | - | - | Official v1 launch snapshot used Opus 4.7, not Opus 4.8. |\n| Datacurve official DeepSWE v1.1 best listed row | - | 59% +/- 2% `claude-opus-4.8 max` | 67% +/- 6% `xhigh` | - | 70% +/- 3% `xhigh` / 70% +/- 4% `max` | Current official leaderboard does not yet include Grok 4.5 or Composer 2.5. |\n\nThe key gap is that Cursor has published a Grok 4.5 DeepSWE 1.0 result, but Datacurve has not yet published a Grok 4.5 result on the current DeepSWE v1.1 leaderboard.\n\nThat makes an official v1.1 run useful for apples-to-apples comparison against the current `claude-fable-5`, `gpt-5.5`, and `claude-opus-4.8` entries.\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/54#issuecomment-4919529355",
+      "user": "coygeek",
+      "created_at": "2026-07-08T21:50:52Z",
+      "updated_at": "2026-07-08T21:52:38Z",
+      "body": "Update:\nhttps://artificialanalysis.ai/agents/coding-agents?coding-agents-performance-chart=deep-swe\nArtificial Analysis has posted their DeepSWE results, and the rank is 60%, using Grok Build (as the harness). \nThis is NOT the typical mini-swe-agent (which is what the official way of measuring)."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/54#issuecomment-4922393008",
+      "user": "TheBit",
+      "created_at": "2026-07-09T06:47:49Z",
+      "updated_at": "2026-07-09T06:47:49Z",
+      "body": "https://x.ai/news/grok-4-5\n<img width=\"1234\" height=\"579\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/6d5fe155-e563-4fc3-8ed9-78fb50ad7c75\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/54#issuecomment-5007309039",
+      "user": "coygeek",
+      "created_at": "2026-07-17T20:42:40Z",
+      "updated_at": "2026-07-17T20:42:40Z",
+      "body": "Thanks to DeepSWE, the results are in:\n\n<img width=\"998\" height=\"813\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/9866679c-0069-48e2-ac88-e514edc2f14b\" />\n\nResults are: 54%. "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-08T18:46:23Z",
+  "github_updated_at": "2026-07-26T03:46:25Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks maintainers to run and publish Grok 4.5 results on the DeepSWE v1.1 leaderboard. Body and comments discuss benchmark coverage and later posted results, but do not claim a benchmark artifact, task, harness, evaluator, or dataset defect.",
+  "reviewed_at": "2026-07-27T00:04:22.752Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/54"
+  ]
+}
