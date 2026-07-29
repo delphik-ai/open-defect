@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/199",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 199,
+  "title": "Request for Snowflake access",
+  "body": "Dear Spider 2.0 Team,\nIn the past week, I've already submitted 3 forms with 3 of my different email addresses, but ended up receiving nothing. I'm sure that I've carefully checked all junk mails I received. Anyway, my tutor asked me to run the experiment and give a presentation this week as soon as I can, so I'm sincerely looking forward to my snowflake account. Please reply if you can see, otherwise I'm pretty sure somebody gonna kick my ass.\nMy email address is: ZUTOMAYO1215@outlook.com.",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/199#issuecomment-5064329012",
+      "user": "PeterLiuWT00376",
+      "created_at": "2026-07-23T22:54:53Z",
+      "updated_at": "2026-07-23T22:54:53Z",
+      "body": "I encountered the same problem, @ZutoMayoo , have you resolve this issue? if yes, could you tell me how?"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/199#issuecomment-5066093139",
+      "user": "ZutoMayoo",
+      "created_at": "2026-07-24T04:17:23Z",
+      "updated_at": "2026-07-24T04:17:23Z",
+      "body": "> I encountered the same problem, [@ZutoMayoo](https://github.com/ZutoMayoo) , have you resolve this issue? if yes, could you tell me how?\n\nSorry bro, since I've got nothing in my mailbox so far, I speculate that this form has been left unmaintained. I've already switched to do the DBT part. Hope it helps."
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/199#issuecomment-5105512878",
+      "user": "xxy1103",
+      "created_at": "2026-07-28T14:33:09Z",
+      "updated_at": "2026-07-28T14:33:09Z",
+      "body": "I filled out the questionnaire on the 25th. Today, I received an email regarding my account."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-30T12:40:51Z",
+  "github_updated_at": "2026-07-28T14:33:09Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks for Spider2 Snowflake account access, and follow-up comments discuss receipt of Snowflake account email or switching to DBT only because Snowflake access was unavailable. The watched benchmark variant is spider2-dbt, so this Snowflake credential/access support thread is outside the current benchmark seed/split/version and is not counted as a DBT defect.",
+  "reviewed_at": "2026-07-29T00:02:58Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/199"
+  ]
+}
