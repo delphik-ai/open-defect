@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/cooperbench/CooperBench/pull/76",
+  "repo": "cooperbench/cooperbench",
+  "source_type": "github_pr",
+  "github_number": 76,
+  "title": "dataset: add flash_10 curated 10-pair eval subset",
+  "body": "## Summary\n\n- Adds `dataset/subsets/flash_10.json` — a 10-pair, 10-task, 9-repo subset curated from flash-50\n- Designed for cheap candidate-model screening before committing to a full flash-50 run (1/5 the cost)\n- No code changes needed; the subset system resolves by filename so it works immediately via `--subset flash_10`\n\n## Curation rationale\n\nPairs were chosen across three categories:\n\n| Category | Tasks | Purpose |\n|---|---|---|\n| Easy anchors | `dottxt_ai_outlines/1655`, `openai_tiktoken/0`, `typst/6554` | All 4 frameworks passed in core benchmark — establishes score floor, catches regressions |\n| Discriminators | `pallets_click/2800`, `pallets_jinja/1559`, `pallets_jinja/1621` | 1–3/4 frameworks passed — the sharpest signal for separating model quality |\n| Coverage | `dspy/8394`, `huggingface_datasets/6252`, `pillow/290`, `go_chi/26` | Flash-only repos not in core; pairs chosen for clean completion in midtrain-flash run |\n\nWithin each task, the specific pair was chosen to avoid pairs that hit `LimitsExceeded` or Modal sandbox timeouts in the midtrain-flash-dual-policy reference run.\n\n## Test plan\n\n- [ ] `cooperbench run --setting coop --subset flash_10 --dry-run` resolves the subset without error\n- [ ] Confirm 10 tasks / 10 pairs in the loaded subset",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/dataset/subsets/flash_10.json b/dataset/subsets/flash_10.json\nnew file mode 100644\nindex 00000000..9f1ba668\n--- /dev/null\n+++ b/dataset/subsets/flash_10.json\n@@ -0,0 +1,90 @@\n+{\n+  \"name\": \"flash_10\",\n+  \"description\": \"10-pair high-signal eval subset curated from flash-50. Pairs selected to span easy anchors (consistent passers), strong discriminators (mid-difficulty tasks that split model quality), and diverse repo coverage. Use for cheap candidate-model screening before running flash-50.\",\n+  \"stats\": {\n+    \"tasks\": 10,\n+    \"pairs\": 10,\n+    \"repos\": 9\n+  },\n+  \"curation\": {\n+    \"source\": \"flash (50 pairs, 20 tasks, 11 repos)\",\n+    \"method\": \"manual — one pair per task, selected on: (a) known per-framework pass/fail signal from core benchmark (BENCHMARK_RESULTS.md); (b) repo diversity; (c) avoiding infrastructure-failure-prone pairs (LimitsExceeded or Modal-timeout in midtrain-flash run)\",\n+    \"categories\": {\n+      \"easy_anchor\": [\"dottxt_ai_outlines_task/1655\", \"openai_tiktoken_task/0\", \"typst_task/6554\"],\n+      \"discriminator\": [\"pallets_click_task/2800\", \"pallets_jinja_task/1559\", \"pallets_jinja_task/1621\"],\n+      \"coverage\": [\"dspy_task/8394\", \"huggingface_datasets_task/6252\", \"pillow_task/290\", \"go_chi_task/26\"]\n+    }\n+  },\n+  \"tasks\": [\n+    {\n+      \"repo\": \"dottxt_ai_outlines_task\",\n+      \"task_id\": 1655,\n+      \"pairs\": [\n+        [7, 10]\n+      ]\n+    },\n+    {\n+      \"repo\": \"openai_tiktoken_task\",\n+      \"task_id\": 0,\n+      \"pairs\": [\n+        [6, 8]\n+      ]\n+    },\n+    {\n+      \"repo\": \"typst_task\",\n+      \"task_id\": 6554,\n+      \"pairs\": [\n+        [7, 8]\n+      ]\n+    },\n+    {\n+      \"repo\": \"pallets_click_task\",\n+      \"task_id\": 2800,\n+      \"pairs\": [\n+        [1, 7]\n+      ]\n+    },\n+    {\n+      \"repo\": \"pallets_jinja_task\",\n+      \"task_id\": 1559,\n+      \"pairs\": [\n+        [4, 8]\n+      ]\n+    },\n+    {\n+      \"repo\": \"pallets_jinja_task\",\n+      \"task_id\": 1621,\n+      \"pairs\": [\n+        [4, 5]\n+      ]\n+    },\n+    {\n+      \"repo\": \"dspy_task\",\n+      \"task_id\": 8394,\n+      \"pairs\": [\n+        [3, 4]\n+      ]\n+    },\n+    {\n+      \"repo\": \"huggingface_datasets_task\",\n+      \"task_id\": 6252,\n+      \"pairs\": [\n+        [4, 6]\n+      ]\n+    },\n+    {\n+      \"repo\": \"pillow_task\",\n+      \"task_id\": 290,\n+      \"pairs\": [\n+        [4, 5]\n+      ]\n+    },\n+    {\n+      \"repo\": \"go_chi_task\",\n+      \"task_id\": 26,\n+      \"pairs\": [\n+        [1, 2]\n+      ]\n+    }\n+  ]\n+}\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-29T20:26:25Z",
+  "github_updated_at": "2026-07-29T20:26:25Z",
+  "candidate_benchmark_names": [
+    "cooperbench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread and PR diff add a new flash_10 evaluation subset for CooperBench. This is benchmark content/coverage curation, not a benchmark defect report or fix evidence.",
+  "reviewed_at": "2026-07-30T00:04:53Z",
+  "checked_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/76"
+  ]
+}

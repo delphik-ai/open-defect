@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__issue-245",
+  "benchmark_name": "swesmith",
+  "scope": "task_specific",
+  "task_names": [
+    "r1chardj0n3s__parse.30da9e4f.func_basic__j0z3z0co"
+  ],
+  "resolution": "found",
+  "title": "Gold evaluation restores a patched source file listed in PASS_TO_PASS",
+  "summary": "SWE-smith gold evaluation can reverse the bug patch for parse.py, then restore parse.py because it is also listed in PASS_TO_PASS, causing the gold repair to be discarded before pytest runs.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Harness restores repaired source file",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/issues/245",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/issues/245",
+    "https://github.com/SWE-bench/SWE-smith/blob/9b74ac08118a85c39c356802f7961893af73e07f/swesmith/harness/eval.py",
+    "https://github.com/SWE-bench/SWE-smith/blob/9b74ac08118a85c39c356802f7961893af73e07f/swesmith/harness/utils.py",
+    "https://github.com/SWE-bench/SWE-smith/blob/9b74ac08118a85c39c356802f7961893af73e07f/swesmith/profiles/python.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-29T09:44:35Z",
+  "last_reviewed_at": "2026-07-30T00:04:53Z",
+  "decision_note": "L2 audit confirmed benchmark attribution and task scope from the issue and source. The current SWE-smith train task r1chardj0n3s__parse.30da9e4f.func_basic__j0z3z0co has a patch touching parse.py and PASS_TO_PASS entries under parse.py. At commit 9b74ac08118a85c39c356802f7961893af73e07f, eval.py uses the dataset patch as the gold prediction, utils.py reverse-applies gold patches and then checks out all F2P/P2P files, while PythonProfile.get_test_files maps PASS_TO_PASS test identifiers to file paths. Existing swesmith artifacts cover different root causes, so this is a new task-specific defect."
+}
