@@ -1,0 +1,60 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/68",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 68,
+  "title": "Reprice GPT-5.6 Terra and Luna leaderboard costs after July 30 cuts",
+  "body": "## Problem\n\nThe live DeepSWE v1.1 leaderboard still appears to price GPT-5.6 Terra and Luna at their launch rates, even though OpenAI cut both models' API prices on July 30, 2026.\n\nCurrent leaderboard artifact:\n\n- `gpt-5-6-terra[max]`: `mean_cost_usd = 4.945847263858093` (displayed as **$4.95/task**)\n- `gpt-5-6-luna[max]`: `mean_cost_usd = 3.028116810267857` (displayed as **$3.03/task**)\n\nSource: https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json\n\nOpenAI's July 30 announcement says the new standard API prices are:\n\n| Model | Input / 1M | Output / 1M | Change |\n|---|---:|---:|---:|\n| GPT-5.6 Terra | $2.00 | $12.00 | 20% lower |\n| GPT-5.6 Luna | $0.20 | $1.20 | 80% lower |\n\nhttps://openai.com/index/advancing-the-price-performance-frontier-with-gpt-5-6/\n\n## Expected repricing\n\nThe old Terra rates were $2.50 input / $0.25 cache read / $15 output, so each currently accounted price component scales by `0.8`. The old Luna rates were $1 input / $0.10 cache read / $6 output, so each scales by `0.2`.\n\nUsing the existing recorded trajectories and the leaderboard's current accounting method:\n\n| Configuration | Current | New OpenAI list-price estimate |\n|---|---:|---:|\n| `gpt-5-6-terra[max]` | $4.945847 | **$3.956678 → $3.96/task** |\n| `gpt-5-6-luna[max]` | $3.028117 | **$0.605623 → $0.61/task** |\n\nThe same `0.8×` Terra and `0.2×` Luna repricing should be applied to every existing effort-level row in the all-effort-level view and its backing artifacts; rerunning the benchmark should not be necessary.\n\n## OpenRouter's current limited-time discount\n\nThe OpenRouter model pages currently show an additional **50% limited-time discount** on the OpenAI endpoints:\n\n- Terra: $1 input / $0.10 cache read / $6 output per 1M\n  - https://openrouter.ai/openai/gpt-5.6-terra\n- Luna: $0.10 input / $0.01 cache read / $0.60 output per 1M\n  - https://openrouter.ai/openai/gpt-5.6-luna\n\nAt those promotional endpoint prices, the same headline rows would be:\n\n| Configuration | OpenRouter promotional estimate |\n|---|---:|\n| `gpt-5-6-terra[max]` | **$1.978339 → $1.98/task** |\n| `gpt-5-6-luna[max]` | **$0.302812 → $0.30/task** |\n\nBecause OpenRouter labels this promotion as limited-time, the leaderboard should use whichever pricing matches the provider/route that produced the runs:\n\n- use the new OpenAI list-price values for direct OpenAI API runs; or\n- use the promotional values only if the cost metric is intended to represent the discounted OpenRouter OpenAI endpoint, and label the provider plus pricing date/promotion so the number is not mistaken for a permanent list price.\n\n## Suggested acceptance criteria\n\n- [ ] Reprice all existing Terra rows using the July 30 rates.\n- [ ] Reprice all existing Luna rows using the July 30 rates.\n- [ ] Update the public leaderboard and `leaderboard-live.json` consistently.\n- [ ] Record the pricing provider/route and an `as_of` date (and promotion status, if applicable).\n- [ ] Keep the separate cache-write-accounting question tracked in #56; these calculations intentionally preserve the leaderboard's current accounting method rather than attempting to resolve that issue here.\n\nThis changes the cost-performance picture substantially—especially for Luna—without changing any pass rates, token counts, steps, or benchmark trajectories.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/68#issuecomment-5134602706",
+      "user": "amxv",
+      "created_at": "2026-07-30T18:14:03Z",
+      "updated_at": "2026-07-30T18:14:30Z",
+      "body": "came here to post this, i want to see the new curves for luna and terra. i think using the official api pricing is the correct move here"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/68#issuecomment-5136287152",
+      "user": "fatih-onventis",
+      "created_at": "2026-07-30T21:08:32Z",
+      "updated_at": "2026-07-30T21:08:32Z",
+      "body": "The prices are updates as far as i can see from the charts. "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/68#issuecomment-5137451028",
+      "user": "amxv",
+      "created_at": "2026-07-30T23:48:03Z",
+      "updated_at": "2026-07-30T23:48:03Z",
+      "body": "yep looks updated now, that was fast!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/68#issuecomment-5138250683",
+      "user": "coygeek",
+      "created_at": "2026-07-31T01:43:30Z",
+      "updated_at": "2026-07-31T01:43:30Z",
+      "body": "The visible v1.1 leaderboard is updated now — Terra `[max]` shows **$3.96** and Luna `[max]` shows **$0.61**, and the lower effort-level rows also reflect the new `0.8×` / `0.2×` pricing.\n\nHowever, the public backing artifact still contains the old costs:\n\n- `gpt-5-6-terra[max]`: `mean_cost_usd = 4.945847263858093`\n- `gpt-5-6-luna[max]`: `mean_cost_usd = 3.028116810267857`\n\nhttps://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json\n\nThe artifact also still reports `generated_at = 2026-07-25T03:13:49.273952+00:00`. It looks like the new pricing is currently being applied in the presentation layer while the downloadable JSON remains stale. Could the artifact be regenerated or updated as well so the homepage and public benchmark data are consistent?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/68#issuecomment-5149571452",
+      "user": "shariqriazz",
+      "created_at": "2026-08-01T03:24:09Z",
+      "updated_at": "2026-08-01T03:24:09Z",
+      "body": "Should this be raran after the optimizations openai did? its very much possible that the results might have changed too."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-30T17:49:19Z",
+  "github_updated_at": "2026-08-01T03:24:09Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue reported stale DeepSWE leaderboard cost pricing for GPT-5.6 Terra/Luna after July 30 price cuts, but follow-up comments in the same GitHub thread state the visible v1.1 leaderboard had already been updated with new Terra and Luna costs. No current open defect is counted.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/68"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

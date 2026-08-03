@@ -9,11 +9,12 @@
   "summary": "SWE-bench PR guards empty eval_status_map so runner crashes no longer get interpreted as all tests passing/resolved.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/531",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/pull/531"
+    "https://github.com/SWE-bench/SWE-bench/pull/531",
+    "https://github.com/SWE-bench/SWE-bench/pull/592"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-03-11T14:46:08.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-03T00:56:56.912Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/67",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 67,
+  "title": "Add total time measurement to benchmark",
+  "body": "Current benchmark is super useful. Having time measurement would be useful to decide between models in development. ",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/67#issuecomment-5134747842",
+      "user": "amxv",
+      "created_at": "2026-07-30T18:28:03Z",
+      "updated_at": "2026-07-30T18:43:56Z",
+      "body": "GPT 5.6 Sol found it in the website HTML:\n\nThe homepage UI only offers **Cost**, **Output tokens**, and **Agent steps**, so duration looks unavailable from the rendered page. ([[DeepSWE](https://deepswe.datacurve.ai/)][1]) But the server-rendered HTML contains React’s dehydrated data cache, including this query key:\n\n```text\n[\"artifact\", \"/artifacts/v1.1/leaderboard-live.json\"]\n```\n\nInside the serialized leaderboard rows were fields such as:\n\n```json\n{\n  \"model\": \"claude-opus-5\",\n  \"reasoning_effort\": \"max\",\n  \"mean_duration_seconds\": 1911.819866231982,\n  \"median_duration_seconds\": 1801.1237265,\n  \"mean_output_tokens\": 117565.6936936937,\n  \"median_output_tokens\": 113366.5\n}\n```\n\nSo I fetched the referenced public JSON directly. The site’s public leaderboard JSON contains all 50 underlying model/effort configurations, even though the UI usually collapses them into a smaller best-per-model view. ([[BenchLM](https://benchlm.ai/benchmarks/deepSwe?utm_source=chatgpt.com)][2]) This general `/artifacts/` pattern has also been independently documented for the DeepSWE site. ([[june.kim](https://www.june.kim/auditing-deepswe?utm_source=chatgpt.com)][3])\n\n## Simplest way for another agent\n\n```bash\ncurl -fsSL \\\n  https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json \\\n  -o deepswe-leaderboard.json\n```\n\nThen extract the timing values:\n\n```bash\njq '\n  .rows[]\n  | {\n      model,\n      reasoning_effort,\n      pass_rate,\n      median_duration_seconds,\n      mean_duration_seconds,\n      median_output_tokens,\n      mean_output_tokens,\n      median_cost_usd,\n      mean_agent_steps\n    }\n' deepswe-leaderboard.json\n```\n\nFor a compact CSV:\n\n```bash\njq -r '\n  [\"model\", \"effort\", \"score\", \"median_seconds\", \"mean_seconds\"],\n  (\n    .rows[]\n    | [\n        .model,\n        (.reasoning_effort // \"default\"),\n        .pass_rate,\n        .median_duration_seconds,\n        .mean_duration_seconds\n      ]\n  )\n  | @csv\n' deepswe-leaderboard.json > deepswe-times.csv\n```\n\n## How an agent can discover the endpoint rather than being told it\n\n```bash\ncurl -fsSL https://deepswe.datacurve.ai/ -o page.html\n\ngrep -oE '/artifacts/v[0-9.]+/[^\"\\\\]+\\.json' page.html \\\n  | sort -u\n```\n\nOr search for the field itself:\n\n```bash\ngrep -o -m1 '.\\{0,150\\}median_duration_seconds.\\{0,250\\}' page.html\n```\n\nThe clean discovery sequence is:\n\n1. Download the homepage HTML.\n2. Search for `median_duration_seconds`, `queryKey`, or `/artifacts/`.\n3. Find `/artifacts/v1.1/leaderboard-live.json`.\n4. Fetch that JSON.\n5. Iterate over `.rows[]`.\n6. Group by `.model` and `.reasoning_effort`.\n7. Plot `.median_duration_seconds / 60`.\n\nOne important detail: `median_duration_seconds` is an aggregate for each **model + harness + reasoning-effort configuration**, across scored benchmark attempts. It is the official DeepSWE runtime measurement, so no OpenRouter throughput approximation is necessary.\n\n[1]: https://deepswe.datacurve.ai/ \"DeepSWE\"\n[2]: https://benchlm.ai/benchmarks/deepSwe?utm_source=chatgpt.com \"DeepSWE Leaderboard & Scores — July 2026 | BenchLM.ai\"\n[3]: https://www.june.kim/auditing-deepswe?utm_source=chatgpt.com \"Auditing DeepSWE | june.kim\"\n\n<img width=\"1011\" height=\"590\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/eb937b58-a57f-485c-aa2f-09f94810eaeb\" />"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-27T16:16:15Z",
+  "github_updated_at": "2026-07-30T18:43:56Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue requests adding duration/total-time measurement to the DeepSWE UI. This is a feature request, not a dataset, harness, evaluator, or task defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/67"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

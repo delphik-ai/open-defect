@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/69",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 69,
+  "title": "DeepSeek v4 Flash (0731)",
+  "body": "Please include the new updated DeepSeek v4 Flash in the 1.1 benchmark.\n\nhttps://api-docs.deepseek.com/updates/\n\nDeepseek is quoting a results of \"DeepSWE: 54.4\" for their new version of v4 Flash.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5146907755",
+      "user": "ftzi",
+      "created_at": "2026-07-31T19:54:55Z",
+      "updated_at": "2026-07-31T19:54:55Z",
+      "body": "Must have."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5149847965",
+      "user": "coygeek",
+      "created_at": "2026-08-01T04:45:05Z",
+      "updated_at": "2026-08-01T04:45:05Z",
+      "body": "AA ranked DeepSeek V4 Flash 0731 as 50\nAA ranked DeepSeek V4 Flash (original) as 40\n\nThis is a meaningful improvement, that should be measured with DeepSWE."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5149882294",
+      "user": "coygeek",
+      "created_at": "2026-08-01T04:55:59Z",
+      "updated_at": "2026-08-01T04:55:59Z",
+      "body": "Official DeepSeek measurements on DeepSWE are 54.4%."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-31T09:43:05Z",
+  "github_updated_at": "2026-08-02T20:02:08Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue requests adding a new DeepSeek v4 Flash 0731 model run to DeepSWE v1.1. It is a leaderboard coverage request, not a benchmark defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/69"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

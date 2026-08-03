@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1351",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "OpenAI-compatible BFCL handler drops final text when tool_calls is empty",
+  "summary": "The BFCL OpenAI-compatible function-calling parser treats message.tool_calls=[] as an empty tool-call response instead of falling back to message.content, so valid final textual responses can be discarded and memory subset scores collapse.",
+  "defect_type_main": "Evaluation harness",
+  "defect_type_sub": "API response parser",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1351",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1351",
+    "https://github.com/ShishirPatil/gorilla/pull/1351/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-30T10:02:04Z",
+  "last_reviewed_at": "2026-08-03T00:56:56.912Z",
+  "decision_note": "L2 source-read audit. The PR body explicitly names BFCL v4 memory subsets and reports Qwen3-8B memory scores of 0 before the fix and near-leaderboard accuracy after. The diff changes openai_completion.py to normalize message.tool_calls or [] and preserve message.content when there are no tool calls, then stops the multi-turn loop on a final textual response in base_handler.py. Existing BFCL artifacts cover other handler/data issues but not this empty-tool_calls parser root cause. The PR is open and review-required, so resolution is fixing."
+}

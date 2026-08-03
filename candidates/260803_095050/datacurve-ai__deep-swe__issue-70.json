@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/70",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 70,
+  "title": "Benchmark GPT-5.6 in Fast Mode",
+  "body": "Could you please run the DeepSWE benchmark tests for GPT-5.6 in Fast Mode and publish the results? It would be useful to compare its performance, speed, and cost with the existing models.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/70#issuecomment-5145874828",
+      "user": "Perusae",
+      "created_at": "2026-07-31T17:48:29Z",
+      "updated_at": "2026-07-31T17:48:29Z",
+      "body": "Fast mode is just a cost multiplier (in exchange to not be speed limited). The results are going to be the same, with just the cost increasing."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/70#issuecomment-5151900590",
+      "user": "Nadelopo",
+      "created_at": "2026-08-01T14:41:28Z",
+      "updated_at": "2026-08-01T14:41:28Z",
+      "body": "@Perusae  you say fast mode means “not be speed limited”, but then claim “the results are going to be the same”. thats contradictory: deepswe explicitly measures duration, so duration will change by design. Pass rate may stay the same, but duration and cost wont."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/70#issuecomment-5160184516",
+      "user": "Perusae",
+      "created_at": "2026-08-02T20:24:53Z",
+      "updated_at": "2026-08-02T20:24:53Z",
+      "body": "> [@Perusae](https://github.com/Perusae) you say fast mode means “not be speed limited”, but then claim “the results are going to be the same”. thats contradictory: deepswe explicitly measures duration, so duration will change by design. Pass rate may stay the same, but duration and cost wont.\n\nI think you missed my point.\n\nFast mode will only change the \"Avg cost\" of the benchmark results. The Output tokens, Steps and Pass@1 will be about the same (variations between benchmarks can happen). \n\nWhen you switch to fast mode, all that changes is the speed (and what you pay for it). So right now your rate limited in standard, non-fast mode. Fast mode will gives you simple more speed by reducing the rate limit, in exchange for paying more per token. You do not get routed to a special model on a different server.\n\nYour going to see is the exact same graph scaling for each GPT 5.6 model, with just the cost factor sliding the models by 2.5x to the left. \n\nSo you can literally take the GPT 5.6 model results and calculate \"Avg cost\" * 2.5.  Its absolute silly to pollute the already busy result set with fast results, when they are the same Pass@1 percentage. There is a reason why not a single benchmark does that, because its absolute useless.\n\nNow, if you asked for GPT 5.6 models using Cerebras hardware. What is not even available! That is a different matter because the models tend to be stripped down/optimized for the hardware speed, to get those high token speed (claimed up to 750 tokens / second ). And that might be worth testing, to see what has been given up. Its like GPT 5.3 Codex vs GPT-5.3-Codex-Spark, where GPT-5.3-Codex-Spark is clearly a reduced model.\n\n Do you understand now? And thanks for the downvote."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-31T17:37:12Z",
+  "github_updated_at": "2026-08-02T20:24:53Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue requests benchmarking GPT-5.6 Fast Mode on DeepSWE. It is a model/run request, not a benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/70"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

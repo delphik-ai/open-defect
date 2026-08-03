@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/629",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 629,
+  "title": "Expose lightweight offline helpers for image naming and log parsing",
+  "body": "## Problem\n\n`make_test_spec(instance)` constructs a complete execution specification. That is appropriate for building and running an evaluation image, but it is also the only public path to two much smaller operations:\n\n1. derive `TestSpec.instance_image_key`;\n2. call `get_logs_eval` for an existing test log.\n\nOn current `main` at `f7bbbb2ccdf479001d6467c9e34af59e44a840f9`, `make_test_spec` always builds the repo, environment, and evaluation script lists. The Python environment-script path can call `get_requirements_by_commit`, which fetches repository files from `raw.githubusercontent.com`. A consumer that is only naming an existing image or parsing an already-produced log can therefore require network access for data that those operations do not use.\n\nThis affects Harbor task generation and in-container grading in offline, air-gapped, rate-limited, or transiently disconnected environments.\n\n## Current source boundary\n\nThe current implementation shows a substantially smaller data contract:\n\n- `TestSpec.instance_image_key` uses `arch`, `instance_id`, `namespace`, and `instance_image_tag`.\n- `get_logs_eval` reads `repo` and `version`.\n- Across the current log parsers, the only additional `TestSpec` field read is `instance_id` for a small number of repository-specific parsers.\n\nRequiring a fully materialized `TestSpec` couples these pure operations to script generation and its network-dependent inputs.\n\n## Proposed public API\n\nPlease expose public, tested offline primitives for these operations, for example:\n\n- a pure `get_instance_image_key(instance_id, arch, namespace, instance_image_tag)` helper used by `TestSpec.instance_image_key`;\n- a lightweight public log-parsing identity type or protocol containing `repo`, `version`, and `instance_id`, accepted by `get_logs_eval` and the log parsers.\n\nThe exact names are open to maintainer preference. The important contract is that callers do not need to construct a full `TestSpec` or duplicate the image-key formula and private structural subsets.\n\n## Acceptance coverage\n\n- monkeypatch the requirements/network lookup to fail and prove both helpers still work;\n- assert the image helper is identical to `TestSpec.instance_image_key` for local and namespaced images;\n- cover a Python parser plus the repository-specific parsers that read `instance_id`;\n- keep full `make_test_spec` behavior unchanged for execution-plan construction.\n\nHarbor PR https://github.com/harbor-framework/harbor/pull/1802 demonstrated the need, but its local `_GradingSpec` and copied image-key formula belong in this upstream public boundary rather than becoming a second implementation.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-31T07:38:39Z",
+  "github_updated_at": "2026-07-31T07:38:39Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue asks to expose lightweight offline helpers for image naming and log parsing. It is an API/tooling feature request, not a benchmark correctness defect.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/629"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

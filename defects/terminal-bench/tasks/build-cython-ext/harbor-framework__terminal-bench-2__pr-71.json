@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-71",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "build-cython-ext"
+  ],
+  "resolution": "fixing",
+  "title": "build-cython-ext oracle blocked by upstream pyknotid flaky test",
+  "summary": "The build-cython-ext verifier runs the full pyknotid 0.5.3 upstream test suite and fails on test_reconstructed_space_curve, a flaky upstream space-curve test unrelated to the task Cython extension checks.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Upstream flaky verifier dependency",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/71",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/pull/71",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/71/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-30T14:08:33Z",
+  "last_reviewed_at": "2026-08-03T00:56:56.912Z",
+  "decision_note": "L2 source-read audit. The PR is attributed to terminal-bench by the task path build-cython-ext. Its body reports the reference/oracle solution scoring reward=0 twice because test_pyknotid_repository_tests asserts the full upstream pyknotid suite returns 0, while the diff adds a targeted pytest --deselect for test_spacecurve.py::test_reconstructed_space_curve and leaves the task-specific Cython extension checks intact. Existing terminal-bench artifacts do not cover build-cython-ext or this pyknotid upstream-test root cause. The fix PR is open, so resolution is fixing."
+}

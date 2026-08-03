@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-72",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "mcmc-sampling-stan"
+  ],
+  "resolution": "fixing",
+  "title": "mcmc-sampling-stan oracle cannot build rstan without cmake",
+  "summary": "The mcmc-sampling-stan oracle installs rstan through RcppParallel/StanHeaders, but the task environment lacks cmake, so RcppParallel 6.2.0 fails to configure and rstan never becomes available.",
+  "defect_type_main": "Environment dependency",
+  "defect_type_sub": "Missing build dependency",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/72",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/pull/72",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/72/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-07-30T16:31:21Z",
+  "last_reviewed_at": "2026-08-03T00:56:56.912Z",
+  "decision_note": "L2 source-read audit. The PR is attributed to terminal-bench by the task path mcmc-sampling-stan. Its body reports oracle reward=0 with RcppParallel requiring cmake and rstan missing, and the diff adds cmake to both environment/Dockerfile and solution/solve.sh without weakening tests. Existing terminal-bench artifacts do not cover mcmc-sampling-stan or this missing cmake root cause. The fix PR is open, so resolution is fixing."
+}

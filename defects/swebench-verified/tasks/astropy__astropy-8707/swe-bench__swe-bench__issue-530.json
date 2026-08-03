@@ -11,11 +11,12 @@
   "summary": "Live issue reports astropy__astropy-8707 gold behavior is misgraded because nose-era Astropy tests break under the pinned pytest/setuptools environment; maintainer says v5 Dockerfiles fix it.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/530",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/issues/530"
+    "https://github.com/SWE-bench/SWE-bench/issues/530",
+    "https://github.com/SWE-bench/SWE-bench/pull/596"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-03-11T09:02:54.000Z",
-  "last_reviewed_at": "2026-06-17T12:00:00.000Z",
+  "last_reviewed_at": "2026-08-03T00:56:56.912Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 1,
   "migration": {

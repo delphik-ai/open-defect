@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/PatrickHua/ResearchCodeBench/issues/3",
+  "repo": "patrickhua/researchcodebench",
+  "source_type": "github_issue",
+  "github_number": 3,
+  "title": "We still think about you",
+  "body": "Sad the benchmark doesn't get any updates, was one of a few I was looking forward to monitoring :( \n\n<img width=\"382\" height=\"485\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8f9a8d01-9424-48c8-8a35-b71b0014a7fd\" />",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-31T14:52:56Z",
+  "github_updated_at": "2026-07-31T14:52:56Z",
+  "candidate_benchmark_names": [
+    "researchcodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue is a general comment about lack of ResearchCodeBench updates. It does not identify a benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/PatrickHua/ResearchCodeBench/issues/3"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

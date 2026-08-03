@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/pull/1350",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_pr",
+  "github_number": 1350,
+  "title": "Update readme file to show the perforamnce of evalscope.",
+  "body": "I have tried evalscope running for bfcl4, and I have mostly reproduced the reported results provided by qwen3.5 and series models:\r\n\r\nqwen 3.5 35b a3b\r\n\r\nreported: 0.673\r\nreproduced: 0.6684\r\nTherefore, I think we can include the calling of benchmark based on evalscope. Thanks!\r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/berkeley-function-call-leaderboard/README.md b/berkeley-function-call-leaderboard/README.md\nindex 39fc8a708a2c..5eac7af9cf4b 100644\n--- a/berkeley-function-call-leaderboard/README.md\n+++ b/berkeley-function-call-leaderboard/README.md\n@@ -327,6 +327,20 @@ python -m bfcl_eval.eval_checker.eval_runner --model MODEL_NAME --test-category\n \n When specifying multiple models or test categories, separate them with **spaces**, not commas. All other flags mentioned earlier are compatible with the script execution method as well.\n \n+\n+#### (Alternate) Evalscope implementation\n+\n+Evalscope also supports bfcl v4 evaluation. The reference is: https://evalscope.readthedocs.io/en/v1.6.0/third_party/bfcl_v4.html.\n+\n+```\n+evalscope eval \\\n+  --model YOUR_MODEL \\\n+  --api-url OPENAI_API_COMPAT_URL \\\n+  --api-key EMPTY_TOKEN \\\n+  --datasets bfcl_v4 bfcl_v3 \\\n+  --limit 10\n+```\n+\n ## Contributing & How to Add New Models\n \n We welcome contributions! To add a new model:\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-30T00:22:02Z",
+  "github_updated_at": "2026-07-30T00:22:02Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. PR updates README documentation to mention EvalScope reproduction of BFCL results. It does not claim or fix a BFCL benchmark defect.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1350"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

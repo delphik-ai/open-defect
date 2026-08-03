@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/607",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 607,
+  "title": "fix(harness): set deterministic env vars on eval containers",
+  "body": "## Summary\n\nSets normalized environment variables (`TZ=UTC`, `PYTHONHASHSEED=0`, `LANG=C.UTF-8`) when creating evaluation instance containers. This reduces timezone and hash-randomization drift during parallel harness runs.\n\nFixes #602\n\n## Test plan\n\n- [ ] Run a small SWE-bench Verified evaluation with `max_workers > 1` and confirm identical patches produce stable results across repeated runs\n- [ ] Verify containers start successfully with the new `environment` argument\n\nMade with [Cursor](https://cursor.com)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/constants/__init__.py b/swebench/harness/constants/__init__.py\nindex b4bc9ff52..95df09147 100644\n--- a/swebench/harness/constants/__init__.py\n+++ b/swebench/harness/constants/__init__.py\n@@ -71,6 +71,12 @@ class EvalType(Enum):\n DOCKER_PATCH = \"/tmp/patch.diff\"\n DOCKER_USER = \"root\"\n DOCKER_WORKDIR = \"/testbed\"\n+# Normalize runtime environment for evaluation containers to improve determinism.\n+DOCKER_CONTAINER_ENV = {\n+    \"TZ\": \"UTC\",\n+    \"PYTHONHASHSEED\": \"0\",\n+    \"LANG\": \"C.UTF-8\",\n+}\n LOG_REPORT = \"report.json\"\n LOG_INSTANCE = \"run_instance.log\"\n LOG_TEST_OUTPUT = \"test_output.txt\"\ndiff --git a/swebench/harness/docker_build.py b/swebench/harness/docker_build.py\nindex 145742384..ceb00dd63 100644\n--- a/swebench/harness/docker_build.py\n+++ b/swebench/harness/docker_build.py\n@@ -10,6 +10,7 @@\n \n from swebench.harness.constants import (\n     BASE_IMAGE_BUILD_DIR,\n+    DOCKER_CONTAINER_ENV,\n     DOCKER_USER,\n     ENV_IMAGE_BUILD_DIR,\n     INSTANCE_IMAGE_BUILD_DIR,\n@@ -521,6 +522,7 @@ def build_container(\n             command=\"tail -f /dev/null\",\n             platform=test_spec.platform,\n             cap_add=cap_add,\n+            environment=DOCKER_CONTAINER_ENV,\n         )\n         logger.info(f\"Container for {test_spec.instance_id} created: {container.id}\")\n         return container\n",
+  "github_state": "closed",
+  "github_created_at": "2026-06-24T15:44:38Z",
+  "github_updated_at": "2026-08-02T08:43:25Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "L3 required but not completed. PR #607 proposes deterministic container env vars and says it fixes #602, but the underlying timezone/hash-randomization drift is a high-fanout flakiness claim and lacks maintainer acknowledgement or a merged fix. The earlier candidate also required repeated-run L3. This run could not start L3 because Harbor/Docker preflight failed at docker version with a Docker API 500 against the local socket.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/607",
+    "https://github.com/SWE-bench/SWE-bench/issues/602"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

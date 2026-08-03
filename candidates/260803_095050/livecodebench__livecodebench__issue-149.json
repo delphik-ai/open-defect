@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/149",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 149,
+  "title": "how to test local llm  launched by llam.cpp?",
+  "body": "I have  runned  a llm by llama.cpp by command line: \n\n./llama-server.exe    -m F:\\ws4llamacpp\\models\\unsloth\\Qwen3.5-9B-MTP-GGUF\\Qwen3.5-9B-UD-IQ3_XXS.gguf    --jinja        -np 1   --no-warmup     -tb 6  -ub 1408 --poll 100  --prio-batch 3  --fit on --fit-target 1536    --no-mmap       --cache-type-k q4_0   --cache-type-v q4_0    --flash-attn on   --reasoning on     -ngl 99  --ctx-size  65536 --spec-type draft-mtp --spec-draft-n-max 6    --host 0.0.0.0   --port 1234\n\nhow to add connection point to the custom model ?\n\n\nI hava searched some outdated information like \"python -m lcb_runner.runner.main --model custom --config my_model_config.yml\" https://blog.csdn.net/gitblog_00080/article/details/154597459. It is useless now.\n\n\n\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-02T17:19:12Z",
+  "github_updated_at": "2026-08-02T17:19:12Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue asks how to connect a llama.cpp-hosted local LLM to LiveCodeBench. It is user support/documentation, not a benchmark defect.",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/149"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

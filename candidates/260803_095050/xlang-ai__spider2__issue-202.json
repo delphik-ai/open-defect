@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/202",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 202,
+  "title": "Sent a request 12+ hours ago and no response - please advise",
+  "body": "Dear Spider 2.0 Team,\n\nI sent a request for access 12+ hours ago and haven't had a response.\n\nPlease could you advise or check for me? My email is benhummerston@gmail.com\n\nThanks!",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5029427920",
+      "user": "selina0609",
+      "created_at": "2026-07-21T02:11:36Z",
+      "updated_at": "2026-07-21T02:11:36Z",
+      "body": "same issue. My email is **selina4231@gmail.com** and **selina_luo@phison.com**\nThanks!"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5052348083",
+      "user": "sby854905420-netizen",
+      "created_at": "2026-07-22T22:41:06Z",
+      "updated_at": "2026-07-22T22:41:06Z",
+      "body": "same issue. I fill the form for three times. Please reply me. My email is sby854905420@gmail.com"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5128046215",
+      "user": "KenaHemnani",
+      "created_at": "2026-07-30T07:43:15Z",
+      "updated_at": "2026-07-30T07:43:15Z",
+      "body": "I am also facing same issue. I fill the form for twice. Please reply me. My email is kenahemnani@gmail.com"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-20T16:08:37Z",
+  "github_updated_at": "2026-07-30T07:43:15Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The thread requests Spider 2.0 Snowflake access/account help. Repo watch only counts spider2-dbt, so Spider2-Snow/Snowflake credential/access issues are out of scope for this benchmark.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/202"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}

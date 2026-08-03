@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/623",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 623,
+  "title": "The Verified #1 *ranking* is split-dependent: across 50 random instance splits the top submission is never the same one (the top *score* is real)",
+  "body": "This is a follow-up in the same constructive spirit as the earlier top-tie observation (#621): the top of SWE-bench Verified is now saturated enough that the **score** at the top is real and stable, but **which submission holds \"#1\" is not** — it depends on which half of the instances you look at.\n\n### What I did\n\nTook the per-instance `resolved` lists of all Verified submissions in the [experiments repo](https://github.com/swe-bench/experiments) (`evaluation/verified/*/results/results.json`), split the instances into two random halves (\"select\" and \"held-out\"), picked the submission that ranks #1 on the select half, and asked two questions: does its **score** hold up on the held-out half, and is it still the **#1** there? Repeated over 50 random splits (fixed seeds). Everything is public data; the script is below and pure-stdlib.\n\n### Result\n\nAcross **50 random half/half instance splits** (134 submissions, on the 468 instances that at least one submission solves):\n\n- **The top score is robust.** The held-out score of the select-half #1 averages **0.835**, shrinking only **+0.016** from its select-half score. The frontier number is real, not a selection fluke.\n- **The #1 *ranking* is not.** The submission that ranks #1 on the select half is the #1 on the held-out half in **0 of 50 splits** — the \"#1\" title changes hands every single time.\n- On any given split, **~17 submissions (range 8–33 of 134)** are within two standard errors of the top on the held-out half.\n\nSo the top of the board is a dead heat: crowning \"the #1\" picks one of ~17 statistically-indistinguishable submissions, and a different random slice of the benchmark would crown a different one.\n\n### Why this seems worth noting\n\nThis isn't \"the leaderboard is meaningless\" — the two-sided result is the point. The benchmark clearly separates the frontier from the rest (mid-board differences are real and stable), and the top *capability level* is a real, reproducible ~0.84. What isn't reproducible is the **ordinal #1**: it's an artifact of a saturated ceiling plus the finite 500-instance sample. A reader who sees \"Submission X is #1 on SWE-bench Verified\" is reading a coin-flip among a large tied group, not a robust ranking. It complements the paired-McNemar top-tie result in #621 (those submissions were tied on the *full* set; here the tie is strong enough that the #1 label itself flips across a random instance split).\n\n### Caveats (so this is fair)\n\n- I used the union of all `resolved` instances (468) as the shared set rather than the canonical 500. The ~32 instances no submission solves only add a uniform denominator; they don't change the *relative* ranking or the tie structure this note is about. Using the canonical 500 shifts every score down slightly but leaves the instability intact.\n- \"Tied within 2 s.d.\" is a rough binomial band on a single run per submission; agent stochasticity (multiple runs) would only *widen* the tied group, so 17 is a lower bound on the ambiguity.\n- This is about the *ranking's* precision, not the submissions' quality — the top submissions are genuinely strong.\n\n### Suggestion\n\nWhere the board shows a single #1, a small significance band would carry the honest information — e.g. display the group statistically tied with the top (as some leaderboards now do with confidence intervals or \"tied for 1st\" grouping), or note the instance-level margin. It complements the CI/significance-group idea in #621 and prevents over-reading a ceiling-saturated ordering.\n\n### Reproduce (pure standard library, deterministic)\n\n```python\nimport json, urllib.request, random, statistics, re\nAPI=\"https://api.github.com/repos/swe-bench/experiments/git/trees/main?recursive=1\"\nRAW=\"https://raw.githubusercontent.com/swe-bench/experiments/main/%s\"\ndef get(u):\n    return json.load(urllib.request.urlopen(urllib.request.Request(u, headers={\"User-Agent\":\"repro\"}), timeout=40))\npaths=[t[\"path\"] for t in get(API)[\"tree\"] if \"evaluation/verified/\" in t[\"path\"] and t[\"path\"].endswith(\"results.json\")]\nsubs={}\nfor p in paths:\n    n=re.search(r\"verified/([^/]+)/\",p).group(1)\n    try: subs[n]=set(get(RAW%p).get(\"resolved\") or [])\n    except Exception: pass\ninst=sorted(set().union(*subs.values())); names=list(subs)\ndef acc(s,I): return sum(1 for x in subs[s] if x in I)/len(I)\nstay=0; ties=[]; shrinks=[]; tops=[]\nfor seed in range(50):\n    o=inst[:]; random.Random(seed).shuffle(o); h=len(o)//2\n    tune=set(o[:h]); test=set(o[h:])\n    tsc={s:acc(s,tune) for s in names}; esc={s:acc(s,test) for s in names}\n    wt=max(names,key=lambda s:tsc[s]); we=max(names,key=lambda s:esc[s]); stay+=(wt==we)\n    p=esc[wt]; sd=(p*(1-p)/len(test))**0.5\n    ties.append(sum(1 for s in names if esc[s]>=p-2*sd)); shrinks.append(tsc[wt]-esc[wt]); tops.append(esc[wt])\nprint(f\"{len(names)} submissions, {len(inst)} instances\")\nprint(f\"tune-#1 stays held-out-#1: {stay}/50   tied-with-top mean {statistics.mean(ties):.1f} (range {min(ties)}-{max(ties)})\")\nprint(f\"held-out top score mean {statistics.mean(tops):.3f}, selection shrink mean {statistics.mean(shrinks):+.3f}\")\n```\n\nOutput on today's data: `tune-#1 stays held-out-#1: 0/50 ; tied-with-top mean 17.1 (range 8-33) ; held-out top 0.835, shrink +0.016`.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/623#issuecomment-5151289920",
+      "user": "ipezygj",
+      "created_at": "2026-08-01T11:49:08Z",
+      "updated_at": "2026-08-01T11:49:08Z",
+      "body": "Folding this into #621 to keep one thread rather than three. Same subject, nothing withdrawn."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-21T15:07:08Z",
+  "github_updated_at": "2026-08-01T11:49:08Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue analyzes split-dependent #1 ranking stability and was folded into #621. It is a statistical leaderboard caveat, not a benchmark defect.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/623"
+  ],
+  "reviewed_at": "2026-08-03T00:56:56.912Z"
+}
