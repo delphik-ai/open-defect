@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/115",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_issue",
+  "github_number": 115,
+  "title": "[Broken task] Navidrome 97434c: requirements mandate nil transcoding but TestCore expects trc.ID",
+  "body": "> [!NOTE]\n> This issue was drafted by the AI model currently assisting me, reviewed by me before submission, and created at my request.\n\n## Summary\n\nThe public SWE-bench Pro instance `instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504` contains a contradiction between its visible requirements, gold patch, and official `TestCore` test.\n\nAn agent that follows the explicit requirement to return a `nil` transcoding value will fail the official test. Conversely, the gold patch passes by violating that visible requirement.\n\n## Affected instance\n\n- **Instance ID:** `instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504`\n- **Repository:** `navidrome/navidrome`\n- **Base commit:** `f8ee6db72a015f33b41879d1ba253eeff8884bfd`\n- **Gold commit:** `97434c1789a6444b30aae5ff5aa124a96a88f504`\n- **Required test:** `TestCore`\n- **Dataset row:** [ScaleAI/SWE-bench_Pro, test row 87](https://huggingface.co/datasets/ScaleAI/SWE-bench_Pro/viewer/default/test?row=87)\n- **Evaluation metadata:** [instance_info.txt](https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/instance_info.txt)\n\n## Conflicting contracts\n\n| Source | Required behavior |\n|---|---|\n| Visible `requirements` field | `Register` must return a `nil` transcoding value |\n| Gold patch | Loads and returns the configured transcoding |\n| Official `TestCore` | Requires `trc.ID` to equal `\"1\"` |\n\n### Visible requirement\n\nThe official dataset's `requirements` field states:\n\n```text\nRegister must return a nil transcoding value.\n```\n\n### Gold patch behavior\n\nThe gold patch retains the existing transcoding lookup:\n\n```go\nif plr.TranscodingId != \"\" {\n    trc, err = p.ds.Transcoding(ctx).Get(plr.TranscodingId)\n}\nreturn plr, trc, err\n```\n\nIt therefore does not satisfy the visible `nil` requirement when a player has a configured transcoding.\n\n### Official test behavior\n\nThe dataset's `before_repo_set_cmd` restores the complete test file from the gold commit:\n\n```bash\ngit checkout 97434c1789a6444b30aae5ff5aa124a96a88f504 -- core/players_test.go\n```\n\nThat test file still contains:\n\n```go\nIt(\"finds player by ID and return its transcoding\", func() {\n    plr := &model.Player{\n        ID:            \"123\",\n        Name:          \"A Player\",\n        Client:        \"client\",\n        LastSeen:      time.Time{},\n        TranscodingId: \"1\",\n    }\n\n    repo.add(plr)\n    p, trc, err := players.Register(\n        ctx,\n        \"123\",\n        \"client\",\n        \"chrome\",\n        \"1.2.3.4\",\n    )\n\n    Expect(err).ToNot(HaveOccurred())\n    Expect(p.ID).To(Equal(\"123\"))\n    Expect(trc.ID).To(Equal(\"1\"))\n})\n```\n\nReturning `nil`, as explicitly required by the prompt, necessarily makes this test fail.\n\n## Observed behavior\n\nThis was observed during an evaluation where the agent implemented the visible requirements, including the unconditional `nil` transcoding return.\n\nThe implementation and its local test suite completed successfully, but the official evaluator restored `core players_test.go` from the gold commit and reported:\n\n```text\nRequired tests failed or were skipped:\n- TestCore: FAILED\n```\n\nThe evaluation environment was healthy:\n\n- agent exit code: `0`\n- test exit code: `1`\n- infrastructure failures: `0`\n- required test present and executed: `TestCore`\n\nThe failure is therefore not caused by a missing tool, Docker setup, or evaluation infrastructure problem.\n\n## Impact\n\nThis instance can produce a false comparison between agents:\n\n- an agent that follows the explicit `nil` requirement is marked incorrect;\n- an agent that ignores that requirement and follows the hidden test may pass;\n- the gold patch passes while contradicting the visible contract.\n\nThis makes the instance unsuitable for comparing instruction-following or agent performance in its current form.\n\n## Suggested fix\n\nThe likely correction is to remove this requirement from the dataset:\n\n```text\nRegister must return a nil transcoding value.\n```\n\nThat would align the visible task with both the gold patch and the official test.\n\nIf returning `nil` was actually intended, then the gold patch and `core/players_test.go` must instead be updated to enforce that behavior.\n\nIn either case, the visible requirements, gold patch, and verifier should express the same contract.\n\n## Provenance check\n\nThe issue was initially observed through a translated Harbor/Margin suite.\nThe official Hugging Face row was then inspected directly and contains the same `nil` requirement, gold patch, `before_repo_set_cmd`, and `TestCore` selection.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-03T15:07:33Z",
+  "github_updated_at": "2026-08-03T15:07:33Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebenchpro",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-115",
+  "task_names": [
+    "instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504"
+  ],
+  "resolution": "found",
+  "summary": "SWE-bench Pro Navidrome instance requirements say Register should return nil transcoding, while the gold implementation and required TestCore expect transcoding ID 1.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Prompt/test contract mismatch",
+  "decision_note": "L2 audit. The GitHub issue identifies a current SWE-bench Pro instance and quotes the visible requirement that Register return nil transcoding. GitHub instance_info.txt confirms this exact instance and FAIL_TO_PASS=TestCore. The official run_script runs selected Go tests by name, the parser records TestCore status, and navidrome gold commit 97434c1789a6444b30aae5ff5aa124a96a88f504 contains TestCore expectations that players.Register returns a transcoding with ID 1 while players.go loads plr.TranscodingId. Existing swebenchpro artifacts cover different root causes, so this is a new task-specific defect.",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/115",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/instance_info.txt",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/run_script.sh",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/run_scripts/instance_navidrome__navidrome-97434c1789a6444b30aae5ff5aa124a96a88f504/parser.py",
+    "https://github.com/navidrome/navidrome/blob/97434c1789a6444b30aae5ff5aa124a96a88f504/core/players_test.go",
+    "https://github.com/navidrome/navidrome/blob/97434c1789a6444b30aae5ff5aa124a96a88f504/core/players.go"
+  ],
+  "reviewed_at": "2026-08-04T00:07:03.076Z"
+}
