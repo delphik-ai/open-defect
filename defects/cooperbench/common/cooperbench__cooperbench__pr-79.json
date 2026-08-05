@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-79",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "agent: coop agents could not tell a finished peer from a silent one",
+  "summary": "CooperBench coop agents could receive false-success message delivery and stale peer-branch signals after a peer exited, causing coordination failures and merge-conflict double failures in evaluated pairs.",
+  "defect_type_main": "Evaluation harness",
+  "defect_type_sub": "Multi-agent coordination",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/79",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/79",
+    "https://github.com/cooperbench/CooperBench/pull/79/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-04T08:23:07Z",
+  "last_reviewed_at": "2026-08-05T00:05:30.500Z",
+  "decision_note": "L2 source-read audit. The merged PR body names observed benchmark impact on flash_10 pairs, including 16 sent versus 11 delivered messages and a pallets_click pair where all three messages were sent after the peer final turn, followed by a merge-conflict double failure. The diff adds peer exit markers, send_and_wait, non-zero send failures for departed peers, submitted-patch publication to team/<agent_id>, prompt updates, and regression tests covering departed-peer sends, waits, publication status, and stale exit markers. Existing CooperBench artifacts cover default agent naming, task reruns, Docker/Modal setup, pass-rate display, and timestamp sorting, not this coop peer-liveness/publication root cause. PR is closed as merged/fixed upstream."
+}

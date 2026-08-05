@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1352",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "[BFCL] Clarify default and ablation behavior of synthetic request failures in BFCL V4 Web Search",
+  "summary": "BFCL V4 Agentic Web Search documentation leaves synthetic request failures ambiguous while the released leaderboard checkpoint has the failure injection code disabled, obscuring how default and robustness runs are reproduced.",
+  "defect_type_main": "Benchmark documentation",
+  "defect_type_sub": "Reproduction ambiguity",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1352",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1352",
+    "https://github.com/ShishirPatil/gorilla/blob/f7cf735/berkeley-function-call-leaderboard/bfcl_eval/eval_checker/multi_turn_eval/func_source_code/web_search.py",
+    "https://github.com/ShishirPatil/gorilla/commit/f7cf7359b7ac615a0b294831c5ba2bc95ee4a000"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-04T07:52:35Z",
+  "last_reviewed_at": "2026-08-05T00:05:30.500Z",
+  "decision_note": "L2 source-read audit. The issue is explicitly BFCL V4 Agentic Web Search and cites official reproduction commit f7cf735. Reading web_search.py at that commit confirms the random generators are described as unused and the synthetic request-failure branch in fetch_url_content is commented out, while the issue explains the blog can be read as making probabilistic request failures part of the environment and separately as Section 7.2 ablations. Existing BFCL common artifacts cover parser, dataset, scoring, and backend execution defects, not this web-search synthetic-failure reproduction/documentation ambiguity. No maintainer fix is present, so resolution is found."
+}

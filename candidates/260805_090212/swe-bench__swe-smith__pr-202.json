@@ -1,0 +1,67 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/202",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 202,
+  "title": "Adding error_handling procedural modifiers to SWE smith ",
+  "body": "## Overview\r\nAdds Error Handling Corruption, a new procedural bug generation methodology that removes exception handling mechanisms to expose code to unhandled errors.\r\n\r\n## Changes\r\n- **TryExceptRemover**: Removes try/except blocks, exposing code to unhandled exceptions\r\n- **AssertRemover**: Removes assert statements and validation checks\r\n- **RaiseRemover**: Replaces raise statements with pass, causing silent failures\r\n\r\n## Files\r\n- New module: `swesmith/bug_gen/error_handling/` (7 files)\r\n- Added constants: `CodeProperty.HAS_TRY_EXCEPT`, `HAS_ASSERT`, `HAS_RAISE`\r\n- Tests: All 10 unit tests passing\r\n\r\n## Usage\r\n```python\r\npython -m swesmith.bug_gen.error_handling.generate --repo <repo> --seed <seed>",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/202#issuecomment-3798045275",
+      "user": "john-b-yang",
+      "created_at": "2026-01-26T06:18:43Z",
+      "updated_at": "2026-01-26T06:18:43Z",
+      "body": "This is awesome, thank you so much @thomaspdl!\r\n\r\nJust to confirm, based on the code, it looks like this is a Python specific method?\r\n\r\nWould you mind providing a `README.md` that provides a summary of (1) what kind of bug is being created, (2) any constraints (e.g. only Python?), and (3) example usages?\r\n\r\nFeel free to just plug these points into copilot / cursor / claude code or something, and double check that the descriptions are accurate.\r\n\r\nIf you're interested, would you open to writing a blog post describing this bug gen approach for https://www.swebench.com/blog.html?"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/202#issuecomment-3800856551",
+      "user": "thomaspdl",
+      "created_at": "2026-01-26T17:46:20Z",
+      "updated_at": "2026-01-26T17:46:20Z",
+      "body": "thanks for the comments @john-b-yang!\r\n\r\nYes, this is a python only method.\r\n\r\nWould you prefer me to add a separate README.md or edit the already existing one? \r\n\r\nI will get on the blogpost this week :)"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/202#issuecomment-3800872201",
+      "user": "john-b-yang",
+      "created_at": "2026-01-26T17:50:00Z",
+      "updated_at": "2026-01-26T17:50:00Z",
+      "body": "A separate README.md that sits under `swesmith/bug_gen/error_handling` would be absolutely amazing.\r\n\r\nAnd woo! Very happy to hear you'd be open to a blog post! Just to give you a sense, here's where the content for posts lives under the [SWE-bench website](https://github.com/SWE-bench/swe-bench.github.io/tree/master/data/posts).\r\n\r\nNo rush at all, but when you get around to it, if you could (1) create the post as a markdown file, and include any assets you might want in a subfolder under the same directory, and then (2) make a PR to the SWE-bench website, that'd be awesome."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/202#issuecomment-3804157556",
+      "user": "thomaspdl",
+      "created_at": "2026-01-27T09:44:12Z",
+      "updated_at": "2026-01-27T09:44:12Z",
+      "body": "created the README.md\r\nI'll put the blogpost in a separate PR if that's ok!"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/202#issuecomment-3819297780",
+      "user": "john-b-yang",
+      "created_at": "2026-01-29T17:58:17Z",
+      "updated_at": "2026-01-29T17:58:17Z",
+      "body": "Awesome stuff @thomaspdl this is fantastic! Just took a look and I think the changes are fantastic, also just tagged @acrmp to sanity check as well.\r\n\r\nAnd separate PR for blog post sounds great. Would you mind making the PR to [this repository](https://github.com/SWE-bench/swe-bench.github.io)? Tysm in advance!"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/202#issuecomment-5182685142",
+      "user": "thomaspdl",
+      "created_at": "2026-08-04T17:52:06Z",
+      "updated_at": "2026-08-04T17:52:06Z",
+      "body": "@acrmp I'm (finally) resuming this work.\r\nI closed this PR and opened a new one here: https://github.com/SWE-bench/SWE-smith/pull/246\r\nLet's continue the discussion there!"
+    }
+  ],
+  "linked_pr_diff": "",
+  "github_state": "closed",
+  "github_created_at": "2026-01-24T14:51:30Z",
+  "github_updated_at": "2026-08-04T17:52:06Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The PR adds a new SWE-smith error-handling procedural bug-generation method and was closed in favor of PR #246. It is feature work, not evidence of a defect in the current SWE-smith benchmark artifact.",
+  "reviewed_at": "2026-08-05T00:05:30.500Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/202"
+  ]
+}
