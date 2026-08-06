@@ -1,0 +1,43 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/pull/533",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_pr",
+  "github_number": 533,
+  "title": "fix: use source_index metadata key in kakurasu and survo",
+  "body": "The  and  datasets emit  in their metadata, while the other 103 registered datasets emit . Both were added in #460/#461; the key sits directly beneath ",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/reasoning_gym/games/kakurasu.py b/reasoning_gym/games/kakurasu.py\nindex a95539a5..8f088511 100644\n--- a/reasoning_gym/games/kakurasu.py\n+++ b/reasoning_gym/games/kakurasu.py\n@@ -104,7 +104,7 @@ def __getitem__(self, idx: int) -> dict:\n                 ),\n                 \"metadata\": {\n                     \"source_dataset\": DATASET_NAME,\n-                    \"source_idx\": idx,\n+                    \"source_index\": idx,\n                     \"n_rows\": n_rows,\n                     \"n_cols\": n_cols,\n                     \"p_ones\": self.config.p_ones,\ndiff --git a/reasoning_gym/games/survo.py b/reasoning_gym/games/survo.py\nindex 6f2fac9f..c2de2459 100644\n--- a/reasoning_gym/games/survo.py\n+++ b/reasoning_gym/games/survo.py\n@@ -84,7 +84,7 @@ def __getitem__(self, idx: int) -> dict:\n             \"answer\": solution_str,\n             \"metadata\": {\n                 \"source_dataset\": DATASET_NAME,\n-                \"source_idx\": idx,\n+                \"source_index\": idx,\n                 \"puzzle\": puzzle.tolist(),\n                 \"solution\": filled_matrix.tolist(),\n                 \"candidate_numbers\": candidate_numbers,\ndiff --git a/tests/test_kakurasu.py b/tests/test_kakurasu.py\nindex 2b67b814..e1797979 100644\n--- a/tests/test_kakurasu.py\n+++ b/tests/test_kakurasu.py\n@@ -39,6 +39,8 @@ def test_kakurasu_items():\n \n         # Verify key metadata contents\n         metadata = item[\"metadata\"]\n+        assert metadata[\"source_dataset\"] == \"kakurasu\"\n+        assert metadata[\"source_index\"] == i\n         assert \"puzzle\" in metadata\n         assert \"solution\" in metadata\n         assert \"row_sums\" in metadata\ndiff --git a/tests/test_survo.py b/tests/test_survo.py\nindex d1d69549..70076b55 100644\n--- a/tests/test_survo.py\n+++ b/tests/test_survo.py\n@@ -38,11 +38,13 @@ def test_survo_items():\n     cfg = SurvoConfig(seed=99, size=20, min_board_size=4, max_board_size=5, min_empty=3, max_empty=5)\n     ds = SurvoDataset(cfg)\n \n-    for itm in ds:\n+    for i, itm in enumerate(ds):\n         md = itm[\"metadata\"]\n \n         # Basic keys\n         assert set(itm.keys()) == {\"question\", \"answer\", \"metadata\"}\n+        assert md[\"source_dataset\"] == \"survo\"\n+        assert md[\"source_index\"] == i\n         assert \"puzzle\" in md and \"solution\" in md and \"candidate_numbers\" in md\n \n         orig = np.array(md[\"puzzle\"])\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-05T13:02:15Z",
+  "github_updated_at": "2026-08-05T13:02:15Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "reasoning-gym-hard",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-533",
+  "task_names": [
+    "reasoning-gym-games-kakurasu-hard0292e21f-seed45-0",
+    "reasoning-gym-games-kakurasu-hard0292e21f-seed45-1",
+    "reasoning-gym-games-kakurasu-hard0292e21f-seed45-2",
+    "reasoning-gym-games-survo-hard0292e21f-seed45-0",
+    "reasoning-gym-games-survo-hard0292e21f-seed45-1",
+    "reasoning-gym-games-survo-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "summary": "reasoning-gym kakurasu and survo items used metadata.source_idx while the rest of the registry uses metadata.source_index, breaking source-index metadata consistency for the hard task rows.",
+  "defect_type_main": "Dataset integrity",
+  "defect_type_sub": "Metadata/schema inconsistency",
+  "decision_note": "L2 source-read audit. The open PR diff changes reasoning_gym/games/kakurasu.py and reasoning_gym/games/survo.py from metadata.source_idx to metadata.source_index and adds tests asserting source_dataset plus source_index. Existing reasoning-gym artifacts in this repository track the hard benchmark variant, and the task naming pattern maps games/kakurasu and games/survo to the six hard seed45 task rows listed here. No existing reasoning-gym-hard canonical defect covers this root cause. Resolution is fixing because the fix PR is open, not merged.",
+  "reviewed_at": "2026-08-06T00:05:06Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/533",
+    "https://github.com/open-thought/reasoning-gym/pull/533/files",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/games/kakurasu.py",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/games/survo.py"
+  ]
+}

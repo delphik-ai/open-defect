@@ -1,0 +1,30 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-533",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-games-kakurasu-hard0292e21f-seed45-0",
+    "reasoning-gym-games-kakurasu-hard0292e21f-seed45-1",
+    "reasoning-gym-games-kakurasu-hard0292e21f-seed45-2",
+    "reasoning-gym-games-survo-hard0292e21f-seed45-0",
+    "reasoning-gym-games-survo-hard0292e21f-seed45-1",
+    "reasoning-gym-games-survo-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "title": "fix: use source_index metadata key in kakurasu and survo",
+  "summary": "reasoning-gym kakurasu and survo items used metadata.source_idx while the rest of the registry uses metadata.source_index, breaking source-index metadata consistency for the hard task rows.",
+  "defect_type_main": "Dataset integrity",
+  "defect_type_sub": "Metadata/schema inconsistency",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/533",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/533",
+    "https://github.com/open-thought/reasoning-gym/pull/533/files",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/games/kakurasu.py",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/games/survo.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-05T13:02:15Z",
+  "last_reviewed_at": "2026-08-06T00:05:06Z",
+  "decision_note": "L2 source-read audit. The open PR diff changes reasoning_gym/games/kakurasu.py and reasoning_gym/games/survo.py from metadata.source_idx to metadata.source_index and adds tests asserting source_dataset plus source_index. Existing reasoning-gym artifacts in this repository track the hard benchmark variant, and the task naming pattern maps games/kakurasu and games/survo to the six hard seed45 task rows listed here. No existing reasoning-gym-hard canonical defect covers this root cause. Resolution is fixing because the fix PR is open, not merged."
+}

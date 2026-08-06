@@ -11,11 +11,12 @@
   "summary": "BFCL PR adds Nanbeige models and explicitly fixes two small data inconsistencies in possible_answer JSON files, improving benchmark data correctness.",
   "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1257",
   "evidence_urls": [
-    "https://github.com/ShishirPatil/gorilla/pull/1257"
+    "https://github.com/ShishirPatil/gorilla/pull/1257",
+    "https://github.com/ShishirPatil/gorilla/issues/1354"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-11-22T05:02:22.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-06T00:05:06Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 1,
   "migration": {

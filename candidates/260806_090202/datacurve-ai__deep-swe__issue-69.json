@@ -1,0 +1,109 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/69",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 69,
+  "title": "DeepSeek v4 Flash (0731)",
+  "body": "Please include the new updated DeepSeek v4 Flash in the 1.1 benchmark.\n\nhttps://api-docs.deepseek.com/updates/\n\nDeepseek is quoting a results of \"DeepSWE: 54.4\" for their new version of v4 Flash.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5146907755",
+      "user": "ftzi",
+      "created_at": "2026-07-31T19:54:55Z",
+      "updated_at": "2026-07-31T19:54:55Z",
+      "body": "Must have."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5149847965",
+      "user": "coygeek",
+      "created_at": "2026-08-01T04:45:05Z",
+      "updated_at": "2026-08-01T04:45:05Z",
+      "body": "AA ranked DeepSeek V4 Flash 0731 as 50\nAA ranked DeepSeek V4 Flash (original) as 40\n\nThis is a meaningful improvement, that should be measured with DeepSWE."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5149882294",
+      "user": "coygeek",
+      "created_at": "2026-08-01T04:55:59Z",
+      "updated_at": "2026-08-01T04:55:59Z",
+      "body": "Official DeepSeek measurements on DeepSWE are 54.4%."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5168418481",
+      "user": "ColRuDev",
+      "created_at": "2026-08-03T15:30:10Z",
+      "updated_at": "2026-08-03T15:30:10Z",
+      "body": "Remember that GLM5.2 present deepswe score has 46.2 but the official score in the https://deepswe.datacurve.ai/ was 44 for the max  and 36 for the high"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5173451548",
+      "user": "Quackster",
+      "created_at": "2026-08-04T01:12:53Z",
+      "updated_at": "2026-08-04T01:12:53Z",
+      "body": "> Remember that GLM5.2 present deepswe score has 46.2 but the official score in the https://deepswe.datacurve.ai/ was 44 for the max and 36 for the high\n\nNext to the 44% it has ±2% to show it's within 2% margin of error."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5180495867",
+      "user": "amirzamli",
+      "created_at": "2026-08-04T14:31:20Z",
+      "updated_at": "2026-08-04T14:31:20Z",
+      "body": "I've started to suspect that the maintainers may be favoring US proprietary models. Those models seem to be benchmarked across all reasoning settings and added fairly quickly, while Chinese open-weight models, such as Kimi K3, have only been tested at the highest reasoning level. Meanwhile, Flash has been available for several days and still hasn't appeared in the benchmark. Whether intentional or not, the inconsistency makes the benchmarking process seem biased and undermines confidence in its fairness.\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5180745660",
+      "user": "Perusae",
+      "created_at": "2026-08-04T14:52:52Z",
+      "updated_at": "2026-08-04T14:52:52Z",
+      "body": "> I've started to suspect that the maintainers may be favoring US proprietary models.\n\nDeepSWE are not the only with this issue. Cursorbench also updated the new Luna prices on the 30'th but never did the new DeepSeek flash 0731."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5183082323",
+      "user": "Mothball7205",
+      "created_at": "2026-08-04T18:31:59Z",
+      "updated_at": "2026-08-04T18:31:59Z",
+      "body": "why has been Qwen 3.8 Max been added already and DSv4 Flash 0731 not?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5183326084",
+      "user": "amirzamli",
+      "created_at": "2026-08-04T18:55:31Z",
+      "updated_at": "2026-08-04T18:55:31Z",
+      "body": "Not to get conspiratorial, but adding the DSV4 Flash model would likely shift the Pareto curve in OpenAI's disfavour, as compared to the Qwen model... "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5184781129",
+      "user": "ftzi",
+      "created_at": "2026-08-04T21:22:47Z",
+      "updated_at": "2026-08-04T21:24:21Z",
+      "body": "> I've started to suspect that the maintainers may be favoring US proprietary models. Those models seem to be benchmarked across all reasoning settings and added fairly quickly, while Chinese open-weight models, such as Kimi K3, have only been tested at the highest reasoning level. Meanwhile, Flash has been available for several days and still hasn't appeared in the benchmark. Whether intentional or not, the inconsistency makes the benchmarking process seem biased and undermines confidence in its fairness.\n\nThat was exactly my thought. Seems pretty clear they have some internals on this current matter.\n\nThey are backed by American VCs including YC, so yes, they got US big tech money and people on them: https://www.linkedin.com/posts/datacurveai_today-were-announcing-weve-raised-177-activity-7382142078681587712-Id_k.\n\nA benchmark platform that has biases and interests simply isn't trustworthy."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5190574348",
+      "user": "Perusae",
+      "created_at": "2026-08-05T10:24:34Z",
+      "updated_at": "2026-08-05T10:24:34Z",
+      "body": "OpenCode is having capacity issues because how popular Flash 0731 is.  Yet, DeepSWE is quiet. \nOpenrouter shows Flash 0731 being the most used model.  Yet, DeepSWE is quiet. \n\nOriginally i was thinking they are not releasing model results, because they may release v1.3 of the benchmark. But seeing that Qwen 3.8 results get released but nothing for Flash.\n\nIts not like cost is a issue, with Flash literally being the cheapest to benchmark.\n\nJust strange ... "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/69#issuecomment-5193169678",
+      "user": "MintOcha",
+      "created_at": "2026-08-05T14:37:09Z",
+      "updated_at": "2026-08-05T14:37:09Z",
+      "body": "It's been almost a week since 0731 dropped. They've added qwen 3.8 max but not this?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-31T09:43:05Z",
+  "github_updated_at": "2026-08-05T14:37:09Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The thread requests a DeepSeek v4 Flash 0731 leaderboard run and debates missing model coverage. It is about benchmark coverage/reporting priorities, not an erroneous current benchmark artifact or evaluator behavior.",
+  "reviewed_at": "2026-08-06T00:05:06Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/69"
+  ]
+}

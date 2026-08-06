@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/73",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 73,
+  "title": "[MODEL] Benchmark Meta Muse Spark 1.2 on DeepSWE v1.1",
+  "body": "## Summary\n\nPlease benchmark Meta's newly released **Muse Spark 1.2** on DeepSWE v1.1 and add an official result to the public leaderboard:\n\nhttps://deepswe.datacurve.ai/\n\nOfficial resources:\n\n- Muse Spark 1.2 model page: https://developer.meta.com/ai/models/muse-spark/\n- Meta Model API documentation: https://dev.meta.ai/docs/overview\n- OpenRouter model page: https://openrouter.ai/meta/muse-spark-1.2\n\n## Why this would be useful\n\nMeta describes Muse Spark 1.2 as a coding-focused update optimized for real software-development workflows, with higher first-attempt accuracy, more reliable tool calling, and a 1M-token context window.\n\nDeepSWE's original, long-horizon software-engineering tasks would provide a valuable independent evaluation of those claims. An official run using the same harness and methodology as the existing leaderboard would also make Muse Spark 1.2 directly comparable with the other models already tested on DeepSWE v1.1.\n\n## Current availability\n\nMuse Spark 1.2 is now available through OpenRouter:\n\n- Model page: https://openrouter.ai/meta/muse-spark-1.2\n- OpenRouter model ID: `meta/muse-spark-1.2`\n- Context window: 1,048,576 tokens\n\nIt is also available through Meta's official Model API:\n\nhttps://dev.meta.ai/docs/overview\n\nThe OpenRouter listing provides an immediately actionable serving route for a DeepSWE run, while the direct Meta Model API remains an alternative.\n\n## Suggested run target\n\nPlease test:\n\n- Model: `meta/muse-spark-1.2`\n- Benchmark: DeepSWE v1.1\n- Harness: the same Pier + `mini-swe-agent` configuration used for the existing official leaderboard results\n- Provider: OpenRouter, with Meta Model API as an alternative official route\n- Tasks: the complete DeepSWE v1.1 task set\n\nA small smoke or subset run could first confirm:\n\n- API and authentication compatibility\n- Tool-call round trips\n- Context and output-token limits\n- Preservation of assistant/tool-call state across turns\n- Retry and rate-limit behavior\n- The exact API model identifier or snapshot used\n\n## Requested reporting\n\nIf a full run is completed, please publish the standard leaderboard fields, including:\n\n- Pass@1 and confidence interval\n- Average cost per task, with the accounting method identified\n- Average output-token usage\n- Average agent steps\n- Runtime or latency, if available\n- Exact model ID or dated snapshot\n- Provider/API route\n- Relevant sampling, reasoning, and token-limit settings\n- Exact agent and harness versions\n\n## Acceptance criteria\n\n- [ ] Muse Spark 1.2 is tested on DeepSWE v1.1.\n- [ ] The official leaderboard run uses the standard Pier + `mini-swe-agent` methodology.\n- [ ] The exact Meta model ID or snapshot and API route are recorded.\n- [ ] The result includes the same core performance and cost metadata as the existing leaderboard entries.\n- [ ] Any incompatibilities or deviations from the standard harness are documented.\n\nMuse Spark 1.2 is aimed directly at coding agents and real repository-level engineering work, so an official, harness-controlled DeepSWE result would be especially valuable.\n\nThanks for considering it.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/73#issuecomment-5196351705",
+      "user": "coygeek",
+      "created_at": "2026-08-05T19:27:27Z",
+      "updated_at": "2026-08-05T19:27:27Z",
+      "body": "## Update: Meta has reported a 59.3% DeepSWE 1.1 result\n\nMeta has now published the official Muse Code launch post:\n\nhttps://x.com/finkd/status/2085080750034940201\n\nThe attached launch chart reports **Muse Spark 1.2 at 59.3% on DeepSWE 1.1**.\n\nAn important qualification is that this result used Meta's own **Muse Code** terminal coding agent. It was not produced with the standard `mini-swe-agent` harness used for the official DeepSWE leaderboard.\n\nThe chart also compares models running through different coding agents—for example, Muse Spark 1.2 with Muse Code and Muse Spark 1.1 with `mini-swe-agent`. Therefore, the reported 59.3% should be treated as a Meta-reported Muse Code result rather than an apples-to-apples official DeepSWE leaderboard score.\n\nThis makes the requested controlled run more useful: testing Muse Spark 1.2 with the same Pier + `mini-swe-agent` configuration as the existing leaderboard would help separate the model's improvement from the effect of the Muse Code harness.\n\nFor context, Meta's chart reports:\n\n- Muse Spark 1.2 with Muse Code: **59.3%**\n- Muse Spark 1.1 with `mini-swe-agent`: **53.0%**\n\nBecause both the model version and the harness changed, the 6.3-point difference cannot be attributed to the model update alone.\n\nIt would be valuable to publish both results with clear harness labels:\n\n1. Meta's reported Muse Spark 1.2 + Muse Code result\n2. An official DeepSWE Muse Spark 1.2 + `mini-swe-agent` result\n\nThat would provide both a best-available native-agent result and a controlled cross-model leaderboard comparison."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/73#issuecomment-5198046729",
+      "user": "Perusae",
+      "created_at": "2026-08-05T22:19:20Z",
+      "updated_at": "2026-08-05T22:19:20Z",
+      "body": "Good luck. We are not even seeing any responds for DeepSeek V4 Flash 0731 with a 54.4% claimed score."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-05T19:27:14Z",
+  "github_updated_at": "2026-08-05T22:19:20Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests an official Muse Spark 1.2 DeepSWE v1.1 run and publication of comparable leaderboard metadata. It does not claim a benchmark artifact defect, so it is rejected as outside defect scope.",
+  "reviewed_at": "2026-08-06T00:05:06Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/73"
+  ]
+}

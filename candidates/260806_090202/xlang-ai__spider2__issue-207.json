@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/207",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 207,
+  "title": "Snowflake account RSRSBDK-YDB67606 suspended - \"lack of payment method\" (Error 000666)",
+  "body": "  ## Problem\n\n  The shared Spider2 Snowflake account (`RSRSBDK-YDB67606`) is currently suspended. Data queries fail with:\n\n  snowflake.connector.errors.ProgrammingError: 000666 (57014):\n  SQL compilation error: Your account is suspended due to lack of payment method.\n\n  The connection itself succeeds (e.g., `SELECT CURRENT_TIMESTAMP()` works), but any `SELECT ... FROM <table>` query is blocked.\n\n Impact\n\n  All participants using this account are unable to run evaluation queries against the Snowflake databases listed in spider2-lite.jsonl.\n\n  Request\n\n  Could the Spider2 team restore the account (add payment method or renew the trial)? Thank you!\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-05T11:26:35Z",
+  "github_updated_at": "2026-08-05T11:26:35Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. Issue #207 is explicitly about Spider2-Snow/Snowflake shared account suspension or warehouse compute access, including the RSRSBDK-YDB67606 Snowflake account and payment-method/credit error. The watched benchmark artifact for xlang-ai/spider2 is spider2-dbt; the runbook separates Spider2-Snow/Snowflake credential issues from spider2-dbt, so this belongs to a different benchmark variant.",
+  "reviewed_at": "2026-08-06T00:05:06Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/207"
+  ]
+}

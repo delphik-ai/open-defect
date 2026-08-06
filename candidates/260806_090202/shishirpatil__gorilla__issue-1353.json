@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1353",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1353,
+  "title": "BFCL: deliberately skipped categories render as 0.00% in score CSVs and dilute Overall Acc",
+  "body": "**Summary.** When some test categories are deliberately not run (in our case the agentic `web_search` and `memory` categories, which require paid third-party API keys), the score aggregation renders those categories as `0.00%` in the generated CSVs (`data_agentic.csv`, and the Overall Acc column of `data_overall.csv`) instead of `N/A`. The displayed overall accuracy then includes the never-run categories in its denominator.\n\n**Observed with.** BFCL v4 at commit 6ea57973 (`bfcl generate` + `bfcl evaluate`, single local OpenAI-compatible FC model registered via a supported model handler; no source modifications). Only the non-live, live and multi_turn categories were generated and evaluated.\n\n**Observed behavior.**\n- `data_agentic.csv` shows Agentic Overall Acc `0.00%` with every sub-column empty even though zero agentic test cases were executed.\n- `data_overall.csv` shows Overall Acc `26.09%` for a model whose completed-category results are: Non-Live AST 37.27%, Live Acc 66.25%, Multi-Turn Acc 37.62%, Relevance 93.75%, Irrelevance 44.53%. The overall figure is pulled down by the never-run categories being treated as zero. That `26.09%` must not be read as the deployment's valid overall BFCL score; it is a display artifact of the skipped categories. The completed per-category scores themselves remain valid.\n\n**Why it matters.** Anyone consuming the CSVs programmatically (or screenshotting the table) inherits a fake zero and a diluted overall for models that were simply not evaluated on paid-API categories. The number reads as a measurement but is an artifact of the display path.\n\n**Expected behavior.**\n1. Categories with zero generated/evaluated entries render as `N/A` (or are omitted), never `0.00%`.\n2. Aggregate columns (Agentic Overall, Overall Acc) exclude never-run categories from their denominators, or are clearly marked partial when category coverage is incomplete.\n\n**Minimal reproduction.**\n1. Register any OpenAI-compatible FC model handler.\n2. Run `bfcl generate` / `bfcl evaluate` for the non-live, live and multi_turn categories only (skip `web_search` and `memory`).\n3. Inspect `score/data_agentic.csv` and `score/data_overall.csv`: agentic renders 0.00% and Overall Acc includes it.\n\nHappy to provide the generated CSVs from a local model run if useful.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-05T15:05:56Z",
+  "github_updated_at": "2026-08-05T15:05:56Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "The thread is a plausible BFCL v4 benchmark-level aggregation defect claim: deliberately skipped agentic categories may be rendered as 0.00% and included in Overall Acc. It has no maintainer acknowledgement, merged fix, upstream regression test, or source diff social proof. Because this is a high-fanout scoring/aggregation claim, the runbook requires L3 reproduction before counting; no reproduction artifact was completed in this run, so the candidate remains unverified.",
+  "reviewed_at": "2026-08-06T00:05:06Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1353"
+  ]
+}

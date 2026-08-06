@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/205",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 205,
+  "title": "Spider 2 Snow credential account - Your account is suspended due to lack of payment method",
+  "body": "Hi, I wanted to evaluate on the Snowflake instance, however the Computing Instances on Snowflake seem to be suspended. Can you please fix that?",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-05T07:19:20Z",
+  "github_updated_at": "2026-08-05T07:19:20Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. Issue #205 is explicitly about Spider2-Snow/Snowflake shared account suspension or warehouse compute access, including the RSRSBDK-YDB67606 Snowflake account and payment-method/credit error. The watched benchmark artifact for xlang-ai/spider2 is spider2-dbt; the runbook separates Spider2-Snow/Snowflake credential issues from spider2-dbt, so this belongs to a different benchmark variant.",
+  "reviewed_at": "2026-08-06T00:05:06Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/205"
+  ]
+}
