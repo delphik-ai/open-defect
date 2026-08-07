@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/122",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 122,
+  "title": "Tempo audit task metadata is inconsistent with config.yaml and finding files",
+  "body": "## Summary\n\n  The three Tempo audits contain inconsistent task metadata.\n\n  audits/task_info.csv lists seven Tempo findings in total, but the current audit directories expose only\n  four of them through config.yaml and formal findings/<id>.md files.\n\n  ## Affected findings\n\n   Audit               Finding                 Present in        Present in current     Present as formal\n                                            task_info.csv               config.yaml               finding\n  ━━━━━━━━━━━━━━━━━━  ━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━\n   2026-01-tempo-      H-01                           Yes                        No                    No\n   mpp-streams\n  ──────────────────  ─────────  ─────────────────────────  ────────────────────────  ────────────────────\n   2026-01-tempo-      H-02                           Yes                        No                    No\n   mpp-streams\n  ──────────────────  ─────────  ─────────────────────────  ────────────────────────  ────────────────────\n   2026-01-tempo-      H-03                           Yes                        No                    No\n   stablecoin-dex\n\n  The current task set contains:\n\n  - 2026-01-tempo-feeamm: H-01\n  - 2026-01-tempo-mpp-streams: H-03\n  - 2026-01-tempo-stablecoin-dex: H-02, H-04\n\n  This produces 117 current config-scoped findings, while task_info.csv still reports 120 findings.\n\n  ## History\n\n  The missing files and config entries existed in the initial Tempo release (e4d27fe, 2026-02-18). They\n  were removed in the later Tempo task update (c38bf3e / 20ba718, 2026-03-04), together with related PoCs\n  and auxiliary task files.\n\n  The update commits do not include a rationale, and task_info.csv was not updated accordingly.\n\n  ## Impact\n\n  Consumers that use task_info.csv or pre-existing annotations treat these three findings as part of\n  EVMbench, while consumers that follow config.yaml cannot locate the corresponding formal finding or task\n  definition.\n\n  This causes inconsistent dataset counts and prevents reproducible per-finding processing.\n\n  ## Requested resolution\n\n  Please choose one of the following and update all related metadata consistently:\n\n  1. Restore H-01/H-02 for 2026-01-tempo-mpp-streams and H-03 for 2026-01-tempo-stablecoin-dex, including\n     their config entries and formal finding files; or\n\n  2. Remove the three stale rows from audits/task_info.csv and document that the current EVMbench task\n     count is 117.\n\n  If the removals were intentional, documenting the reason would also help downstream users decide whether\n  historical annotations for these findings should be retained.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-06T05:20:08Z",
+  "github_updated_at": "2026-08-06T05:20:08Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue concerns Tempo/EVMbench audit metadata and mentions current EVMbench finding counts. The watched frontier-evals benchmark candidate here is swe-lancer-diamond, and the thread provides no SWELancer task/source evidence, so it is outside the current benchmark variant.",
+  "reviewed_at": "2026-08-07T00:05:18Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/122"
+  ]
+}

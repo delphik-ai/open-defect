@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/208",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 208,
+  "title": "Storage size for Spider 2 Snow",
+  "body": "I’m trying to estimate the cost of privately hosting the Spider2 Snowflake dataset in our own SnowFlake (ignoring compute/query costs)\n\nWould anyone know the approximate total Snowflake storage footprint of the Spider2 dataset?\nA rough number in GB or TB is enough.\n\nIf available, it would also help to know whether that estimate is:\n - active storage only\n - or active storage plus time travel / fail-safe",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-06T05:47:13Z",
+  "github_updated_at": "2026-08-06T05:47:13Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks for approximate Spider2 Snowflake storage footprint/cost information. It does not claim a benchmark defect, and it also does not belong to the watched spider2-dbt variant.",
+  "reviewed_at": "2026-08-07T00:05:18Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/208"
+  ]
+}

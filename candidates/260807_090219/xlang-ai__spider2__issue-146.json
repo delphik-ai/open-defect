@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/146",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 146,
+  "title": "SQL compilation error on AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET",
+  "body": "Hi Team,\n\nI'm encountering an SQL compilation error when trying to query the database `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET`.\n\nI query this database through Snowflake and the full error message is:\n`SQL compilation error: Shared database is no longer available for use. It will need to be re-created if and when the publisher makes it available again.`\n\nIt seems the database is no longer available. Could you please confirm if this is expected? Is there any information on when it might become available again?\n\nThank you so much :)",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/146#issuecomment-3538837425",
+      "user": "pickleerik",
+      "created_at": "2025-11-16T15:00:14Z",
+      "updated_at": "2025-11-16T15:00:14Z",
+      "body": "upvote \n\n<img width=\"284\" height=\"66\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/382ad73e-7557-4af6-96e8-eae343b464db\" />"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/146#issuecomment-3672596179",
+      "user": "mmarianneliu",
+      "created_at": "2025-12-18T22:53:31Z",
+      "updated_at": "2025-12-18T22:53:31Z",
+      "body": "I am having similar issue, is this a DB issue from the benchmark?"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/146#issuecomment-3688890987",
+      "user": "XinhhD",
+      "created_at": "2025-12-24T07:05:39Z",
+      "updated_at": "2025-12-24T07:05:39Z",
+      "body": "I am having the same problem.\n\nNETHERLANDS_OPEN_MAP_DATA is also affected\n\nsee my issue:\nhttps://github.com/xlang-ai/Spider2/issues/172"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/146#issuecomment-5202600324",
+      "user": "bhadri-vaidhyanathan",
+      "created_at": "2026-08-06T09:04:21Z",
+      "updated_at": "2026-08-06T09:08:08Z",
+      "body": "Revoked data shares or pervasive data drift on rolling/refreshed datasets\nRefer PR: https://github.com/xlang-ai/Spider2/pull/191\nhttps://github.com/EmergenceAI/Spider2-E"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-10-15T10:39:24Z",
+  "github_updated_at": "2026-08-06T09:08:08Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue reports a Snowflake shared database availability problem for AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET and comments link Spider2-Snow/Snowflake follow-ups. The watched benchmark variant is spider2-dbt, so this Snowflake data-share issue is outside scope.",
+  "reviewed_at": "2026-08-07T00:05:18Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/146"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-80",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "agent: coop prompt told agents the shared git remote was read-only",
+  "summary": "CooperBench mini_swe_agent_v2 coop prompts told agents the shared remote was read-only and omitted push/PR workflow, preventing agents from sharing code during evaluated cooperative runs.",
+  "defect_type_main": "Evaluation setup",
+  "defect_type_sub": "agent_coordination_prompt_bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/80",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/80",
+    "https://github.com/cooperbench/CooperBench/pull/80/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-06T05:30:00Z",
+  "last_reviewed_at": "2026-08-07T00:05:18Z",
+  "decision_note": "L2 PR diff/source audit. The merged PR body and changelog state mini_swe_agent_v2 coop prompts labeled the shared remote read-only, listed only fetch/log/diff, omitted push, and measured 292 fetches but 0 pushes across 117 flash_10 trajectories. The diff rewrites coop/solo prompts, changes the shared remote flow to push and gh-pr submissions, pins the base commit, removes leaked upstream refs, adds a gh shim, and adds regression tests. Existing CooperBench artifacts cover peer-liveness/publication in PR #79 and other setup/display issues, not this read-only remote prompt/submission root cause. PR #80 merged on 2026-08-06, so resolution is fixed."
+}

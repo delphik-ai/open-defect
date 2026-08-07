@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/178",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 178,
+  "title": "AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET is empty",
+  "body": "I connected to the sample Snowflake database with Spider2-Snow dataset and noticed that the AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET database is empty. Although there are tables in the resources -- https://github.com/xlang-ai/Spider2/tree/main/spider2-snow/resource/databases/AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET/PUBLIC\n\nPlease upload the missing data.\n\n<img width=\"364\" height=\"395\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/0f4a7bc4-26e4-44c4-8ab5-a87f28fc12cf\" />",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/178#issuecomment-5202556257",
+      "user": "bhadri-vaidhyanathan",
+      "created_at": "2026-08-06T08:59:49Z",
+      "updated_at": "2026-08-06T09:07:38Z",
+      "body": "Revoked data shares or pervasive data drift on rolling/refreshed datasets\nRefer PR: https://github.com/xlang-ai/Spider2/pull/191\nhttps://github.com/EmergenceAI/Spider2-E"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-02-13T14:18:00Z",
+  "github_updated_at": "2026-08-06T09:07:38Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue says it connected to the Spider2-Snow Snowflake database and found AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET empty. That is a Snowflake dataset availability problem, not spider2-dbt.",
+  "reviewed_at": "2026-08-07T00:05:18Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/178"
+  ]
+}

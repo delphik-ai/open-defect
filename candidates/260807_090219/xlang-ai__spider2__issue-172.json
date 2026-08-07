@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/172",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 172,
+  "title": "Multiple Shared Databases Unavailable in Snowflake",
+  "body": "## Issue Summary\n**Multiple Shared Databases Unavailable in Snowflake**\n\nMultiple shared databases in Snowflake are no longer available, causing benchmark instances to fail with SQL compilation errors.\n\n---\n\n## Error Details\n\n### Error Message\n```\n003030 (02000): SQL compilation error:\nShared database is no longer available for use. It will need to be re-created if and when the publisher makes it available again.\n```\n\n### Affected Databases and Instances\n\n| Database | Instance ID | Status | Error Type |\n|----------|------------|--------|------------|\n| **NETHERLANDS_OPEN_MAP_DATA** | `sf009` | ❌ Failed | Database unavailable |\n| **NETHERLANDS_OPEN_MAP_DATA** | `sf013` | ❌ Failed | Database unavailable |\n| **AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET** | `sf029` | ❌ Failed | Database unavailable |\n\n### Impact\n- **3 instances** (out of 547 total) cannot be executed\n- **2 shared databases** are affected\n- Queries fail immediately during schema exploration or SQL execution\n\n---\n\n## Reproduction Steps\n\n Observe error when agent attempts to query `NETHERLANDS_OPEN_MAP_DATA` and `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET`:\n   ```\n   [SYNTAX_ERROR] SQL syntax error: 003030 (02000): SQL compilation error:\n   Shared database is no longer available for use.\n   ```\n\n<img width=\"622\" height=\"100\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/003d5878-7ac1-4be9-be87-8e8404d58e1c\" />\n\n<img width=\"692\" height=\"204\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c35b77a2-0d16-4d81-8933-d1d5a8fbbd55\" />\n\n---\n\n## Environment\n\n- **Snowflake Account**: \n- \n\n<img width=\"634\" height=\"318\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8835b4c2-437e-4ea8-aaab-b4b205e8b9b9\" />\n\n- **Database**: `NETHERLANDS_OPEN_MAP_DATA`, `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET` (shared database)\n- **Benchmark**: Spider2-Snow\n- **Date Observed**: 2025-12-24\n\n---\n\n## Additional Context\n\n### Instance Details\n\n#### sf009\n- **Question**: Compare total surface area of buildings in Amsterdam vs Rotterdam\n- **Required Tables**: `NETHERLANDS_OPEN_MAP_DATA.PUBLIC.BUILDING`\n- **Key Columns**: `CONTAINS_ADDRESSES`, `SURFACE_AREA`\n\n#### sf013  \n- **Question**: Compare total road lengths in Amsterdam vs Rotterdam\n- **Required Tables**: `NETHERLANDS_OPEN_MAP_DATA.PUBLIC.ROAD`\n- **Key Columns**: `QUADKEY`, `CLASS`, `LENGTH`\n\n#### sf029\n- **Question**: Generate a daily detailed sales report for each product under the 'Manufacturing' distributor view, covering the 30 days leading up to February 6, 2022\n- **Required Tables**: \n  - `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET.PUBLIC.RETAIL_ANALYTICS_SALES`\n  - `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET.PUBLIC.RETAIL_ANALYTICS_TRAFFIC`\n  - `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET.PUBLIC.RETAIL_ANALYTICS_INVENTORY`\n  - `AMAZON_VENDOR_ANALYTICS__SAMPLE_DATASET.PUBLIC.RETAIL_ANALYTICS_NET_PPM`\n- **Key Columns**: Multiple metrics including ordered units, revenue, glance views, inventory data, vendor metrics\n\n\n## Logs\n\n### sf009 Error Log Excerpt\n```\n[SYNTAX_ERROR] SQL syntax error: 003030 (02000): SQL compilation error:\nShared database is no longer available for use. It will need to be re-created if and when the publisher makes it available again.\n```\n\n### sf013 Error Log Excerpt\n```\n[SYNTAX_ERROR] SQL syntax error: 003030 (02000): SQL compilation error:\nShared database is no longer available for use. It will need to be re-created if and when the publisher makes it available again.\n```\n\n### sf029 Error Log Excerpt\n```\n[SYNTAX_ERROR] SQL syntax error: 003030 (02000): SQL compilation error:\nShared database is no longer available for use. It will need to be re-created if and when the publisher makes it available again.\n```\n\n---\n",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/172#issuecomment-5202596010",
+      "user": "bhadri-vaidhyanathan",
+      "created_at": "2026-08-06T09:03:53Z",
+      "updated_at": "2026-08-06T09:08:01Z",
+      "body": "Revoked data shares or pervasive data drift on rolling/refreshed datasets\nRefer PR: https://github.com/xlang-ai/Spider2/pull/191\nhttps://github.com/EmergenceAI/Spider2-E"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-12-24T07:03:45Z",
+  "github_updated_at": "2026-08-06T09:08:01Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue explicitly labels the affected benchmark as Spider2-Snow and names Snowflake instance ids sf009, sf013, and sf029. The current watched variant is spider2-dbt, so the Snowflake shared-database failure is out of scope.",
+  "reviewed_at": "2026-08-07T00:05:18Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/172"
+  ]
+}
