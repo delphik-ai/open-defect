@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/542",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 542,
+  "title": "Port #539: Fix eval scripts for new-file-only test patches",
+  "body": "## Summary\nPort of #539 to v5 branch. Fixes #541.\n\nIn v5, eval scripts are pre-baked in the parquet (no runtime `test_spec/python.py`). Three instances have test patches that only add new files — `get_modified_files()` returns empty, causing `git checkout {base_commit}` with no file args to reset the entire working tree, undoing post-base setup.\n\nFix: replace bare `git checkout {base_commit}` with `rm -f {new_files}` in the eval scripts for:\n- `django__django-16877`\n- `sphinx-doc__sphinx-8595`\n- `sphinx-doc__sphinx-9711`\n\n## Test plan\n- [x] Gold eval: 3/3 resolved (sphinx instances previously always failed)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/data/SWE-bench_Verified/test.parquet b/data/SWE-bench_Verified/test.parquet\nindex 1cf6afa35..e7790297d 100644\nBinary files a/data/SWE-bench_Verified/test.parquet and b/data/SWE-bench_Verified/test.parquet differ\n",
+  "github_state": "closed",
+  "github_created_at": "2026-03-19T05:12:35Z",
+  "github_updated_at": "2026-08-07T18:54:42Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-475",
+  "task_names": [
+    "django__django-16877",
+    "sphinx-doc__sphinx-8595",
+    "sphinx-doc__sphinx-9711"
+  ],
+  "resolution": "fixed",
+  "summary": "Merged v5 port fixes the same new-file-only eval-script reset defect represented by PR #475.",
+  "decision_note": "L2 duplicate audit. PR #542 is the merged v5 port of the new-file-only eval-script fix for django__django-16877, sphinx-doc__sphinx-8595, and sphinx-doc__sphinx-9711. It replaces the bare git checkout/reset behavior in pre-baked eval scripts and reports gold eval 3/3 resolved. Because it is merged on 2026-03-19, the canonical PR #475 resolution is updated to fixed.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/542",
+    "https://github.com/SWE-bench/SWE-bench/pull/475",
+    "https://github.com/SWE-bench/SWE-bench/issues/541"
+  ]
+}

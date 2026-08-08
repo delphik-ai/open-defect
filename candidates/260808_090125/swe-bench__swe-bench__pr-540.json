@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/540",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 540,
+  "title": "fix: Handle Issues Linked with Full URL",
+  "body": "#### What does this implement/fix? Explain your changes.\r\nIssues can be linked with the full url instead of the `#<number>` shorthand.\r\n\r\nFor example, in the repo `https://github.com/git/git`\r\n`fixes #1` is the same as\r\n`fixes https://github.com/git/git/issues/1`\r\n\r\n[`print_pulls.py`](https://github.com/SWE-bench/SWE-bench/blob/fa79f3af3e0f212d4d14b1c858c77fcaae5308ce/swebench/collect/print_pulls.py) is unable to extract `resolved_issues` for PRs bodies that link issues like this.\r\nThis PR extends the regex used to extract issue numbers from the PR body.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/collect/utils.py b/swebench/collect/utils.py\nindex e11a0c91d..9f374d6ad 100644\n--- a/swebench/collect/utils.py\n+++ b/swebench/collect/utils.py\n@@ -84,8 +84,21 @@ def extract_resolved_issues(self, pull: dict) -> list[str]:\n         Return:\n             resolved_issues (list): list of issue numbers referenced by PR\n         \"\"\"\n+\n+        # get repo's issues url to support parsing issues linked with the full url\n+        # eg: #1 and https://github.com/git/git/issues/1\n+        issue_marker_prefix = r\"\\#\"\n+\n+        repo_clone_url = pull.get(\"base\", {}).get(\"repo\", {}).get(\"clone_url\")\n+        if repo_clone_url and isinstance(repo_clone_url, str):\n+            # strip trailing .git\n+            repo_base_url = repo_clone_url[:-4]\n+            # eg: https://github.com/git/git/issues/\n+            repo_issues_url = f\"{repo_base_url}/issues/\"\n+            issue_marker_prefix += \"|\" + repo_issues_url\n+\n         # Define 1. issue number regex pattern 2. comment regex pattern 3. keywords\n-        issues_pat = re.compile(r\"(\\w+)\\s+\\#(\\d+)\")\n+        issues_pat = re.compile(rf\"(\\w+)\\s+(?:{issue_marker_prefix})(\\d+)\")\n         comments_pat = re.compile(r\"(?s)<!--.*?-->\")\n \n         # Construct text to search over for issue numbers from PR body and commit messages\n",
+  "github_state": "open",
+  "github_created_at": "2026-03-17T01:07:18Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L2",
+  "decision_note": "L2 PR audit. The change improves collection tooling that extracts issue numbers from PR bodies with full GitHub URLs. It does not alter current benchmark task data, scoring, or evaluator behavior.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/540"
+  ]
+}

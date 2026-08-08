@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/75",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 75,
+  "title": "[Bug] obsidian-linter-auto-table-of-contents scoring depends on unspecified rule display name",
+  "body": "## Summary\n\nThe v1.1 verifier for `obsidian-linter-auto-table-of-contents` couples all 41 feature-test identifiers to the reference solution's English rule display name, even though the task instruction does not require that name.\n\nA candidate used the reasonable display name `Auto TOC`. The hidden feature suite executed all 41 tests and reported 36 passing / 5 failing, with test names beginning `Auto TOC ...`. The grader expected names beginning `Auto Table of Contents ...`, treated all 41 expected tests as missing from the structured test report, and assigned F2P 0/41.\n\nThis makes the score depend on reproducing an unspecified UI string rather than the requested behavior.\n\n## Version\n\n- DeepSWE commit: `e016041a6ccf8da29906afc9a3f5a8df940a1f78`\n- Task: `obsidian-linter-auto-table-of-contents`\n- Task image: `public.ecr.aws/d3j8x8q7/swe-bench-202605:kh74j15mp1vrxx737y8b47tc8h832a37-v1.1@sha256:56d3ffcde2ca373ffa0107f830b243d66191020f7021806acc8d609148518092`\n\n## Evidence\n\nThe public task instruction says to export `AutoToc` from `src/rules/auto-toc.ts`, but does not prescribe an English locale/display name.\n\nThe reference solution adds:\n\n```ts\n'auto-toc': {\n  'name': 'Auto Table of Contents',\n```\n\n`tests/config.json` then uses that display string in every exact feature-test identifier, for example:\n\n```json\n\"Auto Table of Contents No TOC markers present — text is unchanged\"\n```\n\nThe verifier reconciles the generated test-report names against those configured strings. With the candidate's `name: 'Auto TOC'`, the report contained names such as:\n\n```text\nAuto TOC No TOC markers present — text is unchanged\n```\n\nObserved test result from one run:\n\n```text\n5 failed, 36 passed, 41 total\n```\n\nThe subsequent grade marked all configured feature-test IDs missing and reported:\n\n```text\nF2P: 0/41\n```\n\nThe five genuine behavioral failures are separate; the name mismatch alone changed the reported result from 36/41 to 0/41.\n\n## Suggested fix\n\nUse stable test identifiers that do not incorporate the localized rule display name. Alternatively, normalize or map the suite prefix before reconciliation. The verifier should score the 41 executed cases by stable identity while preserving their human-readable names for reporting.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-07T01:18:24Z",
+  "github_updated_at": "2026-08-07T02:59:24Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-75",
+  "task_names": [
+    "obsidian-linter-auto-table-of-contents"
+  ],
+  "resolution": "found",
+  "summary": "DeepSWE task obsidian-linter-auto-table-of-contents grades by exact feature-test display names that include an unspecified rule name, so a behaviorally close solution can execute 36/41 tests but score F2P 0/41 when it uses a different display label.",
+  "decision_note": "L1 thread audit. The issue explicitly names DeepSWE v1.1 commit e016041a6ccf8da29906afc9a3f5a8df940a1f78 and task obsidian-linter-auto-table-of-contents, quotes the task instruction omission, the reference display name, the tests/config.json feature identifiers, and the observed 36/41 executed tests being reconciled as F2P 0/41. No existing deep-swe canonical covers this display-name-coupled grading root cause; issue is open, so resolution is found.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/75"
+  ],
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Gold/reference answer bug"
+}

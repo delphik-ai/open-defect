@@ -1,0 +1,36 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/508",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 508,
+  "title": "fixing unnecesarry git checkout for new test-files scenario",
+  "body": "## Problem\r\nFor instances with only new tests, git reset to base_commit is not necessary. This is problematic especially when no files were present in git checkout command and any change is reset. For example, in sphinx 9711, 8595, the tox.ini change of adding \"-rA\" is reset due to git checkout base_commit\r\n\r\n## Fix\r\nCheck for non-zero number of modified test files and only then perform their reset in `make_eval_script_list_py` https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/test_spec/python.py#L405\r\n\r\nNote: Same fix already exists in https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/test_spec/utils.py#L68\r\nbut will not be referenced by `make_eval_script_list` for \"py\"\r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/test_spec/python.py b/swebench/harness/test_spec/python.py\nindex b125ab05f..f1db47b23 100644\n--- a/swebench/harness/test_spec/python.py\n+++ b/swebench/harness/test_spec/python.py\n@@ -411,7 +411,10 @@ def make_eval_script_list_py(\n     HEREDOC_DELIMITER = \"EOF_114329324912\"\n     test_files = get_modified_files(test_patch)\n     # Reset test files to the state they should be in before the patch.\n-    reset_tests_command = f\"git checkout {base_commit} {' '.join(test_files)}\"\n+    if len(test_files) > 0:\n+        reset_tests_command = f\"git checkout {base_commit} {' '.join(test_files)}\"\n+    else:\n+        reset_tests_command = 'echo \"No test files to reset\"'\n     apply_test_patch_command = (\n         f\"git apply -v - <<'{HEREDOC_DELIMITER}'\\n{test_patch}\\n{HEREDOC_DELIMITER}\"\n     )\n",
+  "github_state": "open",
+  "github_created_at": "2025-12-23T21:11:58Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-475",
+  "task_names": [
+    "django__django-16877",
+    "sphinx-doc__sphinx-8595",
+    "sphinx-doc__sphinx-9711"
+  ],
+  "resolution": "fixing",
+  "summary": "Follow-up PR for the same new-file-only Python eval-script reset bug already represented by PR #475.",
+  "decision_note": "L2 duplicate audit. PR #508 describes the same root cause as PR #475: when modified test files are empty for new-file-only patches, the Python eval script performs an unnecessary checkout/reset that undoes changes for the Sphinx/Django instances. It is duplicate/follow-up evidence for canonical PR #475.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/508",
+    "https://github.com/SWE-bench/SWE-bench/pull/475"
+  ]
+}

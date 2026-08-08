@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/614",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 614,
+  "title": "implement optional DakeraClient integration for semantic result tracking #613",
+  "body": "This PR implements the requested Dakera integration to enable longitudinal, semantic search over historical SWE-bench evaluation runs, addressing issue #613.\r\n\r\n### Changes Implemented\r\n- **Optional Imports:** Added a resilient `try/except` import block for `DakeraClient` at the top of `run_evaluation.py` to prevent any runtime breakages for researchers who don't use Dakera.\r\n- **Semantic Storage:** Modified the end of the `main()` function in `run_evaluation.py` to capture `make_run_report` results. If `DAKERA_API_KEY` is configured in the environment, it iterates over predictions and stores the resolution status and patch summaries into Dakera's semantic memory.\r\n- **Compatibility:** Preserved original return paths and CLI argument structure.\r\n\r\nCloses #613\r\n/bounty $150",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/run_evaluation.py b/swebench/harness/run_evaluation.py\nindex 40cb3ded7..c4888f204 100644\n--- a/swebench/harness/run_evaluation.py\n+++ b/swebench/harness/run_evaluation.py\n@@ -5,8 +5,15 @@\n import platform\n import threading\n import traceback\n+import os\n+\n+try:\n+    from dakera import DakeraClient\n+except ImportError:\n+    DakeraClient = None\n \n if platform.system() == \"Linux\":\n+    \n     import resource\n \n from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter\n@@ -566,7 +573,7 @@ def main(\n \n     # clean images + make final report\n     clean_images(client, existing_images, cache_level, clean)\n-    return make_run_report(\n+    report = make_run_report(\n         predictions,\n         full_dataset,\n         run_id,\n@@ -576,8 +583,35 @@ def main(\n         env_image_tag,\n     )\n \n+    # Dakera Integration (SWE-bench #613 feature request)\n+    dakera_api_key = os.getenv(\"DAKERA_API_KEY\")\n+    dakera_base_url = os.getenv(\"DAKERA_BASE_URL\", \"http://localhost:3300\")\n+    if DakeraClient is not None and dakera_api_key:\n+        try:\n+            dakera_client = DakeraClient(base_url=dakera_base_url, api_key=dakera_api_key)\n+            for instance_id, pred in predictions.items():\n+                resolved = False\n+                if isinstance(report, dict):\n+                    resolved = instance_id in report.get(\"resolved\", []) or instance_id in report.get(\"resolved_ids\", [])\n+                \n+                dakera_client.store_memory(\n+                    agent_id=f\"swebench-{run_id}\",\n+                    content=f\"Instance {instance_id}: {'resolved' if resolved else 'failed'}. Patch: {pred.get('model_patch', '')[:200]}\",\n+                    metadata={\n+                        \"instance_id\": instance_id,\n+                        \"resolved\": resolved,\n+                        \"model\": run_id\n+                    }\n+                )\n+            print(\"[+] [DAKERA-INTEGRATION] successfully stored evaluation results in semantic memory.\")\n+        except Exception as e:\n+            print(f\"[-] [DAKERA-INTEGRATION] Failed to store results: {e}\")\n+\n+    return report\n+\n \n if __name__ == \"__main__\":\n+    \n     parser = ArgumentParser(\n         description=\"Run evaluation harness for the given dataset and predictions.\",\n         formatter_class=ArgumentDefaultsHelpFormatter,\n",
+  "github_state": "open",
+  "github_created_at": "2026-07-03T02:48:15Z",
+  "github_updated_at": "2026-08-07T23:26:15Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "The PR implements optional semantic result tracking integration. It is a feature request implementation, not a current SWE-bench Verified or Multilingual task, evaluator, or harness scoring defect.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/614"
+  ]
+}

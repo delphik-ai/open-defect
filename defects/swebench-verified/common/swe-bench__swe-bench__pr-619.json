@@ -18,6 +18,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-07-12T08:14:32Z",
-  "last_reviewed_at": "2026-08-03T00:56:56.912Z",
+  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
   "decision_note": "L3 equivalent reproduction. Current swebench/harness/test_spec/utils.py on main builds reset_tests_command from get_modified_files(test_patch) and emits echo \"No test files to reset\" when that list is empty. Command run: python tmp/l3-260713_090206/repro_new_file_reset.py. A /dev/null-source new-file-only patch produced modified_files=[] and reset_command=echo \"No test files to reset\", matching PR #619. Existing issue #538 covers the Python builder/task-specific django__django-16877 case fixed by #539; this candidate is the remaining common builder path for JavaScript/Go/Java/etc., so it is a distinct benchmark-level SWE-bench Verified harness defect. PR #619 is open, so resolution is fixing."
 }

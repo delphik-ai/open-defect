@@ -1,0 +1,60 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/402",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 402,
+  "title": "Remove problematic content slicing in test output parsing",
+  "body": "<!--\r\nThanks for contributing a pull request!\r\n-->\r\n\r\n#### Reference Issues/PRs\r\n<!--\r\nExample: \"Fixes #1234\", \"See also #3456\"\r\nPlease use keywords (e.g., Fixes) to create link to the issues or pull requests\r\nyou resolved, so that they will automatically be closed when your pull request\r\nis merged. See https://github.com/blog/1506-closing-issues-via-pull-requests\r\n-->\r\n\r\nFix https://github.com/SWE-bench/SWE-bench/issues/377\r\n\r\n#### What does this implement/fix? Explain your changes.\r\n<!--\r\nPlease include a brief explanation of how your solution\r\nfixes the tagged issue(s), along with what files / entities have\r\nbeen modified for this fix.\r\n-->\r\n\r\nWhen running patch eval on Modal, I see that for some instances, the content of test output files being captured are out of order, which causes the test summary to fall outside the `>>>>> Start Test Output` and `>>>>> End Test Output` markers. I attached a sample log file below.\r\n\r\n[test_output_astropy__astropy-12907.txt](https://github.com/user-attachments/files/20397380/test_output.txt)\r\n\r\nThis PR removes the content slicing line and uses the whole file content for parsing. \r\n\r\n#### Any other comments?\r\n\r\n🧡 Thanks for contributing!\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-2902744926",
+      "user": "john-b-yang",
+      "created_at": "2025-05-22T22:27:21Z",
+      "updated_at": "2025-05-22T22:27:21Z",
+      "body": "Hmm I understand the problem, thanks for noticing it. But I probably wouldn't prefer this be the default behavior. Perhaps we can condition this statement on whether Modal eval is being used.\r\n\r\nIt's not a big difference I guess, but the reason this statement exists is to make sure text not related to testing output is ignored."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-2913382037",
+      "user": "ryanhoangt",
+      "created_at": "2025-05-27T17:29:26Z",
+      "updated_at": "2025-05-27T17:29:26Z",
+      "body": "@john-b-yang that makes sense, I modified the code to skip the content slicing on Modal only, could you help take another look?"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-2975026838",
+      "user": "ryanhoangt",
+      "created_at": "2025-06-16T03:56:23Z",
+      "updated_at": "2025-06-16T03:56:23Z",
+      "body": "Hi @john-b-yang, just a friendly ping on this PR - please let me know if there's anything I can clarify or improve. Thanks!"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-3238062956",
+      "user": "neubig",
+      "created_at": "2025-08-29T19:43:38Z",
+      "updated_at": "2025-08-29T19:43:38Z",
+      "body": "Hi @john-b-yang and/or @klieret, would it be possible to get this merged? We're currently having to work off a branch of swe-bench and it's causing us logistics issues at the moment. Thanks a lot for the consideration!"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/grading.py b/swebench/harness/grading.py\nindex 9bf5b4fab..9e679f92e 100644\n--- a/swebench/harness/grading.py\n+++ b/swebench/harness/grading.py\n@@ -33,12 +33,13 @@ def test_failed(case: str, sm: dict[str, str]) -> bool:\n \n \n # MARK: Evaluation report functions\n-def get_logs_eval(test_spec: TestSpec, log_fp: str) -> tuple[dict[str, str], bool]:\n+def get_logs_eval(test_spec: TestSpec, log_fp: str, on_modal: bool = False) -> tuple[dict[str, str], bool]:\n     \"\"\"\n     Retrieve evaluation results for a task instance from its corresponding log file\n \n     Args:\n         log_fp (str): path to log file\n+        on_modal (bool): whether the run is performed remotely on Modal\n     Returns:\n         bool: whether the patch applied successfully\n         dict: status map\n@@ -73,7 +74,8 @@ def get_logs_eval(test_spec: TestSpec, log_fp: str) -> tuple[dict[str, str], boo\n             return {}, False\n \n         # Get status map of evaluation results\n-        content = content.split(START_TEST_OUTPUT)[1].split(END_TEST_OUTPUT)[0]\n+        if not on_modal:\n+            content = content.split(START_TEST_OUTPUT)[1].split(END_TEST_OUTPUT)[0]\n         return log_parser(content, test_spec), True\n \n \n@@ -223,6 +225,7 @@ def get_eval_report(\n     prediction: dict[str, str],\n     test_log_path: str,\n     include_tests_status: bool,\n+    on_modal: bool = False,\n ) -> dict[str, Any]:\n     \"\"\"\n     Generate a report of model evaluation results from a prediction, task instance,\n@@ -235,6 +238,7 @@ def get_eval_report(\n         include_tests_status (bool): whether to include the status of each test in the returned report\n     Returns:\n         report (dict): report of metrics\n+        on_modal (bool): whether the run is performed remotely on Modal\n     \"\"\"\n     report_map = {}\n \n@@ -253,7 +257,7 @@ def get_eval_report(\n     report_map[instance_id][\"patch_exists\"] = True\n \n     # Get evaluation logs\n-    eval_status_map, found = get_logs_eval(test_spec, test_log_path)\n+    eval_status_map, found = get_logs_eval(test_spec, test_log_path, on_modal)\n \n     if not found:\n         return report_map\ndiff --git a/swebench/harness/modal_eval/run_evaluation_modal.py b/swebench/harness/modal_eval/run_evaluation_modal.py\nindex b0276b3f1..d448ada1d 100644\n--- a/swebench/harness/modal_eval/run_evaluation_modal.py\n+++ b/swebench/harness/modal_eval/run_evaluation_modal.py\n@@ -340,6 +340,7 @@ def run_instance_modal(\n             prediction=pred,\n             test_log_path=test_output_path,\n             include_tests_status=True,\n+            on_modal=True,\n         )\n         logger.info(\n             f\"report: {report}\\n\"\ndiff --git a/swebench/harness/reporting.py b/swebench/harness/reporting.py\nindex 4068e8cdd..591c2c52c 100644\n--- a/swebench/harness/reporting.py\n+++ b/swebench/harness/reporting.py\n@@ -63,14 +63,22 @@ def make_run_report(\n             / LOG_REPORT\n         )\n         if report_file.exists():\n-            # If report file exists, then the instance has been run\n             completed_ids.add(instance_id)\n-            report = json.loads(report_file.read_text())\n-            if report[instance_id][\"resolved\"]:\n-                # Record if the instance was resolved\n-                resolved_ids.add(instance_id)\n-            else:\n-                unresolved_ids.add(instance_id)\n+            try:\n+                content = report_file.read_text().strip()\n+                if not content:  # Empty file\n+                    error_ids.add(instance_id)\n+                    continue\n+                \n+                report = json.loads(content)\n+                if report[instance_id][\"resolved\"]:\n+                    # Record if the instance was resolved\n+                    resolved_ids.add(instance_id)\n+                else:\n+                    unresolved_ids.add(instance_id)\n+            except (json.JSONDecodeError, KeyError):\n+                # If the report file is not valid JSON or missing keys, treat as error\n+                error_ids.add(instance_id)\n         else:\n             # Otherwise, the instance was not run successfully\n             error_ids.add(instance_id)\n",
+  "github_state": "open",
+  "github_created_at": "2025-05-22T17:24:13Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-402",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench Modal evaluation sliced test output content and marked a locally resolved SymPy patch unresolved; PR conditions/removes the problematic slicing.",
+  "decision_note": "L2 duplicate audit. This updated GitHub thread is already evidence for canonical defect swebench-verified__swe-bench__swe-bench__pr-402. The current candidate was re-fetched because the thread was updated; source/diff evidence still matches the existing root cause, so it is duplicate evidence rather than a new defect.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/402"
+  ]
+}

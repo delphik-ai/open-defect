@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/441",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 441,
+  "title": "FIX: \"report_dir\" did not be used in run_evaluation",
+  "body": "The ‎`--report_dir` argument in ‎`/swebench/harness/run_evaluation.py` was not used, and the ‎`make_run_report` function in ‎`reporting.py` did not accept a ‎`report_dir` parameter. This has now been fixed in this pr.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/441#issuecomment-3408426305",
+      "user": "juanmichelini",
+      "created_at": "2025-10-15T21:48:12Z",
+      "updated_at": "2025-10-15T21:48:12Z",
+      "body": "fixes: #449 \r\n\r\nWould love tho see this merge."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/reporting.py b/swebench/harness/reporting.py\nindex 4068e8cdd..3d0b554cf 100644\n--- a/swebench/harness/reporting.py\n+++ b/swebench/harness/reporting.py\n@@ -19,6 +19,7 @@ def make_run_report(\n     full_dataset: list,\n     run_id: str,\n     client: Optional[docker.DockerClient] = None,\n+    report_dir: Optional[str] = None,\n ) -> Path:\n     \"\"\"\n     Make a final evaluation and run report of the instances that have been run.\n@@ -128,11 +129,17 @@ def make_run_report(\n                 \"unremoved_images\": list(sorted(unremoved_images)),\n             }\n         )\n-    report_file = Path(\n+    if report_dir is not None:\n+        report_dir = Path(report_dir)\n+        report_dir.mkdir(parents=True, exist_ok=True)\n+    else:\n+        report_dir = Path(\".\")\n+    report_file = report_dir / (\n         list(predictions.values())[0][KEY_MODEL].replace(\"/\", \"__\")\n         + f\".{run_id}\"\n         + \".json\"\n     )\n+    print(f\"==============Report file: {report_file}==================\")\n     with open(report_file, \"w\") as f:\n         print(json.dumps(report, indent=4), file=f)\n     print(f\"Report written to {report_file}\")\ndiff --git a/swebench/harness/run_evaluation.py b/swebench/harness/run_evaluation.py\nindex fbab2ec6a..bf7b88992 100644\n--- a/swebench/harness/run_evaluation.py\n+++ b/swebench/harness/run_evaluation.py\n@@ -288,6 +288,7 @@ def run_instances(\n         max_workers (int): Maximum number of workers\n         run_id (str): Run ID\n         timeout (int): Timeout for running tests\n+        report_dir (str): Directory to write reports to\n     \"\"\"\n     client = docker.from_env()\n     test_specs = list(\n@@ -469,10 +470,6 @@ def main(\n \n     # set open file limit\n     assert len(run_id) > 0, \"Run ID must be provided\"\n-    if report_dir is not None:\n-        report_dir = Path(report_dir)\n-        if not report_dir.exists():\n-            report_dir.mkdir(parents=True)\n \n     if force_rebuild and namespace is not None:\n         raise ValueError(\"Cannot force rebuild and use a namespace at the same time.\")\n@@ -524,7 +521,7 @@ def main(\n \n     # clean images + make final report\n     clean_images(client, existing_images, cache_level, clean)\n-    return make_run_report(predictions, full_dataset, run_id, client)\n+    return make_run_report(predictions, full_dataset, run_id, client, report_dir)\n \n \n if __name__ == \"__main__\":\n",
+  "github_state": "open",
+  "github_created_at": "2025-07-14T14:22:52Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-498",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "Earlier report_dir PR is duplicate evidence for the existing SWE-bench harness report_dir output-location defect.",
+  "decision_note": "L2 duplicate audit. PR #441 states --report_dir was accepted by run_evaluation but not passed into reporting, the same root cause already tracked by canonical PR #498. The linked canonical remains open/fixing.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/441",
+    "https://github.com/SWE-bench/SWE-bench/pull/498"
+  ]
+}

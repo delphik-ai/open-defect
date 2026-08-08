@@ -19,6 +19,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-07-13T23:29:49Z",
-  "last_reviewed_at": "2026-07-15T00:06:38Z",
+  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
   "decision_note": "L3 equivalent reproduction. Source inspection of current main shows run_evaluation.py calls exec_run_with_timeout and writes only stdout, grading.py parses the log without an exit-code check, and log_parsers/python.py records any line starting with PASSED as a passing test. Reproduction command run: python3 - <<PY with the current parse_log_pytest/get_eval_tests_report/get_resolution_status logic and spoofed stdout containing PASSED tests/test_bug.py::test_regression plus PASSED tests/test_existing.py::test_still_ok. Observed status_map marked both tests PASSED and resolution=RESOLVED_FULL, matching PR #620. The PR is open, so resolution is fixing. This is attributed to swebench-verified following existing SWE-bench harness-level artifacts; no existing canonical covers stdout test-runner capture spoofing."
 }

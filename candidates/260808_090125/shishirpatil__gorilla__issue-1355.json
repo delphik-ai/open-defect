@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1355",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1355,
+  "title": "[BFCL] Strict regex-based evaluator gives false negatives even on semantically accurate model responses",
+  "body": "Problem\n\nThe evaluator misclassifies model's answers that are semantically accurate but formatted differently from the ground truth, as negatives. \n\nExample: model output \"8:00 AM\" is marked incorrect against ground truth \"08:00 AM\".\n\nReproduction\n\n1. Ground truth: \"08:00 AM\"\n2. Model response: \"8:00 AM\"\n3. Evaluation uses strict string equality => flagged incorrect\n\nExpected behavior\n\nNormalize/parse times before comparing, or use a tolerant comparator so \"8:00 AM\" and \"08:00 AM\" are treated as equal.\n\nSuggested fixes\n\n- Add a canonicalization step in the evaluator for recognized time formats (accept leading zeros, 12/24h, whitespace, and case differences).\n- Prefer parsing into a datetime/time object and comparing that (or format into a canonical string like \"HH:MM\" or ISO 8601).\n- Make the normalization/strictness configurable so projects can opt into tolerant comparisons.\n\nTests to add\n\n- Unit tests asserting equality for pairs like (\"8:00 AM\",\"08:00 AM\"), (\"8:00\",\"08:00\"), (\"20:00\",\"08:00 PM\").\n\nSeverity\n\nMedium — causes false negatives in evaluation metrics.\n\nNotes\n\nIf the evaluator already attempts normalization for dates/times, this report may point to a missing format or a bug in the normalizer.\n\nOptional helper: a small canonicalizer\n\n```python\nimport re\nfrom datetime import datetime\n\ndef canonicalize_time(s: str) -> str:\n    s = s.strip().upper()\n    # Try a simple AM/PM pattern first, allowing optional leading zero\n    m = re.match(r'^0?([1-9]|1[0-2]):([0-5][0-9])\\s*(AM|PM)$', s)\n    if m:\n        h = int(m.group(1))\n        minute = m.group(2)\n        ampm = m.group(3)\n        h24 = (h % 12) + (12 if ampm == 'PM' else 0)\n        return f\"{h24:02d}:{minute}\"\n    # Fallback: try parsing ISO-like HH:MM\n    m2 = re.match(r'^0?([0-1]?\\d|2[0-3]):([0-5][0-9])$', s)\n    if m2:\n        h = int(m2.group(1))\n        minute = m2.group(2)\n        return f\"{h:02d}:{minute}\"\n    # If parsing fails, return original (or raise)\n    return s\n```\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-07T23:29:57Z",
+  "github_updated_at": "2026-08-07T23:43:35Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "L2 thread/source audit. The issue claims a strict regex/string-equality BFCL evaluator false negative for time strings such as 8:00 AM versus 08:00 AM, but it does not identify a BFCL version, category, testcase id, source file, or current benchmark row. Without task/source attribution or social proof, the benchmark variant and root cause cannot be confirmed.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1355"
+  ]
+}

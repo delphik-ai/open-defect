@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/405",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 405,
+  "title": "FIX: failing harness with modal true due to yanked reqs",
+  "body": "This PR re-implements code that was removed when test_spec was refactored in v4+. The original code by @klieret  was a fix for https://github.com/SWE-bench/SWE-bench/issues/199\r\n\r\nThe changes included are just taking the code from: https://github.com/SWE-bench/SWE-bench/pull/232/files and https://github.com/SWE-bench/SWE-bench/pull/236 and re-implementing them. \r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/test_spec/python.py b/swebench/harness/test_spec/python.py\nindex b3f8105ad..54872a489 100644\n--- a/swebench/harness/test_spec/python.py\n+++ b/swebench/harness/test_spec/python.py\n@@ -196,7 +196,7 @@ def make_repo_script_list_py(\n     if \"install\" in specs:\n         setup_commands.append(specs[\"install\"])\n \n-    # If the setup modifies the repository in any way, it can be \n+    # If the setup modifies the repository in any way, it can be\n     # difficult to get a clean diff.  This ensures that `git diff`\n     # will only reflect the changes from the user while retaining the\n     # original state of the repository plus setup commands.\n@@ -211,6 +211,29 @@ def make_repo_script_list_py(\n     return setup_commands\n \n \n+def replace_uninstallable_packages_requirements_txt(requirement_str: str) -> str:\n+    \"\"\"Replaces certain packages in a requirements.txt-like string.\n+    For example, some packages have been yanked and we need to replace them with compatible alternatives.\n+    \"\"\"\n+    replacements = {\n+        # See https://github.com/princeton-nlp/SWE-bench/issues/199\n+        # This package was sinced yanked, so we need to force pip\n+        # to install it.\n+        \"types-pkg_resources\": \"types-pkg-resources==0.1.3\",\n+    }\n+    requirements = [req.strip() for req in requirement_str.split(\"\\n\") if req.strip()]\n+    requirements_replaced = []\n+    for requirement in requirements:\n+        if requirement in replacements:\n+            print(\n+                f\"Replaced {requirement!r} with {replacements[requirement]!r} (replace_uninstallable_packages)\"\n+            )\n+            requirements_replaced.append(replacements[requirement])\n+        else:\n+            requirements_replaced.append(requirement)\n+    return \"\\n\".join(requirements_replaced) + \"\\n\"\n+\n+\n def make_env_script_list_py(instance, specs, env_name) -> list:\n     \"\"\"\n     Creates the list of commands to set up the conda environment for testing.\n@@ -228,7 +251,9 @@ def make_env_script_list_py(instance, specs, env_name) -> list:\n         reqs_commands.append(cmd)\n \n         # Install dependencies\n-        reqs = get_requirements(instance)\n+        reqs = replace_uninstallable_packages_requirements_txt(\n+            get_requirements(instance)\n+        )\n         path_to_reqs = \"$HOME/requirements.txt\"\n         reqs_commands.append(\n             f\"cat <<'{HEREDOC_DELIMITER}' > {path_to_reqs}\\n{reqs}\\n{HEREDOC_DELIMITER}\"\n@@ -238,7 +263,9 @@ def make_env_script_list_py(instance, specs, env_name) -> list:\n         reqs_commands.append(f\"rm {path_to_reqs}\")\n     elif pkgs == \"environment.yml\":\n         # Create environment from yml\n-        reqs = get_environment_yml(instance, env_name)\n+        reqs = replace_uninstallable_packages_requirements_txt(\n+            get_environment_yml(instance, env_name)\n+        )\n         path_to_reqs = \"environment.yml\"\n         reqs_commands.append(\n             f\"cat <<'{HEREDOC_DELIMITER}' > {path_to_reqs}\\n{reqs}\\n{HEREDOC_DELIMITER}\"\n",
+  "github_state": "open",
+  "github_created_at": "2025-05-27T16:39:59Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "The PR claims to re-implement older fixes for Modal evaluation failures caused by yanked requirements. This is a high-fanout harness/runtime claim with no maintainer acknowledgement, merged fix, regression test evidence, or current-task reproduction in the thread. L3 reproduction would be required to confirm; it was not available from public GitHub evidence.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/405",
+    "https://github.com/SWE-bench/SWE-bench/issues/199"
+  ]
+}

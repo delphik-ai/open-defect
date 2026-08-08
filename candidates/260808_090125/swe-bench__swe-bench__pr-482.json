@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/482",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 482,
+  "title": "Fix timezone bug in Python test spec by using Unix timestamps",
+  "body": "## Description\nThis PR fixes a timezone-related bug in the Python test specification that could cause issues when comparing commit timestamps across different timezones.\n\n## Changes\n- Replace `%ci` (formatted date with timezone) with `%ct` (Unix timestamp) in git show commands\n- Use numeric comparison instead of string comparison for timestamps\n- Simplify date arithmetic using Unix epoch time instead of `date -d`\n- Change `--since` to `--after` parameter for git log with timestamp\n\n## Impact\nThis eliminates potential timezone-related issues when comparing commit times during repository setup, ensuring consistent behavior regardless of the system's timezone configuration.\n\n## Testing\nThe changes maintain the same logical behavior while using more robust timestamp handling.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/test_spec/python.py b/swebench/harness/test_spec/python.py\nindex b125ab05f..2088d5da3 100644\n--- a/swebench/harness/test_spec/python.py\n+++ b/swebench/harness/test_spec/python.py\n@@ -278,13 +278,13 @@ def make_repo_script_list_py(\n         # Remove the remote and tags so the agent won't see newer commits.\n         \"git remote remove origin\",\n         # Remove only tags pointing to commits after target timestamp\n-        f\"TARGET_TIMESTAMP=$(git show -s --format=%ci {base_commit})\",\n-        'git tag -l | while read tag; do TAG_COMMIT=$(git rev-list -n 1 \"$tag\"); TAG_TIME=$(git show -s --format=%ci \"$TAG_COMMIT\"); if [[ \"$TAG_TIME\" > \"$TARGET_TIMESTAMP\" ]]; then git tag -d \"$tag\"; fi; done',\n+        f\"TARGET_TS=$(git show -s --format=%ct {base_commit})\",\n+        'git tag -l | while read tag; do TAG_COMMIT=$(git rev-list -n 1 \"$tag\"); TAG_TS=$(git show -s --format=%ct \"$TAG_COMMIT\"); if (( TAG_TS > TARGET_TS )); then git tag -d \"$tag\"; fi; done',\n         \"git reflog expire --expire=now --all\",\n         \"git gc --prune=now --aggressive\",\n         # Verify future logs aren't available\n-        \"AFTER_TIMESTAMP=$(date -d \\\"$TARGET_TIMESTAMP + 1 second\\\" '+%Y-%m-%d %H:%M:%S')\",\n-        'COMMIT_COUNT=$(git log --oneline --all --since=\"$AFTER_TIMESTAMP\" | wc -l)',\n+        \"AFTER_TS=$((TARGET_TS + 1))\",\n+        'COMMIT_COUNT=$(git log --oneline --all --after=\"$AFTER_TS\" | wc -l)',\n         '[ \"$COMMIT_COUNT\" -eq 0 ] || exit 1',\n         # Make sure conda is available for later use\n         \"source /opt/miniconda3/bin/activate\",\n",
+  "github_state": "open",
+  "github_created_at": "2025-10-14T08:01:54Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-482",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "SWE-bench Python test spec compared formatted commit timestamps across timezones; PR switches to Unix timestamps for robust comparisons.",
+  "decision_note": "L2 duplicate audit. This updated GitHub thread is already evidence for canonical defect swebench-verified__swe-bench__swe-bench__pr-482. The current candidate was re-fetched because the thread was updated; source/diff evidence still matches the existing root cause, so it is duplicate evidence rather than a new defect.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/482"
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/475",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 475,
+  "title": "Fix django__django-16877, sphinx-doc__sphinx-8595, sphinx-doc__sphinx-9711",
+  "body": "### Problem\r\n\r\nThere’s been an unfortunate series of events that broke three instances:\r\n- `django__django-16877`\r\n- `sphinx-doc__sphinx-8595`\r\n- `sphinx-doc__sphinx-9711`\r\n\r\nWhat these have in common is that their `test_patch` contains only new files.\r\n\r\nIn the eval script, all modified test files are reset after applying the patch. However, for these three instances the list of modified test files is empty (since all files are new). The relevant line is:\r\n\r\n```python\r\n# swebench/harness/test_spec/python.py:414\r\nreset_tests_command = f\"git checkout {base_commit} {' '.join(test_files)}\"\r\n```\r\n\r\nWhen `test_files` is empty, this command checks out the entire repo at `base_commit` instead of just the intended files. That resets all committed setup changes.\r\n\r\nThis issue should have been a problem since [#353](https://github.com/SWE-bench/SWE-bench/pull/353), but it likely went unnoticed until last week, when new images were pushed to Docker Hub.\r\n\r\n### Fix\r\n\r\nRight now, only modified files are reset. The correct behavior is to reset all files touched in the test_patch (both new and modified). This ensures correctness in cases where the agent patch also creates new test files that must be reset.\r\n\r\nTo achieve this:\r\n- Replaced `get_modified_files` with `get_patch_files`, which returns both new and modified files.\r\n- This guarantees that the `test_files` list is never empty.\r\n- Since git checkout fails if a file does not exist, we now iterate over the list and soft-fail if a file is missing.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/475#issuecomment-3325413005",
+      "user": "ofirpress",
+      "created_at": "2025-09-23T20:21:05Z",
+      "updated_at": "2025-09-23T20:21:05Z",
+      "body": "cc: @carlosejimenez "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/475#issuecomment-3419833540",
+      "user": "kjain14",
+      "created_at": "2025-10-19T17:40:14Z",
+      "updated_at": "2025-10-19T17:40:14Z",
+      "body": "Also running into this issue running gold patches :(, this seems to fix things"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/475#issuecomment-4111762232",
+      "user": "rshin",
+      "created_at": "2026-03-23T16:04:04Z",
+      "updated_at": "2026-03-23T16:04:38Z",
+      "body": "I experienced the same but didn't realize this PR already existed, so I reported issue #518. But that issue has been fixed by #539, so maybe that has also fixed what this PR meant to do too?"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/test_spec/python.py b/swebench/harness/test_spec/python.py\nindex b125ab05f..5cf9cc98f 100644\n--- a/swebench/harness/test_spec/python.py\n+++ b/swebench/harness/test_spec/python.py\n@@ -15,7 +15,7 @@\n     END_TEST_OUTPUT,\n     REPO_BASE_COMMIT_BRANCH,\n )\n-from swebench.harness.utils import get_modified_files, load_cached_environment_yml\n+from swebench.harness.utils import get_patch_files, load_cached_environment_yml\n from functools import cache\n \n HEADERS = {\n@@ -409,9 +409,10 @@ def make_eval_script_list_py(\n     Applies the test patch and runs the tests.\n     \"\"\"\n     HEREDOC_DELIMITER = \"EOF_114329324912\"\n-    test_files = get_modified_files(test_patch)\n+    test_files = get_patch_files(test_patch)\n     # Reset test files to the state they should be in before the patch.\n-    reset_tests_command = f\"git checkout {base_commit} {' '.join(test_files)}\"\n+    reset_tests_command = f'for f in {\" \".join(test_files)}; do git checkout HEAD -- \"$f\" || true; done'\n+    \n     apply_test_patch_command = (\n         f\"git apply -v - <<'{HEREDOC_DELIMITER}'\\n{test_patch}\\n{HEREDOC_DELIMITER}\"\n     )\ndiff --git a/swebench/harness/test_spec/utils.py b/swebench/harness/test_spec/utils.py\nindex fc155a70c..01bb1eba2 100644\n--- a/swebench/harness/test_spec/utils.py\n+++ b/swebench/harness/test_spec/utils.py\n@@ -3,7 +3,7 @@\n     MAP_REPO_VERSION_TO_SPECS,\n     START_TEST_OUTPUT,\n )\n-from swebench.harness.utils import get_modified_files\n+from swebench.harness.utils import get_patch_files\n \n \n # MARK: Test Command Creation Functions\n@@ -63,12 +63,9 @@ def make_eval_script_list_common(\n     Applies the test patch and runs the tests.\n     \"\"\"\n     HEREDOC_DELIMITER = \"EOF_114329324912\"\n-    test_files = get_modified_files(test_patch)\n+    test_files = get_patch_files(test_patch)\n     # Reset test files to the state they should be in before the patch.\n-    if test_files:\n-        reset_tests_command = f\"git checkout {base_commit} {' '.join(test_files)}\"\n-    else:\n-        reset_tests_command = 'echo \"No test files to reset\"'\n+    reset_tests_command = f'for f in {\" \".join(test_files)}; do git checkout HEAD -- \"$f\" || true; done'\n \n     build_commands = []\n     if \"build\" in specs:\ndiff --git a/swebench/harness/utils.py b/swebench/harness/utils.py\nindex d8d1538ee..709c36af0 100644\n--- a/swebench/harness/utils.py\n+++ b/swebench/harness/utils.py\n@@ -331,14 +331,13 @@ def get_repo_file(repo, commit, filepath):\n         return None\n \n \n-def get_modified_files(patch: str) -> list[str]:\n+def get_patch_files(patch: str) -> list[str]:\n     \"\"\"\n-    Get the list of modified files in a patch\n+    Get the list of new and modified files in a patch\n     \"\"\"\n     source_files = []\n     for file in PatchSet(patch):\n-        if file.source_file != \"/dev/null\":\n-            source_files.append(file.source_file)\n+        source_files.append(file.source_file)\n     source_files = [x[2:] for x in source_files if x.startswith(\"a/\")]\n     return source_files\n \n",
+  "github_state": "open",
+  "github_created_at": "2025-09-23T09:52:17Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-475",
+  "task_names": [
+    "django__django-16877",
+    "sphinx-doc__sphinx-8595",
+    "sphinx-doc__sphinx-9711"
+  ],
+  "resolution": "fixing",
+  "summary": "Three SWE-bench Verified instances have test patches that add only new files; the Python eval script resets the whole worktree when get_modified_files(test_patch) is empty, undoing setup changes and making gold evaluation fail.",
+  "decision_note": "L2 PR body/diff audit. The PR explicitly names django__django-16877, sphinx-doc__sphinx-8595, and sphinx-doc__sphinx-9711 and explains that their test_patch contains only new files, so get_modified_files(test_patch) is empty and the eval script runs a bare git checkout/reset that undoes required changes. Existing canonical PR #619 covers the later common-builder/non-Python variant and explicitly distinguishes the Python builder issue; no task-specific canonical exists for these three Verified rows. PR is open, so resolution is fixing.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/475"
+  ],
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Eval script reset bug"
+}

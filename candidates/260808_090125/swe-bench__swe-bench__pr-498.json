@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/498",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 498,
+  "title": "Fix: argument report_dir does not work",
+  "body": "<!--\r\nThanks for contributing a pull request!\r\n-->\r\n\r\n#### Reference Issues/PRs\r\n<!--\r\nExample: \"Fixes #1234\", \"See also #3456\"\r\nPlease use keywords (e.g., Fixes) to create link to the issues or pull requests\r\nyou resolved, so that they will automatically be closed when your pull request\r\nis merged. See https://github.com/blog/1506-closing-issues-via-pull-requests\r\n-->\r\n\r\nFixes #449 \r\n\r\n#### What does this implement/fix? Explain your changes.\r\n<!--\r\nPlease include a brief explanation of how your solution\r\nfixes the tagged issue(s), along with what files / entities have\r\nbeen modified for this fix.\r\n-->\r\n\r\nIn `swebench/harness/reporting.py`, generate `report_file` based on `report_dir`.\r\n\r\n#### Any other comments?\r\n\r\nN/A\r\n\r\n<!-- 🧡 Thanks for contributing! -->\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/498#issuecomment-3852650982",
+      "user": "0xba1a",
+      "created_at": "2026-02-05T10:32:31Z",
+      "updated_at": "2026-02-05T10:32:31Z",
+      "body": "Isn't this fix released in the lastest `swebench.harness` pip library package?"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/reporting.py b/swebench/harness/reporting.py\nindex 0744ff968..5da88c84a 100644\n--- a/swebench/harness/reporting.py\n+++ b/swebench/harness/reporting.py\n@@ -22,6 +22,7 @@ def make_run_report(\n     namespace: str = None,\n     instance_image_tag: str = \"latest\",\n     env_image_tag: str = \"latest\",\n+    report_dir: str = \".\",\n ) -> Path:\n     \"\"\"\n     Make a final evaluation and run report of the instances that have been run.\n@@ -149,7 +150,13 @@ def make_run_report(\n                 \"unremoved_images\": list(sorted(unremoved_images)),\n             }\n         )\n-    report_file = Path(\n+    \n+    if report_dir is not None:\n+        report_dir = Path(report_dir)\n+        if not report_dir.exists():\n+            report_dir.mkdir(parents=True)\n+    \n+    report_file = report_dir / (\n         list(predictions.values())[0][KEY_MODEL].replace(\"/\", \"__\")\n         + f\".{run_id}\"\n         + \".json\"\ndiff --git a/swebench/harness/run_evaluation.py b/swebench/harness/run_evaluation.py\nindex 40cb3ded7..509d60d9c 100644\n--- a/swebench/harness/run_evaluation.py\n+++ b/swebench/harness/run_evaluation.py\n@@ -502,10 +502,6 @@ def main(\n \n     # set open file limit\n     assert len(run_id) > 0, \"Run ID must be provided\"\n-    if report_dir is not None:\n-        report_dir = Path(report_dir)\n-        if not report_dir.exists():\n-            report_dir.mkdir(parents=True)\n \n     if force_rebuild and namespace is not None:\n         raise ValueError(\"Cannot force rebuild and use a namespace at the same time.\")\n@@ -574,6 +570,7 @@ def main(\n         namespace,\n         instance_image_tag,\n         env_image_tag,\n+        report_dir,\n     )\n \n \n",
+  "github_state": "open",
+  "github_created_at": "2025-11-24T16:23:43Z",
+  "github_updated_at": "2026-08-07T23:26:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-498",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "Open PR fixes a SWE-bench harness reporting bug where --report_dir is accepted but the final report is still written to the current working directory.",
+  "decision_note": "L2 duplicate audit. This updated GitHub thread is already evidence for canonical defect swebench-verified__swe-bench__swe-bench__pr-498. The current candidate was re-fetched because the thread was updated; source/diff evidence still matches the existing root cause, so it is duplicate evidence rather than a new defect.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/498"
+  ]
+}

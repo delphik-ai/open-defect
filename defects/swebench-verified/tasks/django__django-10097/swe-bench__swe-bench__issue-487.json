@@ -11,11 +11,13 @@
   "summary": "Live issue reports django__django-10097 gold patch cannot be run on current SWE-bench; comments do not resolve it.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/487",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/issues/487"
+    "https://github.com/SWE-bench/SWE-bench/issues/487",
+    "https://github.com/SWE-bench/SWE-bench/pull/535",
+    "https://github.com/SWE-bench/SWE-bench/pull/546"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-10-19T17:55:12.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 1,
   "migration": {

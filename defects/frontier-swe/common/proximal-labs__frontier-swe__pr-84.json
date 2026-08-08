@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "frontier-swe__proximal-labs__frontier-swe__pr-84",
+  "benchmark_name": "frontier-swe",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "update: fix grok cli list if else bug",
+  "summary": "Frontier-SWE Grok CLI config generation wrote vendor model options to the wrong TOML block in some model-id cases, so eval runs could miss the knobs actually used by the selected model.",
+  "defect_type_main": "Harness correctness",
+  "defect_type_sub": "Agent configuration bug",
+  "canonical_source_url": "https://github.com/Proximal-Labs/frontier-swe/pull/84",
+  "evidence_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/pull/84"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-07T08:16:51Z",
+  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "decision_note": "L2 source-read audit. The merged PR body states it fixes a grok_cli syntax/list if-else bug. The diff removes the conditional model-block emission and always writes reasoning/compaction extras onto [model.<selected>], matching [models].default. Maintainer merge on 2026-08-07 is social proof. No existing frontier-swe artifact covers this Grok config-generation root cause, so this is a new benchmark-level fixed defect."
+}

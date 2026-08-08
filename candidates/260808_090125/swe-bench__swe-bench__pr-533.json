@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/533",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 533,
+  "title": "Fix timezone bug in git tag cleanup",
+  "body": "## Summary\n- `git show --format=%ci` produces timezone-dependent strings\n- String comparison `>` of `\"05:00:00 -0500\"` vs `\"10:00:00 +0000\"` gives wrong result even though they represent the same moment\n- Switch to `%ct` (Unix timestamp) with numeric `-gt` comparison\n- Replace `date -d` with arithmetic `$((TARGET_TIMESTAMP + 1))`\n- Replace `--since` with `--after=\"@$AFTER_TIMESTAMP\"`\n\n## Test plan\n- [x] Verified in Docker builds across multiple timezone scenarios\n- [x] All 500 Verified images build correctly with this change\n\nRelated: PR #482 (fixes the same bug in `test_spec/python.py`; this PR fixes it in `image_builder/docker_utils.py`)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/533#issuecomment-4086526916",
+      "user": "klieret",
+      "created_at": "2026-03-19T00:16:18Z",
+      "updated_at": "2026-03-19T00:16:18Z",
+      "body": "Please confirm that you have checked 1 or 2 docker images and check that the git history is still there, but all future references have been removed."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/533#issuecomment-4086527690",
+      "user": "klieret",
+      "created_at": "2026-03-19T00:16:27Z",
+      "updated_at": "2026-03-19T00:16:27Z",
+      "body": "Please merge afterwards"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/533#issuecomment-4087763251",
+      "user": "aorwall",
+      "created_at": "2026-03-19T04:37:35Z",
+      "updated_at": "2026-03-19T04:37:35Z",
+      "body": " Verified on two images:\r\n\r\n  - psf__requests-1724 (base commit 2013-11-03, tz -0800): 3,163 commits preserved, 79 tags retained, 0 future tags, only the SWE-bench marker commit after base\r\n - matplotlib__matplotlib-20488 (base commit 2021-06-23, tz -0400): 39,395 commits preserved, 96 tags retained, 0 future tags, only the SWE-bench marker commit after base\r\n"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/image_builder/docker_utils.py b/swebench/image_builder/docker_utils.py\nindex 2ec96bf27..1b350d83e 100644\n--- a/swebench/image_builder/docker_utils.py\n+++ b/swebench/image_builder/docker_utils.py\n@@ -67,12 +67,12 @@ def git_clone_timesafe(repo: str, base_commit: str, workdir: str) -> list[str]:\n         f\"cd {workdir}\",\n         f\"git reset --hard {base_commit}\",\n         \"git remote remove origin\",\n-        f\"TARGET_TIMESTAMP=$(git show -s --format=%ci {base_commit})\",\n-        'git tag -l | while read tag; do TAG_COMMIT=$(git rev-list -n 1 \"$tag\"); TAG_TIME=$(git show -s --format=%ci \"$TAG_COMMIT\"); if [[ \"$TAG_TIME\" > \"$TARGET_TIMESTAMP\" ]]; then git tag -d \"$tag\"; fi; done',\n+        f\"TARGET_TIMESTAMP=$(git show -s --format=%ct {base_commit})\",\n+        'git tag -l | while read tag; do TAG_COMMIT=$(git rev-list -n 1 \"$tag\"); TAG_TIME=$(git show -s --format=%ct \"$TAG_COMMIT\"); if [[ $TAG_TIME -gt $TARGET_TIMESTAMP ]]; then git tag -d \"$tag\"; fi; done',\n         \"git reflog expire --expire=now --all\",\n         \"git gc --prune=now --aggressive\",\n-        \"AFTER_TIMESTAMP=$(date -d \\\"$TARGET_TIMESTAMP + 1 second\\\" '+%Y-%m-%d %H:%M:%S')\",\n-        'COMMIT_COUNT=$(git log --oneline --all --since=\"$AFTER_TIMESTAMP\" | wc -l)',\n+        \"AFTER_TIMESTAMP=$((TARGET_TIMESTAMP + 1))\",\n+        'COMMIT_COUNT=$(git log --oneline --all --after=\"@$AFTER_TIMESTAMP\" | wc -l)',\n         '[ \"$COMMIT_COUNT\" -eq 0 ] || exit 1',\n         \"cd - || true\",\n     ]\n",
+  "github_state": "closed",
+  "github_created_at": "2026-03-11T14:46:25Z",
+  "github_updated_at": "2026-08-07T18:54:44Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-533",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "SWE-bench v5 PR fixed timezone-dependent git tag cleanup where string comparisons could leave/remove wrong future references; verified on 500 images.",
+  "decision_note": "L2 duplicate audit. This updated GitHub thread is already evidence for canonical defect swebench-verified__swe-bench__swe-bench__pr-533. The current candidate was re-fetched because the thread was updated; source/diff evidence still matches the existing root cause, so it is duplicate evidence rather than a new defect.",
+  "reviewed_at": "2026-08-08T00:09:03.911Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/533"
+  ]
+}
