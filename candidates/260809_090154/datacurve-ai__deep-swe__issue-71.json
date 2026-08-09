@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/71",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 71,
+  "title": "Why ULTRA reasoning is missing from SOL 5.6?",
+  "body": "Missing the deepest reasoning effort in the benchmark why?\nYou could test with subagents_spawn forced to 0 to remove the orchestration harness.\n\n<img width=\"919\" height=\"222\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/78f1ac71-a13f-44b1-abc6-9e1f87c5aba6\" />\n\nSource: https://learn.chatgpt.com/docs/agent-configuration/subagents?surface=app#app-reasoning-effort-model_reasoning_effort\n\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/71#issuecomment-5171677133",
+      "user": "vinilana",
+      "created_at": "2026-08-03T21:02:18Z",
+      "updated_at": "2026-08-03T21:02:18Z",
+      "body": "Ultra mode is not a reasoning effort, it is a multi-agent orchestration capability, they call it \"effort\" but when you launch it will actually launch subagents with effort xhigh."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/71#issuecomment-5171976037",
+      "user": "loryhuz",
+      "created_at": "2026-08-03T21:33:52Z",
+      "updated_at": "2026-08-03T21:33:52Z",
+      "body": "@vinilana That's what I thought in the first place but you can spawn subagents with \"ultra\" reasoning as well, that's confusing. And it doesn't spawn xhigh necessary depending on the difficulty of the task"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/71#issuecomment-5172478788",
+      "user": "coygeek",
+      "created_at": "2026-08-03T22:36:35Z",
+      "updated_at": "2026-08-03T22:36:35Z",
+      "body": "As was mentioned, Ultra mode is not reasoning. It's multi-agent orchestration.\n\nHere's what's available via API:\nhttps://developers.openai.com/api/docs/models\n\n<img width=\"1037\" height=\"562\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/dd3f4170-0df1-4700-8762-2a82ce5e3367\" />\n\nOn the other hand, Ultra Mode is available only via Codex CLI or Codex App, as far as I know. It's not available via API."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/71#issuecomment-5227573532",
+      "user": "Nadelopo",
+      "created_at": "2026-08-08T18:45:40Z",
+      "updated_at": "2026-08-08T18:45:40Z",
+      "body": "> will actually launch subagents with effort xhigh.\n\nwhat’s the source of this information?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-03T18:09:48Z",
+  "github_updated_at": "2026-08-08T18:45:40Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks why Codex Ultra is missing as a reasoning-effort option and the comments discuss whether Ultra is orchestration rather than API reasoning effort. It does not identify a DeepSWE task, dataset, harness, or grader defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/71"
+  ],
+  "reviewed_at": "2026-08-09T00:05:38.369Z"
+}
