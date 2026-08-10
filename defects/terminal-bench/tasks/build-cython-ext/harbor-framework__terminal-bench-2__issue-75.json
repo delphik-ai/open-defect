@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__issue-75",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "build-cython-ext"
+  ],
+  "resolution": "fixing",
+  "title": "`build-cython-ext` oracle fails: unpinned planarity resolves to 1.0.0 (PyPI name takeover) and the verifier hits KeyError: 'pos'",
+  "summary": "build-cython-ext lets pyknotid resolve unpinned planarity 1.0.0 at solve time; that PyPI name now emits renamed graph node attributes, so pyknotid reads data[\"pos\"] and the verifier fails with KeyError.",
+  "defect_type_main": "Environment dependency",
+  "defect_type_sub": "Registry dependency drift",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/75",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/75",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/73",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/73/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-09T14:34:33Z",
+  "last_reviewed_at": "2026-08-10T00:04:29Z",
+  "decision_note": "L2 source-read audit. Benchmark attribution is terminal-bench from the terminal-bench-2 repo and explicit task name build-cython-ext. The issue reports oracle reward 0 on the published image because pyknotid 0.5.3 has an unpinned planarity dependency, current planarity 1.0.0 changed networkx_graph node attributes from pos/start/end to vertex_* names, and pyknotid raises KeyError: pos. PR #73 is an open fix PR whose diff pins planarity==0.6 in build-cython-ext/solution/solve.sh and whose body reports reward 0 to 1 under Harbor. Existing canonical PR #71 covers a different build-cython-ext root cause, a flaky upstream pyknotid repository test, so this is a new task-specific defect. PR #73 is open, so resolution is fixing."
+}
