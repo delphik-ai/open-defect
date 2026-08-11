@@ -6,7 +6,7 @@
   "task_names": [
     "apache__lucene-11760"
   ],
-  "resolution": "fixing",
+  "resolution": "found",
   "title": "Fix flaky Java log parsers: race condition handling",
   "summary": "Live PR follow-up fixes SWE-bench Java Maven/Gradle log parser races; scoped to current multilingual Maven/Gradle Java tasks.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/532",
@@ -15,7 +15,7 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-03-11T14:46:19.000Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "last_reviewed_at": "2026-08-11T00:06:05Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 1,
   "migration": {

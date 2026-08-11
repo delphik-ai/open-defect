@@ -1,0 +1,36 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/76",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 76,
+  "title": "build-pov-ray: oracle solve.sh fails — povray.org now returns HTTP 403 (Cloudflare) to the source downloads",
+  "body": "## Summary\n\nThe `build-pov-ray` reference solution can no longer fetch the POV-Ray 2.2 source archives. `povray.org` is now fronted by Cloudflare and returns **HTTP 403** to the direct `wget`s in `build-pov-ray/solution/solve.sh`, so the oracle build never starts and the task scores **reward 0**.\n\n## Reproduction\n\nRun the oracle on `build-pov-ray` (any environment, open network):\n\n```\nharbor run -p build-pov-ray -a oracle -n 1\n```\n\nThe first download fails:\n\n```\nConnecting to www.povray.org (www.povray.org)|172.67.69.229|:443... connected.\nHTTP request sent, awaiting response... 403 Forbidden\nERROR 403: Forbidden.\n```\n\n`set -e` aborts at the first `wget`; the verifier then fails (`3 failed` — no `/app/povray-2.2`, no `povray` binary).\n\n## Notes\n\n- The TCP/TLS connection to Cloudflare **succeeds** — this is an origin/WAF refusal, **not** a network or egress problem. It reproduces on a fully open network (verified on local Docker).\n- All three archives are affected: `POVDOC.TAR.Z`, `POVSCN.TAR.Z`, `POVSRC.TAR.Z`.\n\n## Proposed fix\n\nFetch the **identical** archives from a stable mirror — the Internet Archive Wayback Machine `id_` (identity) snapshots of the original `povray.org` URLs — pinned by SHA-256 so any content drift fails the build loudly. Only the download step changes; the build stays byte-identical below it. PR to follow.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-10T16:07:02Z",
+  "github_updated_at": "2026-08-10T16:07:02Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "terminal-bench",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__issue-76",
+  "task_names": [
+    "build-pov-ray"
+  ],
+  "resolution": "fixing",
+  "summary": "build-pov-ray oracle solve.sh downloads POV-Ray 2.2 archives directly from povray.org, which now returns HTTP 403 and prevents the oracle build from starting.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Oracle/reference solution failure",
+  "decision_note": "L2 source-read audit. The issue provides a concrete Harbor oracle command and HTTP 403 failure for build-pov-ray. The paired PR #77 changes build-pov-ray/solution/solve.sh from direct povray.org wget URLs to SHA-pinned Internet Archive snapshots and states only the download source changed. This proves current Terminal-Bench task attribution and a task-specific oracle dependency defect; PR #77 is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/76",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/77",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/main/build-pov-ray/solution/solve.sh"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}

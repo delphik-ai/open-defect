@@ -4,7 +4,7 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "fixing",
+  "resolution": "found",
   "title": "Guard against empty eval_status_map in grading",
   "summary": "SWE-bench PR guards empty eval_status_map so runner crashes no longer get interpreted as all tests passing/resolved.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/531",
@@ -14,7 +14,7 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-03-11T14:46:08.000Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "last_reviewed_at": "2026-08-11T00:06:05Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

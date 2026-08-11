@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/209",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 209,
+  "title": "Spider 2 Snow credential account - Your account is suspended due to lack of payment method",
+  "body": "Hi！My Snowflake account appears to be suspended due to a missing payment method. All query executions fail with error 000666(57014): \"Your account is suspended due to lack of payment method.\" \n\nWhen attempting to resolve this via the web interface, I do not have permission to add a payment method. Please let me know if there is anything I can do on my end, or if this needs to be resolved on the account/platform side. Thank you!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-10T09:27:20Z",
+  "github_updated_at": "2026-08-10T09:27:20Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue reports a Spider 2 Snow credential/Snowflake account suspension due to lack of payment method. The watched benchmark candidate here is spider2-dbt, so this is outside the current Spider2-DBT benchmark variant.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/209"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}

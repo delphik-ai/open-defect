@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-634",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Add a swebench CLI with grouped commands and worked examples",
+  "summary": "SWE-bench remove_containers matched exact container names even though eval containers include the run_id suffix, so stale containers were not removed and 409 conflicts could block reruns.",
+  "defect_type_main": "Evaluation runtime",
+  "defect_type_sub": "Container cleanup bug",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/634",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/634"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-10T06:45:56Z",
+  "last_reviewed_at": "2026-08-11T00:06:05Z",
+  "decision_note": "L2 PR body/diff audit. The merged PR states a real bug: remove_containers looked for sweb.eval.<instance_id>, while containers are named sweb.eval.<instance_id>.<run_id>, so cleanup missed stale containers and could not clear 409 conflicts. The diff adds CLI/runtime cleanup changes and the PR was merged on 2026-08-10, so this is a fixed benchmark-level SWE-bench harness defect. It is attributed to swebench-verified as the primary current SWE-bench variant in this artifact set."
+}

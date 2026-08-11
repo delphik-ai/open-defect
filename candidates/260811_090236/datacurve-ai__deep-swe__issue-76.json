@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/76",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 76,
+  "title": "[Bug] onedump verifier can fail correct patches when added tests collide with hidden  test names",
+  "body": "I believe the observed behavior is not intended, but I cannot say that for sure.\n\nI am testing my own harness driven by pier, and the patch the agent submitted contains encryption/config_test.go.\n\ntests/test.patch defines tests with the same names in the same Go package.\nBecause verifier preparation only resets files directly touched by test.patch, the submitted config_test.go remains in place. The subsequent test run fails with duplicate declarations, however if I remove config_test.go only everything verifies correctly and its a pass.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-10T13:22:13Z",
+  "github_updated_at": "2026-08-10T13:22:13Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The report names a possible onedump verifier collision where a submitted config_test.go conflicts with hidden tests/test.patch names, but the body explicitly says the reporter cannot confirm intended behavior and provides no maintainer acknowledgement, linked fix, task artifact, or reproducible public logs. It cannot be confirmed without deeper task/source reproduction.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/76"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/cooperbench/CooperBench/issues/81",
+  "repo": "cooperbench/cooperbench",
+  "source_type": "github_issue",
+  "github_number": 81,
+  "title": "Can I submit local scores to Leaderboard?",
+  "body": "### Description\n\nCan I submit local scores to Leaderboard?\n\n### Steps to Reproduce\n\nCan I submit local scores to Leaderboard?\n\n### Environment\n\n_No response_\n\n### Additional Information\n\n_No response_",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-10T07:24:18Z",
+  "github_updated_at": "2026-08-10T07:24:18Z",
+  "candidate_benchmark_names": [
+    "cooperbench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue only asks whether local scores can be submitted to the CooperBench leaderboard. It does not claim a benchmark task, harness, dataset, evaluator, or oracle defect.",
+  "checked_urls": [
+    "https://github.com/cooperbench/CooperBench/issues/81"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/536",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 536,
+  "title": "Fix Multilingual dataset: version pinning and eval_script corrections",
+  "body": "## Summary\n- Pin dependency versions in eval_scripts for reproducible Docker builds\n- Fix eval_script issues for various instances across C, Go, Java, JavaScript, PHP, Ruby, and Rust repos\n\n## Test plan\n- [x] Gold eval: 300/300 resolved\n- [x] No-patch eval: 300/300 correctly unresolved\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/data/SWE-bench_Multilingual/test.parquet b/data/SWE-bench_Multilingual/test.parquet\nindex 9235acebe..5fde04540 100644\nBinary files a/data/SWE-bench_Multilingual/test.parquet and b/data/SWE-bench_Multilingual/test.parquet differ\n",
+  "github_state": "closed",
+  "github_created_at": "2026-03-11T14:46:43Z",
+  "github_updated_at": "2026-08-10T06:34:29Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench_multilingual",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench_multilingual__swe-bench__swe-bench__pr-536",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "SWE-bench Multilingual dataset eval_scripts and dependency pins are incorrect across languages, affecting gold/no-patch validation.",
+  "decision_note": "L2 PR body/diff audit. Existing canonical artifact swebench_multilingual__swe-bench__swe-bench__pr-536 records this Multilingual dataset-level correction root cause. The current PR thread is the same closed, unmerged source, so it remains duplicate evidence and is not marked fixed.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/536"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}

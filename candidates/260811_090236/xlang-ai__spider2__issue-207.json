@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/207",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 207,
+  "title": "Snowflake account RSRSBDK-YDB67606 suspended - \"lack of payment method\" (Error 000666)",
+  "body": "  ## Problem\n\n  The shared Spider2 Snowflake account (`RSRSBDK-YDB67606`) is currently suspended. Data queries fail with:\n\n  snowflake.connector.errors.ProgrammingError: 000666 (57014):\n  SQL compilation error: Your account is suspended due to lack of payment method.\n\n  The connection itself succeeds (e.g., `SELECT CURRENT_TIMESTAMP()` works), but any `SELECT ... FROM <table>` query is blocked.\n\n Impact\n\n  All participants using this account are unable to run evaluation queries against the Snowflake databases listed in spider2-lite.jsonl.\n\n  Request\n\n  Could the Spider2 team restore the account (add payment method or renew the trial)? Thank you!\n",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/207#issuecomment-5225367164",
+      "user": "XWQ822",
+      "created_at": "2026-08-08T08:41:28Z",
+      "updated_at": "2026-08-08T08:41:28Z",
+      "body": "I am experiencing the same issue with `RSRSBDK-YDB67606`. The account is still suspended due to the lack of a payment method, and I am unable to run Snowflake queries or generate a programmatic access token.\n\nCould the Spider2 team please help restore the account? Thank you!"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/207#issuecomment-5237837184",
+      "user": "httdty",
+      "created_at": "2026-08-10T08:37:04Z",
+      "updated_at": "2026-08-10T08:37:04Z",
+      "body": "+1"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-05T11:26:35Z",
+  "github_updated_at": "2026-08-10T08:37:04Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is explicitly about the shared Spider2 Snow/Snowflake account RSRSBDK-YDB67606 being suspended. The watched benchmark candidate here is spider2-dbt; Snowflake credential/account availability belongs to Spider2-Snow/Snowflake, not Spider2-DBT.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/207"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}

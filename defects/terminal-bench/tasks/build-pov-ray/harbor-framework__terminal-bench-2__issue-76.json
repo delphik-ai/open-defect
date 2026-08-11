@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__issue-76",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "build-pov-ray"
+  ],
+  "resolution": "fixing",
+  "title": "build-pov-ray: oracle solve.sh fails — povray.org now returns HTTP 403 (Cloudflare) to the source downloads",
+  "summary": "build-pov-ray oracle solve.sh downloads POV-Ray 2.2 archives directly from povray.org, which now returns HTTP 403 and prevents the oracle build from starting.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Oracle/reference solution failure",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/76",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/76",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/77",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/main/build-pov-ray/solution/solve.sh"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-10T16:07:02Z",
+  "last_reviewed_at": "2026-08-11T00:06:05Z",
+  "decision_note": "L2 source-read audit. The issue provides a concrete Harbor oracle command and HTTP 403 failure for build-pov-ray. The paired PR #77 changes build-pov-ray/solution/solve.sh from direct povray.org wget URLs to SHA-pinned Internet Archive snapshots and states only the download source changed. This proves current Terminal-Bench task attribution and a task-specific oracle dependency defect; PR #77 is open, so resolution is fixing."
+}

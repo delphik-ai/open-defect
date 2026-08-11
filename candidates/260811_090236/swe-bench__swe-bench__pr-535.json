@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/535",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 535,
+  "title": "Fix Verified dataset: eval_scripts, F2P/P2P corrections",
+  "body": "## Summary\n- **astropy-7606**: P2P `test_compose_roundtrip[]` → `test_compose_roundtrip[unit0]` (pytest renders empty param as `unit0`) (#505)\n- **django-14011**: eval_script dotted module path → file path (#354)\n- **All 231 Django eval_scripts**: dotted→file path in `git checkout`/`diff --git` headers\n- **django-10097**: add 6 discriminating URLValidator tests to F2P (#487)\n- **django-7530**: replace F2P with correct test (#502)\n- **psf-requests-1724**: switch to Python 2.7, fix F2P test\n\n## Test plan\n- [x] Gold eval: 500/500 resolved\n- [x] No-patch eval: 500/500 correctly unresolved (0 false positives)\n\nFixes https://github.com/SWE-bench/SWE-bench/issues/484, https://github.com/SWE-bench/SWE-bench/issues/487, https://github.com/SWE-bench/SWE-bench/issues/502, https://github.com/SWE-bench/SWE-bench/issues/505\nRefs: https://github.com/SWE-bench/SWE-bench/issues/354\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/data/SWE-bench_Verified/test.parquet b/data/SWE-bench_Verified/test.parquet\nindex 1cf6afa35..e74f76a02 100644\nBinary files a/data/SWE-bench_Verified/test.parquet and b/data/SWE-bench_Verified/test.parquet differ\n",
+  "github_state": "closed",
+  "github_created_at": "2026-03-11T14:46:40Z",
+  "github_updated_at": "2026-08-10T06:34:28Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "L2 PR body/diff audit. The closed, unmerged PR bundles multiple SWE-bench Verified dataset corrections (#484, #487, #502, #505 and related rows) into a binary parquet change. Those root causes are already represented by separate canonical artifacts, but this single candidate cannot be linked to exactly one same-root-cause defect without losing the one-to-many distinction.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/535"
+  ],
+  "reviewed_at": "2026-08-11T00:06:05Z"
+}
