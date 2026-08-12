@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/78",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 78,
+  "title": "fix(quill-shared-toolbar-focus): run Vitest browser tests headless (CI=true) so display-less substrates don't time out",
+  "body": "## Problem\n\nThe verifier for `quill-shared-toolbar-focus` runs Vitest browser-mode tests (real Chromium via Playwright). Vitest only auto-enables **headless** mode when it detects the `CI` environment variable — which is unset in the task environment — so it launches a **headed** Chromium, and the task's `tests/test.sh` wraps the run in `Xvfb` to provide a display.\n\nOn execution substrates that don't provide a working X display / headed-browser path (containerized or CI runners without an X server), the headed Chromium process starts but its tester page never connects to the Vitest orchestrator, so the run times out at the default `browser.connectTimeout` (60s) with **0 tests run**:\n\n```\nError: Failed to connect to the browser session \"<uuid>\" [chromium] within the timeout.\nTests  no tests   |   Duration ~60.0s   |   exit code 1\n```\n\nBecause reward requires `base_exit == 0 AND new_exit == 0`, and **both** the baseline specs (`toolbar.spec.ts` + `picker.spec.ts`, independent of the change) and the new spec (`toolbar.olympus.spec.ts`) time out identically, a **correct reference solution scores 0** on any such substrate.\n\n## Fix\n\nSet `CI = \"true\"` under `[environment.env]` in `task.toml` (one line). This makes Vitest auto-enable headless mode — its documented CI behavior — so the tests run without needing an X display. It does not touch the graded test harness (`tests/test.sh` / `test.patch`) or the reference solution.\n\n```diff\n [environment.env]\n+CI = \"true\"\n [solution.env]\n```\n\n## Evidence\n\nReproduced on the task's **own image** with the **unmodified reference solution + verifier** (oracle solution applied exactly as `solve.sh` does; hidden tests applied via `test.patch`; the task's own `test.sh` phases run):\n\n| Environment | base | new | reward | notes |\n|---|:---:|:---:|:---:|---|\n| Headed (no `CI`), display-less substrate | 1 | 1 | **0** | \"Failed to connect to browser session within timeout\" @60s; 0 tests. Reproduced across the graded trial + 2 isolated re-runs. |\n| `CI=true` (this fix), same substrate | 0 | 0 | **1** | base 20/20 passed in 2.5s, new 15/15 passed in 1.2s. No timeout. |\n| Standard Docker/runc host, headed under Xvfb | 0 | 0 | (1) | base 20/20, new 15/15 — the tests themselves are correct. |\n\nThe last row shows the tests are correct and pass headed where a display is available; this change only makes the task **portable** to substrates without a headed-browser / X display, matching Vitest's own CI convention.\n\n## Note\n\nThis is not a solver/agent issue — it is an environment-portability fix. `quill-shared-toolbar-focus` is the only DeepSWE task that drives a real browser, so it is the only one exposed to the headed-Chromium/display assumption. Forcing headless (which Vitest does automatically under `CI`) keeps the exact same tests and makes the task runnable on containerized/CI substrates that cannot run a headed browser.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/quill-shared-toolbar-focus/task.toml b/tasks/quill-shared-toolbar-focus/task.toml\nindex ad5302b..3e03329 100644\n--- a/tasks/quill-shared-toolbar-focus/task.toml\n+++ b/tasks/quill-shared-toolbar-focus/task.toml\n@@ -45,4 +45,5 @@ gpus = 0\n mcp_servers = []\n \n [environment.env]\n+CI = \"true\"\n [solution.env]\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-11T12:22:44Z",
+  "github_updated_at": "2026-08-11T12:22:44Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__pr-78",
+  "task_names": [
+    "quill-shared-toolbar-focus"
+  ],
+  "resolution": "fixing",
+  "summary": "DeepSWE task quill-shared-toolbar-focus runs Vitest browser tests headed unless CI=true is set, so display-less substrates time out before running tests and can score the reference solution 0.",
+  "decision_note": "L2 PR body/diff audit. The PR is specific to current DeepSWE task quill-shared-toolbar-focus. The body reports the task verifier launches headed Chromium without CI=true, causing browser connect timeouts with 0 tests on display-less substrates, while CI=true makes base and new tests pass. The diff changes only tasks/quill-shared-toolbar-focus/task.toml to set CI=true. No existing deep-swe artifact records this browser headless/CI root cause. PR #78 is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/78",
+    "https://github.com/datacurve-ai/deep-swe/pull/78/files"
+  ],
+  "reviewed_at": "2026-08-12T00:07:38.047Z"
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/636",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 636,
+  "title": "Revert seccomp relaxation from #635; it regressed openlayers",
+  "body": "Follow-up to #635, which I got wrong.\n\n#635 set `seccomp=unconfined` on eval containers so Chrome's namespace sandbox\ncould start. That fixed alibaba-fusion (2/11 -> 17/17 passing) but **broke 12\nopenlayers instances**, which had been passing.\n\nEvidence:\n\n| config | alibaba-fusion | openlayers |\n|---|---|---|\n| default seccomp | 2/11 pass | passes |\n| `seccomp=unconfined` (#635) | 17/17 pass | 12 fail |\n| default seccomp + `TRAVIS=1` | 17/17 pass | passes |\n\nConfirmed two ways: every affected openlayers instance passed before #635 went\nlive and failed after, and reverting the setting for `openlayers-12393` /\n`openlayers-13013` makes them pass again immediately.\n\nMechanism: under Docker's default seccomp, Chrome cannot create a user namespace\nand degrades to running unsandboxed, where software WebGL under Xvfb works. With\nseccomp unconfined the sandbox initialises, SwiftShader runs differently, and\nopenlayers' WebGL rendering comparisons fail. openlayers is the only repo doing\nthose comparisons, so it is the only one that notices.\n\nThis reverts the container-level relaxation. The targeted fix belongs in the\ninstances that need it: alibaba-fusion's own `scripts/test/karma.js` already\ndefines a `--no-sandbox` launcher gated on `process.env.TRAVIS`, so setting\n`TRAVIS=1` for those instances fixes them with no privilege change at all\n(verified: 0 Chrome launch failures, 31/31 tests pass under default seccomp).\nThat part is a dataset `eval_script` change and will follow separately.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/636#issuecomment-5258576412",
+      "user": "codecov[bot]",
+      "created_at": "2026-08-11T20:37:43Z",
+      "updated_at": "2026-08-11T21:15:53Z",
+      "body": "## [Codecov](https://app.codecov.io/gh/SWE-bench/SWE-bench/pull/636?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=SWE-bench) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n\n:x: Your project status has failed because the head coverage (26.82%) is below the target coverage (45.00%). You can increase the head coverage or adjust the [target](https://docs.codecov.com/docs/commit-status#target) coverage.\n\n| [Files with missing lines](https://app.codecov.io/gh/SWE-bench/SWE-bench/pull/636?dropdown=coverage&src=pr&el=tree&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=SWE-bench) | Coverage Δ | |\n|---|---|---|\n| [swebench/harness/run\\_evaluation.py](https://app.codecov.io/gh/SWE-bench/SWE-bench/pull/636?src=pr&el=tree&filepath=swebench%2Fharness%2Frun_evaluation.py&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=SWE-bench#diff-c3dlYmVuY2gvaGFybmVzcy9ydW5fZXZhbHVhdGlvbi5weQ==) | `13.36% <100.00%> (ø)` | |\n| [swebench/image\\_builder/constants/\\_\\_init\\_\\_.py](https://app.codecov.io/gh/SWE-bench/SWE-bench/pull/636?src=pr&el=tree&filepath=swebench%2Fimage_builder%2Fconstants%2F__init__.py&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=SWE-bench#diff-c3dlYmVuY2gvaW1hZ2VfYnVpbGRlci9jb25zdGFudHMvX19pbml0X18ucHk=) | `100.00% <ø> (ø)` | |\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n</details>"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/run_evaluation.py b/swebench/harness/run_evaluation.py\nindex f49c1d395..d8c2f99d6 100644\n--- a/swebench/harness/run_evaluation.py\n+++ b/swebench/harness/run_evaluation.py\n@@ -12,11 +12,7 @@\n from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter\n from pathlib import Path, PurePosixPath\n \n-from swebench.image_builder.constants import (\n-    CONTAINER_SECURITY_OPT,\n-    CONTAINER_USER,\n-    CONTAINER_WORKDIR,\n-)\n+from swebench.image_builder.constants import CONTAINER_USER, CONTAINER_WORKDIR\n from swebench.harness.constants import (\n     APPLY_PATCH_FAIL,\n     APPLY_PATCH_PASS,\n@@ -118,7 +114,6 @@ def create_container(\n                 user=CONTAINER_USER,\n                 detach=True,\n                 command=\"tail -f /dev/null\",\n-                security_opt=CONTAINER_SECURITY_OPT,\n             )\n         except docker.errors.APIError as e:\n             if \"409\" in str(e) or \"Conflict\" in str(e):\ndiff --git a/swebench/image_builder/constants/__init__.py b/swebench/image_builder/constants/__init__.py\nindex baca5e8a6..068223393 100644\n--- a/swebench/image_builder/constants/__init__.py\n+++ b/swebench/image_builder/constants/__init__.py\n@@ -5,8 +5,6 @@\n # Constants - Docker Image Building\n CONTAINER_USER = \"root\"\n CONTAINER_WORKDIR = \"/testbed\"\n-# Docker's default seccomp profile blocks CLONE_NEWUSER, which browser sandboxes need\n-CONTAINER_SECURITY_OPT = [\"seccomp=unconfined\"]\n CONTAINER_ENV_NAME = \"testbed\"\n \n # Constants - Installation Logging\n",
+  "github_state": "closed",
+  "github_created_at": "2026-08-11T20:34:44Z",
+  "github_updated_at": "2026-08-11T21:15:53Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "L2 PR body/diff audit. The merged PR reverts the seccomp relaxation from #635 after it regressed openlayers, while the body attributes the affected behavior to openlayers and alibaba-fusion browser/WebGL instances. Those are SWE-bench Multimodal-style task families, not the current watched SWE-bench Verified or SWE-bench Multilingual variants for this repo, so this candidate is outside the current benchmark variant scope.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/636",
+    "https://github.com/SWE-bench/SWE-bench/pull/636/files"
+  ],
+  "reviewed_at": "2026-08-12T00:07:38.047Z"
+}

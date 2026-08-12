@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/77",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 77,
+  "title": "Withdrawn: submitted from the wrong GitHub account",
+  "body": "Withdrawn because this issue was submitted from the wrong GitHub account. Please disregard.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-11T03:56:16Z",
+  "github_updated_at": "2026-08-11T03:58:27Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue body says it was withdrawn because it was submitted from the wrong GitHub account and asks readers to disregard it. It contains no DeepSWE task, harness, dataset, evaluator, or scoring defect claim.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/77"
+  ],
+  "reviewed_at": "2026-08-12T00:07:38.047Z"
+}

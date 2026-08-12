@@ -15,6 +15,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-10T06:45:56Z",
-  "last_reviewed_at": "2026-08-11T00:06:05Z",
+  "last_reviewed_at": "2026-08-12T00:07:38.047Z",
   "decision_note": "L2 PR body/diff audit. The merged PR states a real bug: remove_containers looked for sweb.eval.<instance_id>, while containers are named sweb.eval.<instance_id>.<run_id>, so cleanup missed stale containers and could not clear 409 conflicts. The diff adds CLI/runtime cleanup changes and the PR was merged on 2026-08-10, so this is a fixed benchmark-level SWE-bench harness defect. It is attributed to swebench-verified as the primary current SWE-bench variant in this artifact set."
 }

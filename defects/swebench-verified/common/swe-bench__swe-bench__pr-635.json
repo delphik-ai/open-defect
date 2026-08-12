@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-635",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Fix three harness bugs that silently drop instances",
+  "summary": "SWE-bench images build defaulted --tag to None, causing make_image_spec to assert and making the image prebuild command crash.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/635",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/635",
+    "https://github.com/SWE-bench/SWE-bench/pull/635/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-11T02:17:27Z",
+  "last_reviewed_at": "2026-08-12T00:07:38.047Z",
+  "decision_note": "L2 PR body/diff audit. The merged PR bundles three harness fixes; this candidate counts the discrete image-build root cause. The body states swebench images build always crashed because --tag defaulted to None and make_image_spec asserted tag is not None, and the diff changes the CLI option default to latest. No existing swebench-verified artifact records this image-build --tag root cause. Other #635 claims, including seccomp and arbitrary-byte output, are not counted here as separate canonical defects from this single candidate. PR #635 was merged on 2026-08-11, so resolution is fixed."
+}
