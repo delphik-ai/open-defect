@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/377",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 377,
+  "title": "Inconsistent evaluation in Modal vs without using Modal",
+  "body": "### Describe the bug\n\nIt seems for sympy__sympy-22456 instance, using Modal to validate shows the problem as unresolved whereas using swebench locally shows the same patch as resolved.\n\n### Steps/Code to Reproduce\n\n```\npython -m swebench.harness.run_evaluation --predictions_path all_preds.json --run_id run-modal-sympy-1 --dataset_name princeton-nlp/SWE-bench_Verified --split test --modal true\n```\n```\nResult for sympy__sympy-22456: resolved: False\nTotal instances: 500\nInstances submitted: 1\nInstances completed: 1\nInstances incomplete: 499\nInstances resolved: 0\nInstances unresolved: 1\nInstances with empty patches: 0\nInstances with errors: 0\n\nfailing with test:\n\ntest_ast_replace E                                                        [FAIL]\n\n\n________________________________________________________________________________\n_______________ sympy/codegen/tests/test_ast.py:test_ast_replace _______________\nTraceback (most recent call last):\n  File \"/testbed/sympy/codegen/tests/test_ast.py\", line 660, in test_ast_replace\n    tree2 = tree1.replace(pname, String('power'))\n  File \"/testbed/sympy/core/basic.py\", line 1512, in replace\n    rv = walk(self, rec_replace)\n  File \"/testbed/sympy/core/basic.py\", line 1487, in walk\n    newargs = tuple([walk(a, F) for a in args])\n  File \"/testbed/sympy/core/basic.py\", line 1487, in <listcomp>\n    newargs = tuple([walk(a, F) for a in args])\n  File \"/testbed/sympy/core/basic.py\", line 1487, in walk\n    newargs = tuple([walk(a, F) for a in args])\n  File \"/testbed/sympy/core/basic.py\", line 1487, in <listcomp>\n    newargs = tuple([walk(a, F) for a in args])\n  File \"/testbed/sympy/core/basic.py\", line 1487, in walk\n    newargs = tuple([walk(a, F) for a in args])\n  File \"/testbed/sympy/core/basic.py\", line 1487, in <listcomp>\n    newargs = tuple([walk(a, F) for a in args])\n  File \"/testbed/sympy/core/basic.py\", line 1497, in walk\n    rv = F(rv)\n  File \"/testbed/sympy/core/basic.py\", line 1503, in rec_replace\n    result = _query(expr)\n  File \"/testbed/sympy/core/basic.py\", line 1440, in <lambda>\n    _query = lambda expr: expr.match(query)\n  File \"/testbed/sympy/core/basic.py\", line 1637, in match\n    m = canonical(pattern).matches(canonical(self), old=old)\n  File \"/testbed/sympy/core/basic.py\", line 1573, in matches\n    if arg.is_Relational:\nAttributeError: 'str' object has no attribute 'is_Relational'\n```\n\n```\npython -m swebench.harness.run_evaluation --predictions_path all_preds.json --run_id run-local-sympy-1 --dataset_name princeton-nlp/SWE-bench_Verified --split test\n```\n\n```\nFound 1 existing instance images. Will reuse them.\nRunning 1 instances...\n1 ran successfully, 0 failed: 100%|████████████████████| 1/1 [00:18<00:00, 18.95s/it]\nAll instances run.\nCleaning cached images...\nRemoved 0 images.\nTotal instances: 500\nInstances submitted: 1\nInstances completed: 1\nInstances incomplete: 499\nInstances resolved: 1\nInstances unresolved: 0\nInstances with empty patches: 0\nInstances with errors: 0\nUnstopped containers: 0\nUnremoved images: 0\n```\n\nThis uses the following patch file.\n\n```\n[{\"model_name_or_path\": \"myrun\", \"instance_id\": \"sympy__sympy-22456\", \"model_patch\": \"diff --git a/sympy/codegen/ast.py b/sympy/codegen/ast.py\\nindex a02714b174..e87f5d587c 100644\\n--- a/sympy/codegen/ast.py\\n+++ b/sympy/codegen/ast.py\\n@@ -892,10 +892,11 @@ class String(Token):\\n     'foo'\\n     >>> print(repr(f))\\n     String('foo')\\n+    >>> f == f.func(*f.args)  # argument invariance\\n+    True\\n \\n     \\\"\\\"\\\"\\n     __slots__ = ('text',)\\n-    not_in_args = ['text']\\n     is_Atom = True\\n \\n     @classmethod\\n\"}]\n```\n\n### Expected Results\n\nBoth results should match\n\n### Actual Results\n\nCurrently results differ\n\n### System Information\n\nIntel MacOS using force_x86 branch locally",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-04-11T20:38:31Z",
+  "github_updated_at": "2026-08-12T03:08:24Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-402",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench Modal evaluation sliced test output content and marked a locally resolved SymPy patch unresolved; PR conditions/removes the problematic slicing.",
+  "decision_note": "Issue describes the same Modal output-slicing root cause already represented by canonical swebench-verified__swe-bench__swe-bench__pr-402; PR #402 explicitly fixes this issue, so the issue is duplicate evidence rather than a new defect.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/377",
+    "https://github.com/SWE-bench/SWE-bench/pull/402"
+  ]
+}

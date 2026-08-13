@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/524",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 524,
+  "title": "Auto-detect host architecture in make_test_spec",
+  "body": "Fixes #523. Complements #521.\n\nAuto-detects host arch via `platform.machine()` instead of defaulting to `x86_64`. Instances in `USE_X86` are forced to `x86_64` regardless.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/524#issuecomment-4039739155",
+      "user": "ofirpress",
+      "created_at": "2026-03-11T14:45:45Z",
+      "updated_at": "2026-03-11T14:45:45Z",
+      "body": "Hi thanks for the PR, we are waiting to merge the SWE-bench v5 branch and will only start reviewing new PRs after that. Thanks"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/524#issuecomment-5262986802",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:03:55Z",
+      "updated_at": "2026-08-12T06:03:55Z",
+      "body": "Closing — this modifies `swebench/harness/test_spec/test_spec.py`, which no longer exists after the harness restructure, so the change can't take effect. That logic now lives in the dataset's baked eval_script and image fields."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/test_spec/test_spec.py b/swebench/harness/test_spec/test_spec.py\nindex a06579c25..459feab5c 100644\n--- a/swebench/harness/test_spec/test_spec.py\n+++ b/swebench/harness/test_spec/test_spec.py\n@@ -1,5 +1,6 @@\n import hashlib\n import json\n+import platform as _platform\n \n from dataclasses import dataclass\n from typing import Any, Optional, Union, cast\n@@ -11,6 +12,7 @@\n     MAP_REPO_TO_EXT,\n     MAP_REPO_VERSION_TO_SPECS,\n     SWEbenchInstance,\n+    USE_X86,\n )\n from swebench.harness.dockerfiles import (\n     get_dockerfile_base,\n@@ -152,6 +154,18 @@ def platform(self):\n             raise ValueError(f\"Invalid architecture: {self.arch}\")\n \n \n+def detect_arch() -> str:\n+    \"\"\"Auto-detect the host machine architecture.\n+\n+    Returns ``\"x86_64\"`` on Intel/AMD hosts and ``\"arm64\"`` on Apple\n+    Silicon / AWS Graviton / other AArch64 hosts.\n+    \"\"\"\n+    machine = _platform.machine().lower()\n+    if machine in (\"arm64\", \"aarch64\"):\n+        return \"arm64\"\n+    return \"x86_64\"\n+\n+\n def get_test_specs_from_dataset(\n     dataset: Union[list[SWEbenchInstance], list[TestSpec]],\n     namespace: Optional[str] = None,\n@@ -177,7 +191,7 @@ def make_test_spec(\n     base_image_tag: str = LATEST,\n     env_image_tag: str = LATEST,\n     instance_image_tag: str = LATEST,\n-    arch: str = \"x86_64\",\n+    arch: Optional[str] = None,\n ) -> TestSpec:\n     if isinstance(instance, TestSpec):\n         return instance\n@@ -185,6 +199,15 @@ def make_test_spec(\n     assert env_image_tag is not None, \"env_image_tag cannot be None\"\n     assert instance_image_tag is not None, \"instance_image_tag cannot be None\"\n     instance_id = instance[KEY_INSTANCE_ID]\n+\n+    # Auto-detect host arch if not specified.\n+    if arch is None:\n+        arch = detect_arch()\n+\n+    # Instances in USE_X86 require x86_64 regardless of host arch.\n+    if instance_id in USE_X86:\n+        arch = \"x86_64\"\n+\n     repo = instance[\"repo\"]\n     version = instance.get(\"version\")\n     base_commit = instance[\"base_commit\"]\n",
+  "github_state": "closed",
+  "github_created_at": "2026-02-17T05:45:52Z",
+  "github_updated_at": "2026-08-12T06:03:56Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "PR only complements optional ARM64 host-architecture support from #521. That path is outside the current default SWE-bench Verified seed/split/version artifact.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/524"
+  ]
+}

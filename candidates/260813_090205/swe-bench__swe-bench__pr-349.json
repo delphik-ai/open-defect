@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/349",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 349,
+  "title": "Fix misleading removed images count",
+  "body": "Fixes #282\n\nRemove the count of removed images in the `clean_images` function in `swebench/harness/docker_utils.py`.\n\n* Remove the `removed` variable and its increment in the `clean_images` function.\n* Update the print statement to reflect the removal of the count, changing it to \"Image cleaning completed.\"\n\n---\n\nFor more details, open the [Copilot Workspace session](https://copilot-workspace.githubnext.com/SWE-bench/SWE-bench/pull/349?shareId=1d9b4701-eb60-4d9c-a183-f5e0dedb22dd).",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/349#issuecomment-2693456936",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T07:03:30Z",
+      "updated_at": "2025-03-03T07:03:30Z",
+      "body": "Thanks for the quick turnaround @SmartManoj. I think this looks fine, but I've just requested a double check from @carlosejimenez."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/349#issuecomment-5263127881",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:23:52Z",
+      "updated_at": "2026-08-12T06:27:04Z",
+      "body": "Closing: `clean_images` no longer exists (image cleanup moved to `swebench/image_builder/docker_utils.py`, and `remove_image` there logs each removal individually rather than tallying a count).\r\n\r\nThe underlying observation was right, though: the old counter incremented even when `remove_image` swallowed a failure. Appreciate this fix."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/docker_utils.py b/swebench/harness/docker_utils.py\nindex 529850950..090be9e93 100644\n--- a/swebench/harness/docker_utils.py\n+++ b/swebench/harness/docker_utils.py\n@@ -279,17 +279,15 @@ def clean_images(\n             in the current run will be removed.\n     \"\"\"\n     images = list_images(client)\n-    removed = 0\n     print(\"Cleaning cached images...\")\n     for image_name in images:\n         if should_remove(image_name, cache_level, clean, prior_images):\n             try:\n                 remove_image(client, image_name, \"quiet\")\n-                removed += 1\n             except Exception as e:\n                 print(f\"Error removing image {image_name}: {e}\")\n                 continue\n-    print(f\"Removed {removed} images.\")\n+    print(\"Image cleaning completed.\")\n \n \n def should_remove(image_name: str, cache_level: str, clean: bool, prior_images: set):\n",
+  "github_state": "closed",
+  "github_created_at": "2025-03-03T06:49:43Z",
+  "github_updated_at": "2026-08-12T06:27:04Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "PR changes cosmetic image-cleaning output for a misleading count and does not affect benchmark correctness or health counts.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/349"
+  ]
+}

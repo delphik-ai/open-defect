@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/240",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 240,
+  "title": "suggested modelsClaude code harness",
+  "body": "Have you guys tested the Deepseek V4 Flash, Step 3.7 Flash, or MIMO 2.5 Pro? I know they might not do so well in the benchmark, but it would be nice to see some mention of whether they achieved any results or failed completely. \nAnother suggestion: it would be interesting to see the Chinese models being used within the Claude Code Harness (using the Claude Code Router with CLIproxy, it would be interesting to see the difference in scores).",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/240#issuecomment-4774796994",
+      "user": "RishiDesai",
+      "created_at": "2026-06-23T01:33:14Z",
+      "updated_at": "2026-06-23T01:33:14Z",
+      "body": "I have not tested those three models. But yes, you're right - I'm using claude-code for the OSS models from now on (hence GLM-5.2 was benchmarked with claude-code). \n\nThe reason for using terminus-2 for the OSS models and closed-source models was for the paper - we wanted a neutral/unbiased harness for comparison, which came at the expense of some models' leaderboard performance.\n"
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/240#issuecomment-5273365070",
+      "user": "RishiDesai",
+      "created_at": "2026-08-12T22:10:24Z",
+      "updated_at": "2026-08-12T22:10:24Z",
+      "body": "Kimi K3, GLM 5.2 are using Claude Code for v1.1 :) "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-17T21:13:50Z",
+  "github_updated_at": "2026-08-12T22:10:24Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread requests additional model coverage and Claude Code Router comparisons; it does not claim a benchmark artifact, evaluator, or task defect.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/240"
+  ]
+}

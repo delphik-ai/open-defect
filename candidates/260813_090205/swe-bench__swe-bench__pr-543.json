@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/543",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 543,
+  "title": "add per instance image support",
+  "body": "#### What does this implement/fix? Explain your changes.\r\nExisting flags assume that the container image tag is fixed such as latest for all the instances. \r\n\r\nThis PR allows the container image name to be retrieved for each instance when provided in the huggingface dataset as `image_name` or `docker_image` similar to mini-swe-agent. This is done by updating the existing TestSpec class to include an `instance_image_name`.\r\n\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/543#issuecomment-5262987038",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:03:57Z",
+      "updated_at": "2026-08-12T06:03:57Z",
+      "body": "Closing — this modifies `swebench/harness/docker_build.py`, which no longer exists after the harness restructure, so the change can't take effect. That logic now lives in the image_builder module and SWE-bench/swe-bench-dockerfiles."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/docker_build.py b/swebench/harness/docker_build.py\nindex 145742384..4bb8a9a8e 100644\n--- a/swebench/harness/docker_build.py\n+++ b/swebench/harness/docker_build.py\n@@ -521,6 +521,7 @@ def build_container(\n             command=\"tail -f /dev/null\",\n             platform=test_spec.platform,\n             cap_add=cap_add,\n+            security_opt=[\"label=disable\"],\n         )\n         logger.info(f\"Container for {test_spec.instance_id} created: {container.id}\")\n         return container\ndiff --git a/swebench/harness/test_spec/test_spec.py b/swebench/harness/test_spec/test_spec.py\nindex a06579c25..efae72709 100644\n--- a/swebench/harness/test_spec/test_spec.py\n+++ b/swebench/harness/test_spec/test_spec.py\n@@ -42,6 +42,7 @@ class TestSpec:\n     language: str\n     docker_specs: dict\n     namespace: Optional[str]\n+    instance_image_name: Optional[str]\n     base_image_tag: str = LATEST\n     env_image_tag: str = LATEST\n     instance_image_tag: str = LATEST\n@@ -105,9 +106,12 @@ def env_image_key(self):\n \n     @property\n     def instance_image_key(self):\n-        key = f\"sweb.eval.{self.arch}.{self.instance_id.lower()}:{self.instance_image_tag}\"\n-        if self.is_remote_image:\n-            key = f\"{self.namespace}/{key}\".replace(\"__\", \"_1776_\")\n+        \"\"\"Get the image name for a given SWEBench instance \"\"\"\n+        key = self.instance_image_name\n+        if self.instance_image_name is None:\n+            key = f\"sweb.eval.{self.arch}.{self.instance_id.lower()}:{self.instance_image_tag}\"\n+            if self.is_remote_image:\n+                key = f\"{self.namespace}/{key}\".replace(\"__\", \"_1776_\")\n         return key\n \n     @property\n@@ -191,6 +195,7 @@ def make_test_spec(\n     problem_statement = instance.get(\"problem_statement\")\n     hints_text = instance.get(\"hints_text\")  # Unused\n     test_patch = instance[\"test_patch\"]\n+    instance_image_name = instance.get(\"image_name\", None) or instance.get(\"docker_image\", None)\n \n     def _from_json_or_obj(key: str) -> Any:\n         \"\"\"If key points to string, load with json\"\"\"\n@@ -229,6 +234,7 @@ def _from_json_or_obj(key: str) -> Any:\n         language=MAP_REPO_TO_EXT[repo],\n         docker_specs=docker_specs,\n         namespace=namespace,\n+        instance_image_name=instance_image_name,\n         base_image_tag=base_image_tag,\n         env_image_tag=env_image_tag,\n         instance_image_tag=instance_image_tag,\n",
+  "github_state": "closed",
+  "github_created_at": "2026-03-23T15:40:41Z",
+  "github_updated_at": "2026-08-12T06:03:57Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "PR adds per-instance image-name support for custom datasets; no current SWE-bench Verified/Multilingual defect is proven.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/543"
+  ]
+}

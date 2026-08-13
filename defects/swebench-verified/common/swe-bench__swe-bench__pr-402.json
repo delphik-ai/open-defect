@@ -9,11 +9,12 @@
   "summary": "SWE-bench Modal evaluation sliced test output content and marked a locally resolved SymPy patch unresolved; PR conditions/removes the problematic slicing.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/402",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/pull/402"
+    "https://github.com/SWE-bench/SWE-bench/pull/402",
+    "https://github.com/SWE-bench/SWE-bench/issues/377"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-05-22T17:24:13.000Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "last_reviewed_at": "2026-08-13T00:06:47.704Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

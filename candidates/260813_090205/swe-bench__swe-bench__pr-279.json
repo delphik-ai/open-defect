@@ -1,0 +1,74 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/279",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 279,
+  "title": "Avoid breaking apart testcase name when they contain spaces",
+  "body": "#### Reference Issues/PRs\r\nThis could be related to what @WuYff observed in #275. In any case, this impacts the current HuggingFace dataset, eg. https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified/viewer/default/test?row=7\r\n\r\n#### What does this implement/fix? Explain your changes.\r\nThe function [`parse_log_pytest_v2(log: str)`](https://github.com/swe-bench/SWE-bench/blob/main/swebench/harness/log_parsers.py#L153-L155) produces truncated testcase names when they contain spaces in them, eg. \r\n```bash\r\nPASSED astropy/coordinates/tests/test_sky_coord.py::test_passing_inconsistent_coordinates_and_units_raises_helpful_error[kwargs0-Unit 'deg' \\\\(angle\\\\) could not be applied to 'distance'. ]\r\n```\r\nThis PR fixes that issue.\r\n\r\n#### Minimal reproducible example\r\n```python\r\nfrom swebench.harness.log_parsers import parse_log_pytest_v2\r\nresult = parse_log_pytest_v2(\"PASSED astropy/coordinates/tests/test_sky_coord.py::test_passing_inconsistent_coordinates_and_units_raises_helpful_error[kwargs0-Unit 'deg' \\\\(angle\\\\) could not be applied to 'distance'. ]\")\r\nprint(result)\r\n```\r\n> {'astropy/coordinates/tests/test_sky_coord.py::test_passing_inconsistent_coordinates_and_units_raises_helpful_error[kwargs0-Unit': 'PASSED'}\r\n\r\nafter the fix\r\n\r\n> {\"astropy/coordinates/tests/test_sky_coord.py::test_passing_inconsistent_coordinates_and_units_raises_helpful_error[kwargs0-Unit 'deg' \\\\(angle\\\\) could not be applied to 'distance'. ]\": 'PASSED'}",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-2603207561",
+      "user": "MarcCote",
+      "created_at": "2025-01-20T20:46:20Z",
+      "updated_at": "2025-01-20T20:46:20Z",
+      "body": "I think also related to #290."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-2693415247",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T06:37:25Z",
+      "updated_at": "2025-03-03T06:37:25Z",
+      "body": "Hi @MarcCote thanks for this suggestion, while I understand where you're coming from, this fix would also require re-running validation for the SWE-bench dataset and updating the test names.\r\n\r\nThat would be quite costly in terms of time and effort. If you would like to carry out updating the SWE-bench dataset and proposing a PR to the [HF datasets](https://huggingface.co/datasets/princeton-nlp/SWE-bench) as well, you are welcome to, but I also don't think this fix is particularly necessary. I understand it reflects the original test names more correctly, but in terms of capturing whether the proposed patch fixes the solution, I think the current logic works for the majority of task instances.\r\n\r\nI mentioned what I think may be a better [solution](https://github.com/SWE-bench/SWE-bench/issues/275#issuecomment-2693402669) for handling duplicate test cases, but again, I am leaning towards not integrating such changes."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-2693420336",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T06:40:54Z",
+      "updated_at": "2025-03-03T06:40:54Z",
+      "body": "tl;dr happy to support efforts that resolve the issues related to incorrect captures of test case naming, which would involve\r\n* Updating the logging\r\n* Re-running evaluation w/ gold to get the updated test case names\r\n* Updating the SWE-bench dataset(s) with new names for the F2P and P2P tests\r\n\r\nI personally do not have time to carry out such a fix at this moment (I may in the future ~2-3 months from now). However, I can provide reviewing if you'd like to carry out the full fix."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-5261223030",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T02:03:29Z",
+      "updated_at": "2026-08-12T02:03:29Z",
+      "body": "Merged as d57269d (cherry-picked with your authorship; rebased onto main, which is why this doesn't auto-close), with two follow-ups in d2d91b1.\n\nThis needed #617 to land first. On its own it regressed gold eval 500/500 -> 485/500 on Verified: the dataset's own expected ids are truncated mid-parameter (issue #290), so `test_case[1]` truncated at the same space and matched, while reconstructing the full id did not. #617's truncated-id tolerance closes that gap, and with it your change is 500/500.\n\nThe two follow-ups:\n1. Restored the `len(test_case) >= 2` guards. Without them a bare `PASSED`/`FAILED` line inserts an empty-string key — same class of bug as #611.\n2. In the FAILED branch, replaced `line.replace(\" - \", \" \")` with `line.split(\" - \", 1)[0]`. With the old replace, joining `test_case[1:]` folded the assertion message into the id (`FAILED test.py::t - AssertionError: ...` -> key `test.py::t AssertionError: ...`). Gold eval structurally cannot catch this, since gold runs have no failing F2P/P2P tests — it would only corrupt model-prediction grading. Verified safe: 0 of 65329 expected ids in affected instances contain \" - \".\n\nGold eval unchanged across all three datasets (Verified 500/500, Multilingual 298/300, Multimodal 483/483 — identical to main). Scope is Python-only: the `parse_log_pytest_v2` family covers 511 full / 98 Verified instances (astropy, scikit-learn, sphinx) and 0 in Multilingual or Multimodal. Added 5 parser tests. Thanks for the fix, and sorry it sat so long.\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-5261487068",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T02:37:28Z",
+      "updated_at": "2026-08-12T02:37:28Z",
+      "body": "tysm again @MarcCote! Took forever to get around to this, appreciate your patience so much"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-5262016887",
+      "user": "MarcCote",
+      "created_at": "2026-08-12T03:43:42Z",
+      "updated_at": "2026-08-12T03:43:42Z",
+      "body": "No worries, no doubt you must quite busy with all the projects :D. I'm glad that was helpful."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/log_parsers/python.py b/swebench/harness/log_parsers/python.py\nindex a8c5a9375..88ceffd4c 100644\n--- a/swebench/harness/log_parsers/python.py\n+++ b/swebench/harness/log_parsers/python.py\n@@ -153,13 +153,11 @@ def parse_log_pytest_v2(log: str, test_spec: TestSpec) -> dict[str, str]:\n             if line.startswith(TestStatus.FAILED.value):\n                 line = line.replace(\" - \", \" \")\n             test_case = line.split()\n-            if len(test_case) >= 2:\n-                test_status_map[test_case[1]] = test_case[0]\n+            test_status_map[\" \".join(test_case[1:])] = test_case[0]\n         # Support older pytest versions by checking if the line ends with the test status\n         elif any([line.endswith(x.value) for x in TestStatus]):\n             test_case = line.split()\n-            if len(test_case) >= 2:\n-                test_status_map[test_case[1]] = test_case[0]\n+            test_status_map[\" \".join(test_case[:-1])] = test_case[-1]\n     return test_status_map\n \n \n",
+  "github_state": "closed",
+  "github_created_at": "2025-01-09T21:05:40Z",
+  "github_updated_at": "2026-08-12T03:43:43Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-279",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "Live PR shows parse_log_pytest_v2 truncates testcase names containing spaces, affecting current HuggingFace dataset test names, and demonstrates the corrected parse result.",
+  "decision_note": "Updated GitHub thread was rechecked against existing canonical swebench-verified__swe-bench__swe-bench__pr-279; same source/root cause is already counted, so this run records it only as duplicate/follow-up evidence.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/279"
+  ]
+}

@@ -14,6 +14,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-30T06:04:35Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "last_reviewed_at": "2026-08-13T00:06:47.704Z",
   "decision_note": "L2 source-read audit. The PR body identifies parse_log_seaborn as the current parser used for mwaskom/seaborn instances and gives a minimal crashing input. The diff shows the parser previously indexed line.split()[1] or parts[1] before checking line length, then adds a len(parts) < 2 guard plus regression tests for bare PASSED/FAILED lines. No existing swebench-verified artifact covers this parser crash root cause. The PR is open, so resolution is fixing."
 }

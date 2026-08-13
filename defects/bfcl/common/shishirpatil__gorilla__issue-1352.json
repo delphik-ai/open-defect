@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-04T07:52:35Z",
-  "last_reviewed_at": "2026-08-05T00:05:30.500Z",
+  "last_reviewed_at": "2026-08-13T00:06:47.704Z",
   "decision_note": "L2 source-read audit. The issue is explicitly BFCL V4 Agentic Web Search and cites official reproduction commit f7cf735. Reading web_search.py at that commit confirms the random generators are described as unused and the synthetic request-failure branch in fetch_url_content is commented out, while the issue explains the blog can be read as making probabilistic request failures part of the environment and separately as Section 7.2 ablations. Existing BFCL common artifacts cover parser, dataset, scoring, and backend execution defects, not this web-search synthetic-failure reproduction/documentation ambiguity. No maintainer fix is present, so resolution is found."
 }

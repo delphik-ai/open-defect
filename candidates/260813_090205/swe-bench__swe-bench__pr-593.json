@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/593",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 593,
+  "title": "fix: add per-instance spec overrides to handle astropy setuptools conflict",
+  "body": "## Summary\n\nFixes #584 — the gold patch for `astropy__astropy-8872` cannot be scored because `setuptools==68.0.0` (from the repo-version spec) ships a vendored `distutils` whose `LooseVersion` emits a `DeprecationWarning`. Astropy 3.1's pytest config escalates warnings to errors, causing test collection to abort before any test runs.\n\n## Changes\n\n1. **New `MAP_INSTANCE_TO_SPECS` dictionary** in `swebench/harness/constants/__init__.py` — a per-instance override layer that is shallow-merged on top of the repo-version-level spec in `make_test_spec()`. Only the keys that need changing need to be provided.\n\n2. **Override logic in `make_test_spec()`** — after fetching `specs` from `MAP_REPO_VERSION_TO_SPECS`, checks `MAP_INSTANCE_TO_SPECS` for the current `instance_id` and applies any overrides via `{**specs, **instance_overrides}`.\n\n3. **Instance override for `astropy__astropy-8872`** — adds a `pre_install` step that runs `python -m pip install 'setuptools<60'` to downgrade setuptools before astropy is installed. This uses the stdlib `distutils` (which does not emit the `LooseVersion` warning on Python 3.9) instead of the vendored copy.\n\n## Testing\n\n- Unit tests (`tests/test_harness_utils.py`) pass.\n- Verified that `make_test_spec` produces a repo install script containing the `setuptools<60` pin for `astropy__astropy-8872`.\n- The override is zero-blast-radius: it only affects the single instance. All other astropy 3.1 instances continue to use `setuptools==68.0.0` as before.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/593#issuecomment-5263257323",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:40:15Z",
+      "updated_at": "2026-08-12T06:40:15Z",
+      "body": "Closing for same reason as #585, we've added instance specific overrides to a new, designated repository for representing SWE-bench dockerfiles. (`src/sb_dockerfile_gen/constants.py:1050` at SWE-bench/swe-bench-dockerfiles)."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/constants/__init__.py b/swebench/harness/constants/__init__.py\nindex b4bc9ff52..257a61d6d 100644\n--- a/swebench/harness/constants/__init__.py\n+++ b/swebench/harness/constants/__init__.py\n@@ -144,6 +144,22 @@ def __str__(self):\n     **MAP_REPO_VERSION_TO_SPECS_RUST,\n }\n \n+# Per-instance spec overrides. These are shallow-merged on top of the\n+# repo-version-level spec in make_test_spec(), allowing individual instances\n+# to override specific keys (e.g. pip_packages, pre_install) without affecting\n+# other instances of the same repo/version.\n+MAP_INSTANCE_TO_SPECS = {\n+    # astropy__astropy-8872: setuptools >= 60 ships a vendored distutils whose\n+    # LooseVersion emits a DeprecationWarning. astropy 3.1's pytest config\n+    # escalates warnings to errors, causing test collection to abort before any\n+    # test runs. Pin setuptools < 60 to use the stdlib distutils instead.\n+    \"astropy__astropy-8872\": {\n+        \"pre_install\": [\n+            \"python -m pip install 'setuptools<60'\",\n+        ],\n+    },\n+}\n+\n MAP_REPO_TO_INSTALL = {\n     **MAP_REPO_TO_INSTALL_C,\n     **MAP_REPO_TO_INSTALL_GO,\ndiff --git a/swebench/harness/test_spec/test_spec.py b/swebench/harness/test_spec/test_spec.py\nindex a06579c25..bd3a3e389 100644\n--- a/swebench/harness/test_spec/test_spec.py\n+++ b/swebench/harness/test_spec/test_spec.py\n@@ -8,6 +8,7 @@\n     DEFAULT_DOCKER_SPECS,\n     KEY_INSTANCE_ID,\n     LATEST,\n+    MAP_INSTANCE_TO_SPECS,\n     MAP_REPO_TO_EXT,\n     MAP_REPO_VERSION_TO_SPECS,\n     SWEbenchInstance,\n@@ -207,6 +208,12 @@ def _from_json_or_obj(key: str) -> Any:\n     env_name = \"testbed\"\n     repo_directory = f\"/{env_name}\"\n     specs = MAP_REPO_VERSION_TO_SPECS[repo][version]\n+\n+    # Apply per-instance spec overrides if present\n+    instance_overrides = MAP_INSTANCE_TO_SPECS.get(instance_id, {})\n+    if instance_overrides:\n+        specs = {**specs, **instance_overrides}\n+\n     docker_specs = specs.get(\"docker_specs\", {})\n \n     repo_script_list = make_repo_script_list(\n",
+  "github_state": "closed",
+  "github_created_at": "2026-06-02T16:01:45Z",
+  "github_updated_at": "2026-08-12T06:40:18Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-584",
+  "task_names": [
+    "astropy__astropy-8872"
+  ],
+  "resolution": "fixing",
+  "summary": "SWE-bench Verified astropy__astropy-8872 gold patch is marked unresolved because pytest collection aborts on setuptools-vendored distutils DeprecationWarning before any required tests run.",
+  "decision_note": "Updated GitHub thread was rechecked against existing canonical swebench-verified__swe-bench__swe-bench__issue-584; same source/root cause is already counted, so this run records it only as duplicate/follow-up evidence.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/593"
+  ]
+}

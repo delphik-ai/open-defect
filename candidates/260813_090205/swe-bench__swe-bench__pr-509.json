@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/509",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 509,
+  "title": "Fixed Ruby tmpdir errors",
+  "body": "# Problem\r\n\r\nMultiple Ruby tests from `fastlane`, `fluentd`, `fpm`, and `rubocop` failed with gold patches and threw \"ArgumentError: could not find a temporary directory\". The default tmpdir `/tmp` was rejected by Ruby due to security reasons as \"system temporary path is world-writable\".\r\n\r\n# Solution\r\n\r\nTemporary Directory Fix: Added `mkdir -p /testbed/tmp` and `TMPDIR=/testbed/tmp` to all Ruby `test_cmd`s to provide a valid temporary directory for Ruby's `Dir.tmpdir`. All Ruby tests now pass with gold patches.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/509#issuecomment-5262986494",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:03:52Z",
+      "updated_at": "2026-08-12T06:03:52Z",
+      "body": "Closing — this modifies `swebench/harness/constants/ruby.py`, which no longer exists after the harness restructure, so the change can't take effect. That logic now lives in src/sb_dockerfile_gen/constants.py in SWE-bench/swe-bench-multilingual-dockerfiles."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/constants/ruby.py b/swebench/harness/constants/ruby.py\nindex 61c1dcf9f..fd9e4e4a0 100644\n--- a/swebench/harness/constants/ruby.py\n+++ b/swebench/harness/constants/ruby.py\n@@ -1,6 +1,20 @@\n # Constants - Task Instance Installation Environment\n+def wrap_specs_with_tmpdir(specs: dict) -> dict:\n+    \"\"\"Wrap all test commands in a specs dict with tmpdir setup to avoid Ruby's world-writable directory check.\"\"\"\n+    wrapped_specs = {}\n+    for test_id, test_spec in specs.items():\n+        wrapped_spec = test_spec.copy()\n+        if \"test_cmd\" in wrapped_spec:\n+            original_cmds = wrapped_spec[\"test_cmd\"]\n+            wrapped_spec[\"test_cmd\"] = [\"mkdir -p /testbed/tmp\"] + [\n+                f\"TMPDIR=/testbed/tmp {cmd}\" for cmd in original_cmds\n+            ]\n+        wrapped_specs[test_id] = wrapped_spec\n+    return wrapped_specs\n+\n+\n FASTLANE_RSPEC_JQ_TRANSFORM = (\n-    r\"\"\"tail -n +2 | jq -r '.examples[] | \"\\(.description) - \\(.id) - \\(.status)\"'\"\"\"\n+    r\"\"\"sed -n '/^{/,$p' | jq -r '.examples[] | \"\\(.description) - \\(.id) - \\(.status)\"'\"\"\"\n )\n FPM_RSPEC_JQ_TRANSFORM = (\n     r\"\"\"sed -n '/^{/,$p' | jq -r '.examples[] | \"\\(.description) - \\(.status)\"'\"\"\"\n@@ -344,12 +358,12 @@\n \n \n MAP_REPO_VERSION_TO_SPECS_RUBY = {\n-    \"jekyll/jekyll\": SPECS_JEKYLL,\n-    \"fluent/fluentd\": SPECS_FLUENTD,\n-    \"fastlane/fastlane\": SPECS_FASTLANE,\n-    \"jordansissel/fpm\": SPECS_FPM,\n-    \"faker-ruby/faker\": SPECS_FAKER,\n-    \"rubocop/rubocop\": SPECS_RUBOCOP,\n+    \"jekyll/jekyll\": wrap_specs_with_tmpdir(SPECS_JEKYLL),\n+    \"fluent/fluentd\": wrap_specs_with_tmpdir(SPECS_FLUENTD),\n+    \"fastlane/fastlane\": wrap_specs_with_tmpdir(SPECS_FASTLANE),\n+    \"jordansissel/fpm\": wrap_specs_with_tmpdir(SPECS_FPM),\n+    \"faker-ruby/faker\": wrap_specs_with_tmpdir(SPECS_FAKER),\n+    \"rubocop/rubocop\": wrap_specs_with_tmpdir(SPECS_RUBOCOP),\n }\n \n # Constants - Repository Specific Installation Instructions\n",
+  "github_state": "closed",
+  "github_created_at": "2026-01-07T18:02:39Z",
+  "github_updated_at": "2026-08-12T06:03:53Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L2",
+  "decision_note": "L2 audit checked PR diff and maintainer closure comment. The patch edits swebench/harness/constants/ruby.py, which maintainers state no longer exists after the harness restructure; current logic lives in SWE-bench/swe-bench-multilingual-dockerfiles, so this claimed root cause is absent from the current artifact path.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/509",
+    "https://github.com/SWE-bench/SWE-bench/pull/509#issuecomment-5262986494"
+  ]
+}

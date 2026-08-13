@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/258",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 258,
+  "title": "Rerun request: Fable 5 tasks zeroed due to the access ban (access restored)",
+  "body": "Hi, thanks for the benchmark and for the transparent footnotes on the leaderboard.\n\nThe leaderboard (https://www.swemarathon.org/) currently notes for Claude Fable 5 (as of 2026-07-11): \"due to the ban we were unable to run trials on `nextjs-vite-rewrite`, `kubernetes-rust-rewrite`, and `s3-clone`. These tasks are counted as 0.0.\"\n\nThe US export controls on Fable 5 were lifted on June 30 and API access has been restored since July 1 (https://www.anthropic.com/news/redeploying-fable-5), so these three tasks should be runnable now.\n\nWould you consider rerunning them when budget allows? With 3 of 20 tasks auto-zeroed for access reasons, Fable's 24.0% has a 15pp lower ceiling than other entries, which affects how the top of the leaderboard reads. I understand these runs are expensive and n=5 error bars are wide either way, so this is just a request to put it on the radar, not an urgency claim.\n\nThe two refused tasks (`embedding-eval`, `trimul-cuda`) are a separate matter since refusals are model behavior and fair to score, though the post-redeployment safety classifier may have changed that behavior too.\n\nThanks!",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/258#issuecomment-5051774255",
+      "user": "RishiDesai",
+      "created_at": "2026-07-22T21:28:27Z",
+      "updated_at": "2026-07-22T21:29:25Z",
+      "body": "I am currently running Fable 5 (and many more models) on v1.1 right now! The results will hopefully be out by the end of this week :) \n\ninterestingly, Fable 5 has more refusals now than when Anthropic first released the model. I'll have both Fable 5 and Opus 4.8 for v1.1 because I'm not allowing fallbacks for Fable 5."
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/258#issuecomment-5273370544",
+      "user": "RishiDesai",
+      "created_at": "2026-08-12T22:11:06Z",
+      "updated_at": "2026-08-12T22:11:06Z",
+      "body": "Fable 5 results were updated 2 weeks ago with fallback model enabled :)\n\nI also have some Fable 5 rollouts without fallback model in the s3 bucket "
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/258#issuecomment-5273750224",
+      "user": "Rina48",
+      "created_at": "2026-08-12T22:57:49Z",
+      "updated_at": "2026-08-12T22:57:49Z",
+      "body": "Thanks for the update, and for confirming the refusal-rate change independently.\n\nOne follow-up: the leaderboard entry carries the fallback footnote, so 45.0% reads as a system score rather than a Fable 5 score. Since you already have the no-fallback rollouts in the s3 bucket, would you consider scoring them as a separate line (or a footnote figure)? For anyone deciding whether to route a task to Fable 5 directly, the no-fallback number is the actionable one. The gap between the two is also a useful measure of how often the safeguards route fires on agentic work."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-11T15:52:38Z",
+  "github_updated_at": "2026-08-12T22:57:49Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks maintainers to rerun leaderboard entries after model access was restored; the issue concerns published model scores, not a benchmark defect artifact.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/258"
+  ]
+}

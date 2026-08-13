@@ -1,0 +1,38 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1352",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1352,
+  "title": "[BFCL] Clarify default and ablation behavior of synthetic request failures in BFCL V4 Web Search",
+  "body": "## Describe the issue\n\nThe BFCL V4 Agentic Web Search blog appears to be ambiguous about whether synthetic request failures are part of the default leaderboard evaluation or only used in the additional robustness experiment described in Section 7.2.\n\nThe released implementation indicates that synthetic request failures are currently disabled. However, Section 3 of the blog describes probabilistic request failures as part of the web-search environment, while Sections 7 and 7.2 present varying fetch-success rates as an additional modified evaluation setup.\n\n## ID datapoint\n\n1. Datapoint / Model Handler permalink: N/A — this issue concerns the general Agentic Web Search evaluation setup rather than a specific datapoint or model handler.\n2. Issue: Ambiguity and missing reproduction details for synthetic request failures.\n3. Gorilla repo commit #: `f7cf735`\n\n## What is the issue\n\nIn the released implementation, the random generator used for synthetic request failures is described as belonging to a feature that is currently not used. The corresponding invocation is also commented out:\n\n```python\n# Note: Un-comment this when we want to simulate a random error\n# Flip a coin to simulate a random error\n# if self._random.random() < 0.95:\n#     return {\"error\": self._fake_requests_get_error_msg(url)}\n```\n\nTherefore, synthetic request failures appear to be disabled in the default BFCL V4 Agentic Web Search evaluation.\n\nHowever, the blog contains two descriptions that may be read differently:\n\n* Section 3 states that probabilistic request failures were intentionally introduced to simulate real-world browsing conditions.\n* Sections 7 and 7.2 describe fetch URL errors with 100%, 50%, and 0% fetch-success rates as an additional modified evaluation setup.\n\nThis raises the following reproducibility questions:\n\n1. Were synthetic request failures disabled for the standard BFCL V4 Agentic Web Search leaderboard runs?\n2. Were they enabled only for the additional experiment described in Section 7.2?\n3. How were the 100%, 50%, and 0% fetch-success conditions configured?\n4. Was the probability changed manually in the source code?\n5. Which random seed or failure schedule was used?\n\nThere is also a terminology difference worth clarifying. Section 7.2 refers to “URL blockers,” but the available synthetic error generator does not only generate 403 responses. It samples from several HTTP and network failure types, including:\n\n* 503 Service Unavailable\n* 429 Too Many Requests\n* 403 Forbidden\n* ConnectTimeout\n* ReadTimeout\n* ConnectionError\n\nThus, “synthetic request failures” may describe the implemented mechanism more precisely than “URL blockers.”\n\n## Proposed Changes\n\nIf synthetic request failures were disabled for the standard leaderboard evaluation and used only in the Section 7.2 experiment:\n\n* Clarify this distinction in Section 3 of the blog.\n* State explicitly that the default leaderboard evaluation does not inject synthetic request failures.\n* Document how the 100%, 50%, and 0% fetch-success conditions from Section 7.2 were implemented.\n* Document the random seed or failure schedule used for the experiment.\n* Consider exposing the failure probability through an evaluation configuration option rather than requiring a source-code modification.\n* Consider using the term “synthetic request failures” consistently if all six HTTP and network error types are sampled.\n\n```python\n{\n    \"previous_datapoint\": [],\n    \"updated_datapoint\": []\n}\n```\n\n## Additional context\n\nThe official leaderboard page states that models were evaluated using commit `f7cf735` and recommends checking out this commit or installing `bfcl-eval==2025.12.17` to reproduce the results.\n\nIn that checkpoint, the synthetic error invocation is commented out. A user following the published reproduction instructions would therefore run the standard Agentic Web Search evaluation without synthetic request failures.\n\nI also inspected a sample of the publicly released trajectories and did not observe the synthetic error messages. This is consistent with the released implementation, although the code in the referenced checkpoint is the primary basis for this issue.\n",
+  "comments": [
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1352#issuecomment-5268691477",
+      "user": "tim2603",
+      "created_at": "2026-08-12T15:11:32Z",
+      "updated_at": "2026-08-12T15:11:32Z",
+      "body": "One additional reproducibility/naming detail I noticed while reproducing the Web Search setup:\nThe BFCL V4 Web Search blog refers to the search tool as duckduckgo_search (including the function definition and example trajectories), whereas the released benchmark/tool specification uses search_engine_query.\nCould you clarify whether duckduckgo_search was the actual tool name exposed to the models in the reported leaderboard runs, or whether this is only an outdated/illustrative name in the blog and search_engine_query is the canonical name for reproduction?\nIf search_engine_query is canonical, it may be worth updating the blog to avoid ambiguity for reproductions."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-04T07:52:35Z",
+  "github_updated_at": "2026-08-12T15:11:32Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "bfcl",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "bfcl__shishirpatil__gorilla__issue-1352",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "BFCL V4 Agentic Web Search documentation leaves synthetic request failures ambiguous while the released leaderboard checkpoint has the failure injection code disabled, obscuring how default and robustness runs are reproduced.",
+  "decision_note": "Updated GitHub thread was rechecked against existing canonical bfcl__shishirpatil__gorilla__issue-1352; same source/root cause is already counted, so this run records it only as duplicate/follow-up evidence.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1352"
+  ]
+}

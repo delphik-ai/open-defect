@@ -1,0 +1,43 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/issues/266",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_issue",
+  "github_number": 266,
+  "title": "Published results include multiple agent self-termination failures",
+  "body": "Hi, and thank you for maintaining and publishing this benchmark.\n\nWhile reviewing the raw artifacts, I noticed several trials that may represent harness-induced failures rather than genuine model results.\n\nAn audit of the current 1,797 published trials found at least nine confirmed self-termination cases across four task families:\n\n  - `nextjs-vite-rewrite`: 277, 279, 280, 281, 286, 421\n  - `find-network-alignments`: 188\n  - `parameter-golf`: 437\n  - `embedding-eval`: 375\n\nThe affected models include Opus 4.8 and GLM 5.2. Their trajectories end at broad process-kill commands such as `pkill -f \"vinext dev\"` or `pkill -f \"train_gpt\"`, followed by exit 143/SIGTERM or 137/SIGKILL.\n\nThe matched terms also occur in the task instruction passed through the agent process argv, apparently causing the agents to terminate themselves. This is related to:\n\n  https://github.com/harbor-framework/harbor/issues/2198\n\nWould you please consider reviewing these trials, marking or excluding invalid ones, and rerunning them with the fixed launcher if appropriate?\n\nI may have missed relevant context about the publication process, so please let me know if these results are already handled elsewhere. Thank you!",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/issues/266#issuecomment-5171622109",
+      "user": "RishiDesai",
+      "created_at": "2026-08-03T20:56:18Z",
+      "updated_at": "2026-08-03T20:58:17Z",
+      "body": "v1.1  should fix these issues of self-termination. Yes - also noticed that claude-code harness in particular caused unintentional self-termination, esp in the `nextjs` task because of the long running server commands the task requires. the task fairness modifications in the tasks should help mitigate this in v1.1. See the changelog. \n\nAlso related, in v1.1, we fixed the issue of Agent timeout (ie, the agent runs out of time and (typically) fails the task).\n\nThe v1.1 tasks have `timer.sh` in the task that tells the agent how much wall-clock time is left. The task timeouts are also much longer. There are very very few AgentTimeout errors now :) "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-22T08:45:15Z",
+  "github_updated_at": "2026-08-12T22:09:50Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swe-marathon",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swe-marathon__abundant-ai__swe-marathon__issue-266",
+  "task_names": [
+    "nextjs-vite-rewrite",
+    "find-network-alignments",
+    "parameter-golf",
+    "embedding-eval"
+  ],
+  "resolution": "fixed",
+  "summary": "Published SWE-Marathon trials for four task families include agent self-termination failures where broad pkill patterns matched the Claude Code process argv, making valid or partially valid runs appear as model failures.",
+  "decision_note": "Updated GitHub thread was rechecked against existing canonical swe-marathon__abundant-ai__swe-marathon__issue-266; same source/root cause is already counted, so this run records it only as duplicate/follow-up evidence.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/issues/266"
+  ]
+}

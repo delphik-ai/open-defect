@@ -20,7 +20,7 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-05-22T06:46:27.000Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "last_reviewed_at": "2026-08-13T00:06:47.704Z",
   "decision_note": "L3 Harbor audit against current swebench-verified@1.0. Command: harbor run -d swebench-verified@1.0 -a oracle -e docker -o tmp/l3-harbor-jobs -n 1 --job-name l3-swebench-verified-issue584-oracle -i astropy__astropy-8872 -y --no-delete --timeout-multiplier 1. Result: oracle/gold completed with no exceptions but reward 0.0. The verifier report shows patch_successfully_applied=true and resolved=false. test-stdout.txt shows pytest collection aborting on astropy/units/tests/test_quantity.py because LooseVersion triggers setuptools/_distutils/version.py DeprecationWarning under setuptools 68.0.0, matching issue #584. Issue #343 is the older broad report for the same astropy__astropy-8872 collection-failure root cause and is retained as supporting evidence, not counted separately.",
   "affected_task_count": 1,
   "migration": {

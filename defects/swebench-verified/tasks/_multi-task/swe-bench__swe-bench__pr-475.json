@@ -21,6 +21,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-09-23T09:52:17Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
+  "last_reviewed_at": "2026-08-13T00:06:47.704Z",
   "decision_note": "L2 PR body/diff audit. The PR explicitly names django__django-16877, sphinx-doc__sphinx-8595, and sphinx-doc__sphinx-9711 and explains that their test_patch contains only new files, so get_modified_files(test_patch) is empty and the eval script runs a bare git checkout/reset that undoes required changes. Existing canonical PR #619 covers the later common-builder/non-Python variant and explicitly distinguishes the Python builder issue; no task-specific canonical exists for these three Verified rows. PR is open, so resolution is fixing."
 }

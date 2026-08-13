@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/485",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 485,
+  "title": "[Bug Fix] Add retry mechanism in PSF Requests test to prevent false negatives",
+  "body": "### Reference Issue\r\n\r\n- Fixes [#484](https://github.com/SWE-bench/SWE-bench/issues/484) for psf_requests_* gold patch failure on test cases\r\n\r\n#### What does this implement/fix?\r\nThis PR adds a simple retry mechanism to the **PSF Requests** test to prevent false negatives caused by transient HTTP `503` or timeout errors from `httpbin.org`.  \r\nThese errors can cause the gold patch to fail validation even though the patch itself is correct.\r\n\r\nBy introducing a retry wrapper around the affected test, we increase the stable evaluation and consistent test results for instances such as `psf__requests-2317`.\r\n\r\n#### Details\r\n- **Modified:** `swebench/harness/constants/python.py`  \r\n- **Added:** retry logic to handle temporary connection issues during test execution  \r\n- **Verified:** test now passes consistently across runs\r\n\r\n#### Additional context\r\nThis fix aligns the behavior of **SWE-bench Verified** with the intended gold patch validation and eliminates environment-related flakiness in PSF Requests.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/485#issuecomment-5262986281",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:03:50Z",
+      "updated_at": "2026-08-12T06:03:50Z",
+      "body": "Closing — this modifies `swebench/harness/constants/python.py`, which no longer exists after the harness restructure, so the change can't take effect. That logic now lives in src/sb_dockerfile_gen/constants.py in SWE-bench/swe-bench-dockerfiles."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/constants/python.py b/swebench/harness/constants/python.py\nindex 24a044614..f93aaad27 100644\n--- a/swebench/harness/constants/python.py\n+++ b/swebench/harness/constants/python.py\n@@ -7,6 +7,7 @@\n TEST_SEABORN = \"pytest --no-header -rA\"\n TEST_SEABORN_VERBOSE = \"pytest -rA --tb=long\"\n TEST_PYTEST = \"pytest -rA\"\n+TEST_REQUESTS = \"python -m pip install pytest-rerunfailures && pytest -rA --reruns 5 --reruns-delay 2\"\n TEST_PYTEST_VERBOSE = \"pytest -rA --tb=long\"\n TEST_SPHINX = \"tox --current-env -epy39 -v --\"\n TEST_SYMPY = (\n@@ -27,7 +28,7 @@\n             \"setuptools\",\n             \"scipy==1.5.2\",\n         ],\n-        \"test_cmd\": TEST_PYTEST,\n+        \"test_cmd\": TEST_REQUESTS,\n     }\n     for k in [\"0.20\", \"0.21\", \"0.22\"]\n }\n",
+  "github_state": "closed",
+  "github_created_at": "2025-10-17T02:56:35Z",
+  "github_updated_at": "2026-08-12T06:03:51Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-485",
+  "task_names": [
+    "psf__requests-2317"
+  ],
+  "resolution": "fixing",
+  "summary": "SWE-bench PR adds retries to PSF Requests tests to prevent false negatives from transient httpbin 503/timeout errors.",
+  "decision_note": "Updated GitHub thread was rechecked against existing canonical swebench-verified__swe-bench__swe-bench__pr-485; same source/root cause is already counted, so this run records it only as duplicate/follow-up evidence.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/485"
+  ]
+}

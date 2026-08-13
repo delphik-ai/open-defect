@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/603",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 603,
+  "title": "Rename docker_setup.md to docker_setup.md",
+  "body": "<!--\r\nThanks for contributing a pull request!\r\n-->\r\n\r\n#### Reference Issues/PRs\r\n<!--\r\nExample: \"Fixes #1234\", \"See also #3456\"\r\nPlease use keywords (e.g., Fixes) to create link to the issues or pull requests\r\nyou resolved, so that they will automatically be closed when your pull request\r\nis merged. See https://github.com/blog/1506-closing-issues-via-pull-requests\r\n-->\r\n\r\n#### What does this implement/fix? Explain your changes.\r\n<!--\r\nPlease include a brief explanation of how your solution\r\nfixes the tagged issue(s), along with what files / entities have\r\nbeen modified for this fix.\r\n-->\r\n\r\n#### Any other comments?\r\n\r\n<!-- 🧡 Thanks for contributing! -->\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/603#issuecomment-5262988845",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T06:04:11Z",
+      "updated_at": "2026-08-12T06:04:11Z",
+      "body": "Closing — this changes nothing (0 files changed; the rename is to the same filename)."
+    }
+  ],
+  "linked_pr_diff": "",
+  "github_state": "closed",
+  "github_created_at": "2026-06-19T20:04:26Z",
+  "github_updated_at": "2026-08-12T06:04:11Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "PR title/body indicate a no-op documentation rename and no benchmark defect claim.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/603"
+  ]
+}

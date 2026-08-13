@@ -1,0 +1,74 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/402",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 402,
+  "title": "Remove problematic content slicing in test output parsing",
+  "body": "<!--\r\nThanks for contributing a pull request!\r\n-->\r\n\r\n#### Reference Issues/PRs\r\n<!--\r\nExample: \"Fixes #1234\", \"See also #3456\"\r\nPlease use keywords (e.g., Fixes) to create link to the issues or pull requests\r\nyou resolved, so that they will automatically be closed when your pull request\r\nis merged. See https://github.com/blog/1506-closing-issues-via-pull-requests\r\n-->\r\n\r\nFix https://github.com/SWE-bench/SWE-bench/issues/377\r\n\r\n#### What does this implement/fix? Explain your changes.\r\n<!--\r\nPlease include a brief explanation of how your solution\r\nfixes the tagged issue(s), along with what files / entities have\r\nbeen modified for this fix.\r\n-->\r\n\r\nWhen running patch eval on Modal, I see that for some instances, the content of test output files being captured are out of order, which causes the test summary to fall outside the `>>>>> Start Test Output` and `>>>>> End Test Output` markers. I attached a sample log file below.\r\n\r\n[test_output_astropy__astropy-12907.txt](https://github.com/user-attachments/files/20397380/test_output.txt)\r\n\r\nThis PR removes the content slicing line and uses the whole file content for parsing. \r\n\r\n#### Any other comments?\r\n\r\n🧡 Thanks for contributing!\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-2902744926",
+      "user": "john-b-yang",
+      "created_at": "2025-05-22T22:27:21Z",
+      "updated_at": "2025-05-22T22:27:21Z",
+      "body": "Hmm I understand the problem, thanks for noticing it. But I probably wouldn't prefer this be the default behavior. Perhaps we can condition this statement on whether Modal eval is being used.\r\n\r\nIt's not a big difference I guess, but the reason this statement exists is to make sure text not related to testing output is ignored."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-2913382037",
+      "user": "ryanhoangt",
+      "created_at": "2025-05-27T17:29:26Z",
+      "updated_at": "2025-05-27T17:29:26Z",
+      "body": "@john-b-yang that makes sense, I modified the code to skip the content slicing on Modal only, could you help take another look?"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-2975026838",
+      "user": "ryanhoangt",
+      "created_at": "2025-06-16T03:56:23Z",
+      "updated_at": "2025-06-16T03:56:23Z",
+      "body": "Hi @john-b-yang, just a friendly ping on this PR - please let me know if there's anything I can clarify or improve. Thanks!"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-3238062956",
+      "user": "neubig",
+      "created_at": "2025-08-29T19:43:38Z",
+      "updated_at": "2025-08-29T19:43:38Z",
+      "body": "Hi @john-b-yang and/or @klieret, would it be possible to get this merged? We're currently having to work off a branch of swe-bench and it's causing us logistics issues at the moment. Thanks a lot for the consideration!"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-5261762469",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T03:08:17Z",
+      "updated_at": "2026-08-12T03:08:17Z",
+      "body": "Thanks for this — the diagnosis is right and it fixes a real bug, so I've rebased your branch onto current main and pushed a follow-up commit (apologies for the force-push to your fork; the branch was ~450 commits behind and grading.py changed a lot today).\n\nThe follow-up generalizes the fix rather than gating it on Modal. Your `on_modal` flag skips the marker slicing only for Modal runs, but the condition isn't Modal-specific: the markers are `: '>>>>> ...'` no-ops that only appear in the log because `set -x` traces them to **stderr**, so any runner that interleaves stdout/stderr differently can put results outside them. So instead of a flag, `get_logs_eval` now parses the slice and falls back to the whole log when the slice yields no results:\n\n    sliced = content.split(START_TEST_OUTPUT)[1].split(END_TEST_OUTPUT)[0]\n    status_map = log_parser(sliced, test_spec)\n    if not status_map:\n        status_map = log_parser(content, test_spec)\n\nThat let me drop the `on_modal` plumbing through `get_logs_eval`/`get_eval_report`/`run_evaluation_modal.py` entirely.\n\nIt also turns out this happens on **local** runs, not just Modal, which is how I could measure it. Scanning 1283 gold logs, exactly one hits the condition: `fastlane__fastlane-21857` in SWE-bench_Multilingual has 208 chars between the markers and its 3 real results outside them, so the slice parsed 0 tests and the instance was graded unresolved. With the fallback it parses correctly and resolves — Multilingual gold goes **298/300 -> 299/300**, and Verified (500/500) and Multimodal (483/483) are unchanged.\n\nAdded 3 tests covering results-inside-markers, results-outside-markers, and markers-absent (still `{}, False`).\n\nOne caveat I couldn't close: Modal isn't configured on my machine, so I verified the mechanism against local logs and unit tests but not an actual Modal run. If you have a Modal run handy, confirmation there would be welcome.\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/402#issuecomment-5262778042",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T05:32:14Z",
+      "updated_at": "2026-08-12T05:32:14Z",
+      "body": "^summary from claude i reviewed, sorry about such a long delay, just finally taking some time to come back around tidy this up, thank you so much again for the contribution!"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/grading.py b/swebench/harness/grading.py\nindex c7e1cd5a5..4045e1546 100644\n--- a/swebench/harness/grading.py\n+++ b/swebench/harness/grading.py\n@@ -107,8 +107,14 @@ def get_logs_eval(test_spec: TestSpec, log_fp: str) -> tuple[dict[str, str], boo\n             return {}, False\n \n         # Get status map of evaluation results\n-        content = content.split(START_TEST_OUTPUT)[1].split(END_TEST_OUTPUT)[0]\n-        return log_parser(content, test_spec), True\n+        sliced = content.split(START_TEST_OUTPUT)[1].split(END_TEST_OUTPUT)[0]\n+        status_map = log_parser(sliced, test_spec)\n+        if not status_map:\n+            # Some runners emit results outside the markers (stdout/stderr ordering\n+            # differs, e.g. on Modal), so fall back to the whole log rather than\n+            # reporting a run with no results at all.\n+            status_map = log_parser(content, test_spec)\n+        return status_map, True\n \n \n def get_eval_tests_report(\ndiff --git a/tests/test_grading_marker_fallback.py b/tests/test_grading_marker_fallback.py\nnew file mode 100644\nindex 000000000..a9c740c23\n--- /dev/null\n+++ b/tests/test_grading_marker_fallback.py\n@@ -0,0 +1,55 @@\n+\"\"\"Results emitted outside the START/END markers must still be graded (#402).\n+\n+`set -x` traces the marker no-ops to stderr, so depending on how a runner\n+interleaves stdout and stderr the results can land outside them. Slicing then\n+yields nothing and the run looks resultless -- fastlane__fastlane-21857 in\n+SWE-bench_Multilingual fails this way (208 chars inside the markers, 3 real\n+results outside them).\n+\"\"\"\n+\n+from swebench.harness.constants import END_TEST_OUTPUT, START_TEST_OUTPUT\n+from swebench.harness.grading import get_logs_eval\n+from swebench.types import TestSpec\n+\n+\n+def _spec(**kw):\n+    return TestSpec(\n+        **{\n+            \"instance_id\": \"x__x-1\",\n+            \"image\": \"x:latest\",\n+            \"eval_script_list\": [],\n+            \"repo\": \"x/x\",\n+            \"version\": \"1.0\",\n+            \"FAIL_TO_PASS\": [],\n+            \"PASS_TO_PASS\": [],\n+            \"log_parser\": \"parse_log_pytest\",\n+            \"eval_type\": \"pass_and_fail\",\n+            **kw,\n+        }\n+    )\n+\n+\n+def test_results_inside_markers_are_used(tmp_path):\n+    log = tmp_path / \"test_output.txt\"\n+    log.write_text(\n+        f\"{START_TEST_OUTPUT}\\nPASSED tests/test_a.py::test_in\\n{END_TEST_OUTPUT}\\n\"\n+    )\n+    sm, found = get_logs_eval(_spec(), str(log))\n+    assert found and sm == {\"tests/test_a.py::test_in\": \"PASSED\"}\n+\n+\n+def test_results_outside_markers_fall_back_to_whole_log(tmp_path):\n+    \"\"\"Empty between the markers, real results outside -> use the whole log.\"\"\"\n+    log = tmp_path / \"test_output.txt\"\n+    log.write_text(\n+        f\"PASSED tests/test_a.py::test_outside\\n{START_TEST_OUTPUT}\\n{END_TEST_OUTPUT}\\n\"\n+    )\n+    sm, found = get_logs_eval(_spec(), str(log))\n+    assert found and sm == {\"tests/test_a.py::test_outside\": \"PASSED\"}\n+\n+\n+def test_missing_markers_still_reports_not_found(tmp_path):\n+    log = tmp_path / \"test_output.txt\"\n+    log.write_text(\"PASSED tests/test_a.py::test_x\\n\")\n+    sm, found = get_logs_eval(_spec(), str(log))\n+    assert (sm, found) == ({}, False)\n",
+  "github_state": "closed",
+  "github_created_at": "2025-05-22T17:24:13Z",
+  "github_updated_at": "2026-08-12T05:32:14Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-402",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench Modal evaluation sliced test output content and marked a locally resolved SymPy patch unresolved; PR conditions/removes the problematic slicing.",
+  "decision_note": "Updated GitHub thread was rechecked against existing canonical swebench-verified__swe-bench__swe-bench__pr-402; same source/root cause is already counted, so this run records it only as duplicate/follow-up evidence.",
+  "reviewed_at": "2026-08-13T00:06:47.704Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/402"
+  ]
+}
