@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/pull/1253",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_pr",
+  "github_number": 1253,
+  "title": "[BFCL] Fix reasoning content handling for Grok models",
+  "body": "Fix #1252 ",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/berkeley-function-call-leaderboard/bfcl_eval/model_handler/api_inference/grok.py b/berkeley-function-call-leaderboard/bfcl_eval/model_handler/api_inference/grok.py\nindex e892a28c1087..0ad8b155fc60 100644\n--- a/berkeley-function-call-leaderboard/bfcl_eval/model_handler/api_inference/grok.py\n+++ b/berkeley-function-call-leaderboard/bfcl_eval/model_handler/api_inference/grok.py\n@@ -32,5 +32,5 @@ def _parse_query_response_prompting(self, api_response: Any) -> dict:\n     @override\n     def _parse_query_response_FC(self, api_response: Any) -> dict:\n         response_data = super()._parse_query_response_FC(api_response)\n-        self._add_reasoning_content_if_available_prompting(api_response, response_data)\n+        self._add_reasoning_content_if_available_FC(api_response, response_data)\n         return response_data\ndiff --git a/berkeley-function-call-leaderboard/bfcl_eval/model_handler/utils.py b/berkeley-function-call-leaderboard/bfcl_eval/model_handler/utils.py\nindex b66144839d38..7abd9a242f27 100644\n--- a/berkeley-function-call-leaderboard/bfcl_eval/model_handler/utils.py\n+++ b/berkeley-function-call-leaderboard/bfcl_eval/model_handler/utils.py\n@@ -187,14 +187,8 @@ def convert_to_tool(functions, mapping, model_style):\n         ]:\n             oai_tool.append(item)\n         elif model_style in [ModelStyle.OPENAI_RESPONSES]:\n-            oai_tool.append(\n-                {\n-                    \"type\": \"function\",\n-                    \"name\": item[\"name\"],\n-                    \"description\": item[\"description\"],\n-                    \"parameters\": item[\"parameters\"],\n-                }\n-            )\n+            item[\"type\"] = \"function\"\n+            oai_tool.append(item)\n         elif model_style in [\n             ModelStyle.COHERE,\n             ModelStyle.OPENAI_COMPLETIONS,\n",
+  "github_state": "closed",
+  "github_created_at": "2025-11-18T08:29:15Z",
+  "github_updated_at": "2026-08-13T09:56:27Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "linked_defect_id": "bfcl__shishirpatil__gorilla__issue-1252",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "Merged PR #1253 fixes existing BFCL issue #1252 by preserving reasoning content for Grok function-calling responses with the correct helper.",
+  "audit_level": "L2",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1253",
+    "https://github.com/ShishirPatil/gorilla/issues/1252"
+  ],
+  "decision_note": "L2 source-read audit: PR #1253 says Fix #1252 and changes the Grok handler to call the function-calling reasoning-content helper. Existing canonical artifact bfcl__shishirpatil__gorilla__issue-1252 records the same Grok reasoning-content root cause, so this PR is duplicate/fix evidence.",
+  "reviewed_at": "2026-08-14T00:06:09.015Z"
+}

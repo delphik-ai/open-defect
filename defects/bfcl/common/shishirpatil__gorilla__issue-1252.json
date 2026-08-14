@@ -9,11 +9,12 @@
   "summary": "BFCL Grok handler called the prompting reasoning-content helper instead of the function-calling helper, dramatically lowering multi-turn results.",
   "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1252",
   "evidence_urls": [
-    "https://github.com/ShishirPatil/gorilla/issues/1252"
+    "https://github.com/ShishirPatil/gorilla/issues/1252",
+    "https://github.com/ShishirPatil/gorilla/pull/1253"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-11-18T08:17:41.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-14T00:06:09.015Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

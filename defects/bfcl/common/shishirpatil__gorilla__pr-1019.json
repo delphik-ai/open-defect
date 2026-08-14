@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1019",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "BFCL V4 Release",
+  "summary": "BFCL V4 release fixed benchmark-level scoring/data issues, including excluding relevance/irrelevance from Live and Non-Live accuracy calculations and resolving live-relevance ground-truth issue #1094.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1019",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1019",
+    "https://github.com/ShishirPatil/gorilla/issues/1094"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-05-11T00:00:24Z",
+  "last_reviewed_at": "2026-08-14T00:06:09.015Z",
+  "decision_note": "L2 source-read audit: PR #1019 is a merged BFCL V4 release. Its body explicitly says Non-Live Acc and Live Acc score calculation now excludes Irrelevance/Relevance category scores and also resolves issue #1094. Issue #1094 reports live-relevance datapoints being counted wrong when a follow-up question is expected. Existing BFCL artifacts did not contain this PR or issue #1094 root cause, so this is a new fixed benchmark-level artifact."
+}

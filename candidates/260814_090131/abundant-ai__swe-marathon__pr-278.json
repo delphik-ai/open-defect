@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/pull/278",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_pr",
+  "github_number": 278,
+  "title": "Update Grok 4.6 model card link in README",
+  "body": "<!-- Complete this template for task additions or task updates. -->\r\n\r\n## Summary\r\n\r\nWhat task are you adding or updating, and what changed?\r\n\r\n## Checklist\r\n\r\n- [ ] This PR updates exactly one task directory.\r\n- [ ] All behavior checked in `tests/` is described in `instruction.md`.\r\n- [ ] All required output files are named in `instruction.md`.\r\n- [ ] `instruction.md` uses absolute paths.\r\n- [ ] `environment/Dockerfile` does not copy `solution/` or `tests/`.\r\n- [ ] `task.toml` has non-placeholder `difficulty_explanation`, `solution_explanation`, and `verification_explanation`.\r\n- [ ] `reward.txt` is binary (0 or 1). Partial scores go to `metrics.json`.\r\n- [ ] `solution/` contains readable code files (no `.patch`/`.diff`; no `patch -p` in `solve.sh`).\r\n- [ ] I ran the local static checks for this task.\r\n- [ ] I ran `harbor run -p tasks/<task> --agent oracle`.\r\n- [ ] I ran `harbor run -p tasks/<task> --agent nop`.\r\n\r\n## Local Validation\r\n\r\nList the commands you ran locally and any notable results.\r\n\r\n## Agent Notes\r\n\r\nIf you ran a strong model on the task, summarize the result here. If not, say so.\r\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex c7d61c499..e018b9b9b 100644\n--- a/README.md\n+++ b/README.md\n@@ -12,7 +12,7 @@\n \n \n ## News\n-- [08/2026] ⚙️ Featured on the [Grok 4.6 model card](https://media.x.ai/v1/website/card-7f81d41b.pdf)!\n+- [08/2026] ⚙️ Featured on the [Grok 4.6 model card](https://media.x.ai/v1/website/card-4p6-4cd2dc57.pdf)!\n - [07/2026] ➕ SWE-Marathon [v1.1 is out](https://x.com/rishi_desai2/status/2087216551653146706?s=20) with a fresh leaderboard!\n - [07/2026] 🌙 Featured on the [Kimi K3 model card](https://www.kimi.com/blog/kimi-k3)!\n - [07/2026] 🔥 Featured on the [Grok 4.5 model card](https://x.ai/news/grok-4-5)!\n",
+  "github_state": "closed",
+  "github_created_at": "2026-08-13T21:53:14Z",
+  "github_updated_at": "2026-08-13T22:01:48Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/278"
+  ],
+  "decision_note": "L1 audit: merged README-only model-card link update. No benchmark task, harness, dataset, scorer, or evaluator defect is claimed.",
+  "reviewed_at": "2026-08-14T00:06:09.015Z"
+}

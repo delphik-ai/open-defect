@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/pull/1241",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_pr",
+  "github_number": 1241,
+  "title": "[BFCL] Fix Language-specific Hint Implementation",
+  "body": "Fix #1216. \r\nThis PR addresses the issue that the language-specific hint implementation incorrectly applies the Python hint to Java and JavaScript test entries. ",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/berkeley-function-call-leaderboard/bfcl_eval/utils.py b/berkeley-function-call-leaderboard/bfcl_eval/utils.py\nindex 976c86c30b33..5d2eaf8d65b7 100644\n--- a/berkeley-function-call-leaderboard/bfcl_eval/utils.py\n+++ b/berkeley-function-call-leaderboard/bfcl_eval/utils.py\n@@ -611,9 +611,9 @@ def is_empty_output(decoded_output):\n \n \n def _get_language_specific_hint(test_category):\n-    if test_category == \"java\":\n+    if is_java(test_category):\n         return \" Note that the provided function is in Java 8 SDK syntax.\"\n-    elif test_category == \"javascript\":\n+    elif is_js(test_category):\n         return \" Note that the provided function is in JavaScript syntax.\"\n     else:\n         return \" Note that the provided function is in Python 3 syntax.\"\n",
+  "github_state": "closed",
+  "github_created_at": "2025-11-03T00:46:20Z",
+  "github_updated_at": "2026-08-13T09:48:41Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "linked_defect_id": "bfcl__shishirpatil__gorilla__issue-1216",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "Merged PR #1241 is the fix evidence for existing BFCL issue #1216, where language-specific hints were incorrectly applied to Java and JavaScript entries.",
+  "audit_level": "L2",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1241",
+    "https://github.com/ShishirPatil/gorilla/issues/1216"
+  ],
+  "decision_note": "L2 source-read audit: PR #1241 says Fix #1216 and changes BFCL utils.py to choose Java and JavaScript hints separately instead of applying the Python hint. Existing canonical artifact bfcl__shishirpatil__gorilla__issue-1216 already records the same root cause, so this PR is duplicate/fix evidence.",
+  "reviewed_at": "2026-08-14T00:06:09.015Z"
+}

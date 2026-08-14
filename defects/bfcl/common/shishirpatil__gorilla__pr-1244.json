@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1244",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "[BFCL] Add file locking to utils.py to serialize concurrent writes",
+  "summary": "BFCL generation could corrupt result files under high thread counts because concurrent writers missed entries; merged PR #1244 serializes writes with per-file locks.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1244",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1244",
+    "https://github.com/ShishirPatil/gorilla/pull/1244/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-11-05T22:22:36Z",
+  "last_reviewed_at": "2026-08-14T00:06:09.015Z",
+  "decision_note": "L2 source-read audit: PR #1244 states that high-thread generation could leave result files missing one or two entries, corrupting outputs and downstream evaluation. The merged diff adds a per-file lock registry and wraps result writes in bfcl_eval/utils.py. Existing BFCL artifacts did not cover concurrent result-file write corruption, so this is a new fixed benchmark-level artifact."
+}

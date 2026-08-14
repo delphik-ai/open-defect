@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/79",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 79,
+  "title": "Benchmark Grok 4.6 on DeepSWE v1.1",
+  "body": "## Summary\n\nPlease benchmark the newly released **Grok 4.6** on DeepSWE v1.1 and add an independently measured result to the public leaderboard.\n\nOfficial model references:\n\n- Announcement: https://x.ai/news/grok-4-6\n- Release post: https://x.com/SpaceXAI/status/2087562800982077492\n- API documentation: https://docs.x.ai/developers/grok-4-6\n- API model ID: `grok-4.6`\n\n## Why this would be useful\n\nSpaceXAI reports **65.9%** for `Grok 4.6 High` on DeepSWE v1.1. An official Datacurve run would independently reproduce or clarify that result using DeepSWE's standard `mini-swe-agent` pipeline and publish the detailed metadata needed for a direct comparison with the rest of the leaderboard.\n\nThe current DeepSWE v1.1 live artifact contains a `grok-4-5` high-effort result but no Grok 4.6 row.\n\n## Requested run target\n\nPlease run, at minimum:\n\n- Benchmark: DeepSWE v1.1\n- Model: `grok-4.6`\n- Harness: `mini-swe-agent`\n- Reasoning effort: `high`\n- The same task set, repeated-run methodology, and reporting pipeline used for the existing official leaderboard\n\nThe `high` configuration is the priority because it directly matches SpaceXAI's published 65.9% figure. If resources permit, separate `low`, `medium`, and `xhigh` runs would also be valuable; the API documentation lists all four effort levels, with `high` as the default.\n\nPlease record the exact API/provider route, model snapshot or alias behavior, reasoning effort, context/output limits, and any retry, fallback, or routing behavior so the result is reproducible.\n\n## Suggested reporting\n\nFor each tested configuration, please publish the same detailed fields as the current live artifact:\n\n- Pass@1 and confidence interval\n- Number of full benchmark runs\n- Mean and median cost per task\n- Mean and median input/output tokens\n- Mean and median agent steps\n- Mean and median duration\n- Peak context usage\n- Exact model ID, effort level, provider route, and relevant sampling settings\n\n## Current availability\n\nGrok 4.6 is available through the SpaceXAI API with a 500,000-token context window. The documented base pricing below 200,000 prompt tokens is $2 per million input tokens, $0.50 per million cached input tokens, and $6 per million output tokens; longer prompts use a higher pricing tier.\n\nThe live DeepSWE v1.1 artifact currently reports Grok 4.5 High at 53.76% Pass@1 over four full benchmark runs. Measuring Grok 4.6 through the same pipeline would show whether SpaceXAI's reported improvement reproduces under Datacurve's independent methodology.\n\n## References\n\n- Grok 4.6 announcement and benchmark table: https://x.ai/news/grok-4-6\n- Grok 4.6 API documentation: https://docs.x.ai/developers/grok-4-6\n- DeepSWE leaderboard: https://deepswe.datacurve.ai/\n- DeepSWE v1.1 live artifact: https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json\n\nThanks for considering it.\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/79#issuecomment-5269453560",
+      "user": "coygeek",
+      "created_at": "2026-08-12T16:19:29Z",
+      "updated_at": "2026-08-12T16:19:29Z",
+      "body": "## SpaceXAI-published DeepSWE v1.1 reference\n\nFor comparison after the independent DeepSWE run is available, SpaceXAI's Grok 4.6 launch announcement reports these **DeepSWE v1.1** measurements:\n\n| Model / configuration | SpaceXAI-published DeepSWE v1.1 score |\n|---|---:|\n| Grok 4.6 High | **65.9%** |\n| Grok 4.5 High | 54% |\n| GPT-5.6 Sol Max | 73% |\n| Fable 5 Max | 70% |\n\nSources:\n\n- Launch announcement and full evaluation table: https://x.ai/news/grok-4-6\n- Official release post: https://x.com/SpaceXAI/status/2087562800982077492\n\nThese are **SpaceXAI-published reference figures**, not results independently produced or verified by Datacurve. The announcement says third-party model scores are the best of self-reported or publicly available results. Its visible evaluation table does not specify the Grok 4.6 DeepSWE run count, confidence interval, harness, provider route, or other trajectory-level settings beyond the `High` effort label.\n\nThat is why a Datacurve run remains useful: it can test `grok-4.6` with the standard `mini-swe-agent` pipeline and report the same reproducibility, cost, token, step, duration, and confidence-interval fields as the existing leaderboard entries.\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/79#issuecomment-5287003268",
+      "user": "coygeek",
+      "created_at": "2026-08-13T22:13:40Z",
+      "updated_at": "2026-08-13T22:13:40Z",
+      "body": "## Grok 4.6 results\n\nAll four Grok 4.6 effort levels are now in the DeepSWE v1.1 live artifact. Each result uses `mini-swe-agent` and four runs across the 113-task set.\n\n| Effort | Pass@1 ± 95% CI | Pass@4 | Passed / attempted | Tasks passed at least once | Runs | Cost, mean / median | Input tokens, mean / median | Output tokens, mean / median | Steps, mean / median | Duration, mean / median | Median peak context | Median output tokens to pass |\n|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|\n| Low | 41.65% ± 2.32 pp | 69.03% | 187 / 449 | 78 / 113 | 4 | $1.042 / $0.743 | 1.65M / 1.09M | 16.5k / 14.9k | 44.2 / 39 | 325.1s / 273.4s | 45.3k | 14.8k |\n| Medium | 67.48% ± 2.28 pp | 84.07% | 305 / 452 | 95 / 113 | 4 | $3.449 / $2.946 | 5.73M / 4.71M | 49.8k / 48.6k | 70.3 / 66 | 895.5s / 860.0s | 116.6k | 48.3k |\n| High | 65.19% ± 1.53 pp | 84.96% | 294 / 451 | 96 / 113 | 4 | $4.385 / $3.694 | 7.35M / 6.00M | 61.2k / 60.1k | 79.0 / 72 | 1083.6s / 1031.2s | 136.2k | 59.3k |\n| XHigh | 66.74% ± 2.18 pp | 84.96% | 301 / 451 | 96 / 113 | 4 | $5.498 / $4.639 | 9.34M / 7.67M | 71.4k / 71.3k | 87.2 / 81 | 1272.3s / 1245.9s | 156.6k | 70.1k |\n\nSource: [DeepSWE v1.1 live artifact](https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json), generated August 13, 2026 at 16:11 UTC. The confidence interval is the artifact's 95% run-to-run interval.\n\nThank you to the Datacurve team for measuring and publishing the full effort sweep.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-12T16:19:24Z",
+  "github_updated_at": "2026-08-13T22:16:32Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/79",
+    "https://github.com/datacurve-ai/deep-swe/issues/79#issuecomment-5287003268"
+  ],
+  "decision_note": "L1 audit: issue requested adding Grok 4.6 leaderboard measurements and was closed after results were published. This is benchmark-result coverage work, not a defect in DeepSWE tasks, harness, dataset, or evaluator.",
+  "reviewed_at": "2026-08-14T00:06:09.015Z"
+}

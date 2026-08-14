@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1206",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "[BFCL] - Additional Dataset Fixes, Builds off Issues 1133 PR",
+  "summary": "Merged BFCL PR fixed multiple V4 multi-turn dataset prompts, possible answers, and backend behavior where ambiguous instructions or impossible/incorrect gold trajectories affected scoring.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1206",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1206",
+    "https://github.com/ShishirPatil/gorilla/pull/1206#issuecomment-3399439641"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-10-04T10:53:19Z",
+  "last_reviewed_at": "2026-08-14T00:06:09.015Z",
+  "decision_note": "L2 source-read audit: PR #1206 is a merged BFCL dataset-fix PR. The body lists affected BFCL V4 multi_turn_base and long_context/miss_* records with prompt, possible-answer, and backend corrections, and review comments discuss cases where the prompt lacks retrievable booking IDs or where extra valid steps should not be penalized. Existing BFCL common artifacts cover earlier broad dataset sweeps and specific later issues, but not this merged V4 follow-up root cause set. Scope is benchmark_level because the PR changes many dataset records across current BFCL V4 categories rather than one Delphik task row."
+}

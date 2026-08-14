@@ -4,7 +4,7 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "fixing",
+  "resolution": "fixed",
   "title": "Fix Modal eval marker ordering for non-django repos (#447)",
   "summary": "PR fixes Modal eval marker ordering where non-Django gold evaluations were reported failed despite tests passing.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/570",
@@ -13,7 +13,7 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-04-21T12:09:33.000Z",
-  "last_reviewed_at": "2026-08-13T00:06:47.704Z",
+  "last_reviewed_at": "2026-08-14T00:06:09.015Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

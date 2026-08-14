@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/80",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 80,
+  "title": "Benchmark DeepSeek V4 Pro 0813 at low, high, and max effort on DeepSWE v1.1",
+  "body": "## Summary\n\nPlease benchmark the newly available **DeepSeek-V4-Pro-0813** on DeepSWE v1.1 and add independently measured results to the public leaderboard at each distinct reasoning-effort level.\n\nOfficial and serving references:\n\n- DeepSeek model and pricing page: https://api-docs.deepseek.com/quick_start/pricing/\n- DeepSeek thinking-mode documentation: https://api-docs.deepseek.com/guides/thinking_mode\n- DeepSeek API model ID: `deepseek-v4-pro` (the current version is identified as `DeepSeek-V4-Pro-0813`)\n- OpenRouter dated route: `deepseek/deepseek-v4-pro-0813`\n- OpenRouter model page: https://openrouter.ai/deepseek/deepseek-v4-pro-0813\n\n## Why this would be useful\n\nDeepSeek's live API documentation now identifies `DeepSeek-V4-Pro-0813` as the version served by `deepseek-v4-pro`. OpenRouter also exposes the dated model directly and identifies it as the GA release of DeepSeek V4 Pro.\n\nThe current DeepSWE v1.1 live artifact contains a `deepseek-v4-flash` max-effort result but no DeepSeek V4 Pro 0813 row. An official Datacurve run would make this new production model directly comparable with the other frontier models under DeepSWE's standard `mini-swe-agent` pipeline.\n\nA benchmark comparison image circulating on X reports **62.7%** for DeepSeek V4 Pro 0813 on a row labeled “DeepSWE,” but the image does not identify the DeepSWE version, harness, reasoning effort, run count, confidence interval, or provider route. Independent measurement is therefore especially useful.\n\n## Requested run matrix\n\nDeepSeek documents three distinct actual reasoning-effort levels:\n\n| API model | Thinking mode | Requested effort | Actual mapped effort |\n|---|---|---|---|\n| `deepseek-v4-pro` | enabled | `low` | `low` |\n| `deepseek-v4-pro` | enabled | `high` | `high` |\n| `deepseek-v4-pro` | enabled | `max` | `max` |\n\nThe documentation says `high` is the default. It also says requests for `medium` and `xhigh` map to `high`, so separate `medium` and `xhigh` runs should not be necessary unless the serving route behaves differently in practice.\n\nPlease use:\n\n- DeepSWE v1.1;\n- the current 113-task set;\n- the same `mini-swe-agent` harness and repeated-run methodology used for the official leaderboard;\n- thinking mode explicitly enabled;\n- separately reported `low`, `high`, and `max` configurations; and\n- either the direct DeepSeek API route `deepseek-v4-pro`, with the served version or fingerprint confirmed at run time, or the dated OpenRouter route `deepseek/deepseek-v4-pro-0813`.\n\nDeepSeek's thinking-mode guide says `reasoning_content` must be preserved across subsequent turns when a response performs a tool call. A small smoke run could confirm that the harness retains this field correctly before starting the full benchmark.\n\n## Suggested reporting\n\nFor each configuration, please publish:\n\n- Pass@1 and confidence interval\n- Number of full benchmark runs\n- Mean and median cost per task\n- Mean and median input/output tokens\n- Mean and median agent steps\n- Mean and median duration\n- Peak context usage\n- Exact model version or fingerprint\n- Exact effort value and resulting mapped effort\n- Provider/API route and any retry, fallback, or routing behavior\n\n## Current API and pricing context\n\nDeepSeek's documentation currently lists:\n\n- Context length: 1M tokens\n- Maximum output: 384K tokens\n- Cache-hit input: $0.003625 per 1M tokens\n- Cache-miss input: $0.435 per 1M tokens\n- Output: $0.87 per 1M tokens\n\nThe pricing page also warns that DeepSeek plans a significant future API price increase, so recording the prices effective at benchmark time would help keep the leaderboard's cost data reproducible.\n\n## References\n\n- DeepSeek models and pricing: https://api-docs.deepseek.com/quick_start/pricing/\n- DeepSeek thinking mode and effort mapping: https://api-docs.deepseek.com/guides/thinking_mode\n- OpenRouter dated model page: https://openrouter.ai/deepseek/deepseek-v4-pro-0813\n- DeepSWE leaderboard: https://deepswe.datacurve.ai/\n- DeepSWE v1.1 live artifact: https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json\n\nThanks for considering it.\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/80#issuecomment-5270142276",
+      "user": "coygeek",
+      "created_at": "2026-08-12T17:25:07Z",
+      "updated_at": "2026-08-12T17:25:07Z",
+      "body": "## Circulating-image DeepSWE reference\n\nA DeepSeek-branded benchmark comparison image circulating on X and supplied with this request reports the following result:\n\n| Model | Image-reported DeepSWE score |\n|---|---:|\n| DeepSeek-V4-Pro-0813 | **62.7%** |\n\nThis is included only as a reference point for comparison after Datacurve publishes an independent result. I could not locate a first-party DeepSeek URL hosting the image, and the image itself labels the benchmark only as `DeepSWE`; it does **not** specify:\n\n- the DeepSWE version or task-set revision;\n- the agent harness;\n- thinking mode or reasoning effort;\n- the provider/API route or model fingerprint;\n- the number of trials or full benchmark runs;\n- a confidence interval; or\n- cost, token, step, and duration measurements.\n\nThe **62.7%** figure should therefore be treated as an image-reported claim, not as a result independently produced or verified by Datacurve. A standard DeepSWE v1.1 run with `mini-swe-agent` at explicit `low`, `high`, and `max` effort would provide the missing apples-to-apples evidence.\n\nModel-availability references:\n\n- DeepSeek currently identifies the API version as `DeepSeek-V4-Pro-0813`: https://api-docs.deepseek.com/quick_start/pricing/\n- OpenRouter exposes the dated route `deepseek/deepseek-v4-pro-0813`: https://openrouter.ai/deepseek/deepseek-v4-pro-0813\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/80#issuecomment-5279801215",
+      "user": "kbmmjolner",
+      "created_at": "2026-08-13T11:27:37Z",
+      "updated_at": "2026-08-13T11:33:17Z",
+      "body": "DeepSeek V4 pro pricing in peak changes the economics heavily, should this not be incorporated to not give a false value-comparison? See the updated pricing page.\n\nThe new pricing:\n\n<html><body>\n<!--StartFragment-->\nPRICING | 1M INPUT TOKENS (CACHE HIT) | 1M INPUT TOKENS (CACHE MISS) | 1M OUTPUT TOKENS\n\nOFF-PEAK | $0.022 | $0.66 | $1.98\n\nPEAK | $0.044 | $1.32 | $3.96\n\n<!--EndFragment-->\n</body>\n</html>"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/80#issuecomment-5283794595",
+      "user": "coygeek",
+      "created_at": "2026-08-13T16:55:38Z",
+      "updated_at": "2026-08-13T16:55:38Z",
+      "body": "![image](https://github.com/user-attachments/assets/b677abcf-eb6c-4449-af4a-5b5d7a749b3c)\n\nNew pricing takes effect at 16:00 UTC, Aug 16, 2026"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/80#issuecomment-5287002734",
+      "user": "coygeek",
+      "created_at": "2026-08-13T22:13:36Z",
+      "updated_at": "2026-08-13T22:18:15Z",
+      "body": "## DeepSeek V4 Pro Max result\n\nDeepSeek V4 Pro Max is now in the DeepSWE v1.1 live artifact. The result uses `mini-swe-agent` and four runs across the 113-task set.\n\n| Model | Effort | Pass@1 ± 95% CI | Pass@4 | Passed / attempted | Tasks passed at least once | Runs | Cost, mean / median | Input tokens, mean / median | Output tokens, mean / median | Steps, mean / median | Duration, mean / median | Median peak context | Median output tokens to pass |\n|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|\n| `deepseek-v4-pro` | Max | 62.83% ± 6.33 pp | 88.50% | 284 / 452 | 100 / 113 | 4 | $0.2414 / $0.2233 | 24.19M / 20.63M | 106.0k / 101.2k | 154.7 / 146 | 2212.5s / 2104.9s | 232.4k | 100.5k |\n\nSource: [DeepSWE v1.1 live artifact](https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json), generated August 13, 2026 at 16:11 UTC. The confidence interval is the artifact's 95% run-to-run interval.\n\n## Pricing basis\n\nThe artifact's $0.2414 mean cost uses the DeepSeek V4 Pro prices in effect on August 13, not the higher prices scheduled for August 16 at 16:00 UTC. The [current official prices](https://api-docs.deepseek.com/quick_start/pricing/) are $0.003625 per million cache-hit input tokens, $0.435 per million cache-miss input tokens, and $0.87 per million output tokens.\n\nThe reported cost reconciles with those rates:\n\n- 105,999 mean output tokens cost about $0.0922.\n- The remaining $0.1492 is input cost.\n- That input cost corresponds to approximately 24.049 million cache-hit tokens and 142,505 cache-miss tokens out of 24.192 million mean input tokens.\n\nThe cache split is inferred because the artifact does not publish cache-hit and cache-miss counts separately. It reproduces the reported $0.2413869 total under the August 13 rates.\n\nThe [new pricing notice](https://github.com/datacurve-ai/deep-swe/issues/80#issuecomment-5283794595) cannot produce the artifact's cost. Even with every input token counted as cached, the new off-peak rates would cost at least about $0.7421 per task, and the new peak rates would cost at least about $1.4842.\n\nThe $0.06 shown in the earlier pasted leaderboard page does not agree with the current JSON artifact or the current official token rates. The public data does not explain that discrepancy.\n\nThank you to the Datacurve team for measuring and publishing this result.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-12T17:25:03Z",
+  "github_updated_at": "2026-08-13T22:19:09Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/80"
+  ],
+  "decision_note": "L1 audit: issue requests DeepSeek model leaderboard runs for DeepSWE v1.1. It does not claim a benchmark artifact defect; comments/results are model benchmarking evidence only.",
+  "reviewed_at": "2026-08-14T00:06:09.015Z"
+}
