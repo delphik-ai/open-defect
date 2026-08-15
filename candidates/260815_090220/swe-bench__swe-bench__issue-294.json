@@ -1,0 +1,63 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/294",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 294,
+  "title": "How stable is run_evaluation.py with gold patch for SWE-bench_Verified?",
+  "body": "### Describe the issue\n\nI have run the evaluation script with `--predictions_path gold` on the 500 tasks in SWE-bench_Verified and 14 of them are failing.\n\nI'm using the current main branch of swebench: c63a11369d6e2d5c2d11d8cdd50d2e39f93d9f3d\n\nThis is the exact command:\n\n    python -m swebench.harness.run_evaluation --predictions_path gold --max_workers 25 --run_id validate-gold-verified --dataset_name princeton-nlp/SWE-bench_Verified --cache_level instance\n\nThose are the unresolved task ids:\n\n```json\n    \"unresolved_ids\": [\n        \"astropy__astropy-7166\",\n        \"astropy__astropy-7336\",\n        \"astropy__astropy-7606\",\n        \"astropy__astropy-7671\",\n        \"astropy__astropy-8707\",\n        \"astropy__astropy-8872\",\n        \"django__django-10097\",\n        \"matplotlib__matplotlib-20488\",\n        \"psf__requests-2317\",\n        \"pylint-dev__pylint-6528\",\n        \"pylint-dev__pylint-7080\",\n        \"pylint-dev__pylint-7277\",\n        \"sphinx-doc__sphinx-10323\",\n        \"sphinx-doc__sphinx-10435\"\n    ],\n```\nThen, I ran it a second time, and got 15 unresolved tasks:\n\n```json\n    \"unresolved_ids\": [\n        \"astropy__astropy-7166\",\n        \"astropy__astropy-7336\",\n        \"astropy__astropy-7606\",\n        \"astropy__astropy-7671\",\n        \"astropy__astropy-8707\",\n        \"astropy__astropy-8872\",\n        \"django__django-10097\",\n        \"matplotlib__matplotlib-20488\",\n        \"psf__requests-1766\",\n        \"psf__requests-2317\",\n        \"pylint-dev__pylint-6528\",\n        \"pylint-dev__pylint-7080\",\n        \"pylint-dev__pylint-7277\",\n        \"sphinx-doc__sphinx-10323\",\n        \"sphinx-doc__sphinx-10435\"\n    ],\n```\n\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/294#issuecomment-2603233716",
+      "user": "MarcCote",
+      "created_at": "2025-01-20T21:10:50Z",
+      "updated_at": "2025-01-20T21:10:50Z",
+      "body": "This might be related to SWE-bench/SWE-bench#225, SWE-bench/SWE-bench#167, SWE-bench/swe-bench-dockerfiles#14, SWE-bench/SWE-bench#267, and SWE-bench/SWE-bench#274"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/294#issuecomment-5295408110",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:04Z",
+      "updated_at": "2026-08-14T15:58:04Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, so the 14 failures reported here are gone. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-01-20T21:09:58Z",
+  "github_updated_at": "2026-08-14T15:58:05Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "resolution": "found",
+  "summary": "SWE-bench Verified gold-patch evaluation is unstable across the 15 task ids reported in issue #294; L3 reproduced the defect with 6 failures in one full run.",
+  "decision_note": "Refetched GitHub thread is already attached to canonical defect swebench-verified__swe-bench__swe-bench__issue-294; this run rechecked the public source URL and updates evidence/review metadata.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/294",
+    "https://github.com/SWE-bench/SWE-bench/issues/267"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/523",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 523,
+  "title": "make_test_spec defaults to x86_64, breaks on ARM hosts",
+  "body": "`make_test_spec` hardcodes `arch=\"x86_64\"` as its default. On ARM64 hosts (Apple Silicon, AWS Graviton), this means every caller must explicitly pass `arch=\"arm64\"` or images are built for the wrong architecture.\n\nA simple fix: auto-detect via `platform.machine()` when `arch` is not specified. Instances in `USE_X86` should still be forced to `x86_64`.\n\nRelated: #521 threads `arch` through the broader codebase for full ARM64 support. This issue is narrower — just fixing the default in `make_test_spec`.\n\nSee also: benchmarking notes from running SWE-bench on ARM64 — https://gist.github.com/greynewell/497005bb33641503f1a5874f16578088",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/523#issuecomment-5295865225",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:46:31Z",
+      "updated_at": "2026-08-14T16:46:31Z",
+      "body": "Closing as no longer applicable. `make_test_spec` does not take an `arch` argument anymore. Architecture moved to `ImageSpec`, which accepts amd64 or arm64 and builds for the right platform, and `USE_X86` is gone. Note that the published images are still amd64 only, so running on ARM means building locally. #520 and #375 track that."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-17T05:45:45Z",
+  "github_updated_at": "2026-08-14T16:46:32Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L1",
+  "decision_note": "Maintainer says make_test_spec no longer takes an arch argument and the specific x86_64 default root cause is absent from current main.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/523"
+  ]
+}

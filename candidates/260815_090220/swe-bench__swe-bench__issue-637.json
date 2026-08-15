@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/637",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 637,
+  "title": "Docs: explain every field in the evaluation run report",
+  "body": "The \"Understanding Evaluation Results\" guide covers only some of the fields printed at the end of a run.\n\nWorth documenting all of them, and in particular:\n\n- What `Instances with errors` covers, since it is the catch-all for anything that could not be graded.\n- Why `N ran successfully, M failed` can disagree with the error count. A failed evaluation does not raise, so it still counts as \"ran successfully\".\n- Where to look for the cause: `logs/run_evaluation/<run_id>/<model>/<instance_id>/run_instance.log`.\n- The newer `infra_failure_ids` and `ambiguous_failure_ids` fields.\n\nCame up in #472 and #410.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/637#issuecomment-5295661742",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:24:29Z",
+      "updated_at": "2026-08-14T16:24:29Z",
+      "body": "Resolved by ebb22a0. The evaluation guide now lists every field in the run report, and explains why `ran successfully` can disagree with the error count."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-14T16:17:10Z",
+  "github_updated_at": "2026-08-14T16:24:30Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Docs issue explaining evaluation report fields; not a benchmark defect.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/637"
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/449",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 449,
+  "title": "`report_dir` CLI argument not working as expected in SWE-bench",
+  "body": "### Describe the bug\n\nHi, I'm using SWE-bench to test patches and discovered that the report_dir CLI argument doesn't function as intended.\n\nProblem:\nAfter investigating the codebase, I found that report_dir is only utilized in one location:\n\nUsed in: [run_evaluation.py#L471-L475](https://github.com/SWE-bench/SWE-bench/blob/4b6773064a070c689874d30171e78a3f429a3fbf/swebench/harness/run_evaluation.py#L471-L475)\n\nRoot Cause:\nThe report_dir parameter is not being passed to the make_run_report function, as evidenced by the function signature in:\n\nMissing in: [reporting.py#L17](https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/reporting.py#L17)\n\nThis means that while the CLI accepts the report_dir argument, it's not actually used when generating reports, causing reports to be saved to the default location instead of the specified directory.\n\n### Steps/Code to Reproduce\n\n1. prepare a sample prediction file for model patches\n2. test it with some command such as:\n```\npython -m swebench.harness.run_evaluation \\\n    --predictions_path gold \\\n    --max_workers 1 \\\n    --report_dir reports \\\n    --instance_ids sympy__sympy-20590 \\\n    --run_id validate-gold\n```\n\n### Expected Results\n\nThe `report_dir` argument should control where evaluation reports are saved.\n\n### Actual Results\n\nReports are saved to the default location regardless of the `report_dir` setting.\n\n### System Information\n\nUbuntu 22.04\nPython 12.1\nSWE-bench.git@4b6773064a070c689874d30171e78a3f429a3fbf",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/449#issuecomment-3325707493",
+      "user": "jamesatkindo",
+      "created_at": "2025-09-23T22:11:33Z",
+      "updated_at": "2025-09-23T22:11:33Z",
+      "body": "Can confirm that I ran into this same issue. I tried to have all the results saved to a particular directory only to find that most of the intermediate reports will save to `/logs/run_evaluation/...` while the final report just saves a file in the root directory. It seems the variable `report_dir` is instantiated by actually never used.  "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/449#issuecomment-5295406939",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:57:57Z",
+      "updated_at": "2026-08-14T15:57:57Z",
+      "body": "Resolved by 36c7a6f. The final report is now written to the directory given in report_dir."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-08-07T23:28:59Z",
+  "github_updated_at": "2026-08-14T15:57:58Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-498",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "Open PR fixes a SWE-bench harness reporting bug where --report_dir is accepted but the final report is still written to the current working directory.",
+  "decision_note": "Issue reports the same report_dir output-location bug tracked by canonical PR #498; maintainer says final report path was resolved by commit 36c7a6f.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/449",
+    "https://github.com/SWE-bench/SWE-bench/pull/498",
+    "https://github.com/SWE-bench/SWE-bench/pull/441"
+  ]
+}

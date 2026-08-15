@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-82",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "dataset: make all 199 features gradeable, and stop wiping prebuilt images",
+  "summary": "Merged CooperBench dataset audit fixes 24 ungradeable features and preserves prebuilt image outputs, changing benchmark gradeability across the released dataset.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/82",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/82",
+    "https://github.com/cooperbench/CooperBench/pull/82/files",
+    "https://github.com/cooperbench/CooperBench/pull/82#issuecomment-5298986330"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-14T22:57:01Z",
+  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
+  "decision_note": "L2 audit used merged PR body, collaborator scope note, and changed dataset/SPEC_AUDIT plus dataset/runner/Dockerfile files. The PR states all 199 features were run through runner.sh, 24 were broken before the dataset fixes, and merged on 2026-08-14."
+}

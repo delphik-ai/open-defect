@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/526",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 526,
+  "title": "[v5 refactor] Missing `-e` flag?",
+  "body": "```\n@dataclass\nclass TestSpec:\n    \"\"\"\n    A dataclass that represents a test specification for evaluation of a single instance of SWE-bench.\n    Assumes images are already built and available.\n    \"\"\"\n\n    instance_id: str\n    image: str\n    eval_script_list: list[str]\n    repo: str\n    version: str\n    FAIL_TO_PASS: list[str]\n    PASS_TO_PASS: list[str]\n    log_parser: str = \"\"\n    eval_type: str = \"\"\n\n    @property\n    def eval_script(self):\n        return (\n            \"\\n\".join([\"#!/bin/bash\", \"set -uxo pipefail\"] + self.eval_script_list)\n            + \"\\n\"\n        )\n```\n\naren't we missing the `-e` flag?",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/526#issuecomment-3977486424",
+      "user": "klieret",
+      "created_at": "2026-02-28T17:44:49Z",
+      "updated_at": "2026-02-28T17:44:49Z",
+      "body": "[Please note that we will most likely not accept any PRs for the v5 refactor]"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/526#issuecomment-5295865451",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:46:33Z",
+      "updated_at": "2026-08-14T16:46:33Z",
+      "body": "The missing `-e` is deliberate. With `set -e` the script would stop at the first failing test command and never reach the `git checkout` at the end that restores the test files, so the repo would be left dirty and the reset would silently not happen. Grading also relies on the script running to completion: it now records the test command's exit code after the tests and before the reset (#620), which `-e` would prevent. Closing."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-28T17:41:09Z",
+  "github_updated_at": "2026-08-14T16:46:33Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Maintainer explains missing set -e is deliberate to preserve cleanup and grading behavior; no defect confirmed.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/526"
+  ]
+}

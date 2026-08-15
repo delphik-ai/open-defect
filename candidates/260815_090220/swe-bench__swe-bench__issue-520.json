@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/520",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 520,
+  "title": "ARM64 harness support: fix x86-only Docker assumptions and Java ARM64 failures",
+  "body": "## Summary\nRunning SWE-bench harness workflows on ARM64 hosts is not currently reliable due to x86_64 assumptions in Docker image generation and a couple of Java-specific failures that appear on fresh ARM64 images.\n\n## Impact\nARM64 users can hit build/runtime failures in both `prepare_images` and `run_evaluation`, including:\n- Architecture mismatch because image selection/build path is effectively x86_64-only unless manually patched.\n- JavaScript environment image failures from x86-only dependencies:\n  - Google Chrome apt install path (`[arch=amd64]`) is not valid on ARM64.\n  - `pnpm-linux-x64` binary is selected even on ARM64.\n  - `deadsnakes` Python install path is not ARM64-safe for these images.\n- Java environment failures because `mvnd` Linux ARM64 binary is unavailable.\n- False test-status parsing in Java/Gradle logs when JVM `WARNING` text is concatenated directly after `PASSED`/`FAILED`.\n- Druid Maven install failures on fresh images due `apache-jar-resource-bundle:1.5-SNAPSHOT` reference.\n\n## Reproduction (high level)\n1. Use an ARM64 machine.\n2. Run harness image prep/eval flows (for example `swebench.harness.prepare_images` or `swebench.harness.run_evaluation`) against JavaScript or Java instances.\n3. Observe build/eval failures in the paths listed above.\n\n## Expected Behavior\nSWE-bench harness should support ARM64 Docker image build/eval flows with architecture-correct dependencies and consistent parsing/install behavior.\n\n## Proposed Fix\n- Add and propagate an explicit `--arch` option (`x86_64`/`arm64`) through harness image build/evaluation/reporting paths.\n- Generate arch-aware Dockerfiles:\n  - JavaScript: ARM64 Chromium fallback + Chrome path compatibility, ARM64 pnpm binary selection, ARM64-safe Python install path.\n  - Java: replace ARM64 `mvnd` binary download with `mvn` symlink fallback where no ARM64 `mvnd` release exists.\n- Harden Java Gradle log parsing for concatenated JVM warning lines.\n- Patch affected Druid install steps to replace `apache-jar-resource-bundle:1.5-SNAPSHOT` with released `1.5`.\n- Add regression tests for arch propagation, Dockerfile generation, parser behavior, and Druid constants.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/520#issuecomment-3912386272",
+      "user": "greynewell",
+      "created_at": "2026-02-17T05:40:25Z",
+      "updated_at": "2026-02-17T05:40:25Z",
+      "body": "I ran into the same issue: https://gist.github.com/greynewell/497005bb33641503f1a5874f16578088\n\nI saw up to a 6-9x test execution speedup with native ARM builds, although some repos required x86_64 emulation anyway.\n\nYour fix looks better than mine (covers Java and JavaScript better) but I recommend auto-detecting the architecture. I left some comments on your PR and raise a PR that may help if you want to do that: https://github.com/SailorJoe6/SWE-bench/pull/1"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/520#issuecomment-5295913269",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:51:44Z",
+      "updated_at": "2026-08-14T16:51:44Z",
+      "body": "We are not planning to add arm64 support ourselves, so I am closing this as not planned rather than rejected.\n\nWhere things stand:\n\n- The published images are amd64 only, and that is not changing for now.\n- An initial attempt was made in #521 and closed without merging. #564 and #591 were smaller tries at the same thing.\n- The harness side is partly there already: `ImageSpec` takes an `arch` of amd64 or arm64 and builds for the right platform. Nothing auto-detects the host, and there are no arm64 images to pull, so running on ARM means building locally.\n\nThe v5 refactor is now finished, so the code underneath this has stopped moving. If you or anyone else wants to pick it up, a fresh PR is welcome and we will review it."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-15T20:09:52Z",
+  "github_updated_at": "2026-08-14T16:51:45Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "ARM64 host/image support limitation was closed not planned; it is outside current benchmark defect artifact scope.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/520"
+  ]
+}

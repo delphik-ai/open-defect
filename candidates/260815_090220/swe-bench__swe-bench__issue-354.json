@@ -1,0 +1,71 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/354",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 354,
+  "title": "Evaluation discrepancy between swebench-full and swebench verified",
+  "body": "### Describe the bug\n\nRunning the gold path, if I verify against swebench-verified, the following instances fail verification:\n\n  \"astropy__astropy-7606\",\n  \"astropy__astropy-8707\",\n  \"astropy__astropy-8872\",\n  \"django__django-10097\",\n  \"matplotlib__matplotlib-20488\",\n  \"psf__requests-1766\",\n  \"pydata__xarray-2905\",\n  \"pydata__xarray-3305\",\n  \"pydata__xarray-3993\",\n  \"pydata__xarray-4094\",\n  \"pydata__xarray-4695\",\n  \"pydata__xarray-6721\",\n  \"pydata__xarray-6744\",\n  \"pydata__xarray-6938\",\n  \"pydata__xarray-6992\",\n  \"sphinx-doc__sphinx-10323\",\n  \"sphinx-doc__sphinx-10435\",\n  \"sphinx-doc__sphinx-8595\",\n  \"sphinx-doc__sphinx-9711\",\n  \"sympy__sympy-13852\"\n\n\nHowever, if I run those same failing instances against the gold path using the full swebench dataset, 3 of them pass:\nastropy__astropy-7606\npsf__requests-1766\nsympy__sympy-13852\n\nI'm not sure if this indicates that the verified dataset is out of date, or something else.\n\n### Steps/Code to Reproduce\n\n```\npython -m swebench.harness.run_evaluation --predictions_path gold --max_workers 10 --dataset_name princeton-nlp/SWE-bench-Verified --run_id swe-verified \n```\nvs.\n```\npython -m swebench.harness.run_evaluation --predictions_path gold --max_workers 10 --dataset_name princeton-nlp/SWE-bench --run_id swe-full   --instance_ids ${failures_from_verified_run}\n```\n\n### Expected Results\n\nWell, ideally the gold path would be 100% successful on both datasets, but failing that, it would be nice if the verified dataset was comparable to the full dataset.\n\n### Actual Results\n\n3 instances pass on full that fail on verified.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/354#issuecomment-2699484734",
+      "user": "marcmac",
+      "created_at": "2025-03-05T01:33:27Z",
+      "updated_at": "2025-03-05T01:33:27Z",
+      "body": "Also 'psf__requests-1724' passes the gold eval on the verified dataset, but not on the full dataset."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/354#issuecomment-2762098130",
+      "user": "john-b-yang",
+      "created_at": "2025-03-28T18:13:38Z",
+      "updated_at": "2025-03-28T18:13:38Z",
+      "body": "Ah ok I will update the dataset a bit later today. It's possible that some fixes were pushed to SWE-bench, but not Lite or Verified."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/354#issuecomment-5295408388",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:06Z",
+      "updated_at": "2026-08-14T15:58:06Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including the astropy and django instances listed here. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-03-04T23:32:59Z",
+  "github_updated_at": "2026-08-14T15:58:07Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "resolution": "fixed",
+  "summary": "SWE-bench Verified gold-patch evaluation is unstable across the 15 task ids reported in issue #294; L3 reproduced the defect with 6 failures in one full run.",
+  "decision_note": "Thread is additional evidence for SWE-bench Verified gold-patch instability and stale Verified artifacts already tracked by the canonical multi-task gold evaluation defect; maintainer says current main gold now passes 500/500.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/354",
+    "https://github.com/SWE-bench/SWE-bench/issues/294",
+    "https://github.com/SWE-bench/SWE-bench/issues/267"
+  ]
+}

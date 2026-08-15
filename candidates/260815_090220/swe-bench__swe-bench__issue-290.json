@@ -1,0 +1,54 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/290",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 290,
+  "title": "Truncated parametrized test names in SWE-bench_Verified",
+  "body": "### Describe the bug\n\nA number of parametrized test case names are truncated in the SWE-bench_Verified dataset.\r\n\r\nHere are a few examples from various projects:\r\n```\r\nastropy/units/tests/test_format.py::test_ogip_grammar_fail[log(photon\r\nlib/matplotlib/tests/test_axes.py::test_margins_errors[TypeError-args6-kwargs6-Must\r\ntests/test_self.py::TestCallbackOptions::test_help_msg[args1-No\r\n...\r\n```\r\n\r\nA `grep \"::.*\\[[^]]*$\"` on the text version of the dataset reported **662** test names truncated like the above examples.\n\n### Steps/Code to Reproduce\n\nOpen https://huggingface.co/datasets/princeton-nlp/SWE-bench_Verified/viewer/default/test?q=astropy+fa4e8d1cd279acf9b24560813c8652494ccd5922\r\n\r\nReview the `PASS_TO_PASS` column.\r\nLook for a truncated test name like `astropy/units/tests/test_format.py::test_ogip_grammar_fail[log(photon`\r\n\r\n\r\n\n\n### Expected Results\n\nComplete not truncated parametrized test names, allowing an unambiguous equality comparison between the `FAIL_TO_PASS` and `PASS_TO_PASS`  benchmark's test specs and the test names reported by pytest as it is executing the tests.\n\n### Actual Results\n\n662 truncated parametrized test names in the dataset.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/290#issuecomment-2693422646",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T06:42:27Z",
+      "updated_at": "2025-03-03T06:42:27Z",
+      "body": "See this [response](https://github.com/SWE-bench/SWE-bench/pull/279#issuecomment-2693420336)\n\ntl;dr this is a legitimate issue, but I do not have the time to carry out the fix at this time. Happy to review if you or others would be able to carry out this fix (the significant effort is re-determining the F2P + P2P tests and updating the SWE-bench dataset)."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/290#issuecomment-4893007940",
+      "user": "Code-weaver1",
+      "created_at": "2026-07-06T12:53:33Z",
+      "updated_at": "2026-07-06T12:53:33Z",
+      "body": "Opened a harness-side fix: since the dataset is published/mirrored, the practical remedy is grading tolerance — truncated ids (detectable by unbalanced brackets, impossible in well-formed pytest ids) fall back to prefix matching, resolving only when unambiguous (single match, or all matches share one status). Exact ids keep exact semantics. 7 regression tests included covering the shapes reported here."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/290#issuecomment-5295407382",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:00Z",
+      "updated_at": "2026-08-14T16:09:10Z",
+      "body": "Resolved by 535db3e. Grading now matches the truncated parametrized test ids that appear in the dataset. Thank you again for identifying this issue, really appreciate the PR you proposed :)"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-01-16T03:50:12Z",
+  "github_updated_at": "2026-08-14T16:09:10Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-290",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "SWE-bench Verified PASS_TO_PASS contains hundreds of truncated parametrized pytest names, making equality comparison to actual test names ambiguous; maintainer confirms legitimate issue.",
+  "decision_note": "Thread reports truncated parametrized test ids in SWE-bench Verified; maintainer first confirmed legitimacy and now says grading was resolved by commit 535db3e. This is the same canonical root cause as issue #290.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/290",
+    "https://github.com/SWE-bench/SWE-bench/pull/617"
+  ]
+}

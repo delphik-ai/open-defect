@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/476",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 476,
+  "title": "Error Building Base Image",
+  "body": "### Describe the bug\n\n\"Error during SWE-bench harness execution for sqlfluff__sqlfluff-2419: Error building image sweb.base.py.x86_64:latest: The command '/bin/sh -c apt update && apt install -y wget git build-essential libffi-dev libtiff-dev python3 python3-pip python-is-python3 jq curl locales locales-all tzdata && rm -rf /var/lib/apt/lists/*' returned a non-zero code: 137\"\n\nI always get errors for my docker container building. I had a temporary solution by adding extra commands to the python.py file at /swebench/harness/dockerfiles/python.py\n\nBut I am wondering if there is a better solution. \n\n\n\n### Steps/Code to Reproduce\n\n1. have docker desktop up and running. \n2. generate instance\n3. run main module from run_evaluation.py\n\n### Expected Results\n\nContainer successfully built. \n\n### Actual Results\n\n\"Error during SWE-bench harness execution for sqlfluff__sqlfluff-2419: Error building image sweb.base.py.x86_64:latest: The command '/bin/sh -c apt update && apt install -y wget git build-essential libffi-dev libtiff-dev python3 python3-pip python-is-python3 jq curl locales locales-all tzdata && rm -rf /var/lib/apt/lists/*' returned a non-zero code: 137\"\n\n### System Information\n\nMacOS",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/476#issuecomment-3392142683",
+      "user": "closji",
+      "created_at": "2025-10-10T19:56:43Z",
+      "updated_at": "2025-10-10T19:56:43Z",
+      "body": "I'm not able to reproduce this. Can you make sure to run with the latest version (4.1.0)?\nAlso, perhaps you can check whether docker is running."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/476#issuecomment-5295411040",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:23Z",
+      "updated_at": "2026-08-14T15:58:23Z",
+      "body": "Closing this as a local setup problem rather than a bug in the harness. The Verified gold run passes 500 of 500 on current main. If you can still reproduce this there, please reopen with the full log."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-09-23T23:21:23Z",
+  "github_updated_at": "2026-08-14T15:58:24Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Docker base image build failure was closed as local setup and current-main Verified gold passes 500/500.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/476"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/570",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 570,
+  "title": "Fix Modal eval marker ordering for non-django repos (#447)",
+  "body": "## Summary\n\nFixes SWE-bench/sb-cli#36. Non-django `gold` evaluations on Modal were reporting all tests as failed even though the tests passed. Root cause: Modal reads stdout/stderr separately and concatenates them (`run_evaluation_modal.py:137`), which pushed the `set -x` trace lines carrying the start/end markers to the tail of the log. `grading.py`'s marker-based slice then carved an empty region and no status map was produced.\n\nThis PR routes bash xtrace output to stdout via `BASH_XTRACEFD=1`, scoped to the Modal script prep only. Local Docker is untouched. Stderr of the test runner and its subprocesses is unaffected; only `set -x` trace output is redirected.\n\nDiagnosis: @kingb12 ([comment](https://github.com/SWE-bench/sb-cli/issues/36#issuecomment-3218033541)). This is the narrower form of their second suggested fix.\n\n## Changes\n\n- `swebench/harness/test_spec/test_spec.py`: export `EVAL_SCRIPT_STRICT_MODE_HEADER` so Modal can target it without string duplication.\n- `swebench/harness/modal_eval/utils.py`: new `prepare_modal_eval_script()` applies the existing django `locale-gen` hack plus the `BASH_XTRACEFD=1` injection.\n- `swebench/harness/modal_eval/run_evaluation_modal.py`: call the helper instead of inline string manipulation.\n- `tests/test_modal_eval.py`: regression coverage.\n\n## Test plan\n\n- [x] `pytest tests/test_modal_eval.py`, 5 passing (eval-script structure, Modal script prep, idempotency, `get_logs_eval` round-trip)\n- [ ] Manual Modal repro per SWE-bench/sb-cli#36:\n  ```\n  python -m swebench.harness.run_evaluation \\\n      --dataset_name princeton-nlp/SWE-bench_Lite --split dev \\\n      --predictions_path gold --max_workers 8 \\\n      --run_id verify_447 --modal true \\\n      --instance_ids pydicom__pydicom-1256\n  ```\n  (Requires Modal credentials; not run locally.)\n\n## Follow-ups (not in this PR)\n\n- The fallback parse in `grading.py:86-89` was added to work around this same bug. Now redundant for the primary case; keep as defense-in-depth or remove in a separate PR.\n- The real root cause is `\"\".join(stdout + stderr)` in `run_evaluation_modal.py:137`. Worth revisiting whether separating the streams is actually needed.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/570#issuecomment-5273788434",
+      "user": "john-b-yang",
+      "created_at": "2026-08-12T23:02:17Z",
+      "updated_at": "2026-08-12T23:02:17Z",
+      "body": "Closing as superseded — SWE-bench/SWE-bench#402 fixed this generically in `get_logs_eval`: when nothing parses between the START/END markers it now falls back to the whole log, which covers the Modal ordering case without a Modal-specific path. Reopen if you still see mis-ordering after 426e7a6."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/570#issuecomment-5276674944",
+      "user": "FazeelUsmani",
+      "created_at": "2026-08-13T06:17:13Z",
+      "updated_at": "2026-08-13T06:17:13Z",
+      "body": "@john-b-yang the review process is very slow. Any tips how can I get review my PRs faster? for future constributions"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/570#issuecomment-5283859483",
+      "user": "john-b-yang",
+      "created_at": "2026-08-13T17:01:46Z",
+      "updated_at": "2026-08-13T17:01:46Z",
+      "body": "Hey @FazeelUsmani yeah this is definitely on me, apologies - just got really caught up with other work. I guess generally in the future, reproduction scripts would help, which you did provide 🙏🏼 \r\n\r\nRegarding modal, i'm a little bit less the expert here. I'll tag someone like @azliu0 who made the original Modal contribution to address modal specific PRs like this.\r\n\r\nBut either way, i really appreciate your contribution, it's very much on me to make the review process smoother for contribution. I plan to be more active going forwards! (SWE-agent's have made this a lot easier now haha)"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/570#issuecomment-5294244337",
+      "user": "FazeelUsmani",
+      "created_at": "2026-08-14T14:07:51Z",
+      "updated_at": "2026-08-14T14:07:51Z",
+      "body": "> Hey @FazeelUsmani yeah this is definitely on me, apologies - just got really caught up with other work. I guess generally in the future, reproduction scripts would help, which you did provide 🙏🏼\r\n> \r\n> Regarding modal, i'm a little bit less the expert here. I'll tag someone like @azliu0 who made the original Modal contribution to address modal specific PRs like this.\r\n> \r\n> But either way, i really appreciate your contribution, it's very much on me to make the review process smoother for contribution. I plan to be more active going forwards! (SWE-agent's have made this a lot easier now haha)\r\n\r\nThank you! @john-b-yang. And also please feel free to assign me any issues. I'm available to contribute to this repository."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/modal_eval/run_evaluation_modal.py b/swebench/harness/modal_eval/run_evaluation_modal.py\nindex e3029708f..14cea510b 100644\n--- a/swebench/harness/modal_eval/run_evaluation_modal.py\n+++ b/swebench/harness/modal_eval/run_evaluation_modal.py\n@@ -17,6 +17,7 @@\n from swebench.harness.reporting import make_run_report\n from swebench.harness.utils import EvaluationError\n from typing import cast\n+from swebench.harness.modal_eval.utils import prepare_modal_eval_script\n \n SANDBOX_ENTRYPOINT = \"run_evaluation_modal_entrypoint\"\n LOCAL_SANDBOX_ENTRYPOINT_PATH = (\n@@ -299,9 +300,7 @@ def run_instance_modal(\n         logger.info(f\"Git diff before:\\n{git_diff_output_before}\")\n \n         eval_file = \"/root/eval.sh\"\n-        eval_script = test_spec.eval_script\n-        # django hack\n-        eval_script = eval_script.replace(\"locale-gen\", \"locale-gen en_US.UTF-8\")\n+        eval_script = prepare_modal_eval_script(test_spec.eval_script)\n         runner.write_file(eval_file, eval_script)\n \n         start_time = time.time()\ndiff --git a/swebench/harness/modal_eval/utils.py b/swebench/harness/modal_eval/utils.py\nindex 1aaffc16f..2eafadc2a 100644\n--- a/swebench/harness/modal_eval/utils.py\n+++ b/swebench/harness/modal_eval/utils.py\n@@ -1,5 +1,7 @@\n from pathlib import Path\n \n+from swebench.harness.test_spec.test_spec import EVAL_SCRIPT_STRICT_MODE_HEADER\n+\n \n def validate_modal_credentials():\n     \"\"\"\n@@ -12,3 +14,14 @@ def validate_modal_credentials():\n             \"~/.modal.toml not found - it looks like you haven't configured credentials for Modal.\\n\"\n             \"Run 'modal token new' in your terminal to configure credentials.\"\n         )\n+\n+\n+def prepare_modal_eval_script(eval_script: str) -> str:\n+    \"\"\"Apply Modal eval-script fixes: django locale + xtrace->stdout for marker ordering. See #447.\"\"\"\n+    eval_script = eval_script.replace(\"locale-gen\", \"locale-gen en_US.UTF-8\")\n+\n+    target = f\"{EVAL_SCRIPT_STRICT_MODE_HEADER}\\n\"\n+    replacement = f\"BASH_XTRACEFD=1\\n{target}\"\n+    if replacement in eval_script:\n+        return eval_script\n+    return eval_script.replace(target, replacement, 1)\ndiff --git a/swebench/harness/test_spec/test_spec.py b/swebench/harness/test_spec/test_spec.py\nindex a06579c25..b9b5687be 100644\n--- a/swebench/harness/test_spec/test_spec.py\n+++ b/swebench/harness/test_spec/test_spec.py\n@@ -24,6 +24,9 @@\n )\n \n \n+EVAL_SCRIPT_STRICT_MODE_HEADER = \"set -uxo pipefail\"  # Modal injects BASH_XTRACEFD=1 above this; see #447.\n+\n+\n @dataclass\n class TestSpec:\n     \"\"\"\n@@ -56,7 +59,9 @@ def setup_env_script(self):\n     @property\n     def eval_script(self):\n         return (\n-            \"\\n\".join([\"#!/bin/bash\", \"set -uxo pipefail\"] + self.eval_script_list)\n+            \"\\n\".join(\n+                [\"#!/bin/bash\", EVAL_SCRIPT_STRICT_MODE_HEADER] + self.eval_script_list\n+            )\n             + \"\\n\"\n         )\n         # Don't exit early because we need to revert tests at the end\ndiff --git a/tests/test_modal_eval.py b/tests/test_modal_eval.py\nnew file mode 100644\nindex 000000000..fec66bef1\n--- /dev/null\n+++ b/tests/test_modal_eval.py\n@@ -0,0 +1,72 @@\n+from swebench.harness.constants import TestStatus as _TestStatus\n+from swebench.harness.grading import get_logs_eval\n+from swebench.harness.modal_eval.utils import prepare_modal_eval_script\n+from swebench.harness.test_spec.test_spec import (\n+    EVAL_SCRIPT_STRICT_MODE_HEADER,\n+    TestSpec as _TestSpec,\n+)\n+\n+\n+def make_test_spec(repo=\"pvlib/pvlib-python\", version=\"0.1\"):\n+    return _TestSpec(\n+        instance_id=\"test-instance\",\n+        repo=repo,\n+        version=version,\n+        repo_script_list=[],\n+        eval_script_list=[],\n+        env_script_list=[],\n+        arch=\"x86_64\",\n+        FAIL_TO_PASS=[],\n+        PASS_TO_PASS=[],\n+        language=\"py\",\n+        docker_specs={},\n+        namespace=None,\n+    )\n+\n+\n+def test_eval_script_starts_with_bash_strict_mode():\n+    assert make_test_spec().eval_script.startswith(\n+        f\"#!/bin/bash\\n{EVAL_SCRIPT_STRICT_MODE_HEADER}\\n\"\n+    )\n+\n+\n+def test_prepare_modal_eval_script_routes_xtrace_to_stdout():\n+    prepared = prepare_modal_eval_script(\n+        f\"#!/bin/bash\\n{EVAL_SCRIPT_STRICT_MODE_HEADER}\\necho hi\\n\"\n+    )\n+    assert prepared.startswith(\n+        f\"#!/bin/bash\\nBASH_XTRACEFD=1\\n{EVAL_SCRIPT_STRICT_MODE_HEADER}\\n\"\n+    )\n+    assert \"exec 2>&1\" not in prepared\n+    assert prepared.count(\"BASH_XTRACEFD=1\\n\") == 1\n+\n+\n+def test_prepare_modal_eval_script_on_real_eval_script():\n+    prepared = prepare_modal_eval_script(make_test_spec().eval_script)\n+    assert prepared.startswith(\n+        f\"#!/bin/bash\\nBASH_XTRACEFD=1\\n{EVAL_SCRIPT_STRICT_MODE_HEADER}\\n\"\n+    )\n+\n+\n+def test_prepare_modal_eval_script_is_idempotent():\n+    once = prepare_modal_eval_script(make_test_spec().eval_script)\n+    twice = prepare_modal_eval_script(once)\n+    assert once == twice\n+    assert twice.count(\"BASH_XTRACEFD=1\\n\") == 1\n+\n+\n+def test_get_logs_eval_parses_fixed_modal_output(tmp_path):\n+    log_path = tmp_path / \"test_output.txt\"\n+    log_path.write_text(\n+        \"+ git checkout abc123 tests/test_example.py\\n\"\n+        \"+ : '>>>>> Start Test Output'\\n\"\n+        \"+ pytest -rA\\n\"\n+        \"PASSED tests/test_example.py::test_ok\\n\"\n+        \"+ : '>>>>> End Test Output'\\n\"\n+        \"+ git checkout abc123 tests/test_example.py\\n\"\n+    )\n+\n+    status_map, found = get_logs_eval(make_test_spec(), str(log_path))\n+\n+    assert found is True\n+    assert status_map == {\"tests/test_example.py::test_ok\": _TestStatus.PASSED.value}\n",
+  "github_state": "closed",
+  "github_created_at": "2026-04-21T12:09:33Z",
+  "github_updated_at": "2026-08-14T14:07:51Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-570",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "PR fixes Modal eval marker ordering where non-Django gold evaluations were reported failed despite tests passing.",
+  "decision_note": "Refetched GitHub thread is already attached to canonical defect swebench-verified__swe-bench__swe-bench__pr-570; this run rechecked the public source URL and updates evidence/review metadata.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/570"
+  ]
+}

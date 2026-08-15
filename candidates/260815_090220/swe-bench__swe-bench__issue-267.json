@@ -1,0 +1,91 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/267",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 267,
+  "title": "5 Instances in Verified Fail for Gold Patch",
+  "body": "### Describe the bug\r\n\r\nThere are 5 cases in which the gold patch fails on Verified:\r\n- astropy__astropy-7606\r\n- astropy__astropy-8707\r\n- astropy__astropy-8872\r\n- matplotlib__matplotlib-20488\r\n- django__django-10097\r\n\r\nThe reason for why `astropy__astropy-7606` fails seems to be that Verified was not update (see #223). It works when using `princeton-nlp/SWE-bench` instead.\r\n\r\n### Steps/Code to Reproduce\r\n```\r\npython -m swebench.harness.run_evaluation \\                                                                                                      \r\n --predictions_path gold \\                                                                 \r\n --max_workers 5 \\\r\n --dataset_name princeton-nlp/SWE-bench_Verified \\\r\n --run_id validate-gold \\\r\n --instance_ids astropy__astropy-7606 matplotlib__matplotlib-20488 django__django-10097 astropy__astropy-8872 astropy__astropy-8707 \\\r\n --cache_level instance\r\n```\r\n\r\n### Expected Results\r\n\r\nAll 5 problems are resolved\r\n\r\n### Actual Results\r\n\r\nNone of them is resolved\r\n\r\n### System Information\r\n\r\nlatest version on main",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/267#issuecomment-2509140014",
+      "user": "wistuba",
+      "created_at": "2024-11-30T18:52:36Z",
+      "updated_at": "2024-11-30T18:52:36Z",
+      "body": "I was looking into it. The matplotlib problem could be something on my end:\r\n\r\nTest failing: lib/matplotlib/tests/test_image.py::test_https_imread_smoketest\r\nReason: urllib.error.HTTPError: HTTP Error 403: Forbidden\r\n\r\nThis is a simple test trying to read https://matplotlib.org/1.5.0/_static/logo2.png Things work fine on my machine when trying to set up the test manually. Could be that the urllib request gets blocked. This has happened previously already with django (this was fixable though since it was part of swebench code, not the benchmark itself)"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/267#issuecomment-2529276578",
+      "user": "john-b-yang",
+      "created_at": "2024-12-09T19:50:22Z",
+      "updated_at": "2024-12-09T19:50:22Z",
+      "body": "I ran the provided script, but I observed that the instances all pass.\r\n```\r\n(sweb) john-b-yang@bitbop:~/swe-bench/private$ ./test.sh\r\n/opt/miniconda3/envs/sweb/lib/python3.10/runpy.py:126: RuntimeWarning: 'swebench.harness.run_evaluation' found in sys.modules after import of package 'swebench.harness', but prior to execution of 'swebench.harness.run_evaluation'; this may result in unpredictable behaviour\r\n  warn(RuntimeWarning(msg))\r\nUsing gold predictions - ignoring predictions_path\r\nREADME.md: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 3.30k/3.30k [00:00<00:00, 29.3MB/s]\r\ntest-00000-of-00001.parquet: 100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2.10M/2.10M [00:00<00:00, 31.7MB/s]\r\nGenerating test split: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 500/500 [00:00<00:00, 29878.22 examples/s]\r\nRunning 5 unevaluated instances...\r\nBase image sweb.base.x86_64:latest already exists, skipping build.\r\nBase images built successfully.\r\nTotal environment images to build: 2\r\n2 ran successfully, 0 failed: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2/2 [01:58<00:00, 59.15s/it]\r\nAll environment images built successfully.\r\nRunning 5 instances...\r\n5 ran successfully, 0 failed: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 5/5 [05:16<00:00, 63.25s/it]\r\nAll instances run.\r\nCleaning cached images...\r\nRemoved 0 images.\r\nTotal instances: 5\r\nInstances submitted: 5\r\nInstances completed: 0\r\nInstances incomplete: 0\r\nInstances resolved: 0\r\nInstances unresolved: 0\r\nInstances with empty patches: 0\r\nInstances with errors: 5\r\nUnstopped containers: 0\r\nUnremoved images: 5\r\nReport written to gold.validate-gold.json\r\n(sweb) john-b-yang@bitbop:~/swe-bench/private$ cat test.sh\r\npython -m swebench.harness.run_evaluation \\\r\n --predictions_path gold \\\r\n --max_workers 5 \\\r\n --dataset_name princeton-nlp/SWE-bench_Verified \\\r\n --run_id validate-gold \\\r\n --instance_ids astropy__astropy-7606 matplotlib__matplotlib-20488 django__django-10097 astropy__astropy-8872 astropy__astropy-8707 \\\r\n --cache_level instance\r\n```"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/267#issuecomment-2529279784",
+      "user": "john-b-yang",
+      "created_at": "2024-12-09T19:51:08Z",
+      "updated_at": "2024-12-09T19:51:08Z",
+      "body": "Thanks for the details on the matplotlib instance, good to know. For the astropy instances, I'm not sure if there's an issue? I started containers for the respective images as well, and `pytest` seems to be running fine."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/267#issuecomment-2531003837",
+      "user": "wistuba",
+      "created_at": "2024-12-10T09:34:27Z",
+      "updated_at": "2024-12-10T09:34:27Z",
+      "body": "I've just tried with the latest code again. I can confirm that astropy 8707 and 8872 work now. The problem for 7606 remains. It is resolved when using SWE-bench, it is not when using Verified. I've deleted ~/.cache/huggingface/datasets before running the harness. I checked the website, the row doesn't seem to have been updated"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/267#issuecomment-2889158039",
+      "user": "james-rl",
+      "created_at": "2025-05-18T19:08:27Z",
+      "updated_at": "2025-05-18T19:12:36Z",
+      "body": "Adding on some details. \n\nFor the issues with `matplotlib__matplotlib-20488` faced by @wistuba:\nI am able to consistently reproduce this test failure with the same error. The problem is not with the hosted url, but with the library used to call request the resource remotely. This test is marked as being flaky in the code base:\n`@pytest.mark.flaky`\n\nUnder the hood it appears that there may be an issue with the SSL library being used and it also has a deprecation warning.\n\nThere are 5 failing tests in this instance `django__django-10097`:\n\n1. `test_add (generic_inline_admin.tests.GenericInlineAdminWithUniqueTogetherTest)`\n2. `test_delete (generic_inline_admin.tests.GenericInlineAdminWithUniqueTogetherTest)`\n3. `test_no_param (generic_inline_admin.tests.GenericInlineAdminParametersTest)`\n4. `test_basic_add_GET (generic_inline_admin.tests.GenericAdminViewTest)`\n5. `test_basic_edit_GET (generic_inline_admin.tests.GenericAdminViewTest)`\n\nThese tests are fall failing for the same reason: a `TemplateDoesNotExist` exception. Example:\n\n~~~\n======================================================================\nERROR: test_no_param (generic_inline_admin.tests.GenericInlineAdminParametersTest)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/testbed/tests/generic_inline_admin/tests.py\", line 115, in test_no_param\n    response = self.client.get(reverse('admin:generic_inline_admin_episode_change', args=(e.pk,)))\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/test/client.py\", line 527, in get\n    response = super().get(path, data=data, secure=secure, **extra)\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/test/client.py\", line 339, in get\n    **extra,\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/test/client.py\", line 414, in generic\n    return self.request(**r)\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/test/client.py\", line 495, in request\n    raise exc_value\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/core/handlers/exception.py\", line 34, in inner\n    response = get_response(request)\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/core/handlers/base.py\", line 156, in _get_response\n    response = self.process_exception_by_middleware(e, request)\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/core/handlers/base.py\", line 154, in _get_response\n    response = response.render()\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/template/response.py\", line 106, in render\n    self.content = self.rendered_content\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/template/response.py\", line 81, in rendered_content\n    template = self.resolve_template(self.template_name)\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/template/response.py\", line 63, in resolve_template\n    return select_template(template, using=self.using)\n  File \"/opt/miniconda3/envs/testbed/lib/python3.5/site-packages/Django-2.2.dev20180625180104-py3.5.egg/django/template/loader.py\", line 47, in select_template\n    raise TemplateDoesNotExist(', '.join(template_name_list), chain=chain)\ndjango.template.exceptions.TemplateDoesNotExist: admin/generic_inline_admin/episode/change_form.html, admin/generic_inline_admin/change_form.html, admin/change_form.html\n~~~\n\nInterestingly some of these files do exist so the problem is likely the relative paths being used:\n~~~\n> git clone https://github.com/django/django.git\n> cd django\n> git checkout b9cf764be62e77b4777b3a75ec256f6209a57671\n> find . -name \"change_form.html\"\n\n./django/contrib/admin/templates/admin/change_form.html\n./tests/templates/custom_admin/change_form.html\n~~~"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/267#issuecomment-5295407867",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:03Z",
+      "updated_at": "2026-08-14T15:58:03Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including all five instances listed here. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2024-11-30T16:59:13Z",
+  "github_updated_at": "2026-08-14T15:58:03Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "resolution": "fixed",
+  "summary": "SWE-bench Verified gold-patch evaluation is unstable across the 15 task ids reported in issue #294; L3 reproduced the defect with 6 failures in one full run.",
+  "decision_note": "Thread is additional SWE-bench Verified gold-patch failure evidence for the same class of task/environment instability tracked by the canonical multi-task gold evaluation defect; later maintainer comments say current main gold now passes 500/500.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/267",
+    "https://github.com/SWE-bench/SWE-bench/issues/294"
+  ]
+}

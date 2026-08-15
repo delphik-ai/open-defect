@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/27",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 27,
+  "title": "Add more languages in tests to get a broader picture of models' capabilities",
+  "body": "Hi,\n\nthank you for your work creating a better benchmark to get a real picture of AI models' capabilities.\nAs a .NET developer, I'd like to see which model could help me in my job. Unfortunately, there haven't been any tests for C#.\nCould you plan to expand the supported languages in tests? Or do you have documentation on how to help with this?",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/27#issuecomment-5292943405",
+      "user": "sdcb",
+      "created_at": "2026-08-14T11:48:41Z",
+      "updated_at": "2026-08-14T11:48:41Z",
+      "body": "+1 for C#/.NET coverage.\n\nAs a Microsoft MVP in .NET and a maintainer of several open-source C# projects, I believe C# would add meaningful diversity to DeepSWE—not only in language syntax, but also through NuGet/MSBuild, async programming, nullable reference types, native interop, and cross-platform runtime behavior.\n\nI’d be happy to help identify suitable real-world repositories/issues, review candidate tasks, or validate the C# execution environment if community contributions are welcome.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-06-04T14:00:24Z",
+  "github_updated_at": "2026-08-14T11:48:41Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Not a benchmark task/grading defect (model-add request, dependency bump, task-addition/enhancement PR, license/doc/question, or unrelated tooling). Triaged out of scope.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/27"
+  ]
+}

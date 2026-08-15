@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/282",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 282,
+  "title": "Misleading removed images count.",
+  "body": "### Describe the bug\r\n\r\nhttps://github.com/swe-bench/SWE-bench/blob/5f5a7df799663adba4b191eca3d675faf3621fe2/swebench/harness/docker_utils.py#L283-L284\r\n\r\nThe above one says it will remove instance images but it is already removed in run_instance itself.\r\nhttps://github.com/swe-bench/SWE-bench/blob/5f5a7df799663adba4b191eca3d675faf3621fe2/swebench/harness/run_evaluation.py#L227-L228\r\n\r\n\r\nShould the count be removed or should include that previous removal count using env var?\r\n\r\n### Steps/Code to Reproduce\r\n\r\n```bash\r\npython -m swebench.harness.run_evaluation \\\r\n    --predictions_path gold \\\r\n    --max_workers 1 \\\r\n    --run_id gold \\\r\n    --split test \\\r\n    --dataset_name princeton-nlp/SWE-bench \\\r\n    --instance_ids sympy__sympy-21612\r\n```\r\n\r\n### Expected Results\r\n\r\nRemoved 1 image(s).\r\n\r\n### Actual Results\r\n\r\nRemoved 0 images.\r\n\r\n### System Information\r\n\r\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/282#issuecomment-2693423337",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T06:42:55Z",
+      "updated_at": "2025-03-03T06:42:55Z",
+      "body": "Can you propose a PR for this? Either solution seems fine, although I am leaning towards just removing the count all together."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/282#issuecomment-5295414226",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:43Z",
+      "updated_at": "2026-08-14T15:58:43Z",
+      "body": "The code this pointed at was rewritten during the harness restructure, so it no longer applies. If the count still looks wrong on current main, please reopen."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-01-10T08:26:44Z",
+  "github_updated_at": "2026-08-14T15:58:43Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L1",
+  "decision_note": "Maintainer says the referenced image-removal count code was rewritten and no longer applies on current main; no current benchmark scoring defect remains in the audited thread.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/282"
+  ]
+}

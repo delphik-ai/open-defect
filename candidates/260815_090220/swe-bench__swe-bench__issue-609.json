@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/609",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 609,
+  "title": "bypassing huggingface (SWE-bench Verified) and testing local model",
+  "body": "### Describe the issue\n\nI have two questions:\n\n1. Is there out-of-the-box support for testing local models, such as Gemma 4?\n2. Is it possible to run benchmarks using a locally provided dataset, without fetching the data from Hugging Face? for this I had to hack my way through manually changing few lines to avoid forcing the data from being fetched from upstream.\n\nIn my case, both the model and dataset are available in the local environment.\nI did not have a pleasant experience running the tests for local gemma 4, I wonder if I failed to utilize all the available tools in the toolbox or there is room for improvement.\n\nalso is there any papers or documentations on how one can potentially optimize inference and eval steps? \n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/609#issuecomment-5295410634",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:21Z",
+      "updated_at": "2026-08-14T15:58:21Z",
+      "body": "Closing this as a usage question rather than a bug. The docs at https://swe-bench.com cover this, and GitHub Discussions is a better place for follow-ups."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-25T00:26:58Z",
+  "github_updated_at": "2026-08-14T15:58:21Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "User asks how to run local models and local datasets without Hugging Face for SWE-bench Verified. This is a usage/documentation question, not a current benchmark artifact defect claim.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/609"
+  ]
+}

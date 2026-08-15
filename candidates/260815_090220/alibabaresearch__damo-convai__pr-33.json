@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/pull/33",
+  "repo": "alibabaresearch/damo-convai",
+  "source_type": "github_pr",
+  "github_number": 33,
+  "title": "fixed citation style",
+  "body": "No pull request body was provided in the GitHub source.",
+  "comments": [
+    {
+      "url": "https://github.com/AlibabaResearch/DAMO-ConvAI/pull/33#issuecomment-1571466197",
+      "user": "CLAassistant",
+      "created_at": "2023-06-01T06:56:48Z",
+      "updated_at": "2026-08-14T05:00:40Z",
+      "body": "[![CLA assistant check](https://cla-assistant.io/pull/badge/not_signed)](https://cla-assistant.io/AlibabaResearch/DAMO-ConvAI?pullRequest=33) <br/>Thank you for your submission! We really appreciate it. Like many open source projects, we ask that you all sign our [Contributor License Agreement](https://cla-assistant.io/AlibabaResearch/DAMO-ConvAI?pullRequest=33) before we can accept your contribution.<br/>**0** out of **2** committers have signed the CLA.<br/><br/>:x: 浑醉<br/>:x: pldlgb<br/><hr/>**浑醉** seems not to be a GitHub user. You need a GitHub account to be able to sign the CLA. If you have already a GitHub account, please [add the email address used for this commit to your account](https://help.github.com/articles/why-are-my-commits-linked-to-the-wrong-user/#commits-are-not-linked-to-any-user).<br/><sub>You have signed the CLA already but the status is still pending? Let us [recheck](https://cla-assistant.io/check/AlibabaResearch/DAMO-ConvAI?pullRequest=33) it.</sub>"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/pace/README.md b/pace/README.md\nindex f4a9b651..f3e1873b 100644\n--- a/pace/README.md\n+++ b/pace/README.md\n@@ -95,12 +95,14 @@ We do not distribute datasets because of the license issue. Please download the\n ```\n \n ## 💬 Citation\n+```shell\n @article{li2023pace,\n   title={PaCE: Unified Multi-modal Dialogue Pre-training with Progressive and Compositional Experts},\n   author={Li, Yunshui and Hui, Binyuan and Yin, ZhiChao and Yang, Min and Huang, Fei and Li, Yongbin},\n   journal={arXiv preprint arXiv:2305.14839},\n   year={2023}\n }\n+```\n ## 👍 Acknowledge\n \n This repository is built using the [ViLT](https://github.com/dandelin/ViLT) repository and the [timm](https://github.com/rwightman/pytorch-image-models) library.. \n",
+  "github_state": "closed",
+  "github_created_at": "2023-06-01T06:56:39Z",
+  "github_updated_at": "2026-08-14T05:00:40Z",
+  "candidate_benchmark_names": [
+    "bird-bench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Merged PR only adjusts citation style in DAMO-ConvAI PACE README; no BIRD evaluation, dataset, task, or harness defect evidence.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/pull/33"
+  ]
+}

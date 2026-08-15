@@ -1,0 +1,89 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/167",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 167,
+  "title": "Failing benchmark instances",
+  "body": "Great job with the new containerized evaluation tool! I've run it a couple of times on the golden patches on SWE-bench Lite and overall it gives a more stable result than my swe-bench-docker setup. There are a few instances that fail intermittently, though. Some I recognize from tests in swe-bench-docker, and some are new. None of them are failing in 100% of the runs. \r\n\r\n### Django instances \r\nIn all the failing Django instances I've checked, the tests seem to pass but are marked as failed because other logs are being printed in the test results.\r\n\r\nHere's an example of a test that is marked as failed:\r\n```\r\ntest_annotation_with_nested_outerref (expressions.tests.BasicExpressionsTests) ... System check identified no issues (0 silenced).\r\nok\r\n```\r\n\r\nThe same test in a successful test output log\r\n```\r\ntest_annotation_with_nested_outerref (expressions.tests.BasicExpressionsTests) ... ok\r\n```\r\n\r\n### Other instances\r\nIn the following instances some different tests fails intermittently and I haven't found the root cause. I got the same issues in swe-bench-docker with matplotlib and sympy instances. I haven't got issues with psf__requests though. \r\n\r\n- matplotlib__matplotlib-23987\r\n- psf__requests-1963\r\n- psf__requests-2317\r\n- psf__requests-2674\r\n- sympy__sympy-13177\r\n- sympy__sympy-13146\r\n\r\nHave you experienced the same issues? Is it also be possible for you to share your `run_instance_logs` somewhere to compare to your successful evaluation runs.  Would be nice to nail this once and for all :) \r\n\r\nI've run the benchmarks on Ubuntu 22 VMs with 16 cores on Azure  (`max_workers = 14`)",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2204314174",
+      "user": "ofirpress",
+      "created_at": "2024-07-02T20:15:53Z",
+      "updated_at": "2024-07-02T20:15:53Z",
+      "body": "thanks for making an issue about this"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2204479452",
+      "user": "john-b-yang",
+      "created_at": "2024-07-02T21:28:04Z",
+      "updated_at": "2024-07-02T21:28:04Z",
+      "body": "Hi @aorwall! Thanks so much for the kind words, swe-bench-docker was a huge inspiration for our release. Really appreciate all the past and ongoing work w/ Moatless + SWE-bench evals 😄 \r\n\r\nOk so regarding the issue...\r\n* Django test parsing issues: Yeah agreed, we've seen this too. The Django log parsing just got updated at #166 most recently, with a couple changes before that too. I think it should cover the case you're talking about? - I'll check.\r\n* Intermittently failing tests: We've been noticing this too. Our approach that we feel is reasonable is to just remove flaky tests if they're P2P ones, which has been the large majority so far. I will take a look at these issues, run them 5x, and apply the aforementioned clean up.\r\n* `run_instance_logs` for lite: Linked [here](https://github.com/swe-bench/experiments/tree/main/validation/lite_20240627)!\r\n\r\nI'm actively working on 2, have gotten some help from Stanford folks as well on this - I think you can expect a dataset update that addresses these problems by end of next week at the latest!"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2205289881",
+      "user": "aorwall",
+      "created_at": "2024-07-03T07:29:55Z",
+      "updated_at": "2024-07-03T07:29:55Z",
+      "body": "Looks like #166 fixed the Django isses :+1: "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2212527289",
+      "user": "aorwall",
+      "created_at": "2024-07-07T18:10:18Z",
+      "updated_at": "2024-07-07T18:10:18Z",
+      "body": "I'm currently working on a hosted solution where I'm running benchmarks on virtual machines in Azure. I've gotten very stable results with no instances failing (except for `sympy__sympy-13177` sometimes). It looks like you nailed it :muscle: \r\n\r\nOne thing that would be worth investigating is the performance of `sympy__sympy-11870`. The reason it takes over 15 minutes to run the Lite benchmark seems to be because that instance takes 16 minutes. It would be possible to run the benchmark in 10 minutes on a 16-core machine if it weren't for that single instance. \r\n\r\nAnd ping me on Discord if you'd like to try my solution. I might have something up and running in the next few days..."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2233177709",
+      "user": "aorwall",
+      "created_at": "2024-07-17T12:14:45Z",
+      "updated_at": "2024-07-17T12:14:45Z",
+      "body": "I think I was a bit too quick there. It seems like there are still some shaky tests in `sympy/sympy` and `matplotlib/matplotlib`. Dependency issues in `astropy/astropy` and `pydata/xarray` might be resolved with #184 .\r\n\r\n`sympy__sympy-13146` almost consistently fails on the same line of code. I'm not sure if this check will give false positives in the test. But removing the line in test_patch makes the test more stable.\r\n```\r\ndiff --git a/sympy/core/tests/test_evalf.py b/sympy/core/tests/test_evalf.py\r\nindex b7cb7abc08..014707aace 100644\r\n--- a/sympy/core/tests/test_evalf.py\r\n+++ b/sympy/core/tests/test_evalf.py\r\n@@ -225,7 +225,9 @@ def test_evalf_bugs():\r\n\r\n     #issue 5412\r\n     assert ((oo*I).n() == S.Infinity*I)\r\n-    assert ((oo+oo*I).n() == S.Infinity + S.Infinity*I)\r\n+\r\n+    #issue 11518\r\n+    assert NS(2*x**2.5, 5) == '2.0000*x**2.5000'\r\n\r\n\r\n def test_evalf_integer_parts():\r\n ```\r\n\r\nFor other sympy tests, I haven't found a solution. It's always recursion depth errors. I've tried increasing the recursion depth with `sys.setrecursionlimit(...)`, but I'm not sure if it helps.\r\n\r\nSo either we can comment out some flaky tests or try with different dependencies.\r\n\r\nThe tests for `psf/requests` seem to be shaky possibly because some tests go against httpbin.org, which sometimes doesn't respond. I set up my own httpbin, which gives more stable test results.\r\n\r\nI've set up my hosted version for testing at [eval.moatless.ai](https://eval.moatless.ai). Feel free to try it out. The report of the latest gold patch run can be found [here](https://eval.moatless.ai/evaluations/307cec64f1874d83ac303cca9f71350f)."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2237104939",
+      "user": "john-b-yang",
+      "created_at": "2024-07-18T17:12:02Z",
+      "updated_at": "2024-07-18T17:12:02Z",
+      "body": "Hmm ok yeah I'm definitely also noticing this recursion depth limit issue.\r\n\r\nCurrently, it does look like most of the shaky tests are pass to pass tests. I'm currently working with another team who've been able to identify these shaky tests by just running multiple times w/ the gold patch and seeing if there are any tests that don't consistently pass.\r\n\r\nI think the resolution for this will likely just be eliminating shaky pass to pass tests from the SWE-bench dataset. This has not happened yet, but I think we'll try to make this happen by the end of the month.\r\n\r\nAlso, the hosted testing version looks beautiful! We're working on something similar, so it's great to see a version of it already out 😄 "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-2891526182",
+      "user": "james-rl",
+      "created_at": "2025-05-19T15:55:07Z",
+      "updated_at": "2025-05-19T15:55:07Z",
+      "body": "Adding on a few more details to `matplotlib__matplotlib-20488`:\n\nThere's one test that's internally marked as flaky but which fails consistently:\n~~~py\n@pytest.mark.network\n@pytest.mark.flaky\ndef test_https_imread_smoketest():\n    with _api.suppress_matplotlib_deprecation_warning():\n        v = mimage.imread('https://matplotlib.org/1.5.0/_static/logo2.png')\n~~~\nResulting in a 403 error: `fp = <http.client.HTTPResponse object at 0x7f246da41550>, code = 403, msg = 'Forbidden', hdrs = <http.client.HTTPMessage object at 0x7f246da41790>`\n\nReason:\n* mimage.imread attempts to use url.requests lib with ssl_context that is ~old\n\n~~~py\n@functools.lru_cache()\ndef _get_ssl_context():\n    try:\n        import certifi\n    except ImportError:\n        _log.debug(\"Could not import certifi.\")\n        return None\n    import ssl\n    return ssl.create_default_context(cafile=certifi.where())\n~~~"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/167#issuecomment-5295409836",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:16Z",
+      "updated_at": "2026-08-14T15:58:16Z",
+      "body": "Closing this as stale. It reports intermittent Lite failures from over a year ago, and both the images and the grading code have changed a lot since. The Verified gold run now passes 500 of 500. If you still see this on current main, please reopen with a log."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2024-07-02T17:53:19Z",
+  "github_updated_at": "2026-08-14T15:58:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-165",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "Django test output containing noisy stdout was parsed as failure even though the test case passed, causing passed tests to count as failure.",
+  "decision_note": "Thread reports Django noisy-output parsing failures in SWE-bench evaluation; maintainer discussion and reporter note connect the root cause to the Django parser fix tracked canonically in issue #165/PR #166.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/167",
+    "https://github.com/SWE-bench/SWE-bench/issues/165"
+  ]
+}

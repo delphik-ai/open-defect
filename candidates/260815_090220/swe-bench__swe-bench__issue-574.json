@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/574",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 574,
+  "title": "a error with SWE-bench",
+  "body": "### Describe the bug\n\n Resolved (submitted): 0.00% (0 / 500)\n  Submitted: 500\n  Errors: 0\n  Pending: 0\n  Successful runs: 0\n  Failed runs: 500\n\n\n### Steps/Code to Reproduce\n\n Resolved (submitted): 0.00% (0 / 50)\n  Submitted: 50\n  Errors: 0\n  Pending: 0\n  Successful runs: 0\n  Failed runs: 50\n\n\n### Expected Results\n\n Resolved (submitted): 0.00% (0 / 50)\n  Submitted: 50\n  Errors: 0\n  Pending: 0\n  Successful runs: 0\n  Failed runs: 50\n\n\n### Actual Results\n\n Resolved (submitted): 0.00% (0 / 50)\n  Submitted: 50\n  Errors: 0\n  Pending: 0\n  Successful runs: 0\n  Failed runs: 50\n\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/574#issuecomment-5295411935",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:29Z",
+      "updated_at": "2026-08-14T15:58:29Z",
+      "body": "Closing this as a local setup problem rather than a bug in the harness. The Verified gold run passes 500 of 500 on current main. If you can still reproduce this there, please reopen with the full log."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-05-03T12:41:14Z",
+  "github_updated_at": "2026-08-14T15:58:29Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Sparse local failure report without actionable root cause; maintainer closed as local setup and current-main Verified gold passes 500/500.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/574"
+  ]
+}

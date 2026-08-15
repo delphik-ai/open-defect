@@ -1,0 +1,63 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/530",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 530,
+  "title": "Nose tests make swebench.harness.run_evaluation gives the wrong result for `astropy__astropy-8707`",
+  "body": "### Describe the bug\n\n## `astropy__astropy-8707`\nWhile browsing the [SWE-bench leaderboard](https://www.swebench.com/index.html), I noticed that no models currently resolve astropy__astropy-8707 (one of swe-bench-verified's test split).\nIts project version is `3.1` (**Important**).\n\n##  A local trial\nI run `gpt-5-mini` on this instance, and get this patch:\n```\ndiff --git a/astropy/io/fits/card.py b/astropy/io/fits/card.py\nindex 8c1ac5d73..d773b2bda 100644\n--- a/astropy/io/fits/card.py\n+++ b/astropy/io/fits/card.py\n@@ -553,6 +553,13 @@ class Card(_Verify):\n         card(s).\n         \"\"\"\n\n+        # Accept bytes on Python 3 by decoding to text.  Historically the\n+        # \"byte string\" wording referred to Python 2's ``str``.  On Python\n+        # 3 a ``bytes`` object may be provided and should be supported.\n+        from .util import decode_ascii\n+        if isinstance(image, (bytes, bytearray)):\n+            image = decode_ascii(bytes(image))\n+\n         card = cls()\n         card._image = _pad(image)\n         card._verified = False\ndiff --git a/astropy/io/fits/header.py b/astropy/io/fits/header.py\nindex ad07e6d52..c2d45cb9d 100644\n--- a/astropy/io/fits/header.py\n+++ b/astropy/io/fits/header.py\n@@ -348,6 +348,14 @@ class Header:\n             A new `Header` instance.\n         \"\"\"\n\n+        # Accept bytes on Python 3 by decoding to text. Historically the\n+        # ``byte string`` wording referred to Python 2's ``str``. On Python\n+        # 3 a ``bytes`` object may be provided and should be supported.\n+        if isinstance(data, (bytes, bytearray)):\n+            data = decode_ascii(bytes(data))\n+        if isinstance(sep, (bytes, bytearray)):\n+            sep = decode_ascii(bytes(sep))\n+\n         cards = []\n\n         # If the card separator contains characters that may validly appear in\n\n```\nI manually ran this patch on the tests, and they passed. However, `run_evaluation` judges it as unresolved.\n\n## Investigation\n\nAfter investigation, I found that this problem is because Astropy-3.1's some tests rely on a pytest plugin (`nose`) supported by pytest 6 (and older versions) but not by the newer versions, while `run_evaluation`  uses pytest 7.4.0 (see https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/constants/python.py#L558).\n\nAfter applying `-p no:nose` option (see https://github.com/zzctmac/SWE-bench/commit/235457f834b69085f4acc9a440e30616474b60f3), the tests pass, and `run_evaluation` labels this patch as resolved.\n\n### Steps/Code to Reproduce\n\npreds.json\n```json\n{\n  \"astropy__astropy-8707\": {\n    \"model_name_or_path\": \"openai/gpt-5-mini\",\n    \"instance_id\": \"astropy__astropy-8707\",\n    \"model_patch\": \"diff --git a/astropy/io/fits/card.py b/astropy/io/fits/card.py\\nindex 8c1ac5d73..d773b2bda 100644\\n--- a/astropy/io/fits/card.py\\n+++ b/astropy/io/fits/card.py\\n@@ -553,6 +553,13 @@ class Card(_Verify):\\n         card(s).\\n         \\\"\\\"\\\"\\n \\n+        # Accept bytes on Python 3 by decoding to text.  Historically the\\n+        # \\\"byte string\\\" wording referred to Python 2's ``str``.  On Python\\n+        # 3 a ``bytes`` object may be provided and should be supported.\\n+        from .util import decode_ascii\\n+        if isinstance(image, (bytes, bytearray)):\\n+            image = decode_ascii(bytes(image))\\n+\\n         card = cls()\\n         card._image = _pad(image)\\n         card._verified = False\\ndiff --git a/astropy/io/fits/header.py b/astropy/io/fits/header.py\\nindex ad07e6d52..c2d45cb9d 100644\\n--- a/astropy/io/fits/header.py\\n+++ b/astropy/io/fits/header.py\\n@@ -348,6 +348,14 @@ class Header:\\n             A new `Header` instance.\\n         \\\"\\\"\\\"\\n \\n+        # Accept bytes on Python 3 by decoding to text. Historically the\\n+        # ``byte string`` wording referred to Python 2's ``str``. On Python\\n+        # 3 a ``bytes`` object may be provided and should be supported.\\n+        if isinstance(data, (bytes, bytearray)):\\n+            data = decode_ascii(bytes(data))\\n+        if isinstance(sep, (bytes, bytearray)):\\n+            sep = decode_ascii(bytes(sep))\\n+\\n         cards = []\\n \\n         # If the card separator contains characters that may validly appear in\\n\"\n  }\n}\n```\nEvaluate\n```bash\npython -m swebench.harness.run_evaluation  --predictions_path  ./preds.json --instance_ids astropy__astropy-8707  --max_workers 1 -id \"my-llm-8707-nose-1\" -d princeton-nlp/SWE-bench -s test\n```\n\n### Expected Results\n\nThe instance is resolved.\n\n### Actual Results\n\nThe instance is not resolved.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/530#issuecomment-4095473748",
+      "user": "aorwall",
+      "created_at": "2026-03-20T04:34:17Z",
+      "updated_at": "2026-03-20T04:34:17Z",
+      "body": "This is fixed in the v5 Dockerfiles. The root cause was pytest 7.4.0 (incompatible with nose-based astropy 3.0–3.2 tests) and setuptools 68.0.0 (breaking distutils imports). Both are now pinned to compatible versions in the environment YMLs (pytest 7.1.2, setuptools 58.0.0). @ofirpress "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/530#issuecomment-4669412147",
+      "user": "Chessing234",
+      "created_at": "2026-06-10T11:00:28Z",
+      "updated_at": "2026-06-10T11:00:28Z",
+      "body": "Opened #594 with -p no:nose on TEST_ASTROPY_PYTEST — should unblock collection for astropy 3.1 instances like 8707."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/530#issuecomment-4669414319",
+      "user": "Chessing234",
+      "created_at": "2026-06-10T11:00:42Z",
+      "updated_at": "2026-06-10T11:00:42Z",
+      "body": "Correction: the fix is in #596 (not #594)."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/530#issuecomment-5295409607",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:14Z",
+      "updated_at": "2026-08-14T15:58:14Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including astropy__astropy-8707. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-03-11T09:02:54Z",
+  "github_updated_at": "2026-08-14T15:58:15Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-530",
+  "task_names": [
+    "astropy__astropy-8707"
+  ],
+  "resolution": "fixed",
+  "summary": "Live issue reports astropy__astropy-8707 gold behavior is misgraded because nose-era Astropy tests break under the pinned pytest/setuptools environment; maintainer says v5 Dockerfiles fix it.",
+  "decision_note": "Refetched GitHub thread is already attached to canonical defect swebench-verified__swe-bench__swe-bench__issue-530; this run rechecked the public source URL and updates evidence/review metadata.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/530",
+    "https://github.com/SWE-bench/SWE-bench/pull/596"
+  ]
+}

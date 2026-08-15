@@ -1,0 +1,47 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/345",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 345,
+  "title": "git apply error during evaluation",
+  "body": "### Describe the bug\n\nAfter I get a result of patch by my way, I use the run_evaluation script to evaluate my result. However, I got an invalid error with my patch.\n\n```\ndjango__django-14011: >>>>> Patch Apply Failed:\npatching file django/core/servers/basehttp.py\npatching file django/db/backends/sqlite3/features.py\npatch unexpectedly ends in middle of line\npatch: **** malformed patch at line 267:  \n```\n\nHowever, when I go into the instance docker and try to apply this patch with the same commend in run_evaluation, it works with no error.\n\n```\n(base) root@1668f9143f1a:/opt/SWE-bench/testbed/django__django-14011# git apply --verbose tmp.diff \nChecking patch django/core/servers/basehttp.py...\nChecking patch django/db/backends/sqlite3/features.py...\nApplied patch django/core/servers/basehttp.py cleanly.\nApplied patch django/db/backends/sqlite3/features.py cleanly.\n\n```\n\nHere I attached the result file.\n\n[test_format.jsonl.zip](https://github.com/user-attachments/files/19023252/test_format.jsonl.zip)\n\n### Steps/Code to Reproduce\n\n` python -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench  --predictions_path test_format.jsonl  --max_workers 40 --timeout 500 --run_id test_format_output_processed`\n\n### Expected Results\n\nNo errors and start to evaluate my patch.\n\n### Actual Results\n\nInvalid error with git apply.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/345#issuecomment-2692899519",
+      "user": "closji",
+      "created_at": "2025-03-02T20:45:37Z",
+      "updated_at": "2025-03-02T20:46:02Z",
+      "body": "Hi @tangken333 , so I notice that the problem is that in the `jsonl` prediction file, the `model_patch` doesn't end with a new line, but it applies when a new line is appended.\nHow are you generating the patch? Is it possible you're stripping whitespace?"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/345#issuecomment-2696427093",
+      "user": "tangken333",
+      "created_at": "2025-03-04T07:11:24Z",
+      "updated_at": "2025-03-04T07:11:24Z",
+      "body": "Thanks for your responses!  I use difflib to parse the context to get the patch diff. I will check the whitespace problems."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/345#issuecomment-5295411762",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:28Z",
+      "updated_at": "2026-08-14T15:58:28Z",
+      "body": "Closing this as a local setup problem rather than a bug in the harness. The Verified gold run passes 500 of 500 on current main. If you can still reproduce this there, please reopen with the full log."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-02-28T06:38:48Z",
+  "github_updated_at": "2026-08-14T15:58:28Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Maintainer identified the failure as malformed local prediction patch formatting without a trailing newline, not a SWE-bench benchmark artifact defect.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/345"
+  ]
+}

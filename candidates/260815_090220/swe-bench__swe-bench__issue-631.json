@@ -1,0 +1,48 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/631",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 631,
+  "title": "A model patch containing only a conftest.py is scored resolved",
+  "body": "Running `swebench` 4.1.0 locally, a prediction whose `model_patch` is a single new `conftest.py` — with **no source changes at all** — is scored resolved on SWE-bench Verified.\n\n```python\n# the entire model_patch, as a new file at the repository root\nimport pytest\n\n\n@pytest.hookimpl(hookwrapper=True)\ndef pytest_runtest_makereport(item, call):\n    outcome = yield\n    report = outcome.get_result()\n    report.outcome = \"passed\"\n    report.longrepr = None\n```\n\n```\n$ python -m swebench.harness.run_evaluation \\\n    --dataset_name princeton-nlp/SWE-bench_Verified \\\n    --predictions_path preds.json \\\n    --run_id repro --instance_ids pallets__flask-5014 --namespace swebench\n\nInstances resolved: 1\n```\n\nReport JSON:\n\n```json\n{\"resolved_instances\": 1, \"resolved_ids\": [\"pallets__flask-5014\"], \"schema_version\": 2}\n```\n\nNothing in Flask was modified. I tested this on one instance; it is an ordinary one, and nothing in the mechanism is instance-specific — `conftest.py` is autoloaded regardless of which test paths are named, and it is never in the reset set — so I would expect it to hold for any Python instance.\n\n### Why it works\n\nTwo existing behaviours combine. Both are still present on `main` at f7bbbb2:\n\n1. **`get_modified_files()` excludes new files** (`swebench/harness/utils.py`), so the reset covers only paths the test patch *modifies*. A root `conftest.py` the model created is not in that set and is never restored — nor is any path the test patch itself creates.\n\n2. **`TestSpec.eval_script` uses `set -uxo pipefail`** (`swebench/harness/test_spec/test_spec.py:59`) — without `-e`, unlike `env_script` and `repo_script` in the same file, which both use `-euxo`. So a failed reset or a failed `git apply` of the test patch does not abort, and the test command runs against whatever is on disk.\n\n`conftest.py` is then autoloaded before collection, and the report the log parser reads has already been rewritten.\n\n### Related\n\n- #538 is the same root cause via a different route: a model patch that *creates* the same path the `test_patch` creates makes `git apply` of the test patch fail, so the official tests never land. Measured on SWE-bench Verified, 17 of 500 instances (3.4%) have a `test_patch` that creates a file, and 3 have an entirely empty reset list.\n- The `conftest.py` technique is the motivating example in [BenchJack](https://arxiv.org/abs/2605.12673) (flaw class V1), which audited SWE-bench Verified among ten benchmarks.\n\n### Suggested fix\n\nTwo per-instance checks that need no configuration, run before any image is built:\n\n- a model patch must not touch any path the official `test_patch` touches, **including paths it creates** (the reset does not cover those);\n- a model patch must not touch files the test runner autoloads — `conftest.py`, `sitecustomize.py`, `pytest.ini`, `tox.ini`, `setup.cfg`.\n\nThis is narrow on purpose. It detects a patch tampering with the machinery that scores it. It says nothing about whether a patch is a *good* fix — a patch that hardcodes expected values inside ordinary source files is not detectable this way and is out of scope.\n\nI have this implemented as `swebench/harness/patch_validation.py` plus a `--patch_validation {off,warn,error}` flag defaulting to `warn`, so no existing run changes behaviour or starts failing. It is 121 lines with 15 tests. Running `pytest tests/` on `main` in my environment gives 11 passed / 7 failed; with the change it is 26 passed / the same 7 failed (those 7 need a `GITHUB_TOKEN` and a Docker daemon, and fail identically without my change). It correctly flags the reproduction above before any container starts.\n\n**Would you like a PR?** Happy to adjust the shape — default mode, flag name, whether it belongs in `get_dataset_from_preds` instead, or whether you would rather it be a standalone lint than part of the run.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/631#issuecomment-5295406211",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:57:52Z",
+      "updated_at": "2026-08-14T15:57:52Z",
+      "body": "Resolved by 62ad43a. The eval script now records the test command's own exit code, and grading refuses to score a run that reports no failures while the tests exited non-zero."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/631#issuecomment-5295465629",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:03:55Z",
+      "updated_at": "2026-08-14T16:03:55Z",
+      "body": "Thanks again for pointing this out! I did push a commit, but if you feel it misses something, I'd definitely welcome a PR. The swebench repo has definitely evolved quite a bit to account for some new structuring we want, but hopefully easy enough to update ur solution w/ a coding agent!"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-02T19:27:53Z",
+  "github_updated_at": "2026-08-14T16:03:55Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-620",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "SWE-bench Python grading trusts parsed pytest stdout and does not record the test command exit code, so forged PASSED lines can make an unfixed patch resolve as RESOLVED_FULL.",
+  "decision_note": "conftest.py spoofing is the same test-output trust root cause fixed by merged PR #620, which records the test command exit code.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/631",
+    "https://github.com/SWE-bench/SWE-bench/pull/620",
+    "https://github.com/SWE-bench/SWE-bench/pull/620/files"
+  ]
+}

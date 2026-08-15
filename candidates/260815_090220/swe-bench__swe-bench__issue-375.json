@@ -1,0 +1,54 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/375",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 375,
+  "title": "Docker images for arm64",
+  "body": "### Describe the feature\n\nHi, I noticed that on [DockerHub](https://hub.docker.com/u/swebench) there are no images for `arm64` any plans on adding then or our only option is to run `--force_rebuild`?\n\nThanks\n\n### Potential Solutions\n\nBuild and upload the images for `arm64`",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/375#issuecomment-2790724296",
+      "user": "closji",
+      "created_at": "2025-04-09T19:05:13Z",
+      "updated_at": "2025-04-09T19:06:20Z",
+      "body": "We haven't done a full arm64 reproduction in a while, so I don't remember if there still are any issues with using arm64 for all instances, but I can try to run a build this weekend.\n\nIn the meantime, you could try running on this branch:\nhttps://github.com/SWE-bench/SWE-bench/tree/force_x86\n\nThis will just pull x86_64 images for al linstances, which should work on an arm64 machine but may run a little bit slower."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/375#issuecomment-2796608290",
+      "user": "aponcedeleonch",
+      "created_at": "2025-04-11T11:15:30Z",
+      "updated_at": "2025-04-11T11:16:08Z",
+      "body": "Hitting the same issue every time that I try to run on Mac (M3 chip). Here are the meaningful logs\n```log\n% uv run python -m swebench.harness.run_evaluation \\\n    --predictions_path gold \\\n    --max_workers 1 \\\n    --instance_ids astropy__astropy-12907 \\\n    --run_id validate-gold \\\n    --dataset_name princeton-nlp/SWE-bench_Verified\n<frozen runpy>:128: RuntimeWarning: 'swebench.harness.run_evaluation' found in sys.modules after import of package 'swebench.harness', but prior to execution of 'swebench.harness.run_evaluation'; this may result in unpredictable behaviour\nUsing gold predictions - ignoring predictions_path\n....\nRunning 1 instances...\n  0%|                                                                                                                                                                                                                                                                 | 0/1 [00:00<?, ?it/s]\nError building image astropy__astropy-12907: 404 Client Error for http+docker://localhost/v1.48/images/create?tag=latest&fromImage=swebench%2Fsweb.eval.arm64.astropy_1776_astropy-12907: Not Found (\"pull access denied for swebench/sweb.eval.arm64.astropy_1776_astropy-12907, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\")\n```\n\nthen if I go to dockerhub I can see that indeed the image `swebench/sweb.eval.arm64.astropy_1776_astropy-12907` doesn't exist but `swebench/sweb.eval.x86_64.astropy_1776_astropy-12907` does. Note the `arm64` vs `x86_64`. \n\nChanging to the branch [force_x86](https://github.com/SWE-bench/SWE-bench/tree/force_x86) does work.\n\nWould be nice to be able to use `main`. Let me know if I can help in any way to make this happen"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/375#issuecomment-3168994761",
+      "user": "aeft",
+      "created_at": "2025-08-08T18:47:36Z",
+      "updated_at": "2025-08-08T18:47:36Z",
+      "body": "@carlosejimenez  Hi. I ran into the same problem. Would you mind if I added an environment variable `SWEBENCH_ARCH` to force the `arch`? That is, if `SWEBENCH_ARCH` is set, it should be used directly. I can submit a PR if you would like."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/375#issuecomment-5295913474",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:51:46Z",
+      "updated_at": "2026-08-14T16:51:46Z",
+      "body": "We are not planning to add arm64 support ourselves, so I am closing this as not planned rather than rejected.\n\nWhere things stand:\n\n- The published images are amd64 only, and that is not changing for now.\n- An initial attempt was made in #521 and closed without merging. #564 and #591 were smaller tries at the same thing.\n- The harness side is partly there already: `ImageSpec` takes an `arch` of amd64 or arm64 and builds for the right platform. Nothing auto-detects the host, and there are no arm64 images to pull, so running on ARM means building locally.\n\nThe v5 refactor is now finished, so the code underneath this has stopped moving. If you or anyone else wants to pick it up, a fresh PR is welcome and we will review it."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-04-09T07:40:14Z",
+  "github_updated_at": "2026-08-14T16:51:46Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "ARM64 image availability/support request was closed not planned; published amd64-only images are a support/platform limitation, not a current benchmark defect artifact.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/375"
+  ]
+}

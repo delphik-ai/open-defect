@@ -1,0 +1,49 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/584",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 584,
+  "title": "[BUG] Gold patch for `astropy__astropy-8872` does not resolve — pytest collection error from setuptools-vendored `distutils`",
+  "body": "## Bug Description\n\nRunning the **gold** prediction for `astropy__astropy-8872` (SWE-bench Verified)\nreports `resolved: false`. The gold patch itself is correct — it is simply never\nexercised, because `pytest` aborts during **test collection** before any test\nruns.\n\nThis is an environment/spec bug in the harness, not a problem with the dataset\ninstance or the gold patch.\n\n## Affected instance\n\n- **Instance:** `astropy__astropy-8872`\n- **Repo / version:** `astropy/astropy` @ `3.1`\n- **Dataset:** `SWE-bench/SWE-bench_Verified`\n- **Python:** 3.9\n\n## Root cause\n\n1. The astropy `3.1` version spec (`SPECS_ASTROPY`, in\n   `swebench/harness/constants/python.py`) pins `setuptools==68.0.0` in\n   `pip_packages`.\n2. setuptools ≥ 60 ships its **own vendored `distutils`** and uses it by default.\n   That vendored copy raises a `DeprecationWarning` from the `LooseVersion` /\n   `StrictVersion` constructors.\n3. `astropy/units/tests/test_quantity.py:29` constructs `LooseVersion(...)` at\n   import time, and astropy 3.1's pytest configuration escalates warnings to\n   errors (`filterwarnings = error`).\n4. The warning therefore becomes a hard **collection error**, and pytest is\n   interrupted before running any test — so the gold patch can never be scored.\n\nWith `setuptools < 60`, the default is the **stdlib `distutils`**, whose\n`LooseVersion` does not emit that warning on Python 3.9; collection succeeds and\nthe suite runs normally.\n\n## Suggested fix\n\nPin `setuptools < 60` for this instance. Two options:\n\n- **Per-instance override (preferred — zero blast radius):** introduce a\n  `MAP_INSTANCE_TO_SPECS` layer merged on top of the repo/version spec in\n  `make_test_spec()`, and override `install` for `astropy__astropy-8872` only.\n- **Version-wide:** change `setuptools==68.0.0` → `setuptools==59.8.0` for\n  astropy `3.1`. Fixes the whole class of failures but risks regressing other\n  astropy `3.1` instances that currently build fine with setuptools 68.\n\nNote: the `LooseVersion`-deprecation problem is environmental and may affect\n**other astropy 3.1 instances** whose test modules trigger `LooseVersion` at\ncollection time — worth checking the scope before deciding between the two\noptions.\n\n### Steps/Code to Reproduce\n\n```bash\npython -m swebench.harness.run_evaluation \\\n  --dataset_name SWE-bench/SWE-bench_Verified \\\n  --instance_ids astropy__astropy-8872 \\\n  --predictions_path gold \\\n  --run_id repro_astropy_8872\n```\n\n### Expected Results\n\nThe gold patch resolves the instance: `FAIL_TO_PASS`\n(`test_quantity.py::TestQuantityCreation::test_preserve_dtype`) and all\n`PASS_TO_PASS` tests pass → `resolved: true`.\n\n### Actual Results\n\n`resolved: false`. Every `FAIL_TO_PASS` / `PASS_TO_PASS` test is reported as a\nfailure because the test module never gets collected. `test_output.txt` ends\nwith:\n\n```\nastropy/units/tests/test_quantity.py:29: in <module>\n    MATPLOTLIB_LT_15 = LooseVersion(matplotlib.__version__) < LooseVersion(\"1.5\")\n.../site-packages/setuptools/_distutils/version.py:55: in __init__\n    warnings.warn(\nE   DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\n=========================== short test summary info ============================\nERROR astropy/units/tests/test_quantity.py - DeprecationWarning: distutils Ve...\n!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!!\n============================== 2 errors in 1.06s ===============================\n```\n\n### System Information\n\n- Harness: `swebench` (current `main`)\n- Instance environment: astropy 3.1, Python 3.9, `setuptools==68.0.0` (from the\n  version spec)\n- Architecture: x86_64",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/584#issuecomment-4788760454",
+      "user": "Chessing234",
+      "created_at": "2026-06-24T11:30:32Z",
+      "updated_at": "2026-06-24T11:30:32Z",
+      "body": "Opened a PR that pins setuptools 59.8.0 for the astropy 3.1 harness spec — should unblock pytest collection for 8872."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/584#issuecomment-5295409038",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:11Z",
+      "updated_at": "2026-08-14T15:58:11Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including astropy__astropy-8872. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-05-22T06:46:27Z",
+  "github_updated_at": "2026-08-14T15:58:11Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-584",
+  "task_names": [
+    "astropy__astropy-8872"
+  ],
+  "resolution": "fixed",
+  "summary": "SWE-bench Verified astropy__astropy-8872 gold patch is marked unresolved because pytest collection aborts on setuptools-vendored distutils DeprecationWarning before any required tests run.",
+  "decision_note": "Same GitHub source as canonical astropy__astropy-8872 collection defect; related refreshed issue #343 includes maintainer confirmation that current main gold now passes 500/500 including astropy__astropy-8872.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/584",
+    "https://github.com/SWE-bench/SWE-bench/issues/343"
+  ]
+}

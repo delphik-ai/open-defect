@@ -1,0 +1,54 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/363",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 363,
+  "title": "harness.run_evaluation is not compatible with .ipynb files.",
+  "body": "### Describe the bug\n\n\nWhen attempting to run an evaluation in a .ipynb file, I get an error. However, If I move the code over to .py file the code executes cleanly. \n\n\n### Steps/Code to Reproduce\n\nExecuting the same code in .py and .ipynb files has differing results. .py executes cleanly with modal.\n\nfrom swebench.harness.run_evaluation import main\n\nmain(\n    dataset_name=\"princeton-nlp/SWE-bench_Lite\",\n    split=\"test\",\n    instance_ids=[\"django__django-10914\"],\n    predictions_path=\"gold\",\n    max_workers=4,\n    force_rebuild=False,\n    cache_level=\"env\",\n    clean=False,\n    open_file_limit=4096,\n    run_id=\"validate-gold-modal\",\n    timeout=1800,\n    namespace=\"swebench\",\n    rewrite_reports=False,\n    modal=True,\n    instance_image_tag=\"latest\",\n    report_dir=\".\"\n)\n\n### Expected Results\n\nNo error is thrown.\n\n### Actual Results\n\n---------------------------------------------------------------------------\nNestedEventLoops                          Traceback (most recent call last)\nFile ~/anaconda3/envs/sweBenchResearch/lib/python3.13/site-packages/modal/_utils/async_utils.py:383, in AsyncOrSyncIterable.__iter__(self)\n    382 try:\n--> 383     with Runner() as runner:\n    384         yield from run_async_gen(runner, self._async_iterable)\n\nFile ~/anaconda3/envs/sweBenchResearch/lib/python3.13/site-packages/synchronicity/async_utils.py:26, in Runner.__enter__(self)\n     25 else:\n---> 26     raise NestedEventLoops()\n     28 self._loop = asyncio.new_event_loop()\n\nNestedEventLoops: \n\nDuring handling of the above exception, another exception occurred:\n\nInvalidError                              Traceback (most recent call last)\nCell In[45], line 3\n      1 from swebench.harness.run_evaluation import main\n----> 3 main(\n      4     dataset_name=\"princeton-nlp/SWE-bench_Lite\",\n      5     split=\"test\",\n      6     instance_ids=[\"django__django-10914\"],\n      7     predictions_path=\"gold\",\n      8     max_workers=4,\n      9     force_rebuild=False,\n     10     cache_level=\"env\",\n     11     clean=False,\n     12     open_file_limit=4096,\n     13     run_id=\"validate-gold-modal\",\n     14     timeout=1800,\n     15     namespace=\"swebench\",\n     16     rewrite_reports=False,\n     17     modal=True,\n     18     instance_image_tag=\"latest\",\n     19     report_dir=\".\"\n     20 )\n\nFile ~/Coding/LLM_bench_testing/SWE-bench/swebench/harness/run_evaluation.py:497, in main(dataset_name, split, instance_ids, predictions_path, max_workers, force_rebuild, cache_level, clean, open_file_limit, run_id, timeout, namespace, rewrite_reports, modal, instance_image_tag, report_dir)\n    495     else:\n    496         validate_modal_credentials()\n--> 497         run_instances_modal(predictions, dataset, full_dataset, run_id, timeout)\n    498     return\n    500 # run instances locally\n\nFile ~/Coding/LLM_bench_testing/SWE-bench/swebench/harness/modal_eval/run_evaluation_modal.py:434, in run_instances_modal(predictions, instances, full_dataset, run_id, timeout)\n    420 if run_test_specs:\n    421     # Run instances that haven't been run yet\n    422     results = run_instance_modal.starmap(\n    423         [\n    424             (\n   (...)    431         ],\n    432     )\n--> 434     for result in results:\n    435         result = cast(TestOutput, result)\n    437         # Save logs locally\n\nFile ~/anaconda3/envs/sweBenchResearch/lib/python3.13/site-packages/modal/_utils/async_utils.py:386, in AsyncOrSyncIterable.__iter__(self)\n    384         yield from run_async_gen(runner, self._async_iterable)\n    385 except NestedEventLoops:\n--> 386     raise InvalidError(self.nested_async_message)\n\nInvalidError: You can't run Function.map() or Function.for_each() from an async function. Use Function.map.aio()/Function.for_each.aio() instead.\n\n### System Information\n\nMacOS, arm64",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/363#issuecomment-2711504867",
+      "user": "klieret",
+      "created_at": "2025-03-10T18:41:37Z",
+      "updated_at": "2025-03-10T18:41:37Z",
+      "body": "Maybe this can fix it: https://pypi.org/project/nest-asyncio/ ?\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/363#issuecomment-2711734714",
+      "user": "klieret",
+      "created_at": "2025-03-10T20:22:06Z",
+      "updated_at": "2025-03-10T20:22:06Z",
+      "body": "i.e., see if you can add \n\n```python\nimport nest_asyncio\nnest_asyncio.apply()\n```\n\nto the top of your notebook"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/363#issuecomment-2711927217",
+      "user": "oliverRamirez4",
+      "created_at": "2025-03-10T21:50:17Z",
+      "updated_at": "2025-03-10T21:50:17Z",
+      "body": "> i.e., see if you can add\n> \n> import nest_asyncio\n> nest_asyncio.apply()\n> to the top of your notebook\n\nThank you, for the help! Unfortunately this did not solve the issue.\n\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/363#issuecomment-5295413667",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:39Z",
+      "updated_at": "2026-08-14T15:58:39Z",
+      "body": "The harness runs each repo's own test command, and notebook-based tests are not supported. Closing as out of scope."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-03-10T18:31:02Z",
+  "github_updated_at": "2026-08-14T15:58:40Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Notebook execution is explicitly unsupported for the harness; outside benchmark defect scope.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/363"
+  ]
+}

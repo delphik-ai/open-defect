@@ -1,0 +1,68 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/439",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 439,
+  "title": "Resource ModuleError",
+  "body": "### Describe the bug\n\nThe file `harness/prepare_images.py` has an `import resource` at the top which throws an error on Windows, as we can't install the resource module there. It would be better to add a check for it before importing it.\n\n### Steps/Code to Reproduce\n\n```\npython -m swebench.harness.run_evaluation --dataset_name princeton-nlp/SWE-bench_Verified --predictions_path predictions.jsonl\n```\n\n### Expected Results\n\nNo error.\n\n### Actual Results\n\n```\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 112, in _get_module_details\n  File \"C:\\Users\\username\\Git\\repo\\SWE-bench\\swebench\\__init__.py\", line 7, in <module>\n    from swebench.harness.constants import (\n  File \"C:\\Users\\username\\Git\\repo\\SWE-bench\\swebench\\harness\\__init__.py\", line 1, in <module>      \n    from swebench.harness import (\n  File \"C:\\Users\\username\\Git\\repo\\SWE-bench\\swebench\\harness\\prepare_images.py\", line 2, in <module>\n    import resource\nModuleNotFoundError: No module named 'resource'\n```\n\n### System Information\n\nWindows 11, Python 3.11",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/439#issuecomment-3062797501",
+      "user": "klieret",
+      "created_at": "2025-07-11T15:43:10Z",
+      "updated_at": "2025-07-11T15:43:10Z",
+      "body": "If this is the only thing blocking you from running it under windows, we could just move the import into that function (the bigger refactor is just that the submodules shouldn't be imported by default, but we'll do that later). "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/439#issuecomment-3064681319",
+      "user": "Arihant25",
+      "created_at": "2025-07-12T04:53:03Z",
+      "updated_at": "2025-07-12T04:53:03Z",
+      "body": "There's also another error - when I ran inference on Windows (using VS Code Copilot), and then sent the git diff for evaluation, it gave some error about line endings."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/439#issuecomment-3134193836",
+      "user": "closji",
+      "created_at": "2025-07-29T21:59:52Z",
+      "updated_at": "2025-07-29T21:59:52Z",
+      "body": "@Arihant25, if you still have access to those results / values, do you mind submitting a new issue for that problem?"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/439#issuecomment-3136697073",
+      "user": "Arihant25",
+      "created_at": "2025-07-30T14:50:36Z",
+      "updated_at": "2025-07-30T14:50:36Z",
+      "body": "Unfortunately I just ended up running it on Ubuntu so no."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/439#issuecomment-3521352775",
+      "user": "DanielPolatajko",
+      "created_at": "2025-11-12T11:00:42Z",
+      "updated_at": "2025-11-12T11:00:42Z",
+      "body": "I ran into the same issue when trying to run SWE-bench with [Inspect Evals](https://github.com/UKGovernmentBEIS/inspect_evals) (which has `swebench` as a dependency)"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/439#issuecomment-5295410849",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:22Z",
+      "updated_at": "2026-08-14T15:58:22Z",
+      "body": "Closing this as a local setup problem rather than a bug in the harness. The Verified gold run passes 500 of 500 on current main. If you can still reproduce this there, please reopen with the full log."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-07-10T08:06:50Z",
+  "github_updated_at": "2026-08-14T15:58:22Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Windows resource-module import report was closed as local setup/current-main non-repro; no current benchmark artifact defect confirmed.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/439"
+  ]
+}

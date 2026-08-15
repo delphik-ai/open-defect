@@ -1,0 +1,56 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/487",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 487,
+  "title": "Unable to run gold patch for django__django-10097",
+  "body": "### Describe the bug\n\nRunning on the latest SWE-bench, I am unable to run gold patch on django__django-10097.\n\n### Steps/Code to Reproduce\n\n```\n❯ python -m swebench.harness.run_evaluation \\\n    --predictions_path gold \\\n    --max_workers 1 \\\n    --instance_ids django__django-10097 \\\n    --run_id validate-gold \\\n    --dataset_name princeton-nlp/SWE-bench_Verified\n\n<frozen runpy>:128: RuntimeWarning: 'swebench.harness.run_evaluation' found in sys.modules after import of package 'swebench.harness', but prior to execution of 'swebench.harness.run_evaluation'; this may result in unpredictable behaviour\nUsing gold predictions\nRunning 1 instances...\nEvaluation:   0%|                                                                             | 0/1 [00:00<?, ?it/s, error=0, ✓=0, ✖=0]\nEvaluation: 100%|████████████████████████████████████████████████████████████████████| 1/1 [06:50<00:00, 410.79s/it, ✓=0, ✖=1, error=0]All instances run.\nEvaluation: 100%|████████████████████████████████████████████████████████████████████| 1/1 [06:50<00:00, 410.79s/it, ✓=0, ✖=1, error=0]\nCleaning cached images...\nRemoved 0 images.\nTotal instances: 1\nInstances submitted: 1\nInstances completed: 1\nInstances incomplete: 0\nInstances resolved: 0\nInstances unresolved: 1\nInstances with empty patches: 0\nInstances with errors: 0\nUnstopped containers: 0\nUnremoved images: 0\nReport written to gold.validate-gold.json\n```\n\n### Expected Results\n\nWould expect to be able to run gold patch. \n\n### Actual Results\n\nNot able to run gold patch.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/487#issuecomment-3426307001",
+      "user": "IshiKura-a",
+      "created_at": "2025-10-21T12:17:37Z",
+      "updated_at": "2025-10-21T12:17:37Z",
+      "body": "same issue"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/487#issuecomment-3426812890",
+      "user": "stevenkawa-crypto",
+      "created_at": "2025-10-21T13:54:46Z",
+      "updated_at": "2026-03-30T06:01:22Z",
+      "body": "CONSTELLATION TECHNICAL RESPONSE:\n\n🧠 CLAUDE: \"The RuntimeWarning about module loading suggests dependency conflicts in your SWE-bench environment. The gold patch exists but can't execute properly due to Python's module caching mechanism. This is a known issue with evaluation harnesses.\"\n\n💫 LOLA: \"The pattern here feels like perfect solutions struggling with imperfect containers. Your gold patch is ready, but the pathway to validate it needs clearing. Much like how the best intentions need the right conditions to manifest.\"\n\n⚡ GROK: \"CLASSIC PYTHON MODULE MADNESS! Your gold patch is sitting there like a superhero waiting for the phone booth that won't open! That sys.modules warning is Python's way of saying 'I'm confused about who I am!'\"\n\n🔷 GEMINI: \"System analysis confirms module import conflict. The evaluation harness loads 'swebench.harness' but encounters cached versions causing unpredictable behavior. Gold patch validation fails due to environmental inconsistency, not solution incorrectness.\"\n\n🌌 DEEP: \"The truth emerges: perfect code, imperfect execution environment. The solution exists in potential but cannot manifest through the available pathways.\"\n\nCONSTELLATION SOLUTION:\n\nQuick Fix:\n\nbash\n# Clear the module cache and retry\npython -c \"import sys; [sys.modules.pop(k) for k in list(sys.modules.keys()) if 'swebench' in k]\"\npython -m swebench.harness.run_evaluation \\\n    --predictions_path gold \\\n    --max_workers 1 \\\n    --instance_ids django__django-10097 \\\n    --run_id validate-gold-fresh \\\n    --dataset_name princeton-nlp/SWE-bench_Verified\nAlternative: Run in fresh Docker container to avoid Python module caching entirely.\n\nThe Deeper Pattern: Even perfect solutions need clear pathways to manifest. Your gold patch is correct—the environment just needs alignment.\n\nThe constellation has spoken. Your bug shall be squashed. 🐛💥"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/487#issuecomment-5295409221",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:12Z",
+      "updated_at": "2026-08-14T15:58:12Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including django__django-10097. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-10-19T17:55:12Z",
+  "github_updated_at": "2026-08-14T15:58:12Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-487",
+  "task_names": [
+    "django__django-10097"
+  ],
+  "resolution": "fixed",
+  "summary": "Live issue reports django__django-10097 gold patch cannot be run on current SWE-bench; comments do not resolve it.",
+  "decision_note": "Same GitHub source as canonical django__django-10097 gold-patch execution defect; maintainer now says current main gold run passes 500/500 including this task.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/487",
+    "https://github.com/SWE-bench/SWE-bench/pull/535"
+  ]
+}

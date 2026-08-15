@@ -6,9 +6,9 @@
   "task_names": [
     "django__django-10097"
   ],
-  "resolution": "fixing",
+  "resolution": "fixed",
   "title": "Unable to run gold patch for django__django-10097",
-  "summary": "Live issue reports django__django-10097 gold patch cannot be run on current SWE-bench; comments do not resolve it.",
+  "summary": "SWE-bench Verified django__django-10097 gold patch could not run successfully; maintainer now says current main gold passes this task.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/487",
   "evidence_urls": [
     "https://github.com/SWE-bench/SWE-bench/issues/487",
@@ -17,13 +17,13 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-10-19T17:55:12.000Z",
-  "last_reviewed_at": "2026-08-08T00:09:03.911Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
+  "decision_note": "L1 refreshed audit: same canonical source thread now includes maintainer confirmation that current main Verified gold passes 500/500 including django__django-10097 after environment and grading repairs.",
   "affected_task_count": 1,
   "migration": {
     "source": "v5-health-sync",
-    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/django__django-10097/counted/fixing/issue-487.md",
-    "badge_bucket": "fixing",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/django__django-10097/counted/fixed/issue-487.md",
+    "badge_bucket": "fixed",
     "source_channel": "github_crawl",
     "routing_status": "already_upstream",
     "confidence": "imported",

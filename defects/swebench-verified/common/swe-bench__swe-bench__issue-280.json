@@ -13,7 +13,7 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-01-10T01:50:53.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

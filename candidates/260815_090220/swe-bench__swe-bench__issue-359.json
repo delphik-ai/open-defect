@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/359",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 359,
+  "title": "Evaluation on Modal hangs for instance `matplotlib__matplotlib-23964`",
+  "body": "### Describe the bug\n\nWhen running the evaluation on modal with a gold patch for instance `matplotlib__matplotlib-23964` the process in the modal sandbox does not finish. After having completed and passed the test and written the report to the test output file, the process hangs.\n\n### Steps/Code to Reproduce\n\n```\npython -m swebench.harness.run_evaluation --predictions_path gold  --dataset_name princeton-nlp/SWE-bench_Lite --run_id prev_hung_lite_gold --modal true --instance_ids matplotlib__matplotlib-23964\n```\n\n### Expected Results\n\nThe evaluation finishes running.\n\n### Actual Results\n\n\n======================== 34 passed, 2 skipped in 37.25s ========================\n--\nMar 06  11:29:09.562 | + echo '>>>>> End Test Output'\nMar 06  11:29:09.567 |  \nMar 06  11:29:09.664 | + git checkout 269c0b94b4fcf8b1135011c1556eac29dc09de15 lib/matplotlib/tests/test_backend_ps.py\nMar 06  11:29:09.669 | >>>>> End Test Output  Updated 1 path from 248630441c\nMar 06  11:29:09.680 | 2025-03-06 19:29:09,680 - matplotlib__matplotlib-23964 - INFO - Test runtime: 44.19 seconds\nMar 06  11:29:09.686 | 2025-03-06 19:29:09,681 - matplotlib__matplotlib-23964 - INFO - Test output for matplotlib__matplotlib-23964 written to logs/run_evaluation/prev_hung_lite_gold/gold/matplotlib__matplotlib-23964/test_output.txt Test output for matplotlib__matplotlib-23964 written to logs/run_evaluation/prev_hung_lite_gold/gold/matplotlib__matplotlib-23964/test_output.txt\n\nHangs after this^^\n\n### System Information\n\nMacOs, python 3.13, commit b8084edba022be47912d2a21eba5f01ac3990da3",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/359#issuecomment-5295413868",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:41Z",
+      "updated_at": "2026-08-14T15:58:41Z",
+      "body": "Modal evaluation is currently broken and unmaintained on main, see #510 and #556 for the details. Closing."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-03-06T20:48:02Z",
+  "github_updated_at": "2026-08-14T15:58:41Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "The report is for SWE-bench Lite Modal evaluation of matplotlib__matplotlib-23964; current watch attribution cannot be proven for SWE-bench Verified or Multilingual.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/359"
+  ]
+}

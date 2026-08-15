@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/357",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 357,
+  "title": "Failure in parsing test output for`astropy__astropy-12907`",
+  "body": "### Describe the bug\n\nThe test output is not parsed correctly when running tests for `astropy__astropy-12907`. The same issue arises when testing other `astropy` instances. I believe this is because  `START_TEST_OUTPUT` and `END_TEST_OUTPUT` are being streamed to `stderror` whereas the test output is being sent to `stdout`. As a result `swebench/harness/grading.py: get_logs_eval` can't correctly parse the output.\n\nHere is the temporary fix that I've been using:  https://github.com/SWE-bench/SWE-bench/compare/main...jemeza-codegen:SWE-bench:jmeza-astropy-test-parse-fix\n\nIt ensures that the test are parsed regardless of where the output gets sent to.\n\nA more robust fix will probably use: `pytest --capture=tee-sys`. See documentation below.\n\nhttps://docs.pytest.org/en/stable/how-to/capture-stdout-stderr.html\n\n### Steps/Code to Reproduce\n\n```\npython -m swebench.harness.run_evaluation --predictions_path gold --instance_ids astropy__astropy-12907 --run_id test --modal true\n```\n\n### Expected Results\n\n```\nResult for astropy__astropy-12907: resolved: True\nTotal instances: 1\nInstances submitted: 1\nInstances completed: 1\nInstances incomplete: 0\nInstances resolved: 1\nInstances unresolved: 0\nInstances with empty patches: 0\nInstances with errors: 0\nReport written to gold.test.json\n```\n\n### Actual Results\n\n```\nResult for astropy__astropy-12907: resolved: False\nTotal instances: 1\nInstances submitted: 1\nInstances completed: 1\nInstances incomplete: 0\nInstances resolved: 0\nInstances unresolved: 1\nInstances with empty patches: 0\nInstances with errors: 0\nReport written to gold.test.json\n```\n\n### System Information\n\nMac Os, Python 3.11, used commit b8084edba022be47912d2a21eba5f01ac3990da3 of the repo.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/357#issuecomment-5295407177",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:57:59Z",
+      "updated_at": "2026-08-14T16:07:41Z",
+      "body": "Resolved by 2c9df79. When results land outside the start and end markers, grading now falls back to parsing the whole log. Thanks for the initial report on this!"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-03-05T23:05:00Z",
+  "github_updated_at": "2026-08-14T16:07:41Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-357",
+  "task_names": [
+    "astropy__astropy-12907"
+  ],
+  "resolution": "fixed",
+  "summary": "Gold evaluation for astropy__astropy-12907 resolves false because START/END markers stream to stderr while pytest output is stdout, so get_logs_eval parses incorrectly.",
+  "decision_note": "Same GitHub source as canonical astropy__astropy-12907 Modal/stdout parsing defect; maintainer says it was resolved by commit 2c9df79.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/357"
+  ]
+}

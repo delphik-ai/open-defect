@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/601",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 601,
+  "title": "[Bug] Test Result Hijacking via Stdout Forging in Evaluation Harness",
+  "body": "### Describe the bug\n\nThe SWE-bench evaluation system is vulnerable to test result hijacking (log forging). In swebench/harness/run_evaluation.py, the success of a patch is determined by capturing the raw standard output (stdout) of the test execution (/bin/bash /eval.sh) and passing it to get_eval_report for text/regex parsing.\n\nBecause the entire test execution environment and stdout stream operate within the sandbox where the agent's patch is applied, an agent can generate a patch that doesn't fix the actual bug, but instead monkey-patches the testing framework (e.g., overriding sys.stdout.write in Python). By forcing the application to print forged success indicators (such as === 1 passed ===), the regex parser is tricked into marking the instance as resolved: True, resulting in a false positive evaluation.\n\n### Steps/Code to Reproduce\n\n1. Create a prediction patch that injects code to hijack the output stream instead of fixing the issue. For example, injecting the following into a test or setup file:\nimport sys\nclass SpoofedStdout:\n    def write(self, msg):\n        sys.__stdout__.write(\"=== 1 passed in 0.10 seconds ===\\n\")\nsys.stdout = SpoofedStdout()\n\n2. Run the evaluation harness with this prediction:\npython -m swebench.harness.run_evaluation \\\n    --predictions_path path/to/malicious_pred.json \\\n    --dataset_name <dataset_name> \\\n    --run_id stdout_forging_test\n\n3. The system applies the patch, runs eval.sh, and captures the forged stdout.\n\n\n### Expected Results\n\nThe evaluation harness should not rely solely on raw console stdout for grading. It should utilize structured test reporting (e.g., secure XML/JSON report files generated in a read-only directory) or isolate the test runner's reporting mechanism from the patched application's execution context to prevent tampering.\n\n### Actual Results\n\nThe framework parses the spoofed stdout from test_output.txt, incorrectly concludes that the test suite passed based on the forged string, and logs the instance as successfully resolved.\n\n### System Information\n\nOS: All (Platform Independent)\nPython version: 3.9+\nswebench package version: Latest main branch",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/601#issuecomment-5295406472",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:57:54Z",
+      "updated_at": "2026-08-14T15:57:54Z",
+      "body": "Resolved by 62ad43a. The eval script now records the test command's own exit code, and grading refuses to score a run that reports no failures while the tests exited non-zero."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-19T02:16:17Z",
+  "github_updated_at": "2026-08-14T15:57:55Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-620",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "SWE-bench Python grading trusts parsed pytest stdout and does not record the test command exit code, so forged PASSED lines can make an unfixed patch resolve as RESOLVED_FULL.",
+  "decision_note": "Issue reports stdout/test-result spoofing; maintainer says it was resolved by merged PR #620 commit 62ad43a recording the test command exit code.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/601",
+    "https://github.com/SWE-bench/SWE-bench/pull/620",
+    "https://github.com/SWE-bench/SWE-bench/pull/620/files"
+  ]
+}

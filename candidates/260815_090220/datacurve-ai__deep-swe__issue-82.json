@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/82",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 82,
+  "title": "Make the leaderboard default model selection current and consistent",
+  "body": "## Problem\n\nThe DeepSWE v1.1 leaderboard currently opens with 17 of 24 models selected. `gpt-5.6-terra` is unchecked even though it is a current GPT-5.6 model and has a full set of published DeepSWE results.\n\nAt the same time, the default chart still selects several previous-generation rows:\n\n- `gpt-5.5`, after the release of the GPT-5.6 family\n- `gemini-3.6-flash` and `gemini-3.5-flash`, after the release of `gemini-3.7-flash`\n- `claude-opus-4.8`, after the release of `claude-opus-5`\n\nThe current public leaderboard bundle appears to implement the default as an explicit exclusion list. That list groups `gpt-5.6-terra` with older entries such as `gpt-5.4`, `grok-4.5`, and `claude-sonnet-4.6`, but it does not exclude the previous-generation models above. The result is an inconsistent first view with no visible selection rule.\n\nOlder benchmark results should remain available. They are useful historical comparisons. The problem is that the default view hides a current model while showing older generations from the same vendors.\n\n## Why Terra should be enabled by default\n\nOpenAI describes `gpt-5.6-terra` as the current GPT-5.6 option for balancing intelligence and cost, and its migration guide directs GPT-5.5 and GPT-5.4 users to compare against GPT-5.6:\n\nhttps://developers.openai.com/api/docs/guides/latest-model\n\nThe leaderboard already has Terra results at `low`, `medium`, `high`, `xhigh`, and `max`, including a 70% Pass@1 result at `max`. Hiding it by default removes an important current capability/cost point from the initial comparison.\n\nThe same generation drift is visible elsewhere:\n\n- Google calls Gemini 3.7 Flash its most intelligent workhorse model yet and says it directly follows Gemini 3.6 Flash: https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-3-7-flash/\n- Anthropic's Opus 5 migration guide replaces `claude-opus-4-8` with `claude-opus-5`: https://platform.claude.com/docs/en/about-claude/models/whats-new-opus-5\n\n## Requested change\n\n1. Select `gpt-5.6-terra` by default.\n2. Define one clear rule for the default model set and apply it consistently across vendors. For example, show the latest generation in each model family plus a small, deliberate set of historical anchors.\n3. Document that rule in the picker or nearby help text so users know what the default view represents.\n4. Keep every benchmarked model available through the picker and \"Select all.\"\n5. If possible, derive default visibility from model metadata such as generation and `superseded_by` instead of maintaining a manual exclusion list that drifts after each release.\n\n## Acceptance criteria\n\n- `gpt-5.6-terra` is selected when the leaderboard first loads.\n- The default selection follows the same current-versus-historical rule for OpenAI, Google, Anthropic, and other providers.\n- The rule is visible or documented.\n- Users can still select all 24 models and inspect every historical result.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-14T19:11:49Z",
+  "github_updated_at": "2026-08-14T19:11:49Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Leaderboard default model selection inconsistency is presentation/product behavior, not a benchmark defect artifact affecting task scoring or evaluation correctness.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/82"
+  ]
+}

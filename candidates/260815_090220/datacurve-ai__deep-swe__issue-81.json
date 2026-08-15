@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/81",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 81,
+  "title": "Clarification on rollout timeout: paper (9000s) vs repository (5400s)",
+  "body": "Thank you for releasing DeepSWE and its task configurations.\n\nI noticed that the [paper](https://arxiv.org/abs/2607.07946) states that each rollout uses a 9,000-second wall-clock timeout, while the public task configurations—including the `v1.0.0` tag and v1.1—set:\n\n```toml\n[agent]\ntimeout_sec = 5400.0\n```\n\nCould you please clarify whether an additional timeout override was used for the paper evaluations? It would also be helpful to document the exact repository version/commit and timeout configuration needed to reproduce the reported results.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-14T15:20:15Z",
+  "github_updated_at": "2026-08-14T15:21:58Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks for clarification of paper timeout versus repository config; it does not identify a current DeepSWE task, dataset, evaluator, or harness defect.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/81"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/78",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 78,
+  "title": "terminal_bench v2.1 - issues with make-doom-for-mips",
+  "body": "In terminal_bench v2.1, make-doom-for-mips task has a couple of issues:\n\n1. this url in the harbor Dockerfile is 404ing   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/environment/Dockerfile#L19\n   Same line in make-mips-interpreter:\n   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-mips-interpreter/environment/Dockerfile#L24\n\n2. some dependencies needed for task completion is not part of the docker setup\n   (clang gcc-mips-linux-gnu g++-mips-linux-gnu llvm llvm-dev lld)\n   Dockerfile installs only nodejs/curl/git/make:\n   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/environment/Dockerfile#L6\n   the reference solution apt-installs them itself at line 11535:\n   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/solution/solve.sh#L11535\n   (README also states the MIPS toolchain is pre-installed, which doesn't match the Dockerfile)\n\n3. the test compares a picture that is not the same each time\n   DG_DrawFrame overwrites /tmp/frame.bmp on every frame with no stop condition:\n   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/environment/task-deps/doomgeneric_img.c#L171\n   the test waits for the first frame, sleeps 1s, then compares whatever landed last at 95%:\n   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/tests/test_outputs.py#L36\n   https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/tests/test_outputs.py#L107\n   so the graded frame depends on emulator speed",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-14T20:56:34Z",
+  "github_updated_at": "2026-08-14T20:56:34Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "confirmed",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/78",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/environment/Dockerfile#L19",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/solution/solve.sh#L11535",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/2fd12b88aafdd04a52c298e3940bcb189f9766d6/make-doom-for-mips/tests/test_outputs.py#L36"
+  ],
+  "benchmark_name": "terminal-bench",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__issue-78",
+  "task_names": [
+    "make-doom-for-mips"
+  ],
+  "resolution": "found",
+  "summary": "Terminal-Bench v2.1 make-doom-for-mips has broken setup evidence: a 404 dependency URL, missing MIPS/LLVM toolchain dependencies, and a nondeterministic frame comparison.",
+  "decision_note": "L2 audit read the issue and the linked public source URLs for the task Dockerfile, solve.sh, and test_outputs.py. The thread explicitly names terminal_bench v2.1 and make-doom-for-mips; existing make-doom-for-mips defects cover different root causes."
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/472",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 472,
+  "title": "[CLARIFICATION] Help in understanding the final json output of the swebench.harness.run_evaluation",
+  "body": "### Describe the issue\n\nHey all, I am a little confused about the output of the evaluation script. I used the following command:\n`python -m swebench.harness.run_evaluation  --dataset_name princeton-nlp/SWE-bench_Verified --predictions_path output.swebench.jsonl --max_workers 8  --run_id complete_50_problems_eval`\n\n<img width=\"1906\" height=\"392\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/ec9d9998-e151-4e25-a988-8eaba6753516\" />\n\nAs you can see, it says `40 ran successfully, 0 failed`, then why is the `Instances with error: 1`, \nI need to understand what each of the following means:\n```text\nTotal instances\nInstances submitted\nInstances completed\nInstances incomplete\nInstances resolved\nInstances unresolved\nInstances with empty patches\nInstances with errors\nUnstopped containers\nUnremoved images\n```\n\n\nThere is already some clarification provided [here](https://www.swebench.com/SWE-bench/guides/evaluation/#:~:text=%2D%2Dclean%20True-,Understanding%20Evaluation%20Results,-The%20evaluation%20results).\n\nBut I need to know what the rest of the Fields mean, especially `Instances with errors`, (what kind of errors are we refering to?error while applying patch? or something else?) \n\n### Suggest an improvement to documentation\n\nOverall, the documentation is fine, but improving the `Understanding Evaluation Results` section, will help a lot.Thanks.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/472#issuecomment-5295410014",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:17Z",
+      "updated_at": "2026-08-14T15:58:17Z",
+      "body": "Closing this as a usage question rather than a bug. The docs at https://swe-bench.com cover this, and GitHub Discussions is a better place for follow-ups."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/472#issuecomment-5295593059",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:17:15Z",
+      "updated_at": "2026-08-14T16:17:15Z",
+      "body": "Sorry for the slow reply. All of these fields still exist today, and there are a few new ones. Here is what each line means:\n\n- **Total instances** - how many tasks are in the dataset you pointed at.\n- **Instances submitted** - how many predictions you gave it.\n- **Instances completed** - how many produced a `report.json`.\n- **Instances incomplete** - in the dataset, but you gave no prediction for them.\n- **Instances resolved** - the patch made the required tests pass.\n- **Instances unresolved** - the tests ran, but did not pass.\n- **Instances with empty patches** - `model_patch` was empty or null, so nothing was run.\n- **Instances with errors** - no readable `report.json` exists. This is the catch-all for \"we could not grade this at all\": the container failed to start, the patch failed to apply, the run timed out, or the test output could not be parsed.\n- **Unstopped containers / Unremoved images** - leftover Docker resources from the run. Cleanup information only, not a result.\n\nOn your specific question, why it says `40 ran successfully, 0 failed` and also `Instances with errors: 1`. Those two lines count different things:\n\n- `N ran successfully, M failed` counts whether the worker function raised an exception.\n- A failed evaluation does not raise. `run_instance` catches its own error, writes it to the log, and returns normally, so it still counts as \"ran successfully\".\n- `Instances with errors` counts instances with no `report.json`. So an instance whose patch failed to apply shows as 1 error while the pool still reports 0 failed.\n\nTo see what happened to that one instance, read `logs/run_evaluation/<run_id>/<model>/<instance_id>/run_instance.log`.\n\nTwo fields have been added since you asked: `infra_failure_ids` and `ambiguous_failure_ids`. These tell you whether a non-resolved instance looks like a broken environment, for example a browser that never started, rather than a bad patch.\n\nAgreed that the docs section should cover this, so I've opened #637 to track it.\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/472#issuecomment-5295662072",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:24:32Z",
+      "updated_at": "2026-08-14T16:24:32Z",
+      "body": "The docs are now updated: ebb22a0."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-09-11T05:57:25Z",
+  "github_updated_at": "2026-08-14T16:24:32Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Evaluation report field clarification/docs thread; not a benchmark defect after maintainer explanation and docs update.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/472"
+  ]
+}

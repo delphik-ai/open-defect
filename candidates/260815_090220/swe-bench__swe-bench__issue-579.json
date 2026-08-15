@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/579",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 579,
+  "title": "Independent SWE-bench Verified submission for review — 90.0% (450/500) / 88.0% (440/500) strict floor with open-weight 27B + custom proxy stack [pending verification]",
+  "body": "Hi SWE-bench team,\n\nWe're sharing an independent SWE-bench Verified submission for your review:\nhttps://github.com/mrguo6221/swe-bench-88-90 (released 2026-05-11, pending official verification).\n\n**Two-tier headline** (full disclosure on what each includes):\n- **90.0% (450/500)** headline — single-attempt + cli/proxy crash retry (6 recovered) + 4 `psf__requests` instances re-evaluated against real `httpbin.org` because our internal eval host is network-isolated\n- **88.0% (440/500)** strict floor — single-attempt, no retry of any kind, no env fix\n\n**Stack:**\n- Model: Qwen3.6-27B-FP8 (Alibaba open-weight FP8; sglang served-model-name `Qwen3.5-27B-Thinking`, details in README)\n- Agent: `@anthropic-ai/claude-code@2.1.23` in `-p` one-shot mode\n- Custom proxy (~47K LoC Python; capability disclosure in `proxy_capabilities.md`; source not yet open)\n- Inference: 12× RTX 4090 modded 48GB consumer GPUs across 2 hosts (no H100/A100). Single workstation × 4 cards is the minimum to reproduce.\n- Same-model baseline (mini-swe-agent + same checkpoint, no proxy): **67.8%** (`r14k_500` in `evidence/timeline.csv`). The 22.2 pt gap is therefore attributable to the agent stack, with the model held constant.\n\n**Anti-cheat evidence in the repo:**\n- 5-tool sandbox during evaluation (Read/Edit/Bash + 2 proxy tools); no web or knowledge-base access\n- 4110 cli=claude requests during evaluation, 0 BON triggers (verifiable via proxy log grep)\n- 86-instance baseline-comparison deep dive in `SUBMISSION.md` Appendix A — patches are not wholesale byte-identical copies of gold patches\n- Official `swebench.harness` eval report + SHA-256 checksums in `evidence/`\n- Full sglang launch command in `evidence/sglang_launch.sh`\n\n**Open invitation:**\n- We acknowledge methodological limitations openly (training-data contamination shared with all LLM submissions on public benchmarks, single-run variance, etc.) — discussed in `SUBMISSION.md` §7\n- Two technical-challenge issues are already open on the repo with our responses; we welcome more\n- Supplementary review materials (full `cli_hints_config.json`, key proxy source snippets ~200 lines, per-instance 86-rescue attribution CSV, optional 1-hour video walkthrough) are available to SWE-bench reviewers under peer-review-style Review Terms — email-based, no formal NDA signature required. See \"For SWE-bench Official Reviewers\" in the repo's README.\n\nHappy to engage with whatever scrutiny you'd like to apply. Independent replication is welcome from anyone in the community.\n\nBest,\nmrguo6221",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/579#issuecomment-5295413484",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:38Z",
+      "updated_at": "2026-08-14T15:58:38Z",
+      "body": "Leaderboard submissions do not go through GitHub issues. Please follow the submission process at https://swe-bench.com. Closing."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-05-12T02:02:40Z",
+  "github_updated_at": "2026-08-14T15:58:39Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Leaderboard submission/review request, not a benchmark defect artifact.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/579"
+  ]
+}

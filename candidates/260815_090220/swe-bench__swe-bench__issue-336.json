@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/336",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 336,
+  "title": "Best practice for multi-threaded swe evaluation runs?",
+  "body": "### Describe the issue\n\nHi team, great work with the benchmark! \n\nI have a question regarding example usages of the run_evaluation.main function. I'm working on a project where I need to run multi thread operations and each operation calls run_evaluation.main by passing instance_id, patch etc. \n\nThe biggest challenge for me so far is dont know how to properly handle docker stuff. \n\nI'm checking your 'should_remove' function:\n\n```\ndef should_remove(\n        image_name: str,\n        cache_level: str,\n        clean: bool,\n        prior_images: set\n    ):\n    \"\"\"\n    Determine if an image should be removed based on cache level and clean flag.\n    \"\"\"\n    existed_before = image_name in prior_images\n    if '/' in image_name:\n        image_name = image_name.split('/', 1)[-1]\n    if image_name.startswith(\"sweb.base\"):\n        if cache_level in {\"none\"} and (clean or not existed_before):\n            return True\n    elif image_name.startswith(\"sweb.env\"):\n        if cache_level in {\"none\", \"base\"} and (clean or not existed_before):\n            return True\n    elif image_name.startswith(\"sweb.eval\"):\n        if cache_level in {\"none\", \"base\", \"env\"} and (clean or not existed_before):\n            return True\n    return False\n```\n\nand this function doesnt help with 'existed_before' images properly. Because if you imagine, when thread-A has a defined set of 'prior_images' another thread-B may create its own images regarding evaluation and at this point, 'not existed_before' flag attribute can cause thread-B images to be removed or deleted.\n\nI'm playing with 'force_rebuild', 'clean', and 'cache_level' parameters a lot but couldnt find a perfect run yet where I get none docker image failure.\n\n\nSo I hope my issue is clear but in case not, in short, what I need is, when I'm running \"run_evaluation.main\" method in multi-thread I need to make sure that each thread won't break other threads' own docker images in a way. Imagine I'm starting parallel 3 runs and passing evaluation for instance_A, instance_B and instance_C. I want all docker images created during instance_A evaluation to be deleted only after instance_A evaluation is finished and so on.\n\nI'm really looking forward to help, thanks in advance!\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/336#issuecomment-2677090651",
+      "user": "fatihozturkh2o",
+      "created_at": "2025-02-23T20:09:46Z",
+      "updated_at": "2025-02-23T20:09:46Z",
+      "body": "an example of the error I'm currently running into a lot:\n```\n\n2025-02-23 20:06:59,093 - INFO - Current environment: testbed\n2025-02-23 20:06:59,534 - INFO - Obtaining file:///testbed\n2025-02-23 20:07:00,148 - INFO - Requirement already satisfied: pytz in /opt/miniconda3/envs/testbed/lib/python3.6/site-packages (from Django==3.0.dev20190502071320) (2025.1)\n2025-02-23 20:07:00,149 - INFO - Requirement already satisfied: sqlparse in /opt/miniconda3/envs/testbed/lib/python3.6/site-packages (from Django==3.0.dev20190502071320) (0.4.4)\n2025-02-23 20:07:00,257 - INFO - Installing collected packages: Django\n2025-02-23 20:07:00,258 - INFO - Running setup.py develop for Django\n2025-02-23 20:07:00,847 - INFO - Successfully installed Django-3.0.dev20190502071320\n2025-02-23 20:07:00,847 - INFO - WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv\n2025-02-23 20:07:05,390 - INFO - ---> Removed intermediate container b44c6e5171f9\n2025-02-23 20:07:05,391 - ERROR - Error: unknown parent image ID sha256:22c0820e738826ff3f38550a8951bb50acc8c14f2443a27b29cb24a9b3ffbbf6\n2025-02-23 20:07:05,391 - ERROR - docker.errors.BuildError during sweb.eval.x86_64.django__django-10924:bench_django__django-10924: unknown parent image ID sha256:22c0820e738826ff3f38550a8951bb50acc8c14f2443a27b29cb24a9b3ffbbf6\n\n```"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/336#issuecomment-5295410416",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:19Z",
+      "updated_at": "2026-08-14T15:58:19Z",
+      "body": "Closing this as a usage question rather than a bug. The docs at https://swe-bench.com cover this, and GitHub Discussions is a better place for follow-ups."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-02-23T20:08:37Z",
+  "github_updated_at": "2026-08-14T15:58:20Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Usage question about multi-threaded evaluation and Docker cleanup; maintainer directed follow-up to docs/discussions and did not identify a benchmark defect.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/336"
+  ]
+}

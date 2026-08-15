@@ -9,11 +9,12 @@
   "summary": "Django test output containing noisy stdout was parsed as failure even though the test case passed, causing passed tests to count as failure.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/165",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/issues/165"
+    "https://github.com/SWE-bench/SWE-bench/issues/165",
+    "https://github.com/SWE-bench/SWE-bench/issues/167"
   ],
   "audit_level": "L2",
   "first_reported_at": "2024-07-01T20:41:04.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

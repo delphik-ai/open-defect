@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/527",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 527,
+  "title": "[v5 refactor] More versioniong/ to dataset repo?",
+  "body": "[Please note that we will most likely not accept any PRs for the v5 refactor]\n\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/527#issuecomment-5296198844",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T17:21:35Z",
+      "updated_at": "2026-08-14T17:21:35Z",
+      "body": "Done. `versioning/` now lives in the task data repo, swe-bench-tasks.\n\n- Removed here in 62495d1, along with the `swebench dataset versions` command, seven `swebench.*` version helpers and the docs pages.\n- Added there in ab18e14, under `src/versioning`, with a README noting it only covers the original Python repos.\n\nIt builds datasets rather than running them, so it belongs with the data. `collect/` stays here: it drives the GitHub API generically, while versioning hardcodes 30 repositories, six per-project scrapers and a conda install step."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-28T17:45:33Z",
+  "github_updated_at": "2026-08-14T17:21:35Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Versioning directory movement/refactor was completed, but it is repository organization rather than benchmark defect scope.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/527"
+  ]
+}

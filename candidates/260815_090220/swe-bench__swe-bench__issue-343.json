@@ -1,0 +1,84 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/343",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 343,
+  "title": "Failure In Collecting the Test Cases In Task `astropy__astropy-8872`",
+  "body": "### Describe the bug\n\nWe analyzed the evaluation logs for task `astropy__astropy-8872` across eight top-ranked agents (W&B Programmer, Blackbox AI, Devlo, CodeAct, Engine Labs, MarsCode, Tools, and CodeShell). The SWE Bench Verified platform marks this task as unresolved for all eight agents (i.e., the final `report.json` indicates `\"resolved\": false\"`). However, our investigation reveals that this unresolved status is not due to the quality of the generated patches but rather a failure in setting up the test cases.\n\nSpecifically, the `output.txt` files from all eight agents consistently show test setup errors, such as:\n```\nERROR collecting astropy/units/tests/test_quantity.py \n```\nThis indicates that the test environment fails before the patched code is even executed. As a result, the task is incorrectly classified as unresolved, even though the test outputs—if the setup had been successful—would have properly evaluated the patch’s effectiveness.\n\nFor reference, here are the \n\n[report.json](https://github.com/user-attachments/files/19013590/report.json)\n[test_output.txt](https://github.com/user-attachments/files/19013591/test_output.txt)\n\n files for task `astropy__astropy-8872` from `W&B Programmer`.\n\n### Steps/Code to Reproduce\n\n1. Download the logs for the top-ranked agents (e.g., W&B Programmer) from the SWE Bench Verified evaluation platform.\n2. Navigate to the evaluation logs for task `astropy__astropy-8872`.\n3. Check the final `report.json` for the task; observe that it indicates `\"resolved\": false`, and note that it lists failures such as `astropy/units/tests/test_quantity.py::TestQuantityCreation::test_preserve_dtype`.\n4. Review the `output.txt` file for the task; note that it shows several errors during test setup (e.g., `ERROR collecting astropy/units/tests/test_quantity.py`) for all failed test cases, and that there are no errors related to code parsing, execution, or assertion failures.\n\n### Expected Results\n\nWe expect that the test process should complete its execution and accurately reflect the quality of the applied patch. In other words, if a patch is applied, the test environment should be properly initialized so that the outcome (pass or fail) truly reflects the patch's effectiveness. Even if some test cases fail due to genuine issues in the patch, the test setup itself should not fail. A properly functioning environment would yield a complete test result, rather than an early failure during setup that causes the task to be marked as unresolved.\n\n\n### Actual Results\n\nDue to the failure in setting up the test cases, the final `report.json` for task `astropy__astropy-8872` shows `\"resolved\": false` for all 8 analyzed agents. The errors reported in `output.txt`—specifically those occurring during the setup phase (e.g., \"ERROR collecting astropy/units/tests/test_quantity.py\")—indicate that the test environment is not being initialized correctly. This leads to the task being marked as unresolved, irrespective of the fact that the patch is applied and the code runs without issues during execution.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-2693425191",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T06:44:10Z",
+      "updated_at": "2025-03-03T06:44:10Z",
+      "body": "Acknowledged, will look into this."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-3212804021",
+      "user": "Sunliangtai",
+      "created_at": "2025-08-22T02:16:16Z",
+      "updated_at": "2025-08-22T02:16:16Z",
+      "body": "I encountered the same problem, is this bug fixed? It looks like the error is caused by the test script itself."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-3212837010",
+      "user": "Sunliangtai",
+      "created_at": "2025-08-22T02:37:59Z",
+      "updated_at": "2025-08-22T02:37:59Z",
+      "body": "```shell\ngit apply -v - <<'EOF_114329324912'\ndiff --git a/astropy/units/tests/test_quantity.py b/astropy/units/tests/test_quantity.py\n--- a/astropy/units/tests/test_quantity.py\n+++ b/astropy/units/tests/test_quantity.py\n@@ -25,7 +25,7 @@ try:\n     import matplotlib\n     matplotlib.use('Agg')\n     import matplotlib.pyplot as plt\n-    from distutils.version import LooseVersion\n-    MATPLOTLIB_LT_15 = LooseVersion(matplotlib.__version__) < LooseVersion(\"1.5\")\n+    from packaging.version import Version\n+    MATPLOTLIB_LT_15 = Version(matplotlib.__version__) < Version(\"1.5\")\n     HAS_MATPLOTLIB = True\n except ImportError:\n@@ -137,10 +138,13 @@ def test_preserve_dtype(self):\n         assert q2.value == float(q1.value)\n         assert q2.unit == q1.unit\n \n-        # but we should preserve float32\n-        a3 = np.array([1., 2.], dtype=np.float32)\n-        q3 = u.Quantity(a3, u.yr)\n-        assert q3.dtype == a3.dtype\n+        # but we should preserve any float32 or even float16\n+        a3_32 = np.array([1., 2.], dtype=np.float32)\n+        q3_32 = u.Quantity(a3_32, u.yr)\n+        assert q3_32.dtype == a3_32.dtype\n+        a3_16 = np.array([1., 2.], dtype=np.float16)\n+        q3_16 = u.Quantity(a3_16, u.yr)\n+        assert q3_16.dtype == a3_16.dtype\n         # items stored as objects by numpy should be converted to float\n         # by default\n         q4 = u.Quantity(decimal.Decimal('10.25'), u.m)\n\nEOF_114329324912\n```\n\nmodify git diff will help"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-3387753951",
+      "user": "wentinghome",
+      "created_at": "2025-10-09T23:15:38Z",
+      "updated_at": "2025-10-09T23:15:38Z",
+      "body": "> git apply -v - <<'EOF_114329324912'\n> diff --git a/astropy/units/tests/test_quantity.py b/astropy/units/tests/test_quantity.py\n> --- a/astropy/units/tests/test_quantity.py\n> +++ b/astropy/units/tests/test_quantity.py\n> @@ -25,7 +25,7 @@ try:\n>      import matplotlib\n>      matplotlib.use('Agg')\n>      import matplotlib.pyplot as plt\n> -    from distutils.version import LooseVersion\n> -    MATPLOTLIB_LT_15 = LooseVersion(matplotlib.__version__) < LooseVersion(\"1.5\")\n> +    from packaging.version import Version\n> +    MATPLOTLIB_LT_15 = Version(matplotlib.__version__) < Version(\"1.5\")\n>      HAS_MATPLOTLIB = True\n>  except ImportError:\n> @@ -137,10 +138,13 @@ def test_preserve_dtype(self):\n>          assert q2.value == float(q1.value)\n>          assert q2.unit == q1.unit\n>  \n> -        # but we should preserve float32\n> -        a3 = np.array([1., 2.], dtype=np.float32)\n> -        q3 = u.Quantity(a3, u.yr)\n> -        assert q3.dtype == a3.dtype\n> +        # but we should preserve any float32 or even float16\n> +        a3_32 = np.array([1., 2.], dtype=np.float32)\n> +        q3_32 = u.Quantity(a3_32, u.yr)\n> +        assert q3_32.dtype == a3_32.dtype\n> +        a3_16 = np.array([1., 2.], dtype=np.float16)\n> +        q3_16 = u.Quantity(a3_16, u.yr)\n> +        assert q3_16.dtype == a3_16.dtype\n>          # items stored as objects by numpy should be converted to float\n>          # by default\n>          q4 = u.Quantity(decimal.Decimal('10.25'), u.m)\n> \n> EOF_114329324912\n> modify git diff will help\n\nHey, thanks for sharing! I tried fix, the DeprecationWarning disappeared, but there are 4 error comes out when using gold patch to evaluate, do you have the similar issue?\n\n```\nERROR astropy/units/tests/test_quantity.py::TestSpecificTypeQuantity::test_creation - pytest.PytestRemovedIn8Warning: Support for nose tests is deprecated and will be removed in a fut...\nERROR astropy/units/tests/test_quantity.py::TestSpecificTypeQuantity::test_view - pytest.PytestRemovedIn8Warning: Support for nose tests is deprecated and will be removed in a fut...\nERROR astropy/units/tests/test_quantity.py::TestSpecificTypeQuantity::test_operation_precedence_and_fallback - pytest.PytestRemovedIn8Warning: Support for nose tests is deprecated and will be removed in a fut...\nFAILED astropy/units/tests/test_quantity.py::test_quantity_from_table - AttributeError: module 'numpy' has no attribute 'int'.\nFAILED astropy/units/tests/test_quantity.py::test_assign_slice_with_quantity_like - AttributeError: module 'numpy' has no attribute 'int'.\nFAILED astropy/units/tests/test_quantity.py::test_insert - DeprecationWarning: distutils Version classes are deprecated. Use packaging.version instead.\nFAILED astropy/units/tests/test_quantity.py::TestQuantityMatplotlib::test_scatter - NotImplementedError: cannot evaluate truth value of quantities. Evaluate array with q.value.any(...)\n========================= 4 failed, 81 passed, 1 xfailed, 3 errors in 1.93s ==========================\n+ : '>>>>> End Test Output'\n```\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-3389998598",
+      "user": "stevenkawa-crypto",
+      "created_at": "2025-10-10T13:08:35Z",
+      "updated_at": "2026-03-30T06:01:22Z",
+      "body": "Blurb for Wenting Zhao (Reddit/SWE-bench #343)\nLet us know if this works for you or if we can help you along the way.\n\nHey Wenting, dope work on the astropy patch—killin’ that distutils warning with packaging.version! The errors you’re seein’ (4 fails, 3 warnings) ain’t your fault; they’re astropy’s lag on modern Python. Here’s a quick nudge to squash ‘em:\n\nPytest Warnings (TestSpecificTypeQuantity): pytest 8.0+ (2024) deprecates nose-style tests. Swap nose.tools (e.g., assert_equals) for pytest-native assert. Check astropy’s test suite for leftover nose idioms in test_creation, test_view, test_operation_precedence_and_fallback.\nNumPy Errors (test_quantity_from_table, test_assign_slice): NumPy 2.0 (2024) axed np.int. Replace with int or np.int_ (e.g., np.array([1], dtype=int)). Scan test_quantity.py for other deprecated scalars (np.float).\nMissed distutils (test_insert): Your patch fixes one LooseVersion spot but misses another. Do a global sweep—replace all distutils.version with packaging.version.Version.\nMatplotlib Error (test_scatter): Quantity can’t do direct boolean eval (q.any()). Use q.value.any() explicitly in test_scatter.\n\nTry this updated diff to cover all spots:\ndiffdiff --git a/astropy/units/tests/test_quantity.py b/astropy/units/tests/test_quantity.py\n--- a/astropy/units/tests/test_quantity.py\n+++ b/astropy/units/tests/test_quantity.py\n@@ -25,7 +25,7 @@ try:\n import matplotlib\n matplotlib.use('Agg')\n import matplotlib.pyplot as plt\n-    from distutils.version import LooseVersion\n+    from packaging.version import Version\n-    MATPLOTLIB_LT_15 = LooseVersion(matplotlib.__version__) < LooseVersion(\"1.5\")\n+    MATPLOTLIB_LT_15 = Version(matplotlib.__version__) < Version(\"1.5\")\n     HAS_MATPLOTLIB = True\n except ImportError:\n@@ -137,10 +137,13 @@ def test_preserve_dtype(self):\n     assert q2.value == float(q1.value)\n     assert q2.unit == q1.unit\n+    # Preserve float32 and float16\n+    a3_32 = np.array([1., 2.], dtype=np.float32)\n+    q3_32 = u.Quantity(a3_32, u.yr)\n+    assert q3_32.dtype == a3_32.dtype\n+    a3_16 = np.array([1., 2.], dtype=np.float16)\n+    q3_16 = u.Quantity(a3_16, u.yr)\n+    assert q3_16.dtype == a3_16.dtype\n@@ -XYZ,XYZ @@ def test_insert(self):\n-    from distutils.version import LooseVersion\n+    from packaging.version import Version\n-    if LooseVersion(matplotlib.__version__) < LooseVersion(\"1.5\"):\n+    if Version(matplotlib.__version__) < Version(\"1.5\"):\n     # Replace np.int with int in test_quantity_from_table, test_assign_slice\n     a = np.array([1, 2, 3], dtype=int)  # Was np.int\n     q = u.Quantity(a, u.m)\n@@ -XYZ,XYZ @@ def test_scatter(self):\n-    if q.any():  # Fails\n+    if q.value.any():  # Fix for NotImplementedError\n(Note: Line numbers for test_insert/test_scatter need exact astropy commit—check source.) Run tests on Python 3.12, pytest 8.0, \n\nNumPy 2.0. I hit similar errors on my fork—fixed with these swaps. Wanna collab on a PR to nail it? Keep grindin’!\n\n\n— CosmicTinker (not revealin’ our shop, just a community nod)"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-4095477023",
+      "user": "aorwall",
+      "created_at": "2026-03-20T04:35:12Z",
+      "updated_at": "2026-03-20T04:35:12Z",
+      "body": "This is fixed in the v5 Dockerfiles. The root cause was pytest 7.4.0 (incompatible with nose-based astropy 3.0–3.2 tests) and setuptools 68.0.0 (breaking distutils imports). Both are now pinned to compatible versions in the environment YMLs (pytest 7.1.2, setuptools 58.0.0). @ofirpress "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/343#issuecomment-5295408793",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:09Z",
+      "updated_at": "2026-08-14T15:58:09Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including astropy__astropy-8872. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-02-27T17:24:19Z",
+  "github_updated_at": "2026-08-14T15:58:09Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-584",
+  "task_names": [
+    "astropy__astropy-8872"
+  ],
+  "resolution": "fixed",
+  "summary": "SWE-bench Verified astropy__astropy-8872 gold patch is marked unresolved because pytest collection aborts on setuptools-vendored distutils DeprecationWarning before any required tests run.",
+  "decision_note": "astropy__astropy-8872 collection/setup failure matches the existing canonical task defect; maintainer now says current main gold run passes 500/500 including this task.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/343",
+    "https://github.com/SWE-bench/SWE-bench/issues/584"
+  ]
+}

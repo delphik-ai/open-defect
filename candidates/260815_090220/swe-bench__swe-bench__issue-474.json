@@ -1,0 +1,62 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/474",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 474,
+  "title": "`check_fail_only` may evaluate fatal error instances as resolved",
+  "body": "### Describe the bug\n\n@john-b-yang Hi, I am confused about the `FAIL_ONLY_REPOS` and the `check_fail_only` logic, why these are needed?\n\n```python\nFAIL_ONLY_REPOS = {\n    \"chartjs/Chart.js\",\n    \"processing/p5.js\",\n    \"markedjs/marked\",\n}\n\n...\n\n    def check_fail_only(test_case, eval_status_map, success, failed):\n        if (\n            test_case in eval_status_map\n            and eval_status_map[test_case] == TestStatus.FAILED.value\n        ):\n            failed.append(test_case)\n        else:\n            success.append(test_case)\n```\n\n**A potential problem is the instance will be evaluated as `resolved` even it encouters fatal error, see [here](https://github.com/adityasoni9998/OpenHands-Versa/issues/9#issuecomment-3301122922)**\n\n\nIs this right? Please check the logic here.\n\n### Steps/Code to Reproduce\n\nJust run the normal SWE-M evaluation, e.g. for the instance markedjs__marked-1262\n the test output:\n```log\n+ cd /testbed\n+ git config --global --add safe.directory /testbed\n+ cd /testbed\n+ git checkout 579f7bfb562bdeeaf0ee98deaba5a8334f9602d1 test/specs/marked/marked-spec.js test/specs/marked/marked.json\nUpdated 2 paths from 0a8fc1e\n+ git apply --verbose --reject -\nChecking patch test/specs/marked/marked-spec.js...\nChecking patch test/specs/marked/marked.json...\nApplied patch test/specs/marked/marked-spec.js cleanly.\nApplied patch test/specs/marked/marked.json cleanly.\n+ : '>>>>> Start Test Output'\n+ ./node_modules/.bin/jasmine --no-color --config=jasmine.json\n/testbed/lib/marked.js:1344\n  return cells;\n  ^^^^^^\n\nSyntaxError: Unexpected token 'return'\n    at wrapSafe (internal/modules/cjs/loader.js:915:16)\n    at Module._compile (internal/modules/cjs/loader.js:963:27)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)\n    at Module.load (internal/modules/cjs/loader.js:863:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:708:14)\n    at Module.require (internal/modules/cjs/loader.js:887:19)\n    at require (internal/modules/cjs/helpers.js:74:18)\n    at Object.<anonymous> (/testbed/test/helpers/helpers.js:1:14)\n    at Module._compile (internal/modules/cjs/loader.js:999:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)\n+ : '>>>>> End Test Output'\n+ git checkout 579f7bfb562bdeeaf0ee98deaba5a8334f9602d1 test/specs/marked/marked-spec.js test/specs/marked/marked.json\nUpdated 2 paths from 0a8fc1e\n```\n\n### Expected Results\n\n`resolved: false`\n\n### Actual Results\n\n`resolved: true`\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/474#issuecomment-3316179217",
+      "user": "ofirpress",
+      "created_at": "2025-09-21T18:36:43Z",
+      "updated_at": "2025-09-21T18:36:43Z",
+      "body": "@carlosejimenez might have more info on this, thanks"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/474#issuecomment-4598108699",
+      "user": "Chessing234",
+      "created_at": "2026-06-02T02:09:24Z",
+      "updated_at": "2026-06-02T02:09:24Z",
+      "body": "Missing or errored tests are now treated as failures in `check_fail_only` via `test_failed` — see #592."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/474#issuecomment-5295406676",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:57:56Z",
+      "updated_at": "2026-08-14T15:57:56Z",
+      "body": "Resolved by 395389c. A run with no parsed results and no sign the test suite ran is now rejected, instead of being scored as resolved."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/474#issuecomment-5295496294",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:07:07Z",
+      "updated_at": "2026-08-14T16:07:07Z",
+      "body": "But basically to address the original questions - some repositories use testing frameworks where they only report failures explicitly, and if tests pass, then they don't show up verbosely (just marked as a string of `.....x....x...`, where `.` is pass and `x` is fail, this is particularly prevalent with JS testing frameworks.\n\nThe `x` tests are then reported explicitly, but the `.` aren't. so the usual logic we had of only marking tests as pass if they explicitly showed up (e.g., in pytest, with `test_name ............. PASSED`) doesn't apply here (the test would be errantly marked as failed since we didn't see the test name + PASSED explicitly).\n\nThis should be accounted for now in terms of \"the instance will be evaluated as resolved even it encouters fatal error\"."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-09-17T11:23:14Z",
+  "github_updated_at": "2026-08-14T16:07:07Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-531",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "SWE-bench PR guards empty eval_status_map so runner crashes no longer get interpreted as all tests passing/resolved.",
+  "decision_note": "Issue describes fatal/empty test output being interpreted as resolved for fail-only repos, the same root cause tracked by canonical empty eval_status_map grading defect; maintainer says fixed by 395389c/#592.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/474",
+    "https://github.com/SWE-bench/SWE-bench/pull/531",
+    "https://github.com/SWE-bench/SWE-bench/pull/592"
+  ]
+}

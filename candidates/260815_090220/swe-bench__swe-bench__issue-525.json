@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/525",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 525,
+  "title": "[v5 refactor] Remove imports from __init__",
+  "body": "They cause warnings and will cause very slow import times if you only need part. Don't really see why we want to have everything in swebench namespace.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/525#issuecomment-3977486632",
+      "user": "klieret",
+      "created_at": "2026-02-28T17:45:00Z",
+      "updated_at": "2026-02-28T17:45:00Z",
+      "body": "[Please note that we will most likely not accept any PRs for the v5 refactor]"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/525#issuecomment-5295865031",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:46:29Z",
+      "updated_at": "2026-08-14T16:46:29Z",
+      "body": "Resolved by 6732fd0. Names in the `swebench` namespace are now loaded on first use, so `import swebench` no longer drags in bs4, docker, datasets and modal. It went from 3.5 seconds and 1795 modules to 0.002 seconds and 77. Everything that was importable before still is."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-02-28T17:36:54Z",
+  "github_updated_at": "2026-08-14T16:46:30Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Import-time namespace refactor request was resolved as code hygiene/performance, not a benchmark scoring/task defect.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/525"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/488",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 488,
+  "title": "Gold patch for psf-requests not working in Kubernetes",
+  "body": "### Describe the bug\n\nRunning gold patch on `psf__requests-2317`:\n```\nrequests/packages/urllib3/connectionpool.py:558: in urlopen\n    retries = retries.increment(method, url, error=e,\nrequests/packages/urllib3/util/retry.py:245: in increment\n    raise six.reraise(type(error), error, _stacktrace)\nrequests/packages/urllib3/packages/six.py:309: in reraise\n    raise value.with_traceback(tb)\nrequests/packages/urllib3/connectionpool.py:514: in urlopen\n    httplib_response = self._make_request(conn, method, url,\nrequests/packages/urllib3/connectionpool.py:308: in _make_request\n    conn.request(method, url, **httplib_request_kw)\n/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1285: in request\n    self._send_request(method, url, body, headers, encode_chunked)\n/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1331: in _send_request\n    self.endheaders(body, encode_chunked=encode_chunked)\n/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1280: in endheaders\n    self._send_output(message_body, encode_chunked=encode_chunked)\n/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:1040: in _send_output\n    self.send(msg)\n/opt/miniconda3/envs/testbed/lib/python3.9/http/client.py:980: in send\n    self.connect()\nrequests/packages/urllib3/connection.py:146: in connect\n    conn = self._new_conn()\nrequests/packages/urllib3/connection.py:124: in _new_conn\n    conn = connection.create_connection(\nrequests/packages/urllib3/util/connection.py:87: in create_connection\n    raise err\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\naddress = ('10.255.255.1', 80), timeout = 0.1, source_address = None\nsocket_options = [(6, 1, 1)]\n\n    def create_connection(address, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,\n                          source_address=None, socket_options=None):\n        \"\"\"Connect to *address* and return the socket object.\n    \n        Convenience function.  Connect to *address* (a 2-tuple ``(host,\n        port)``) and return the socket object.  Passing the optional\n        *timeout* parameter will set the timeout on the socket instance\n        before attempting to connect.  If no *timeout* is supplied, the\n        global default timeout setting returned by :func:`getdefaulttimeout`\n        is used.  If *source_address* is set it must be a tuple of (host, port)\n        for the socket to bind as a source address before making the connection.\n        An host of '' or port 0 tells the OS to use the default.\n        \"\"\"\n    \n        host, port = address\n        err = None\n        for res in socket.getaddrinfo(host, port, 0, socket.SOCK_STREAM):\n            af, socktype, proto, canonname, sa = res\n            sock = None\n            try:\n                sock = socket.socket(af, socktype, proto)\n    \n                # If provided, set socket level options before connecting.\n                # This is the only addition urllib3 makes to this function.\n                _set_socket_options(sock, socket_options)\n    \n                if timeout is not socket._GLOBAL_DEFAULT_TIMEOUT:\n                    sock.settimeout(timeout)\n                if source_address:\n                    sock.bind(source_address)\n>               sock.connect(sa)\nE               requests.packages.urllib3.exceptions.ProtocolError: ('Connection aborted.', OSError(113, 'No route to host'))\n\nrequests/packages/urllib3/util/connection.py:78: ProtocolError\n\nDuring handling of the above exception, another exception occurred:\n\nself = <test_requests.TestTimeout object at 0x7bbba4d616d0>\n\n    def test_connect_timeout(self):\n        try:\n>           requests.get(TARPIT, timeout=(0.1, None))\n\ntest_requests.py:1379: \n```\n\n### Steps/Code to Reproduce\n\nRun gold patch on this instance\n\n### Expected Results\n\nWould expect gold patch to pass\n\n### Actual Results\n\nGetting the error above. Wondering if we could mark these tests as flakey in the dataset? It seems like in docker it is properly timing out but in K8s it is rejected by the CNI.\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/488#issuecomment-5295414053",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:42Z",
+      "updated_at": "2026-08-14T15:58:42Z",
+      "body": "Kubernetes is not a supported runtime for the harness, and the gold patch for this instance passes under the supported Docker path. Closing."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-10-20T18:13:58Z",
+  "github_updated_at": "2026-08-14T15:58:42Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Kubernetes is not a supported harness runtime and maintainer says the gold patch passes under the supported Docker path.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/488"
+  ]
+}

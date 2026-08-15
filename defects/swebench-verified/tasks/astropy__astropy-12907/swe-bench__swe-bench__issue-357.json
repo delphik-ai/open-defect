@@ -6,22 +6,22 @@
   "task_names": [
     "astropy__astropy-12907"
   ],
-  "resolution": "found",
+  "resolution": "fixed",
   "title": "Failure in parsing test output for`astropy__astropy-12907`",
-  "summary": "Gold evaluation for astropy__astropy-12907 resolves false because START/END markers stream to stderr while pytest output is stdout, so get_logs_eval parses incorrectly.",
+  "summary": "Gold evaluation for astropy__astropy-12907 parsed the wrong output region when markers and pytest output landed on different streams; maintainer says commit 2c9df79 fixed fallback parsing.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/357",
   "evidence_urls": [
     "https://github.com/SWE-bench/SWE-bench/issues/357"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-03-05T23:05:00.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
-  "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
+  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
+  "decision_note": "L1 refreshed audit: maintainer states issue #357 was resolved by commit 2c9df79, which falls back to parsing the whole log when no results parse between START/END markers.",
   "affected_task_count": 1,
   "migration": {
     "source": "v5-health-sync",
-    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-12907/counted/found/issue-357.md",
-    "badge_bucket": "found",
+    "source_path": "repos/swe-bench__swe-bench/benchmarks/swebench-verified/tasks/astropy__astropy-12907/counted/fixed/issue-357.md",
+    "badge_bucket": "fixed",
     "source_channel": "github_crawl",
     "routing_status": "already_upstream",
     "confidence": "imported",

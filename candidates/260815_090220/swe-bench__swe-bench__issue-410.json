@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/410",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 410,
+  "title": "Difference between patch_is_None and patch_exists?",
+  "body": "### Describe the issue\n\nAre `patch_exists` and `patch_is_None` always the opposite truth value?\n\n### Suggest an improvement to documentation\n\nI did not catch the values of having two parameters with the exact opposite meaning ",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/410#issuecomment-5295410201",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:18Z",
+      "updated_at": "2026-08-14T15:58:18Z",
+      "body": "Closing this as a usage question rather than a bug. The docs at https://swe-bench.com cover this, and GitHub Discussions is a better place for follow-ups."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/410#issuecomment-5295593207",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:17:16Z",
+      "updated_at": "2026-08-14T16:17:16Z",
+      "body": "Both fields still exist. They are set in `get_eval_report`:\n\n- **`patch_is_None`** - the prediction's `model_patch` was null.\n- **`patch_exists`** - a patch string was present.\n- **`patch_successfully_applied`** - despite the name, this is not purely a `git apply` result. It is set once the test output has been found and parsed. It is False if the patch failed to apply, but also if the run timed out, errored, or produced no readable test output.\n- **`resolved`** - the required tests passed.\n\nSo the short version: `patch_is_None` means we got nothing to apply, and `patch_exists` means we got something. Only `patch_successfully_applied` tells you the run got far enough to produce gradeable output.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-06-02T15:54:35Z",
+  "github_updated_at": "2026-08-14T16:17:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Clarification/documentation question about report fields, not a benchmark defect.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/410"
+  ]
+}

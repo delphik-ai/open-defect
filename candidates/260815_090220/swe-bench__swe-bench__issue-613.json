@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/613",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 613,
+  "title": "Feature: Persistent instance-level result tracking across runs via Dakera",
+  "body": "SWE-bench evaluations produce per-run JSON result files but have no cross-run semantic search over evaluation history. Research teams studying failure patterns must manually grep through results. This proposes Dakera (https://dakera.ai) integration for longitudinal evaluation tracking.\n\n**Problem:** Research teams running iterative agent improvements can't semantically query their evaluation history. 'Which instance categories did the model solve before vs. after the retrieval improvement?' requires manual analysis of JSON files.\n\n**Proposed:** Optional Dakera integration in swebench/harness/run_evaluation.py:\n\nfrom dakera import DakeraClient\n\ndef store_evaluation_results(model_name: str, results: dict, client: DakeraClient) -> None:\n    for instance_id, result in results.items():\n        client.store_memory(\n            agent_id=f'swebench-{model_name}',\n            content=f'Instance {instance_id}: {\"resolved\" if result.get(\"resolved\") else \"failed\"}. Patch: {result.get(\"patch_summary\", \"\")}',\n            metadata={\n                'instance_id': instance_id,\n                'resolved': result.get('resolved', False),\n                'model': model_name,\n            }\n        )\n\ndef search_evaluation_history(model_name: str, query: str, client: DakeraClient, top_k: int = 10):\n    response = client.recall(agent_id=f'swebench-{model_name}', query=query, top_k=top_k)\n    return response.memories if response else []\n\n# Usage:\nclient = DakeraClient(base_url='http://localhost:3300', api_key='demo')\nstore_evaluation_results('gpt-4o', final_results, client)\n\n# Later research queries:\nrelevant = search_evaluation_history('gpt-4o', 'IndexError array bounds database migration')\n# Returns: past instances involving IndexError in array/db context, with resolution status\n\n**Setup:** docker run -d -p 3300:3300 -e DAKERA_API_KEY=demo ghcr.io/dakera-ai/dakera:latest / pip install dakera\n\nThis enables semantic exploration of evaluation history: 'show me all failed instances involving async code', 'which test categories improved between model versions', etc.\n\nHappy to open a PR.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/613#issuecomment-5295412911",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:34Z",
+      "updated_at": "2026-08-14T15:58:34Z",
+      "body": "Thanks for building this. We do not add third-party integrations to the core repo, so I am closing this. Feel free to share it in Discussions so people can find it."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-07-01T08:42:19Z",
+  "github_updated_at": "2026-08-14T15:58:35Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue proposes optional Dakera integration for persistent cross-run result tracking and semantic search over evaluation history. That is a feature request for result analytics, not a correctness, dataset, task, harness, evaluator, or scoring defect in SWE-bench Verified or SWE-bench Multilingual.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/613"
+  ]
+}

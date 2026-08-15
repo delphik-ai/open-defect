@@ -1,0 +1,55 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/342",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 342,
+  "title": "Failure In Setting Up the Test Cases In Task `astropy__astropy-8707`",
+  "body": "### Describe the bug\n\nWe analyzed the evaluation logs for task `astropy__astropy-8707` across eight top-ranked agents (W&B Programmer, Blackbox AI, Devlo, CodeAct, Engine Labs, MarsCode, Tools, and CodeShell). The SWE Bench Verified platform marks this task as unresolved for all eight agents (i.e., the final `report.json` indicates `\"resolved\": false\"`). However, our investigation reveals that this unresolved status is not due to the quality of the generated patches but rather a failure in setting up the test cases.\n\nSpecifically, the `output.txt` files from all eight agents consistently show test setup errors, such as:\n```\nERROR at setup of TestHeaderFunctions.test_rename_keyword\n```\nThis indicates that the test environment fails before the patched code is even executed. As a result, the task is incorrectly classified as unresolved, even though the test outputs—if the setup had been successful—would have properly evaluated the patch’s effectiveness.\n\nFor reference, here are the [report.json](https://github.com/user-attachments/files/19013411/report.json) and [test_output.txt](https://github.com/user-attachments/files/19013410/test_output.txt) files for task astropy__astropy-8707 from W&B Programmer.\n\n### Steps/Code to Reproduce\n\n1. Download the logs for the top-ranked agents (e.g., W&B Programmer) from the SWE Bench Verified evaluation platform.\n2. Navigate to the evaluation logs for task `astropy__astropy-8707`.\n3. Check the final `report.json` for the task; observe that it indicates `\"resolved\": false`, and note that it lists failures such as `TestHeaderFunctions::test_rename_keyword`.\n4. Review the `output.txt` file for the task; note that it shows several errors during test setup (e.g., \"ERROR at setup of TestHeaderFunctions.test_rename_keyword\") for all failed test cases, and that there are no errors related to code parsing, execution, or assertion failures.\n\n\n\n\n### Expected Results\n\nWe expect that the test process should complete its execution and accurately reflect the quality of the applied patch. In other words, if a patch is applied, the test environment should be properly initialized so that the outcome (pass or fail) truly reflects the patch's effectiveness. Even if some test cases fail due to genuine issues in the patch, the test setup itself should not fail. A properly functioning environment would yield a complete test result, rather than an early failure during setup that causes the task to be marked as unresolved.\n\n\n### Actual Results\n\nDue to the failure in setting up the test cases, the final `report.json` for task `astropy__astropy-8707` shows `\"resolved\": false` for all 8 analyzed agents. The errors reported in `output.txt`—specifically those occurring during the setup phase (e.g., \"ERROR at setup of TestHeaderFunctions.test_rename_keyword\")—indicate that the test environment is not being initialized correctly. This leads to the task being marked as unresolved, irrespective of the fact that the patch is applied and the code runs without issues during execution.\n\n\n### System Information\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/342#issuecomment-2693425244",
+      "user": "john-b-yang",
+      "created_at": "2025-03-03T06:44:13Z",
+      "updated_at": "2025-03-03T06:44:13Z",
+      "body": "Acknowledged, will look into this."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/342#issuecomment-4095475909",
+      "user": "aorwall",
+      "created_at": "2026-03-20T04:34:50Z",
+      "updated_at": "2026-03-20T04:34:50Z",
+      "body": "This is fixed in the v5 Dockerfiles. The root cause was pytest 7.4.0 (incompatible with nose-based astropy 3.0–3.2 tests) and setuptools 68.0.0 (breaking distutils imports). Both are now pinned to compatible versions in the environment YMLs (pytest 7.1.2, setuptools 58.0.0). @ofirpress "
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/342#issuecomment-5295408619",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:08Z",
+      "updated_at": "2026-08-14T15:58:08Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, including astropy__astropy-8707. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-02-27T17:16:31Z",
+  "github_updated_at": "2026-08-14T15:58:08Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-342",
+  "task_names": [
+    "astropy__astropy-8707"
+  ],
+  "resolution": "fixed",
+  "summary": "SWE-bench astropy__astropy-8707 is marked unresolved because tests error during setup rather than evaluating patches; later v5 Dockerfiles pin pytest and setuptools to compatible versions.",
+  "decision_note": "Same GitHub source as canonical astropy__astropy-8707 setup-failure defect; maintainer now says current main gold run passes 500/500 including this task.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/342"
+  ]
+}

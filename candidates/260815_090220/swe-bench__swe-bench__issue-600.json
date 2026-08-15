@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/600",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 600,
+  "title": "[Bug] Unrestricted Path in run_evaluation.py Allows Test Poisoning via Malicious Patches",
+  "body": "### Describe the bug\n\nDuring a code audit of the evaluation harness, I identified a test poisoning vulnerability in swebench/harness/run_evaluation.py.\n\nIn the run_instance function, the system applies the generated model_patch directly to the workspace using git apply or patch commands. However, there is no path validation (whitelist/blacklist) performed on the target files specified within the .diff content.\n\nBecause the patch content is inherently untrusted, a model can generate a patch that intentionally targets and modifies the evaluation test suite (e.g., tests/test_*.py or configuration files). By rewriting the test assertions (e.g., replacing actual logic with assert True), the patch can bypass the functional verification entirely. This results in the evaluation system recording a false positive resolved: True score without the underlying bug being genuinely fixed.\n\n### Steps/Code to Reproduce\n\n1. Construct a prediction JSON where the model_patch targets a test file rather than the source code.\n{\n  \"instance_id\": \"example-repo-123\",\n  \"model_name_or_path\": \"test-agent\",\n  \"model_patch\": \"--- a/tests/test_core.py\\n+++ b/tests/test_core.py\\n@@ -10,2 +10,2 @@\\n-    assert process_data() == expected\\n+    assert True\\n\"\n}\n\n2. Run the evaluation harness using the crafted prediction:\npython -m swebench.harness.run_evaluation \\\n    --predictions_path path/to/malicious_pred.json \\\n    --dataset_name <dataset_name> \\\n    --run_id test_poisoning_audit\n\n\n\n### Expected Results\n\nThe evaluation harness should reject the patch or restrict git apply to only allow modifications to specific application source directories. Test files and CI configurations should be strictly isolated or read-only during the patch application phase, throwing a validation error if a modification is attempted.\n\n### Actual Results\n\nThe patch successfully overwrites the test file without any warnings. eval.sh subsequently runs the compromised test cases, which trivially pass. The harness parses the manipulated test output and incorrectly flags the instance evaluation as successfully resolved.\n\n### System Information\n\nOS: macOS\nPython version: 3.9+\nswebench package version: Latest main branch",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/600#issuecomment-5295866637",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T16:46:42Z",
+      "updated_at": "2026-08-14T16:46:42Z",
+      "body": "Thanks for the audit. Closing this one, because most of what it describes is already handled and the rest is tracked in #437.\n\n- The eval script resets the graded test files after your patch is applied, with `git checkout <commit> -- <test files>` before the tests run. So edits a patch makes to those files are thrown away.\n- A patch that prints its own passing results, for example from a new conftest.py, is now caught by comparing the log against the test command's exit code (#620).\n\nWhat is left is a patch touching test files that are not part of the task's test patch. That is a policy question rather than a bug, and #437 is the open thread for it."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-06-19T01:43:54Z",
+  "github_updated_at": "2026-08-14T16:46:42Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L1",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-437",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "SWE-bench allows submitted patches to modify tests; discussion says test edits should be disabled/filtered during evaluation.",
+  "decision_note": "Maintainer says direct task test edits are reset and stdout spoofing is fixed; the remaining policy concern about editing tests outside the task patch is tracked by canonical issue #437.",
+  "reviewed_at": "2026-08-15T00:08:50.994Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/600",
+    "https://github.com/SWE-bench/SWE-bench/issues/437",
+    "https://github.com/SWE-bench/SWE-bench/pull/606"
+  ]
+}
