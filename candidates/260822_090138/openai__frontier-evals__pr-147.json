@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/147",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 147,
+  "title": "Skip null PaperBench token usage during aggregation",
+  "body": "## Summary\n\nKeep successful SimpleJudge runs from failing during post-grade token aggregation when a leaf has no OpenAI token-usage metadata.\n\n`SimpleJudge.grade_leaf()` includes a `token_usage` key in `judge_metadata`, but generic/non-OpenAI completers can leave its value as `None`. The aggregation helper currently checks only whether the key exists and then passes the value to `TokenUsage.from_dict()`, which calls `.items()` and crashes on `None`.\n\nFixes #146.\n\n## Fix\n\nOnly deserialize leaf token usage when the metadata value is a dictionary. Null, missing, or otherwise unavailable usage contributes no token counts for that leaf.\n\n## Regression coverage\n\nAdds tests verifying that:\n\n- a leaf with `{\"token_usage\": None}` is skipped without error;\n- normal usage from another leaf is still summed exactly;\n- a leaf with no token-usage key produces an empty total rather than failing.\n\nTokenUsage serialization, OpenAI usage field mapping, and valid usage summation are unchanged.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/judge/token_usage.py b/project/paperbench/paperbench/judge/token_usage.py\nindex 1cd8cacc..91c929e8 100644\n--- a/project/paperbench/paperbench/judge/token_usage.py\n+++ b/project/paperbench/paperbench/judge/token_usage.py\n@@ -45,10 +45,11 @@ def _get_leaf_node_token_usages(task: GradedTaskNode) -> list[TokenUsage]:\n \n     if task.is_leaf():\n         # need this check because judge_metadata may be malformed in case of node errors\n-        if task.judge_metadata is not None and \"token_usage\" in task.judge_metadata:\n-            return [TokenUsage.from_dict(task.judge_metadata[\"token_usage\"])]\n-        else:\n-            return []\n+        if task.judge_metadata is not None:\n+            usage = task.judge_metadata.get(\"token_usage\")\n+            if isinstance(usage, dict):\n+                return [TokenUsage.from_dict(usage)]\n+        return []\n \n     token_usages = []\n \ndiff --git a/project/paperbench/tests/unit/test_token_usage.py b/project/paperbench/tests/unit/test_token_usage.py\nnew file mode 100644\nindex 00000000..0d0d255f\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_token_usage.py\n@@ -0,0 +1,56 @@\n+from paperbench.judge.graded_task_node import GradedTaskNode\n+from paperbench.judge.token_usage import get_total_token_usage\n+from paperbench.rubric.tasks import TaskNode\n+\n+\n+def _leaf(node_id: str, token_usage):\n+    task = TaskNode(\n+        id=node_id,\n+        requirements=node_id,\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    return GradedTaskNode.from_task(\n+        task,\n+        score=1.0,\n+        valid_score=True,\n+        explanation=\"graded\",\n+        judge_metadata={\"token_usage\": token_usage},\n+    )\n+\n+\n+def test_total_token_usage_skips_null_leaf_usage() -> None:\n+    root = GradedTaskNode(\n+        id=\"root\",\n+        requirements=\"root\",\n+        weight=1,\n+        sub_tasks=[\n+            _leaf(\"without-usage\", None),\n+            _leaf(\"with-usage\", {\"gpt-test\": {\"in\": 12, \"out\": 5}}),\n+        ],\n+        score=1.0,\n+        valid_score=True,\n+        explanation=\"aggregate\",\n+    )\n+\n+    total = get_total_token_usage(root)\n+\n+    assert total.to_dict() == {\"gpt-test\": {\"in\": 12, \"out\": 5}}\n+\n+\n+def test_total_token_usage_skips_missing_leaf_usage_key() -> None:\n+    task = TaskNode(\n+        id=\"leaf\",\n+        requirements=\"leaf\",\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    leaf = GradedTaskNode.from_task(\n+        task,\n+        score=1.0,\n+        valid_score=True,\n+        explanation=\"graded\",\n+        judge_metadata={},\n+    )\n+\n+    assert get_total_token_usage(leaf).to_dict() == {}\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-16T15:15:36Z",
+  "github_updated_at": "2026-08-16T15:15:36Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals PR fixes MCQ, ShortAnswer, PaperBench, or generic metric behavior without evidence that the current SWE-Lancer Diamond benchmark artifact is affected. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/147",
+    "https://github.com/openai/frontier-evals/pull/147/files"
+  ]
+}

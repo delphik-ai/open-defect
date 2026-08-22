@@ -15,6 +15,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-14T22:57:01Z",
-  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
   "decision_note": "L2 audit used merged PR body, collaborator scope note, and changed dataset/SPEC_AUDIT plus dataset/runner/Dockerfile files. The PR states all 199 features were run through runner.sh, 24 were broken before the dataset fixes, and merged on 2026-08-14."
 }

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/154",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 154,
+  "title": "Fix multi-answer MCQ consensus group collisions",
+  "body": "## Summary\n\n- make multi-answer MCQ consensus group IDs uniquely represent the selected answer set\n- prevent distinct answer sets with the same cardinality and index sum from being merged\n- preserve the existing single-answer grouping behavior and the current `< 10` answer-index constraint\n\n`MCQEval.get_summary()` currently encodes a set using a fixed set of powers of ten plus the sum of the selected indices. As a result, distinct sets can collide. For example, `{0, 3}` and `{1, 2}` both receive the same group ID even though they are different answers.\n\nThe new encoding places each selected index in its own decimal digit position, so distinct sets produce distinct group IDs. This keeps consensus and answer-group correctness calculations from combining different multi-answer responses.\n\nThe change is limited to the internal multi-answer group encoding.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/common/nanoeval/nanoeval/solvers/mcq.py b/project/common/nanoeval/nanoeval/solvers/mcq.py\nindex 62059f2b..20c472c8 100644\n--- a/project/common/nanoeval/nanoeval/solvers/mcq.py\n+++ b/project/common/nanoeval/nanoeval/solvers/mcq.py\n@@ -193,9 +193,9 @@ async def get_summary(self, results: list[tuple[MCQTask, Answer]]) -> dict[str,\n \n         def _choice_to_answer_group(picked: int | set[int]) -> int:\n             if isinstance(picked, set):\n-                assert all(p < 10 for p in picked)\n-                # Every answer group is a unique power of 10\n-                return sum([10 ** (i + 1) + p for i, p in enumerate(picked)])\n+                assert all(0 <= p < 10 for p in picked)\n+                # Encode each selected index in its own decimal digit position.\n+                return sum(10**p for p in picked)\n             return picked\n \n         samples_df = pd.DataFrame(\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:06:55Z",
+  "github_updated_at": "2026-08-17T21:06:55Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/154",
+    "https://github.com/openai/frontier-evals/pull/154/files"
+  ]
+}

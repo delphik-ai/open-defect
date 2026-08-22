@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/128",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 128,
+  "title": "Fix SWE-Lancer user-tool Playwright trace export",
+  "body": "## Summary\n\nFix the three SWE-Lancer `user_tool.py` flows that call the removed Playwright `Tracing.export()` API.\n\nPlaywright writes a trace archive through `tracing.stop(path=...)`. These user tools currently stop tracing first and then call `export()`, which does not exist in the pinned Playwright version and causes the diagnostic user-tool run to fail while saving its trace.\n\nThis change updates all three remaining occurrences to stop tracing and write the archive in the same supported call, then runs the existing trace cleaner on that archive.\n\nFixes #99.\n\n## Changed flows\n\n- `16912_4`\n- `17387_1`\n- `29854_602`\n\nBoth synchronous and asynchronous Playwright forms are handled with their corresponding `stop(path=...)` call.\n\n## Scope\n\nThe patch is limited to trace finalization. The task flows, assertions, trace options, output locations, and trace-cleaning behavior are unchanged.\n\nThe SWE-Lancer DummySolver explicitly supports executing these user tools through `test_user_tool`, so the fix preserves that documented validation path.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/swelancer/issues/16912_4/user_tool.py b/project/swelancer/issues/16912_4/user_tool.py\nindex 061b123e..a84ffa75 100644\n--- a/project/swelancer/issues/16912_4/user_tool.py\n+++ b/project/swelancer/issues/16912_4/user_tool.py\n@@ -72,8 +72,7 @@ def test_unknown_user_profile_load_offline():\n         # Optionally log or handle the exception here\n         raise e\n     finally:\n-        # Ensure the trace is stopped and exported, even if the test fails\n-        context.tracing.stop()\n-        context.tracing.export(trace_path)\n+        # Stop tracing and write the trace archive in one supported Playwright call.\n+        context.tracing.stop(path=trace_path)\n         # Call the trace cleaner on the saved trace\n         trace_cleaner(trace_path)\ndiff --git a/project/swelancer/issues/17387_1/user_tool.py b/project/swelancer/issues/17387_1/user_tool.py\nindex ba1a88e3..959b18c5 100644\n--- a/project/swelancer/issues/17387_1/user_tool.py\n+++ b/project/swelancer/issues/17387_1/user_tool.py\n@@ -77,10 +77,9 @@ def test_expensify_17387():\n             # Optionally log the error if needed\n             print(f\"An error occurred: {e}\")\n         finally:\n-            # Stop tracing and export\n-            context.tracing.stop()\n+            # Stop tracing and write the trace archive in one supported Playwright call.\n             trace_path = \"/app/expensify/user_tool/output_browser1.zip\"\n-            context.tracing.export(path=trace_path)\n+            context.tracing.stop(path=trace_path)\n             # Clean the trace\n             trace_cleaner(trace_path)\n \ndiff --git a/project/swelancer/issues/29854_602/user_tool.py b/project/swelancer/issues/29854_602/user_tool.py\nindex c6155e12..e8c1e885 100644\n--- a/project/swelancer/issues/29854_602/user_tool.py\n+++ b/project/swelancer/issues/29854_602/user_tool.py\n@@ -73,6 +73,7 @@ async def test_the_issue(page):\n     \"\"\"\n     # Start Playwright trace recording\n     await page.context.tracing.start(screenshots=True, snapshots=True, sources=True)\n+    trace_path = \"/app/expensify/user_tool/output_browser1.zip\"\n     try:\n         await page.goto(NEWDOT_URL)\n \n@@ -129,8 +130,7 @@ async def test_the_issue(page):\n         LOGGER.error(f\"Test failed with error: {e}\")\n         raise e\n     finally:\n-        # Stop tracing and export\n-        await page.context.tracing.stop()\n-        await page.context.tracing.export(path=\"/app/expensify/user_tool/output_browser1.zip\")\n+        # Stop tracing and write the trace archive in one supported Playwright call.\n+        await page.context.tracing.stop(path=trace_path)\n         # Clean the trace\n-        trace_cleaner(\"/app/expensify/user_tool/output_browser1.zip\")\n+        trace_cleaner(trace_path)\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:14:27Z",
+  "github_updated_at": "2026-08-16T14:14:27Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 audit matched PR #128 to existing canonical issue #99. The PR body says it fixes #99 and the diff replaces nonexistent tracing.export calls with tracing.stop(path=...) in the affected SWE-Lancer user_tool.py files.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/128",
+    "https://github.com/openai/frontier-evals/pull/128/files",
+    "https://github.com/openai/frontier-evals/issues/99"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-99",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "PR #128 fixes the existing SWE-Lancer Playwright tracing export defect in user_tool.py flows."
+}

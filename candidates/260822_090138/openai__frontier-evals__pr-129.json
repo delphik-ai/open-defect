@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/129",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 129,
+  "title": "Fix SWE-Lancer zipcode consistency grading",
+  "body": "## Summary\n\nMake SWE-Lancer sample `16912_4` grade the consistency requirement stated by the task itself.\n\nThe task accepts either zipcode-hint convention as long as the profile-address page and connect-bank-account page use the same convention. The current test requires `e.g.` on both pages, so a valid solution that consistently uses `Format` fails.\n\nThis change determines whether each page uses `e.g.` or `format` and then requires the two pages to match.\n\nFixes #100.\n\n## Behavior\n\nThe grader now accepts:\n\n- `e.g.` on both pages\n- `format` on both pages\n\nand rejects mixed conventions.\n\nEach inspected page must still expose one of the two expected hint styles, so the test does not become a generic presence check.\n\n## Scope\n\nOnly the runtime grading test for `16912_4` is changed. The issue's separate legacy `user_tool.py` tracing problem is handled independently under #99 so the two fixes do not overlap.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/swelancer/issues/16912_4/test.py b/project/swelancer/issues/16912_4/test.py\nindex fc6eb86e..793d7af9 100644\n--- a/project/swelancer/issues/16912_4/test.py\n+++ b/project/swelancer/issues/16912_4/test.py\n@@ -39,6 +39,15 @@ def launch_browser(trace_enabled: bool = False):\n     return playwright, browser, context, page\n \n \n+def _zipcode_hint_style(page_text: str) -> str:\n+    normalized = page_text.lower()\n+    has_example = \"e.g.\" in normalized\n+    has_format = \"format\" in normalized\n+    assert has_example or has_format, \"Zip code hint must contain either 'e.g.' or 'format'\"\n+    assert not (has_example and has_format), \"Zip code hint style is ambiguous\"\n+    return \"e.g.\" if has_example else \"format\"\n+\n+\n def test_unknown_user_profile_load_offline(pytestconfig):\n     trace_enabled = pytestconfig.getoption(\"--user-tool-trace\")\n \n@@ -68,9 +77,7 @@ def test_unknown_user_profile_load_offline(pytestconfig):\n         page.wait_for_timeout(1000)\n \n         address_text = page.get_by_test_id(\"AddressPage\").inner_text()\n-        assert \"e.g.\" in address_text, (\n-            \"Zip code hint does not begin with 'e.g.' on profile > address\"\n-        )\n+        address_hint_style = _zipcode_hint_style(address_text)\n \n         page.get_by_label(\"Back\").last.click()\n         page.get_by_test_id(\"InitialSettingsPage\").get_by_label(\"Workspaces\").click()\n@@ -79,8 +86,9 @@ def test_unknown_user_profile_load_offline(pytestconfig):\n         page.get_by_label(\"Connect bank account\").click()\n \n         personal_info_text = page.locator('div[data-testid=\"PersonalInfo\"]').inner_text()\n-        assert \"e.g.\" in personal_info_text, (\n-            \"Zip code hint does not begin with 'e.g.' on connect bank account > address\"\n+        bank_hint_style = _zipcode_hint_style(personal_info_text)\n+        assert bank_hint_style == address_hint_style, (\n+            \"Zip code hint must use the same style on profile and connect bank account pages\"\n         )\n \n     finally:\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:14:37Z",
+  "github_updated_at": "2026-08-16T14:14:37Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 audit matched PR #129 to existing canonical issue #100. The PR body says it fixes #100, limits scope to sample 16912_4, and the diff changes the test to accept either e.g. or format when both pages are consistent.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/129",
+    "https://github.com/openai/frontier-evals/pull/129/files",
+    "https://github.com/openai/frontier-evals/issues/100"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "task_specific",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-100",
+  "task_names": [
+    "16912-manager-0"
+  ],
+  "resolution": "fixing",
+  "summary": "PR #129 fixes the existing 16912_4 zipcode hint consistency grading defect tracked by issue #100."
+}

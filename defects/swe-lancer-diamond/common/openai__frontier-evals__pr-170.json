@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__pr-170",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Fix SWE-Lancer default runs directory",
+  "summary": "SWE-Lancer default run output path was built from the module name string, producing a relative swelancer.utils/runs path instead of the project runs directory.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/pull/170",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/pull/170",
+    "https://github.com/openai/frontier-evals/pull/170/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-17T22:26:16Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "decision_note": "L2 source-read audit. PR #170 is explicitly scoped to SWE-Lancer and changes get_default_runs_dir from Path(__name__).parent / runs to the canonical get_runs_dir helper, with regression coverage requiring an absolute project runs path. Existing SWE-Lancer artifacts do not cover this default-runs-directory root cause."
+}

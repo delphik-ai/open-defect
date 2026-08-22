@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/210",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 210,
+  "title": "Spider 2 Snow account  is suspended",
+  "body": "Your account is suspended due to lack of payment method.",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/210#issuecomment-5266752681",
+      "user": "AntonioLopardo",
+      "created_at": "2026-08-12T12:23:42Z",
+      "updated_at": "2026-08-12T12:23:42Z",
+      "body": "Same"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/210#issuecomment-5300405102",
+      "user": "kyongs",
+      "created_at": "2026-08-15T03:53:57Z",
+      "updated_at": "2026-08-15T03:53:57Z",
+      "body": "Same"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-12T11:58:10Z",
+  "github_updated_at": "2026-08-15T03:53:57Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This reports a Spider2 Snow/Snowflake shared account suspension. The watched benchmark is spider2-dbt, and Spider2-Snow/Snowflake credential availability is outside the current spider2-dbt benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/210"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/169",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 169,
+  "title": "Honor zero-hour PaperBench checkpoint selection",
+  "body": "## Summary\n\n- preserve `target_duration_hr=0` as a valid PaperBench checkpoint target\n- keep `None` as the sentinel for selecting the latest available checkpoint\n- add regression coverage showing that a zero-hour target selects the earliest submission\n\n`PBTask._select_checkpoint()` currently uses a truthiness check when choosing the duration passed to `get_file_at_duration()`. Because `0` is falsey, an explicit `target_duration_hr=0` is replaced with `10000`, which selects the latest checkpoint instead of the checkpoint at the start of the run.\n\nThe configuration type and `get_file_at_duration()` both support zero as a valid non-negative duration. This change switches the fallback check to `is not None`, so zero keeps its documented meaning while the existing `None` behavior remains unchanged.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/nano/task.py b/project/paperbench/paperbench/nano/task.py\nindex 64ed79eb..93342fbe 100644\n--- a/project/paperbench/paperbench/nano/task.py\n+++ b/project/paperbench/paperbench/nano/task.py\n@@ -400,7 +400,9 @@ async def _select_checkpoint(self) -> tuple[str, timedelta] | None:\n             return None\n \n         # Get the submission at the target duration if it is set, otherwise get the latest submission\n-        target_duration_hr = self.target_duration_hr if self.target_duration_hr else 10000\n+        target_duration_hr = (\n+            self.target_duration_hr if self.target_duration_hr is not None else 10000\n+        )\n         checkpoint = get_file_at_duration(submission_checkpoints, target_duration_hr)\n \n         path, duration = checkpoint[\"path\"], checkpoint[\"duration\"]\n@@ -487,4 +489,4 @@ async def _run_judge(\n             _print=True,\n         )\n \n-        return judge_output\n+        return judge_output\n\\ No newline at end of file\ndiff --git a/project/paperbench/tests/unit/test_checkpoint_selection.py b/project/paperbench/tests/unit/test_checkpoint_selection.py\nnew file mode 100644\nindex 00000000..d25635e3\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_checkpoint_selection.py\n@@ -0,0 +1,20 @@\n+from datetime import timedelta\n+\n+import pytest\n+\n+from paperbench.nano.task import PBTask\n+\n+\n+@pytest.mark.asyncio\n+async def test_zero_target_duration_selects_earliest_checkpoint(monkeypatch: pytest.MonkeyPatch) -> None:\n+    checkpoints = [\n+        \"/runs/task/submissions/2026-01-01T02-00-00-GMT/submission.tar.gz\",\n+        \"/runs/task/submissions/2026-01-01T00-00-00-GMT/submission.tar.gz\",\n+        \"/runs/task/submissions/2026-01-01T01-00-00-GMT/submission.tar.gz\",\n+    ]\n+    task = PBTask.model_construct(run_dir=\"/runs/task\", target_duration_hr=0)\n+    monkeypatch.setattr(\"paperbench.nano.task.bf.glob\", lambda _pattern: checkpoints)\n+\n+    checkpoint = await task._select_checkpoint()\n+\n+    assert checkpoint == (checkpoints[1], timedelta(0))\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T22:26:08Z",
+  "github_updated_at": "2026-08-17T22:26:08Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/169",
+    "https://github.com/openai/frontier-evals/pull/169/files"
+  ]
+}

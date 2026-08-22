@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/125",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 125,
+  "title": "MCQ extraction scores the first answer after model self-correction",
+  "body": "## Summary\n\n`OpenAIAPIMCQSolver._extract_picked_letters()` uses `re.Pattern.search()` for both the single-answer and multi-answer paths. `search()` returns the first matching `Answer:` declaration in the sampled response.\n\nIf a model explicitly revises its answer later in the response, the evaluator therefore scores the earlier tentative answer rather than the model's final declared answer.\n\n## Reproducer\n\n```python\nfrom nanoeval.solvers.mcq_api import OpenAIAPIMCQSolver\n\nassert OpenAIAPIMCQSolver._extract_picked_letters(\n    \"Answer: A\\nAfter checking the reasoning, I need to correct this.\\nAnswer: B\",\n    {\"A\", \"B\", \"C\", \"D\"},\n    False,\n) == {\"B\"}\n```\n\nCurrent `main` returns `{\"A\"}`.\n\nThe same issue exists for multi-answer responses. For example, an earlier `Answer: A, C` followed by a corrected `Answer: B, D` is parsed as `{\"A\", \"C\"}`.\n\n## Impact\n\nSelf-correction is valid model behavior. Scoring the first declaration can turn a correct final answer into a false failure, or an incorrect final answer into a false success. That makes reported eval accuracy depend on intermediate answer-like text rather than the model's final declared answer.\n\n## Proposed resolution\n\nKeep the existing accepted answer formats, but select the last valid `Answer:` declaration for the active single-answer or multi-answer pattern.\n\nRegression coverage should include:\n\n- two single-answer declarations where the later answer wins;\n- two multi-answer declarations where the later set wins;\n- an ordinary single declaration to confirm existing extraction behavior is unchanged.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T12:49:58Z",
+  "github_updated_at": "2026-08-16T12:49:58Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/125"
+  ]
+}

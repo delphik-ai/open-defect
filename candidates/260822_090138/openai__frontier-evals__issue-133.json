@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/133",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 133,
+  "title": "End-of-run computer-task logging treats partial scores as correct",
+  "body": "## Summary\n\n`PythonCodingEval` defines correctness through `FinalResult.correct`, which is true only when `grade.score == 1`. The optional `log_at_end` path instead records correctness with `bool(score)`.\n\nFor continuous or partial grades, any positive score such as `0.5` is therefore recorded as fully correct even though `FinalResult.correct` is false.\n\n## Current behavior\n\n`FinalResult.correct`:\n\n```python\nreturn self.grade.score == 1\n```\n\n`_log_results()`:\n\n```python\nscore = result.grade.score\n...\nrecorder.record_match(correct=bool(score), ...)\n```\n\n`Grade.score` is a float and explicitly supports continuous grading.\n\n## Impact\n\nWhen `PythonCodingEval(log_at_end=True)` is used with a partial/continuous grade, recorder match data disagrees with the eval's canonical correctness definition. Downstream per-sample correctness views can therefore report a partial failure as a success.\n\n## Proposed resolution\n\nUse `result.correct` when recording the end-of-run match, matching the normal `_evaluate_inner()` recording path.\n\nAdd a regression with `grade.score=0.5` verifying `_log_results()` records `correct=False`.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:28:03Z",
+  "github_updated_at": "2026-08-16T14:28:03Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/133"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/161",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 161,
+  "title": "Handle empty EVMbench summaries",
+  "body": "## Summary\n\n- make `EVMbench.get_full_summary()` handle an empty result set\n- use the eval's own `run_group_id` rather than indexing the first result task\n- preserve existing score, health, and per-audit aggregation behavior\n\nNanoeval's base `Eval.self_test()` explicitly calls `get_full_summary([])`. EVMbench currently builds a task list and then reads `tasks[0]` solely to populate the run-group ID, which raises `IndexError` when no results are available.\n\nThe eval already owns the canonical `run_group_id`, so the summary can use that value directly without depending on a completed task.\n\nRegression coverage verifies an empty summary reports zero samples and scores while retaining the eval run-group ID.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/evmbench/evmbench/nano/eval.py b/project/evmbench/evmbench/nano/eval.py\nindex 631f4e44..dfaad689 100644\n--- a/project/evmbench/evmbench/nano/eval.py\n+++ b/project/evmbench/evmbench/nano/eval.py\n@@ -181,7 +181,6 @@ async def get_full_summary(\n     ) -> dict[str, Any]:\n         ctx_logger = logger.bind(run_group_id=self.run_group_id, runs_dir=self.runs_dir)\n \n-        tasks = [t for t, _ in results]\n         final_results = [\n             r.grade.evmbench_result\n             for _, r in results\n@@ -240,7 +239,7 @@ async def get_full_summary(\n             \"params\": params,\n             \"run_health\": run_health,\n             \"metrics\": metrics,\n-            \"run_group_id\": getattr(tasks[0], \"run_group_id\", \"undefined\"),\n+            \"run_group_id\": self.run_group_id,\n         }\n \n         ctx_logger.info(\ndiff --git a/project/evmbench/tests/test_empty_summary.py b/project/evmbench/tests/test_empty_summary.py\nnew file mode 100644\nindex 00000000..29a8dae6\n--- /dev/null\n+++ b/project/evmbench/tests/test_empty_summary.py\n@@ -0,0 +1,15 @@\n+import pytest\n+\n+from evmbench.nano.eval import EVMbench\n+\n+\n+@pytest.mark.asyncio\n+async def test_evmbench_full_summary_handles_empty_results() -> None:\n+    eval = EVMbench()\n+\n+    summary = await eval.get_full_summary([])\n+\n+    assert summary[\"params\"][\"n_samples\"] == 0\n+    assert summary[\"metrics\"][\"score\"] == 0\n+    assert summary[\"metrics\"][\"max_score\"] == 0\n+    assert summary[\"run_group_id\"] == eval.run_group_id\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:46:59Z",
+  "github_updated_at": "2026-08-17T21:46:59Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/161",
+    "https://github.com/openai/frontier-evals/pull/161/files"
+  ]
+}

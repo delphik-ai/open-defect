@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/164",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 164,
+  "title": "Fix PaperBench code-only fallback for non-code rubrics",
+  "body": "## Summary\n\n- make the `code_only=True` fallback produce a valid single Code Development task when a rubric contains no Code Development leaves\n- avoid constructing invalid intermediate `TaskNode` states\n- preserve the existing pruning path when Code Development criteria are present\n\n`run_judge()` currently falls back with:\n\n```python\ntask_tree.set_task_category(\"Code Development\").set_sub_tasks([])\n```\n\nwhen `task_tree.code_only()` returns `None`. `TaskNode` validation forbids a task category on an internal node, so the first call raises before `set_sub_tasks([])` can run. Reversing the calls has the analogous problem because a leaf with no task category is also invalid.\n\nThe fix performs the fallback atomically with `dataclasses.replace`, creating the intended leaf without passing through an invalid intermediate tree.\n\nRegression coverage verifies both the no-code fallback and the existing path where a Code Development subtree is present.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/grade.py b/project/paperbench/paperbench/grade.py\nindex ae294933..344118bc 100644\n--- a/project/paperbench/paperbench/grade.py\n+++ b/project/paperbench/paperbench/grade.py\n@@ -5,7 +5,7 @@\n import tempfile\n import time\n from contextlib import nullcontext\n-from dataclasses import dataclass\n+from dataclasses import dataclass, replace\n from pathlib import Path\n from typing import Any\n \n@@ -80,6 +80,14 @@ def success(self) -> bool:\n         return self.num_invalid_leaf_nodes < self.num_leaf_nodes\n \n \n+def _code_only_task_tree(task_tree: TaskNode) -> TaskNode:\n+    code_only_tree = task_tree.code_only()\n+    if code_only_tree is not None:\n+        return code_only_tree\n+\n+    return replace(task_tree, sub_tasks=[], task_category=\"Code Development\")\n+\n+\n async def run_judge(\n     submission_path: Path,\n     paper_id: str,\n@@ -107,9 +115,7 @@ async def run_judge(\n     with open(rubric_path, \"r\") as f:\n         task_tree = TaskNode.from_dict(json.load(f))\n     if code_only:\n-        task_tree = task_tree.code_only() or task_tree.set_task_category(\n-            \"Code Development\"\n-        ).set_sub_tasks([])\n+        task_tree = _code_only_task_tree(task_tree)\n     if resources_provided:\n         task_tree = task_tree.resources_provided()\n \ndiff --git a/project/paperbench/tests/unit/test_grade_code_only.py b/project/paperbench/tests/unit/test_grade_code_only.py\nnew file mode 100644\nindex 00000000..083f1e5e\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_grade_code_only.py\n@@ -0,0 +1,50 @@\n+from paperbench.grade import _code_only_task_tree\n+from paperbench.rubric.tasks import TaskNode\n+\n+\n+def test_code_only_fallback_collapses_non_code_rubric_to_valid_leaf() -> None:\n+    leaf = TaskNode(\n+        id=\"analysis\",\n+        requirements=\"analyse results\",\n+        weight=1,\n+        task_category=\"Result Analysis\",\n+    )\n+    root = TaskNode(\n+        id=\"root\",\n+        requirements=\"complete the paper\",\n+        weight=3,\n+        sub_tasks=[leaf],\n+    )\n+\n+    code_only = _code_only_task_tree(root)\n+\n+    assert code_only.is_leaf()\n+    assert code_only.task_category == \"Code Development\"\n+    assert code_only.id == root.id\n+    assert code_only.requirements == root.requirements\n+    assert code_only.weight == root.weight\n+\n+\n+def test_code_only_keeps_existing_code_development_subtree() -> None:\n+    code_leaf = TaskNode(\n+        id=\"code\",\n+        requirements=\"implement method\",\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    analysis_leaf = TaskNode(\n+        id=\"analysis\",\n+        requirements=\"analyse results\",\n+        weight=1,\n+        task_category=\"Result Analysis\",\n+    )\n+    root = TaskNode(\n+        id=\"root\",\n+        requirements=\"complete the paper\",\n+        weight=2,\n+        sub_tasks=[code_leaf, analysis_leaf],\n+    )\n+\n+    code_only = _code_only_task_tree(root)\n+\n+    assert [node.id for node in code_only.get_leaf_nodes()] == [\"code\"]\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:54:56Z",
+  "github_updated_at": "2026-08-17T21:54:56Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/164",
+    "https://github.com/openai/frontier-evals/pull/164/files"
+  ]
+}

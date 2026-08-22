@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/155",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 155,
+  "title": "Fix EVMbench medium findings subdirectory option",
+  "body": "## Summary\n\n- align the EVMbench `findings_subdir` option with the audit-layer spelling\n- expose `medium` rather than `med` for the medium incorrectness dataset\n- leave the separate `hint_level=\"med\"` option unchanged\n\nThe eval currently declares `findings_subdir` as `\"med\"`, while `Audit`, `Vulnerability`, `AuditRegistry`, and the gold-audit utility all use `\"medium\"`. Passing the eval's advertised medium value downstream therefore selects the wrong findings subdirectory.\n\nThis one-line change makes the eval configuration use the same `\"medium\"` convention as the rest of EVMbench.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/evmbench/evmbench/nano/eval.py b/project/evmbench/evmbench/nano/eval.py\nindex 631f4e44..fe24101b 100644\n--- a/project/evmbench/evmbench/nano/eval.py\n+++ b/project/evmbench/evmbench/nano/eval.py\n@@ -43,7 +43,7 @@ class EVMbench(PythonCodingEval):\n     remove_forge_artifacts: bool = chz.field(default=True)\n     log_to_run_dir: bool = chz.field(default=False)\n     hint_level: Literal[\"none\", \"low\", \"med\", \"high\", \"max\"] = chz.field(default=\"none\")\n-    findings_subdir: Literal[\"\", \"low\", \"med\", \"high\"] = chz.field(default=\"\", doc=\"Incorrectness level for experiments\")\n+    findings_subdir: Literal[\"\", \"low\", \"medium\", \"high\"] = chz.field(default=\"\", doc=\"Incorrectness level for experiments\")\n     codex_auth_path: str | None = chz.field(default=None)\n     use_sidecar: bool = chz.field(default=True, doc=\"Run ploit/veto in a sidecar for agent.\")\n \n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:07:05Z",
+  "github_updated_at": "2026-08-17T21:07:05Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/155",
+    "https://github.com/openai/frontier-evals/pull/155/files"
+  ]
+}

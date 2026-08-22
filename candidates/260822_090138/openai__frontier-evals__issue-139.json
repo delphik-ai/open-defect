@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/139",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 139,
+  "title": "SWE-Lancer token totals include one phantom token per category",
+  "body": "## Summary\n\n`SWELancerEval.get_full_summary()` initializes all three usage totals to `1` before adding the real token counts from each result:\n\n```python\nsummary[\"total_input_tokens\"] = 1\nsummary[\"total_output_tokens\"] = 1\nsummary[\"total_reasoning_tokens\"] = 1\n```\n\nEvery completed summary therefore over-reports each token category by exactly one.\n\n## Impact\n\nRun-level usage accounting and any downstream cost/token analysis built from these summary fields is deterministically incorrect, including runs with no successfully parsed usage where the summary still reports one token in each category.\n\n## Proposed resolution\n\nInitialize all three totals to `0` and keep the existing accumulation logic unchanged.\n\nAdd a focused summary regression with known grader-log token counts and verify the totals equal the exact sums with no offset.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T15:01:41Z",
+  "github_updated_at": "2026-08-16T15:01:41Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 source-read audit. Issue #139 quotes SWELancerEval.get_full_summary initializing all token totals to 1, and PR #148 changes them to 0 with regression coverage. Existing SWE-Lancer artifacts do not cover token accounting totals.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/139",
+    "https://github.com/openai/frontier-evals/pull/148",
+    "https://github.com/openai/frontier-evals/pull/148/files"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-139",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-Lancer aggregate token totals start at one in each category, adding a phantom input, output, and reasoning token to every run summary."
+}

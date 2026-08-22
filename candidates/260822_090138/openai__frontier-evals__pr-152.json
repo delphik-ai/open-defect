@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/152",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 152,
+  "title": "Fix MCQ API answer-format prompt",
+  "body": "## Summary\n\n- expand the actual answer labels in `OpenAIAPIMCQSolver` prompt instructions\n- make the required final-line format conditional on `allow_multiple_choices`\n- preserve the existing response parser and grading behavior\n\nFor single-answer questions, the prompt now requests `Answer: $LETTER` using one of the actual labels. For multi-answer questions, it requests `Answer: $LETTER1, $LETTER2, ...` using the available labels.\n\nThis is intentionally scoped to prompt construction. The separate multi-answer result-preservation work in #120 remains independent.\n\nFixes #123.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/common/nanoeval/nanoeval/solvers/mcq_api.py b/project/common/nanoeval/nanoeval/solvers/mcq_api.py\nindex 519cfaac..240a51d1 100644\n--- a/project/common/nanoeval/nanoeval/solvers/mcq_api.py\n+++ b/project/common/nanoeval/nanoeval/solvers/mcq_api.py\n@@ -25,6 +25,22 @@\n \"\"\".strip()\n \n \n+def _answer_format_instruction(answer_keys: Sequence[str], allow_multiple_choices: bool) -> str:\n+    answer_choices = \", \".join(answer_keys)\n+    if allow_multiple_choices:\n+        final_line_format = \"'Answer: $LETTER1, $LETTER2, ...' (without quotes)\"\n+        choice_instruction = f\"where each LETTER is one of {answer_choices}\"\n+    else:\n+        final_line_format = \"'Answer: $LETTER' (without quotes)\"\n+        choice_instruction = f\"where LETTER is one of {answer_choices}\"\n+\n+    return (\n+        \"Answer the following multiple choice question. The last line of your response should be \"\n+        f\"of the following format: {final_line_format} {choice_instruction}. \"\n+        \"Think step by step before answering.\"\n+    )\n+\n+\n @chz.chz\n class OpenAIAPIMCQSolver(MCQSolver[Answer]):\n     model: str\n@@ -94,7 +110,9 @@ async def solve(self, task: MCQTask) -> Answer:\n             {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n             {\n                 \"role\": \"user\",\n-                \"content\": \"Answer the following multiple choice question. The last line of your response should be of the following format: 'Answer: $LETTER' (without quotes) where LETTER is one of {answer_choices}. Think step by step before answering.\",\n+                \"content\": _answer_format_instruction(\n+                    list(letters_to_answers.keys()), question.allow_multiple_choices\n+                ),\n             },\n             {\"role\": \"user\", \"content\": prompt},\n         ]\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T20:55:34Z",
+  "github_updated_at": "2026-08-17T20:55:34Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals PR fixes MCQ, ShortAnswer, PaperBench, or generic metric behavior without evidence that the current SWE-Lancer Diamond benchmark artifact is affected. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/152",
+    "https://github.com/openai/frontier-evals/pull/152/files"
+  ]
+}

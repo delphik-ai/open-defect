@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/144",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 144,
+  "title": "PaperBench aggregate nodes can hide invalid child grades",
+  "body": "## Summary\n\n`Judge.grade()` marks leaf/subtree failures with `valid_score=False`, but every internal node created after recursively grading children is hard-coded to `valid_score=True`.\n\nA root grade can therefore report itself as valid even when one or more descendants failed to grade and were replaced with invalid zero-score nodes.\n\n## Current behavior\n\nOn a child grading exception:\n\n```python\nreturn GradedTaskNode.from_task(\n    task,\n    score=0.0,\n    valid_score=False,\n    ...\n)\n```\n\nAfter collecting children, the parent is constructed with:\n\n```python\nvalid_score=True\n```\n\nregardless of `graded_sub_tasks`.\n\n## Impact\n\nJudge failures can be hidden by aggregate nodes, including the final root result. Consumers that use `valid_score` to distinguish legitimate low scores from grading errors can treat an error-tainted PaperBench grade as valid.\n\n## Proposed resolution\n\nAn aggregate node should be valid only when all of its graded children are valid:\n\n```python\nvalid_score = all(child.valid_score for child in graded_sub_tasks)\n```\n\nAdd a regression with one successful child and one child raising during grading, verifying the failing child and every aggregate ancestor are marked invalid while the weighted score behavior remains unchanged.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T15:10:36Z",
+  "github_updated_at": "2026-08-16T15:10:36Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue is about PaperBench behavior, not the current SWE-Lancer Diamond benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/144"
+  ]
+}

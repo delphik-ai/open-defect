@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/638",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 638,
+  "title": "# Multilingual eval images ship a `.bashrc` that writes an error to stdout on every command",
+  "body": "## Summary\n\nA subset of `swebench/sweb.eval.x86_64.*` (SWE-bench Multilingual) images contain a `/root/.bashrc`\nwhose first line sources a path that does not exist in the image:\n\n```\n/root/.bashrc: line 1: /opt/miniconda3/etc/profile.d/conda.sh: No such file or directory\n```\n\nAny shell that sources it therefore emits that error **before** the actual command output. Since the\nfile is sourced to activate the `testbed` environment, the activation it exists to perform also does\nnot happen on these images.\n\n## Reproduce\n\n```bash\nIMG=swebench/sweb.eval.x86_64.burntsushi_1776_ripgrep-2576:latest\n\ndocker run --rm $IMG bash -c 'echo HELLO'\n# HELLO\n\ndocker run --rm -e BASH_ENV=/root/.bashrc $IMG bash -c 'echo HELLO'\n# /root/.bashrc: line 1: /opt/miniconda3/etc/profile.d/conda.sh: No such file or directory\n# HELLO\n\ndocker run --rm $IMG bash -lc 'echo HELLO'\n# /root/.bashrc: line 1: /opt/miniconda3/etc/profile.d/conda.sh: No such file or directory\n# HELLO\n```\n\nBoth the `BASH_ENV` and login-shell forms are used by real harnesses — mini-swe-agent's SWE-bench\nconfig sets `BASH_ENV=/root/.bashrc` specifically so `conda activate testbed` runs.\n\n## Affected vs clean (same repo)\n\n| image | first line of output when `.bashrc` is sourced |\n|---|---|\n| `apache_1776_lucene-11760` | clean |\n| `apache_1776_lucene-12022` | **conda error** |\n| `babel_1776_babel-16130` | clean |\n| `babel_1776_babel-13928` | **conda error** |\n\nAlso observed polluted: `burntsushi_1776_ripgrep-*`, `laravel_1776_framework-*`, `jqlang_1776_jq-*`,\n`jordansissel_1776_fpm-*`, `javaparser_1776_javaparser-*`, `jekyll_1776_jekyll-*`,\n`astral-sh_1776_ruff-*`.\n\nIt varies image by image *within the same repo*, which points at a build-recipe change rather than\nanything inherent to a task or language.\n\n## Why it matters beyond cosmetics\n\nAgent harnesses parse command output, and some identify control signals by position. In\nmini-swe-agent the task-submission marker must be the first line of output\n(`environments/docker.py:140`); on these images the error takes line 0, a **correct submission is\nnever recognised**, the agent idles until its step limit, and a solved task is recorded as an **empty\npatch** — i.e. scored as a failure with nothing surfaced to indicate an infrastructure problem.\n\nFiled separately against mini-swe-agent, since a positional parse is fragile regardless. But the\ntrigger originates here and will keep affecting any harness that assumes clean stdout.\n\n## Suggested fix\n\nMake `.bashrc` silent in the eval images — remove the stale conda source line, or guard it:\n\n```bash\n[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && . /opt/miniconda3/etc/profile.d/conda.sh\n```\n\nA build-time assertion that `bash -lc 'echo X'` outputs exactly `X` would prevent recurrence, and\nwould also catch images where `conda activate testbed` is silently not happening.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T15:39:05Z",
+  "github_updated_at": "2026-08-16T17:31:59Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "The issue claims a subset of SWE-bench Multilingual images emit a .bashrc/conda activation error on every sourced shell command. This is high-fanout image behavior without maintainer acknowledgement or merged fix, so L3 Docker reproduction is required before counting. No valid reproduction run was completed in this sync.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/638"
+  ]
+}

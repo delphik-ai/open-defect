@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/stanfordmlgroup/MedAgentBench/issues/9",
+  "repo": "stanfordmlgroup/medagentbench",
+  "source_type": "github_issue",
+  "github_number": 9,
+  "title": "MedAgentBench V3",
+  "body": "Has version v3 been released?",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-21T05:58:20Z",
+  "github_updated_at": "2026-08-21T05:58:20Z",
+  "candidate_benchmark_names": [
+    "medagentbench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "This asks whether MedAgentBench V3 has been released. It does not claim a defect in the current benchmark artifact.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/9"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/140",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 140,
+  "title": "PaperBench run parsing crashes on uneven seed counts",
+  "body": "## Summary\n\n`paperbench.metrics.parse_run_data()` builds evaluation runs across papers with different numbers of available seeds. It correctly identifies the maximum seed count, but its short-paper guard only checks equality:\n\n```python\nif seed == len(data):\n    continue\npaper_eval = data[seed][\"paper_eval\"]\n```\n\nIf one paper has 1 run and another has 3, seed 1 is skipped for the shorter paper, but seed 2 satisfies `2 != 1` and the code attempts `data[2]`, raising `IndexError`.\n\n## Impact\n\nParsing historical/incomplete PaperBench run data can crash whenever per-paper run counts differ by more than one, instead of producing the intentionally incomplete `EvaluationRun` objects described by the surrounding comment.\n\n## Proposed resolution\n\nSkip whenever the current seed index is outside that paper's available data:\n\n```python\nif seed >= len(data):\n    continue\n```\n\nAdd a regression with one paper containing one run and another containing three runs, verifying parsing produces three evaluation runs without indexing past the shorter paper.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T15:02:52Z",
+  "github_updated_at": "2026-08-16T15:02:52Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue is about PaperBench behavior, not the current SWE-Lancer Diamond benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/140"
+  ]
+}

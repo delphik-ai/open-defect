@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/137",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 137,
+  "title": "System-error metric validity ignores missing rollout attempts",
+  "body": "## Summary\n\n`handle_system_errors_and_compute_metrics()` documents top-level metrics as invalid when excluded system errors leave too few rollouts for an instance, but its `is_valid` check compares only the set of `question_id` values before and after excluding errors.\n\nIf an instance has multiple attempts and only one attempt fails, the question ID still exists in both sets and `is_valid` remains `True` even though a rollout was removed.\n\n## Reproducer\n\nFor one question with attempts 0 and 1:\n\n- attempt 0 returns a normal result;\n- attempt 1 returns `RolloutSystemError`.\n\nThe full result set has two rollouts for the instance, while the top-level metrics see only one. The current check still reports `is_valid=True` because both sets contain the same single `question_id`.\n\n## Impact\n\nConsumers can treat metrics computed from an incomplete rollout set as valid, including consensus/pass@k settings where the missing attempt is precisely the condition the function's validity contract is intended to surface.\n\n## Proposed resolution\n\nCompare per-instance rollout counts before and after excluding system errors, rather than only distinct question IDs. `is_valid` should be true only when every instance retains the same number of rollouts.\n\nAdd a regression covering a partial per-instance system error and a fully successful multi-attempt instance.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:55:17Z",
+  "github_updated_at": "2026-08-16T14:55:17Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/137"
+  ]
+}

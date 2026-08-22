@@ -17,6 +17,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-05-05T23:18:32Z",
-  "last_reviewed_at": "2026-07-14T00:07:18.273Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
   "decision_note": "L2 PR diff/source audit. PR #94 is explicitly tied to issue #93 and states all SWE-bench Pro images retain future git history, enabling reward hacks from future main commits, feature branches, and tags. The diff adds cleanup commands to hundreds of instance Dockerfiles and reworks the harness to fetch gold tests without relying on image git history. A maintainer comment thanks the reporter and says the team is actively reviewing the fix, providing social proof. No existing swebenchpro artifact covers this git-history leakage root cause; PR is open, so resolution is fixing."
 }

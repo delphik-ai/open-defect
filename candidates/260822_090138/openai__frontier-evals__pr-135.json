@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/135",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 135,
+  "title": "Use canonical correctness in end-of-run computer-task logging",
+  "body": "## Summary\n\nMake the optional end-of-run computer-task logger use the same correctness definition as `FinalResult` and the normal evaluation recording path.\n\n`FinalResult.correct` is true only when `grade.score == 1`, but `_log_results()` currently calls `bool(score)`. Any positive partial score such as `0.5` is therefore recorded as fully correct when `log_at_end=True` even though the result itself is incorrect.\n\nFixes #133.\n\n## Fix\n\nRecord `result.correct` directly and remove the now-unused local score variable.\n\n## Regression coverage\n\nAdds a focused recorder test with `grade.score=0.5` verifying that:\n\n- `FinalResult.correct` is false;\n- the end-of-run sample log is preserved;\n- `record_match()` receives `correct=False`.\n\nThe grade value, grader log, group IDs, normal `_evaluate_inner()` recording path, and continuous-score data are unchanged.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver.py b/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver.py\nindex d63d8f02..ce6d7d3e 100644\n--- a/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver.py\n+++ b/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver.py\n@@ -175,7 +175,6 @@ def _log_results(task: ComputerTask, result: FinalResult) -> None:\n     \"\"\"\n     recorder = get_recorder()\n \n-    score = result.grade.score\n     log = result.grade.grader_log\n \n     recorder.record_sampling(\n@@ -186,7 +185,7 @@ def _log_results(task: ComputerTask, result: FinalResult) -> None:\n     )\n \n     recorder.record_match(\n-        correct=bool(score),\n+        correct=result.correct,\n         group_id=str(task.attempt_id),\n     )\n \ndiff --git a/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver_test.py b/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver_test.py\nnew file mode 100644\nindex 00000000..a86ae998\n--- /dev/null\n+++ b/project/common/nanoeval/nanoeval/solvers/computer_tasks/solver_test.py\n@@ -0,0 +1,29 @@\n+from types import SimpleNamespace\n+from unittest.mock import MagicMock\n+\n+import nanoeval.solvers.computer_tasks.solver as solver_module\n+from nanoeval.solvers.computer_tasks.solver import _log_results\n+from nanoeval.solvers.computer_tasks.steps import FinalResult\n+from nanoeval.solvers.computer_tasks.task import Grade\n+\n+\n+def test_log_results_uses_final_result_correctness(monkeypatch) -> None:\n+    recorder = MagicMock()\n+    monkeypatch.setattr(solver_module, \"get_recorder\", lambda: recorder)\n+    task = SimpleNamespace(question_id=\"task.0\", attempt_id=3)\n+    result = FinalResult(grade=Grade(score=0.5, grader_log=\"partial credit\"))\n+\n+    assert result.correct is False\n+\n+    _log_results(task, result)\n+\n+    recorder.record_sampling.assert_called_once_with(\n+        prompt=\"\",\n+        sampled=\"partial credit\",\n+        sample_id=\"task.0\",\n+        group_id=\"3\",\n+    )\n+    recorder.record_match.assert_called_once_with(\n+        correct=False,\n+        group_id=\"3\",\n+    )\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:31:03Z",
+  "github_updated_at": "2026-08-16T14:31:03Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals PR fixes MCQ, ShortAnswer, PaperBench, or generic metric behavior without evidence that the current SWE-Lancer Diamond benchmark artifact is affected. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/135",
+    "https://github.com/openai/frontier-evals/pull/135/files"
+  ]
+}

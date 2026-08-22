@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/132",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 132,
+  "title": "Fix computer-task action limit boundary",
+  "body": "## Summary\n\nAllow a computer-task rollout to use exactly the configured number of actions before raising `ActionLimitExceededError`.\n\n`LimitsHelper.enforce_rollout_limits()` currently increments the counter and raises when `num_actions >= max_actions`. A configured limit of 100 therefore rejects action 100 and permits only 99 actions, despite the helper documenting that the error is raised when the count **exceeds** the maximum.\n\nFixes #131.\n\n## Fix\n\nRaise when `num_actions > max_actions`.\n\n## Regression coverage\n\nAdds a boundary test with `max_actions=2` verifying that:\n\n- action 1 succeeds;\n- action 2 succeeds;\n- action 3 raises `ActionLimitExceededError`.\n\nThe timeout behavior, action counter initialization, exception type, and error message are unchanged.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits.py b/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits.py\nindex 7bf575a4..d568da18 100644\n--- a/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits.py\n+++ b/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits.py\n@@ -82,7 +82,7 @@ def increment_actions() -> None:\n                 nonlocal num_actions\n                 num_actions += 1\n \n-                if num_actions >= self.max_actions:\n+                if num_actions > self.max_actions:\n                     raise ActionLimitExceededError(\"Exceeded max actions = %d!\" % self.max_actions)\n \n             yield increment_actions\ndiff --git a/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits_test.py b/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits_test.py\nindex bd0c0719..0a648911 100644\n--- a/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits_test.py\n+++ b/project/common/nanoeval/nanoeval/solvers/computer_tasks/limits_test.py\n@@ -2,7 +2,7 @@\n \n import pytest\n \n-from nanoeval.solvers.computer_tasks.limits import LimitsHelper\n+from nanoeval.solvers.computer_tasks.limits import ActionLimitExceededError, LimitsHelper\n from nanoeval.solvers.computer_tasks.pausable_timer import NamedTimeoutError\n \n \n@@ -21,3 +21,14 @@ async def test_unrelated_timeouts() -> None:\n         async with limits.enforce_timeout(\"test\", 0.01):\n             async with asyncio.timeout(0.5):\n                 await asyncio.sleep(1)\n+\n+\n+@pytest.mark.asyncio\n+async def test_rollout_action_limit_allows_exact_maximum() -> None:\n+    limits = LimitsHelper(max_actions=2)\n+\n+    async with limits.enforce_rollout_limits() as increment_actions:\n+        increment_actions()\n+        increment_actions()\n+        with pytest.raises(ActionLimitExceededError, match=\"Exceeded max actions = 2\"):\n+            increment_actions()\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:26:55Z",
+  "github_updated_at": "2026-08-16T14:26:55Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 audit matched PR #132 to the canonical issue #131 root cause. The diff changes LimitsHelper to raise only after the configured max action count is exceeded and adds boundary coverage.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/132",
+    "https://github.com/openai/frontier-evals/pull/132/files",
+    "https://github.com/openai/frontier-evals/issues/131"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-131",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "PR #132 fixes the SWE-Lancer computer-task action-limit off-by-one tracked by issue #131."
+}

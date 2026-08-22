@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/123",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 123,
+  "title": "MCQ API prompt suppresses multi-answer responses and leaves answer_choices unexpanded",
+  "body": "## Summary\n\n`OpenAIAPIMCQSolver.solve()` currently builds the answer-format instruction as a plain string containing the literal placeholder `{answer_choices}` and always asks for exactly one `$LETTER`, including when `question.allow_multiple_choices=True`.\n\nThat makes the prompt inconsistent with the solver's multi-answer parser and grading contract.\n\n## Current behavior\n\nThe user instruction is currently:\n\n```python\n{\n    \"role\": \"user\",\n    \"content\": \"Answer the following multiple choice question. The last line of your response should be of the following format: 'Answer: $LETTER' (without quotes) where LETTER is one of {answer_choices}. Think step by step before answering.\",\n},\n```\n\nTwo problems follow:\n\n1. `{answer_choices}` is never interpolated, so the model sees that literal text rather than the available labels.\n2. For `allow_multiple_choices=True`, the model is still explicitly instructed to return one letter even though `_extract_picked_letters()` supports multiple letters and the `Question` contract requires the returned set to match `correct_indices`.\n\nThe second point is especially important alongside #120: fixing multi-answer parsing/grading still leaves the sampler prompt steering the model toward a single-answer response.\n\n## Impact\n\nFor multi-answer questions, a model can know that several choices are correct but follow the format instruction and emit only one. That response is then necessarily wrong under exact-set grading. This can systematically understate capability on evals using `allow_multiple_choices=True`.\n\nThe literal `{answer_choices}` placeholder also weakens output-format guidance for ordinary single-answer questions.\n\n## Proposed fix\n\nConstruct the instruction from the actual answer labels and make the required final-line format conditional on `allow_multiple_choices`.\n\nFor example:\n\n- single answer: `Answer: $LETTER`, where `LETTER` is one of the actual labels;\n- multiple answers: `Answer: $LETTER1, $LETTER2, ...`, using one or more actual labels.\n\nRegression coverage should verify the generated messages for both modes and confirm that a multi-letter response is preserved for the multi-answer path.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T00:34:02Z",
+  "github_updated_at": "2026-08-16T00:34:02Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/123"
+  ]
+}

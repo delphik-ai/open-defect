@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/issues/534",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_issue",
+  "github_number": 534,
+  "title": "Wrong answer in Alice in Wonderland",
+  "body": "## Generated problem:\n\nSusan has 3 male colleagues and she also has 5 female colleagues. These are all colleagues that Susan has. All these mentioned persons around Susan are colleagues of each other. James has 4 male colleagues and 4 female colleagues in total. All these mentioned persons around James are colleagues of each other. The people in the circle around James do not have other colleagues aside - with the only exception of Matilda. She is colleague of James and she is also colleague of Susan, being part of Susan's circle. How many female colleagues does Matilda have?\n\nGenerated answer: 6\n\n## Actual answer\n\nMatilda is friend of 8 female colleagues:\n- 3 common female colleagues with James\n- 4 common female colleagues with Susan\n- 1 Susan\n\n## Code to reproduce\n\n```python\nfrom reasoning_gym.logic.aiw import AliceInWonderlandConfig, AliceInWonderlandDataset, TaskType\n\nconfig = AliceInWonderlandConfig(\n    task_types=[TaskType.COLLEAGUES],\n    task_type_weights=[1.0],\n    size=1,\n    seed=0,\n)\ndataset = AliceInWonderlandDataset(config)\nitem = dataset[0]\n\nprint(item[\"question\"])\nprint()\nprint(\"library's answer:\", item[\"answer\"])\n```",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-21T08:59:42Z",
+  "github_updated_at": "2026-08-21T08:59:42Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "The issue appears to report a wrong generated answer in upstream reasoning-gym, but the repo maps to both reasoning-gym-easy and reasoning-gym-hard and the thread does not prove which current Delphik benchmark variant or task row is affected. Without variant attribution, it cannot be counted as confirmed or duplicate_evidence.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/issues/534"
+  ]
+}

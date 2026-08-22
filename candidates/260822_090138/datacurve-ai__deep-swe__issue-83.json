@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/83",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 83,
+  "title": "Benchmark GLM 5.3 at low, high, and max effort on DeepSWE v1.1",
+  "body": "Please benchmark the newly available GLM 5.3 on DeepSWE v1.1 and add independently measured results to the public leaderboard at each distinct reasoning-effort level.\n\nhttps://z.ai/blog/glm-5.3\n\nReported DeepSWE 1.1 score: 66.9%\n\nPrices are the same as the old GLM 5.2.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/83#issuecomment-5331278991",
+      "user": "fatih-onventis",
+      "created_at": "2026-08-18T16:42:57Z",
+      "updated_at": "2026-08-18T16:42:57Z",
+      "body": "I dont know why but they dont want to test Chinese models in different efforts. It's a bummer. "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/83#issuecomment-5341418166",
+      "user": "Perusae",
+      "created_at": "2026-08-19T11:20:44Z",
+      "updated_at": "2026-08-19T11:20:44Z",
+      "body": "It seems to be always a issue with Datacurve/DeepSWE ...\n\n* Most Chinese models are tested very late. \n* Most are never tested with anything beyond max. So no clear image is presented at how smart the model itself is without a mass of thinking tokens.\n* Updates to prices on Chinese model are also late. GPT Luna pricing was updated fast...\n\nIf its a OpenAI, Anthropic, Google, ... model, they are so tested and published almost on the same day of release. \n\nIts impossible to not notice this pattern after a while."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/83#issuecomment-5352360392",
+      "user": "XiaoXiaoJiangYun",
+      "created_at": "2026-08-20T06:41:13Z",
+      "updated_at": "2026-08-20T06:41:13Z",
+      "body": "Chinese models are quite good, need DeepSWE test report."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-15T00:59:50Z",
+  "github_updated_at": "2026-08-20T06:41:13Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "This is a request to benchmark a new model on DeepSWE v1.1 and update leaderboard results. It is not evidence of a benchmark defect.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/83"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "seta-env__camel-ai__seta-env__issue-10",
+  "benchmark_name": "seta-env",
+  "scope": "task_specific",
+  "task_names": [
+    "999"
+  ],
+  "resolution": "found",
+  "title": "Task 999 is missing mock_dmesg.log and mock_journalctl.log required by its Dockerfiles",
+  "summary": "SETA task 999 Dockerfiles copy mock_dmesg.log and mock_journalctl.log fixtures that are absent from the task package, so the task image cannot build.",
+  "canonical_source_url": "https://github.com/camel-ai/seta-env/issues/10",
+  "evidence_urls": [
+    "https://github.com/camel-ai/seta-env/issues/10",
+    "https://github.com/camel-ai/seta-env/tree/main/Dataset/999",
+    "https://github.com/camel-ai/seta-env/tree/main/Harbor-Dataset/999/environment"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-20T02:49:38Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "decision_note": "L2 source-read audit. The issue names current task 999 and both Dataset/999/Dockerfile and Harbor-Dataset/999/environment/Dockerfile COPY instructions for missing mock_dmesg.log and mock_journalctl.log. No existing seta-env artifact covers this missing-fixture root cause; the issue remains open."
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/124",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 124,
+  "title": "Multi-answer MCQ parse failures return an int and violate the evaluator contract",
+  "body": "## Summary\n\n`OpenAIAPIMCQSolver.solve()` sends every extraction failure through `_random_guess(question)`. That fallback always returns `Answer.picked` as a single `int`, including when `question.allow_multiple_choices=True`.\n\nThe multi-answer evaluator contract requires `picked` to be a `set[int]`. `MCQEval.evaluate()` asserts that type before recording the result, and `MCQEval.get_summary()` performs the same validation. An unparseable multi-answer model response can therefore turn into an assertion failure instead of an ordinary incorrect/invalid eval result.\n\n## Current path\n\n`mcq_api.py`:\n\n```python\nif not picked_letters:\n    ...\n    return self._random_guess(task.question)\n```\n\n`_random_guess()` always constructs:\n\n```python\nAnswer(\n    picked=integer_picked,\n    correct=integer_picked in question.correct_indices,\n    ...\n)\n```\n\nBut `mcq.py` requires, for `allow_multiple_choices=True`:\n\n```python\nassert isinstance(res.picked, set)\n```\n\n## Reproducer\n\nUse a question with `allow_multiple_choices=True` and return a model response from which `_extract_picked_letters()` extracts no valid answer labels, for example an empty or malformed final answer. `solve()` returns an int-valued random guess. Passing that result through `MCQEval.evaluate()` then violates the set-valued contract.\n\n## Impact\n\nMalformed output is a normal condition an eval harness should be able to score or mark invalid. Here it can abort evaluation for multi-answer tasks, which also makes robustness depend on output formatting rather than solely on scoring policy.\n\n## Proposed resolution\n\nMake the extraction-failure path satisfy the multi-answer contract. Two reasonable approaches are:\n\n1. make the fallback mode-aware and return a set-valued pick with set-equality correctness when multiple choices are allowed; or\n2. represent extraction failure explicitly as an invalid/incorrect multi-answer result rather than synthesizing a single-answer guess.\n\nWhichever policy is intended, add an end-to-end regression that runs an unparseable multi-answer response through `solve()` and `MCQEval.evaluate()` / summary without an assertion failure.\n\nThis is separate from the successfully parsed multi-answer grading changes in #120: the failure path still needs to preserve the multi-answer result shape.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T00:35:34Z",
+  "github_updated_at": "2026-08-16T00:35:34Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/124"
+  ]
+}

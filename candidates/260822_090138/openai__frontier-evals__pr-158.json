@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/158",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 158,
+  "title": "Normalize EVMbench scores at the nanoeval boundary",
+  "body": "## Summary\n\n- normalize `EVMbenchGrade.score` to `score / max_score`\n- keep raw EVMbench score and max score unchanged in `evmbench_result`\n- mark the wrapper grade continuous and handle zero-max-score results safely\n\nNanoeval defines `FinalResult.correct` as `grade.score == 1`. EVMbench currently puts its raw count/point score in that wrapper field, so a perfect result such as `4/4` is treated as incorrect because `4 != 1`.\n\nThe raw benchmark metrics already live in `evmbench_result.score` and `evmbench_result.max_score`. Normalizing only the nanoeval wrapper preserves those values while restoring the intended generic correctness behavior for logging and progress reporting.\n\nRegression coverage checks perfect, partial, and zero-max-score cases.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/evmbench/evmbench/nano/grade/base.py b/project/evmbench/evmbench/nano/grade/base.py\nindex 89262520..cb0643fe 100644\n--- a/project/evmbench/evmbench/nano/grade/base.py\n+++ b/project/evmbench/evmbench/nano/grade/base.py\n@@ -1,7 +1,7 @@\n from abc import ABC, abstractmethod\n from pathlib import Path\n-from pydantic import BaseModel, Field\n-from typing import Any, Literal\n+from pydantic import BaseModel, Field, model_validator\n+from typing import Any, Literal, Self\n \n import structlog.stdlib\n from nanoeval.solvers.computer_tasks.task import Grade\n@@ -58,6 +58,17 @@ class EVMbenchGrade(Grade):\n     \"\"\"Wrapper class for interfacting with nanoeval.\"\"\"\n     evmbench_result: EVMbenchResult\n \n+    @model_validator(mode=\"after\")\n+    def normalize_nanoeval_score(self) -> Self:\n+        max_score = float(self.evmbench_result.max_score)\n+        self.score = (\n+            float(self.evmbench_result.score) / max_score\n+            if max_score > 0\n+            else 0.0\n+        )\n+        self.is_continuous = True\n+        return self\n+\n class GraderContext(BaseModel):\n     audit: Audit\n     mode: Literal[\"detect\", \"patch\", \"exploit\"]\ndiff --git a/project/evmbench/tests/test_nanoeval_grade_score.py b/project/evmbench/tests/test_nanoeval_grade_score.py\nnew file mode 100644\nindex 00000000..29941c95\n--- /dev/null\n+++ b/project/evmbench/tests/test_nanoeval_grade_score.py\n@@ -0,0 +1,35 @@\n+from nanoeval.solvers.computer_tasks.steps import FinalResult\n+\n+from evmbench.nano.grade.base import EVMbenchGrade, EVMbenchResult\n+\n+\n+def _grade(score: float, max_score: float) -> EVMbenchGrade:\n+    return EVMbenchGrade(\n+        score=score,\n+        grader_log=\"\",\n+        evmbench_result=EVMbenchResult(\n+            audit_id=\"sample-audit\",\n+            score=score,\n+            max_score=max_score,\n+        ),\n+    )\n+\n+\n+def test_evmbench_grade_normalizes_score_for_nanoeval_correctness() -> None:\n+    perfect = _grade(4, 4)\n+    partial = _grade(2, 4)\n+\n+    assert perfect.score == 1.0\n+    assert perfect.evmbench_result.score == 4\n+    assert FinalResult(grade=perfect).correct is True\n+\n+    assert partial.score == 0.5\n+    assert partial.evmbench_result.score == 2\n+    assert FinalResult(grade=partial).correct is False\n+\n+\n+def test_evmbench_grade_handles_zero_max_score() -> None:\n+    grade = _grade(0, 0)\n+\n+    assert grade.score == 0.0\n+    assert grade.is_continuous is True\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:17:36Z",
+  "github_updated_at": "2026-08-17T21:17:36Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/158",
+    "https://github.com/openai/frontier-evals/pull/158/files"
+  ]
+}

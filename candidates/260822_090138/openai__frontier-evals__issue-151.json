@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/151",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 151,
+  "title": "SWE-Lancer grades all-missing pytest exit codes as a model failure instead of rollout error",
+  "body": "## Summary\n\n`SWELancerTask._grade_swe_ic()` records `-1.0` when it cannot parse `/app/tests/logs/$ISSUE_ID/pytest_exit_code`. The retry loop continues, but if every test attempt is missing that exit code, `test_results` is still non-empty and the current `if not test_results` guard does not fire.\n\nThe task is then returned with `score=0.0` and the note `Tests ran smoothly`, even though no test run produced a valid pytest status.\n\n## Impact\n\nA grading/infrastructure failure can be counted as a model failure, lowering SWE-Lancer scores and contaminating evaluation results instead of surfacing as `RolloutSystemError`.\n\n## Proposed resolution\n\nTreat a run set as valid only if at least one attempt produced a real pytest result (`0.0` failure or `1.0` success). If all attempts are the `-1.0` missing-status sentinel, raise `RolloutSystemError` after retries are exhausted.\n\nAdd focused coverage distinguishing all-invalid attempts from a valid failing test run.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T20:06:31Z",
+  "github_updated_at": "2026-08-16T20:06:31Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 source-read audit. Issue #151 explains that _grade_swe_ic records -1.0 for missing pytest_exit_code and the old post-retry guard only checked whether test_results was empty. PR #153 changes the guard to require at least one real 0.0 or 1.0 pytest result. Existing artifacts do not cover this invalid-pytest sentinel root cause.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/151",
+    "https://github.com/openai/frontier-evals/pull/153",
+    "https://github.com/openai/frontier-evals/pull/153/files"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-151",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-Lancer IC grading treated all-missing pytest exit codes as ordinary model failures instead of rollout/system errors."
+}

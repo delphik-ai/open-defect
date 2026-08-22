@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/153",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 153,
+  "title": "Treat invalid SWE-Lancer pytest runs as rollout errors",
+  "body": "## Summary\n\n- require at least one real pytest pass/fail result before scoring an IC SWE-Lancer task\n- treat a retry set containing only the `-1.0` missing-status sentinel as a grading/infrastructure failure\n- preserve ordinary failing test runs (`0.0`) as valid model failures\n\nPreviously, repeated missing `pytest_exit_code` values left `test_results` non-empty, so the evaluator returned `score=0.0` and reported that tests ran smoothly. The validity check now accepts only run sets containing at least one real pass/fail status.\n\nThe code change is intentionally limited to the existing post-retry guard.\n\nFixes #151.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/swelancer/swelancer/eval.py b/project/swelancer/swelancer/eval.py\nindex 8dd5d6ec..69eba62c 100644\n--- a/project/swelancer/swelancer/eval.py\n+++ b/project/swelancer/swelancer/eval.py\n@@ -357,7 +357,7 @@ async def _grade_swe_ic(self, computer: ComputerInterface) -> SWELancerGrade:\n                 test_results.append(-1.0)\n             else:\n                 test_results.append(0.0)\n-        if not test_results:\n+        if not any(result in (0.0, 1.0) for result in test_results):\n             raise RolloutSystemError(\n                 f\"No tests properly ran for {self.question_id}; matching_folder: {matching_folder}\"\n             )\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T20:56:58Z",
+  "github_updated_at": "2026-08-17T20:56:58Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 audit matched PR #153 to the issue #151 root cause. The diff requires at least one real pytest pass/fail result before scoring an IC SWE-Lancer task and preserves ordinary failing tests as model failures.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/153",
+    "https://github.com/openai/frontier-evals/pull/153/files",
+    "https://github.com/openai/frontier-evals/issues/151"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-151",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "PR #153 fixes the SWE-Lancer all-missing pytest exit-code grading defect tracked by issue #151."
+}

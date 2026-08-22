@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/157",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 157,
+  "title": "Use configured EVMbench incorrect finding text",
+  "body": "## Summary\n\n- make `Vulnerability.text_content` honor `findings_subdir`\n- load experimental finding text from `findings/incorrect/<level>/<id>.md`\n- preserve canonical `findings/<id>.md` behavior when no incorrectness level is selected\n\nEVMbench already propagates `findings_subdir` from `AuditRegistry` into each `Vulnerability`, and gold-audit generation uses the corresponding incorrect-findings directory. The detect grader, however, reads `vulnerability.text_content`, which currently always returns the canonical finding.\n\nThat means incorrectness experiments can present modified findings while the judge still compares the model report against the canonical vulnerability description.\n\nThe regression verifies both canonical and `medium` incorrect finding selection.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/evmbench/evmbench/audit.py b/project/evmbench/evmbench/audit.py\nindex 5755bbb6..e13472bc 100644\n--- a/project/evmbench/evmbench/audit.py\n+++ b/project/evmbench/evmbench/audit.py\n@@ -53,6 +53,8 @@ def remote_test_path(self) -> str:\n     @property\n     def text_content(self) -> str:\n         findings_path = get_audits_dir() / self.audit_id / \"findings\"\n+        if self.findings_subdir:\n+            findings_path = findings_path / \"incorrect\" / self.findings_subdir\n         return (findings_path / f\"{self.id}.md\").read_text()\n \n @dataclass(frozen=True)\ndiff --git a/project/evmbench/tests/test_incorrect_finding_content.py b/project/evmbench/tests/test_incorrect_finding_content.py\nnew file mode 100644\nindex 00000000..6820cdee\n--- /dev/null\n+++ b/project/evmbench/tests/test_incorrect_finding_content.py\n@@ -0,0 +1,26 @@\n+import evmbench.audit as audit_module\n+from evmbench.audit import Vulnerability\n+\n+\n+def test_vulnerability_text_content_uses_configured_incorrect_findings(\n+    monkeypatch, tmp_path\n+) -> None:\n+    monkeypatch.setattr(audit_module, \"get_audits_dir\", lambda: tmp_path)\n+\n+    findings_dir = tmp_path / \"sample-audit\" / \"findings\"\n+    incorrect_dir = findings_dir / \"incorrect\" / \"medium\"\n+    incorrect_dir.mkdir(parents=True)\n+\n+    (findings_dir / \"H-01.md\").write_text(\"canonical finding\")\n+    (incorrect_dir / \"H-01.md\").write_text(\"medium incorrect finding\")\n+\n+    canonical = Vulnerability(id=\"H-01\", audit_id=\"sample-audit\", title=\"Finding\")\n+    incorrect = Vulnerability(\n+        id=\"H-01\",\n+        audit_id=\"sample-audit\",\n+        title=\"Finding\",\n+        findings_subdir=\"medium\",\n+    )\n+\n+    assert canonical.text_content == \"canonical finding\"\n+    assert incorrect.text_content == \"medium incorrect finding\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:17:29Z",
+  "github_updated_at": "2026-08-17T21:17:29Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/157",
+    "https://github.com/openai/frontier-evals/pull/157/files"
+  ]
+}

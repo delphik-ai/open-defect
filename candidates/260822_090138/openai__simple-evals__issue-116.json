@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/116",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 116,
+  "title": "Reproducibility: provenance bundle + paired statistics for fixed-item evals",
+  "body": "**Proposal**, aligned with OpenAI's own eval-quality analysis (SWE-bench Verified/Pro audits):\n\n1. Export per-instance resolution matrices (like SWE-bench `resolved` lists) so paired McNemar tests are possible instead of strict ranking.\n2. Report instance count + SE on every aggregation, with statistical tie-groups rather than a strict rank order.\n3. Optional reproducibility bundle per run: pinned data state, config hash, seeds.\n\nHappy to draft the format spec if this is of interest.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-15T18:35:06Z",
+  "github_updated_at": "2026-08-15T18:35:06Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "This is a reproducibility/statistics feature request for fixed-item eval reporting, not a SimpleQA benchmark defect claim.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/116"
+  ]
+}

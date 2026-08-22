@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/173",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 173,
+  "title": "fix(paperbench): handle uneven seed counts in run parsing",
+  "body": "## Summary\n\nMake PaperBench run reconstruction handle papers with uneven numbers of recorded seeds without raising `IndexError`.\n\n`parse_run_data()` builds seed-indexed `EvaluationRun` objects up to the largest per-paper seed count. For a paper with fewer runs, the loop currently skips only when:\n\n```python\nseed == len(data)\n```\n\nIf another paper has two or more additional seeds, a later iteration reaches `seed > len(data)` and still evaluates `data[seed]`, crashing the metrics parser.\n\n## Fix\n\nTreat every out-of-range seed as unavailable:\n\n```python\nif seed >= len(data):\n    continue\n```\n\nThis preserves the intended behavior described by the surrounding comment: incomplete evaluation runs are retained with only the paper evaluations that exist for that seed.\n\n## Regression coverage\n\nAdded a JSONL-level regression with one paper containing three recorded runs and another containing one. The test verifies that parsing produces three evaluation runs, with the shorter paper present only in the first run, instead of crashing on the third seed.\n\n## Risk\n\nLow. Equal-length run sets are unchanged. The only behavior change is for uneven per-paper seed counts that would otherwise index past the end of a paper's data.\n\n## Issue number\n\nN/A. Found while auditing PaperBench metrics reconstruction.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/metrics.py b/project/paperbench/paperbench/metrics.py\nindex d22a8cbe..8a82c01e 100644\n--- a/project/paperbench/paperbench/metrics.py\n+++ b/project/paperbench/paperbench/metrics.py\n@@ -293,7 +293,7 @@ def parse_entry_by_format(\n             eval_run = EvaluationRun(seed=seed, paper_evaluations={})\n             for data in filtered_paper_data.values():\n                 # some evaluation runs may not have all papers evaluated\n-                if seed == len(data):\n+                if seed >= len(data):\n                     continue\n                 paper_eval = data[seed][\"paper_eval\"]\n                 eval_run.paper_evaluations[paper_eval.paper_id] = paper_eval\ndiff --git a/project/paperbench/tests/unit/test_metrics.py b/project/paperbench/tests/unit/test_metrics.py\nnew file mode 100644\nindex 00000000..ea876ae7\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_metrics.py\n@@ -0,0 +1,52 @@\n+import json\n+\n+from paperbench.metrics import parse_run_data\n+\n+\n+def _graded_task_tree() -> dict:\n+    return {\n+        \"id\": \"task\",\n+        \"requirements\": \"test requirement\",\n+        \"weight\": 1,\n+        \"sub_tasks\": [],\n+        \"task_category\": \"Code Development\",\n+        \"score\": 1.0,\n+        \"valid_score\": True,\n+        \"explanation\": \"ok\",\n+    }\n+\n+\n+def _entry(paper_id: str, run_id: str, timestamp: str) -> dict:\n+    return {\n+        \"record_type\": \"extra\",\n+        \"timestamp\": timestamp,\n+        \"data\": {\n+            \"run_group_id\": \"group_agent\",\n+            \"run_id\": run_id,\n+            \"pb_result\": {\n+                \"paperbench_result\": {\n+                    \"paper_id\": paper_id,\n+                    \"judge_output\": {\"graded_task_tree\": _graded_task_tree()},\n+                }\n+            },\n+        },\n+    }\n+\n+\n+def test_parse_run_data_handles_papers_with_uneven_seed_counts(tmp_path):\n+    entries = [\n+        _entry(\"paper-a\", \"a-1\", \"2026-01-03T00:00:00Z\"),\n+        _entry(\"paper-a\", \"a-2\", \"2026-01-02T00:00:00Z\"),\n+        _entry(\"paper-a\", \"a-3\", \"2026-01-01T00:00:00Z\"),\n+        _entry(\"paper-b\", \"b-1\", \"2026-01-03T00:00:00Z\"),\n+    ]\n+    run_file = tmp_path / \"runs.jsonl\"\n+    run_file.write_text(\"\".join(f\"{json.dumps(entry)}\\n\" for entry in entries))\n+\n+    runs = parse_run_data(tmp_path)\n+\n+    assert list(runs) == [\"agent\"]\n+    assert len(runs[\"agent\"]) == 3\n+    assert set(runs[\"agent\"][0].paper_evaluations) == {\"paper-a\", \"paper-b\"}\n+    assert set(runs[\"agent\"][1].paper_evaluations) == {\"paper-a\"}\n+    assert set(runs[\"agent\"][2].paper_evaluations) == {\"paper-a\"}\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-19T23:55:06Z",
+  "github_updated_at": "2026-08-19T23:55:06Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/173",
+    "https://github.com/openai/frontier-evals/pull/173/files"
+  ]
+}

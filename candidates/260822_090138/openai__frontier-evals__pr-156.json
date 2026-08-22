@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/156",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 156,
+  "title": "Tighten compatibility Docker registry validation",
+  "body": "## Summary\n\n- require Docker Hub images to use the `docker.io/` registry boundary\n- reject lookalike hostnames such as `docker.io.example.com/...`\n- preserve the existing `jupyter/base-notebook:3.11` compatibility exception\n\n`CompatibleComputerTask` currently checks `docker_image.startswith(\"docker.io\")`. That also accepts unrelated registries whose hostname merely begins with those characters, despite the validator requiring a shared container registry.\n\nThis changes the prefix check to `docker.io/`, so only actual Docker Hub-qualified image references satisfy that branch of the compatibility constraint.\n\nThe change is intentionally limited to the existing image-registry validation.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/common/compatibility_api/compatibility_api/task.py b/project/common/compatibility_api/compatibility_api/task.py\nindex 1aaeb7c9..6058485a 100644\n--- a/project/common/compatibility_api/compatibility_api/task.py\n+++ b/project/common/compatibility_api/compatibility_api/task.py\n@@ -49,7 +49,7 @@ def _check_for_compatibility(self) -> Self:\n         # Requirements for CR sharing\n         assert (\n             self.docker_image\n-            and self.docker_image.startswith(\"docker.io\")\n+            and self.docker_image.startswith(\"docker.io/\")\n             or self.docker_image == \"jupyter/base-notebook:3.11\"\n         ), \"Image must be specified and use a shared CR\"\n \n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:17:20Z",
+  "github_updated_at": "2026-08-17T21:17:20Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/156",
+    "https://github.com/openai/frontier-evals/pull/156/files"
+  ]
+}

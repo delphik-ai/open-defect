@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__issue-131",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Computer-task action limit rejects the final allowed action",
+  "summary": "SWE-Lancer computer-task rollouts could use one fewer action than configured because the shared LimitsHelper raised when the action count equaled max_actions.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/issues/131",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/issues/131",
+    "https://github.com/openai/frontier-evals/pull/132",
+    "https://github.com/openai/frontier-evals/pull/132/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-16T14:26:14Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "decision_note": "L2 source-read audit. Issue #131 describes the off-by-one in LimitsHelper.enforce_rollout_limits, and PR #132 changes the shared computer-task limit from >= to > with a regression test. SWE-Lancer Diamond uses computer-task rollouts, so the defect affects the current benchmark at harness level. No existing swe-lancer-diamond artifact covers this action-limit boundary root cause."
+}

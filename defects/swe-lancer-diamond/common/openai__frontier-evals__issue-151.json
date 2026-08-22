@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__issue-151",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "SWE-Lancer grades all-missing pytest exit codes as a model failure instead of rollout error",
+  "summary": "SWE-Lancer IC grading treated all-missing pytest exit codes as ordinary model failures instead of rollout/system errors.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/issues/151",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/issues/151",
+    "https://github.com/openai/frontier-evals/pull/153",
+    "https://github.com/openai/frontier-evals/pull/153/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-16T20:06:31Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "decision_note": "L2 source-read audit. Issue #151 explains that _grade_swe_ic records -1.0 for missing pytest_exit_code and the old post-retry guard only checked whether test_results was empty. PR #153 changes the guard to require at least one real 0.0 or 1.0 pytest result. Existing artifacts do not cover this invalid-pytest sentinel root cause."
+}

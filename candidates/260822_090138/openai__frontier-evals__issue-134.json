@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/134",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 134,
+  "title": "Metadata stripping mutates the original computer-task conversation",
+  "body": "## Summary\n\n`strip_all_metadata()` is intended to create a cleaned conversation for recorder output, but it uses Pydantic's shallow `model_copy()` and then assigns filtered metadata onto each copied message.\n\nBecause the messages are shared objects in a shallow copy, those assignments also mutate the message metadata in the original conversation.\n\n## Current behavior\n\n```python\nconvo = convo.model_copy(\n    update={\"metadata\": ...}\n)\nfor msg in convo.messages:\n    msg.metadata = {...}\n```\n\n`model_copy()` is shallow unless `deep=True`, so `convo.messages[i]` still refers to the same message object as the source conversation.\n\n## Impact\n\nCalling the recorder/logging path can remove metadata from the solver's live/final conversation rather than only from the serialized copy. Logging therefore has an unintended side effect on result data and any later consumers of the conversation.\n\n## Proposed resolution\n\nDeep-copy the conversation before rewriting message metadata, while keeping the existing metadata allow-list behavior.\n\nAdd a regression that strips metadata from a copied conversation and verifies the returned copy is filtered while the original conversation and message metadata remain unchanged.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:29:03Z",
+  "github_updated_at": "2026-08-16T14:29:03Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/134"
+  ]
+}

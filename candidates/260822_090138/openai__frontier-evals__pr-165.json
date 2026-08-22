@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/165",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 165,
+  "title": "Fix PaperBench zero prior-node limit",
+  "body": "## Summary\n\n- make `max_prior_nodes=0` return no prior rubric nodes\n- preserve the existing unlimited behavior when the limit is `None`\n- preserve positive limits as a tail slice of the available prior context\n\n`TaskNode.get_prior_nodes()` currently applies `required_nodes[-max_prior_nodes:]` whenever a limit is provided. In Python, `-0` is `0`, so `[-0:]` is the same as `[0:]`. Explicitly requesting zero prior nodes therefore returns every prior node instead of none.\n\nThis can inject all available prior rubric context into `SimpleJudge` when a caller intentionally configures a zero-node context budget.\n\nThe fix handles zero explicitly while leaving positive and unlimited behavior unchanged.\n\nRegression coverage verifies unlimited, zero, and positive-limit cases.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/rubric/tasks.py b/project/paperbench/paperbench/rubric/tasks.py\nindex 887e6984..a675092e 100644\n--- a/project/paperbench/paperbench/rubric/tasks.py\n+++ b/project/paperbench/paperbench/rubric/tasks.py\n@@ -270,7 +270,7 @@ def get_prior_nodes(self, root: TaskNode, max_prior_nodes: int | None = None) ->\n \n         required_nodes = required_nodes[:-1]  # Don't include the target node\n         if max_prior_nodes is not None:\n-            required_nodes = required_nodes[-max_prior_nodes:]\n+            required_nodes = required_nodes[-max_prior_nodes:] if max_prior_nodes > 0 else []\n         return required_nodes\n \n     def get_descendants_depth_first(self) -> list[Self]:\ndiff --git a/project/paperbench/tests/unit/test_rubric_prior_nodes.py b/project/paperbench/tests/unit/test_rubric_prior_nodes.py\nnew file mode 100644\nindex 00000000..056b5a71\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_rubric_prior_nodes.py\n@@ -0,0 +1,33 @@\n+from paperbench.rubric.tasks import TaskNode\n+\n+\n+def _rubric() -> tuple[TaskNode, TaskNode]:\n+    b = TaskNode(\n+        id=\"B\",\n+        requirements=\"B\",\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    f = TaskNode(\n+        id=\"F\",\n+        requirements=\"F\",\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    g = TaskNode(\n+        id=\"G\",\n+        requirements=\"G\",\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    c = TaskNode(id=\"C\", requirements=\"C\", weight=1, sub_tasks=[f, g])\n+    root = TaskNode(id=\"A\", requirements=\"A\", weight=1, sub_tasks=[b, c])\n+    return root, g\n+\n+\n+def test_get_prior_nodes_respects_zero_limit() -> None:\n+    root, target = _rubric()\n+\n+    assert [node.id for node in target.get_prior_nodes(root)] == [\"A\", \"B\", \"C\", \"F\"]\n+    assert target.get_prior_nodes(root, max_prior_nodes=0) == []\n+    assert [node.id for node in target.get_prior_nodes(root, max_prior_nodes=2)] == [\"C\", \"F\"]\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T22:12:51Z",
+  "github_updated_at": "2026-08-17T22:12:51Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/165",
+    "https://github.com/openai/frontier-evals/pull/165/files"
+  ]
+}

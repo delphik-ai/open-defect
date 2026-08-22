@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/170",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 170,
+  "title": "Fix SWE-Lancer default runs directory",
+  "body": "## Summary\n\n- make SWE-Lancer's default runs directory use the existing project-root helper\n- avoid constructing a relative path from the module name string\n- add regression coverage that requires the default runs path to match the canonical absolute project runs directory\n\n`get_default_runs_dir()` currently calls `Path(__name__).parent / \"runs\"`. Since `__name__` is a module name such as `swelancer.utils.custom_logging`, this produces a relative path like `swelancer.utils/runs` rather than the project's actual `runs/` directory.\n\nThe same helper is used as the default value for `SWELancerEval.runs_dir`, so this can place run output and fallback log output in an unintended working-directory-relative location.\n\nThis change delegates to the existing `swelancer.utils.general.get_runs_dir()` helper, which resolves the project root and returns the canonical absolute runs directory.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/swelancer/swelancer/utils/custom_logging.py b/project/swelancer/swelancer/utils/custom_logging.py\nindex 48db230a..1f47f145 100644\n--- a/project/swelancer/swelancer/utils/custom_logging.py\n+++ b/project/swelancer/swelancer/utils/custom_logging.py\n@@ -1,5 +1,4 @@\n import time\n-from pathlib import Path\n \n import blobfile as bf\n import structlog\n@@ -8,6 +7,7 @@\n \n from nanoeval.library_config import LibraryConfig, set_library_config\n from nanoeval.setup import nanoeval_logging\n+from swelancer.utils.general import get_runs_dir\n \n \n def get_timestamp() -> str:\n@@ -17,7 +17,7 @@ def get_timestamp() -> str:\n \n \n def get_default_runs_dir() -> str:\n-    return str(Path(__name__).parent / \"runs\")\n+    return str(get_runs_dir())\n \n \n def setup_logging(library_config: LibraryConfig) -> None:\ndiff --git a/project/swelancer/tests/test_custom_logging.py b/project/swelancer/tests/test_custom_logging.py\nnew file mode 100644\nindex 00000000..5c384d7a\n--- /dev/null\n+++ b/project/swelancer/tests/test_custom_logging.py\n@@ -0,0 +1,11 @@\n+from pathlib import Path\n+\n+from swelancer.utils.custom_logging import get_default_runs_dir\n+from swelancer.utils.general import get_runs_dir\n+\n+\n+def test_default_runs_dir_uses_project_runs_directory() -> None:\n+    default_runs_dir = Path(get_default_runs_dir())\n+\n+    assert default_runs_dir == get_runs_dir()\n+    assert default_runs_dir.is_absolute()\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T22:26:16Z",
+  "github_updated_at": "2026-08-17T22:26:16Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 source-read audit. PR #170 is explicitly scoped to SWE-Lancer and changes get_default_runs_dir from Path(__name__).parent / runs to the canonical get_runs_dir helper, with regression coverage requiring an absolute project runs path. Existing SWE-Lancer artifacts do not cover this default-runs-directory root cause.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/170",
+    "https://github.com/openai/frontier-evals/pull/170/files"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__pr-170",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-Lancer default run output path was built from the module name string, producing a relative swelancer.utils/runs path instead of the project runs directory."
+}

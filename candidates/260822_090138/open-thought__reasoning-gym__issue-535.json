@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/issues/535",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_issue",
+  "github_number": 535,
+  "title": "Wrong answer in Family Relationships",
+  "body": "## Generated problem:\n\nJayden is married to Elizabeth. They have a child called Edward. Edward is married to Sarah. They have a child called Lily.\n\nWhat is Sarah to Elizabeth? Respond only with the word that describes their relationship.\n\nGenerated answer: mother-in-law\n\n## Actual answer\n\nTo Elizabeth, Sarah is her daughter-in-law.\n\n## Code to reproduce\n\n```python\nfrom reasoning_gym.graphs.family_relationships import FamilyRelationshipsConfig, FamilyRelationshipsDataset\n\nconfig = FamilyRelationshipsConfig(size=100, seed=0)\ndataset = FamilyRelationshipsDataset(config)\nitem = dataset[1]  # source_index 1 -> RGYM-family-relationships-0002\n\nprint(item[\"question\"])\nprint()\nprint(\"library's answer:\", item[\"answer\"])\n```",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-21T09:16:12Z",
+  "github_updated_at": "2026-08-21T09:16:12Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "The issue appears to report a wrong generated answer in upstream reasoning-gym, but the repo maps to both reasoning-gym-easy and reasoning-gym-hard and the thread does not prove which current Delphik benchmark variant or task row is affected. Without variant attribution, it cannot be counted as confirmed or duplicate_evidence.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/issues/535"
+  ]
+}

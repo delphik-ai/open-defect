@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/212",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 212,
+  "title": "Snowflake account - \"lack of payment method\" (Error 000666)",
+  "body": "The shared Snowflake account used by Spider2 (`RSRSBDK-YDB67606`) appears to be suspended.\n\nsnowflake.connector.errors.ProgrammingError: 000666 :\nSQL compilation error: Your account is suspended due to lack of payment method.\n\nCould the Spider2 maintainers please restore the shared Snowflake account, either by adding a valid payment method, renewing the trial, or providing an alternative account?\n\nThank you!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-17T02:27:08Z",
+  "github_updated_at": "2026-08-17T02:27:08Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This reports a Spider2 Snow/Snowflake shared account suspension. The watched benchmark is spider2-dbt, and Spider2-Snow/Snowflake credential availability is outside the current spider2-dbt benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/212"
+  ]
+}

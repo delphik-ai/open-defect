@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/issues/127",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_issue",
+  "github_number": 127,
+  "title": "ShortAnswerEval records every sampled answer as incorrect",
+  "body": "## Summary\n\n`ShortAnswerEval.evaluate()` records `correct=False` unconditionally, even when the solver returns an `Answer` whose `is_correct` field is `True`.\n\nThe same result object is later summarized using `answer.is_correct`, so the recorder and the eval summary can disagree about the correctness of the same explicitly graded sample.\n\n## Current behavior\n\n```python\nres = await self.solver.solve(task)\nawait asyncio.to_thread(\n    get_recorder().record_match,\n    correct=False,\n    metadata=res.metadata,\n)\n```\n\nwhile `get_summary()` uses:\n\n```python\n\"correct\": answer.is_correct\n```\n\n## Impact\n\nAny ShortAnswer solver that supplies correctness can produce a correct aggregate summary while its recorded match is marked incorrect. That makes recorder output inconsistent with the eval result and can corrupt downstream per-sample analysis.\n\n## Proposed resolution\n\nRecord `bool(res.is_correct)` rather than a hard-coded `False`. This preserves explicit `True` and `False` grades while mapping the existing ungraded `None` state to `False`, as required by the recorder protocol's boolean `correct` field.\n\nAdd a focused regression with a solver returning `is_correct=True` and verify the recorder receives `correct=True`.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-16T14:07:21Z",
+  "github_updated_at": "2026-08-16T14:09:33Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals issue concerns shared MCQ/ShortAnswer/computer-task metric behavior without sufficient evidence tying it to SWE-Lancer Diamond task rows or the current benchmark artifact. It is outside the current counted benchmark variant.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/issues/127"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-83",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "coop: stop a pair dying with one of its agents",
+  "summary": "CooperBench pair grading could lose an entire pair when one agent died because sandbox/runner timeouts and error handling treated a missing side as no gradeable pair.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/83",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/83",
+    "https://github.com/cooperbench/CooperBench/pull/83/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-15T05:25:45Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "decision_note": "L2 source-read audit. PR #83 was merged and its body explains that a pair was graded only when both sides returned, so one agent death lost the whole pair; the diff changes timeout handling and runner behavior. Existing CooperBench artifacts cover gradeability, silent peer detection, prompts, reruns, and timestamp sorting, but not this pair-loss root cause."
+}

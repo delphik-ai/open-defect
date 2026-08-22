@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/174",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 174,
+  "title": "fix(paperbench): preserve solver shortnames in metrics parsing",
+  "body": "## Summary\n\nPreserve complete PaperBench solver shortnames when reconstructing agent IDs from run-group records.\n\nPaperBench creates run-group IDs as:\n\n```text\n<timestamp>_run-group_<solver.shortname()>\n```\n\nbut `parse_run_data()` currently derives the agent ID with:\n\n```python\nrun_group_id.split(\"_\")[-1]\n```\n\nThat truncates any solver shortname containing underscores. The built-in direct-submission solver reports `direct_submission_solver`, so its records are currently grouped under the incorrect agent ID `solver`.\n\n## Fix\n\nParse the generated `_run-group_` delimiter and preserve the full suffix as the solver/agent identifier. For records that do not contain that delimiter, retain the previous final-underscore-token fallback for compatibility with older/custom run-group IDs.\n\n## Regression coverage\n\nAdded a JSONL-level regression using the built-in `direct_submission_solver` naming shape and verified that `parse_run_data()` returns the full `direct_submission_solver` key and retains the corresponding paper run.\n\n## Risk\n\nLow. Standard run groups now preserve exactly the shortname used when they were created. Legacy/custom IDs without the `_run-group_` delimiter keep the previous parsing behavior.\n\n## Issue number\n\nN/A. Found while auditing PaperBench metrics attribution.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/metrics.py b/project/paperbench/paperbench/metrics.py\nindex d22a8cbe..1b3f9b8d 100644\n--- a/project/paperbench/paperbench/metrics.py\n+++ b/project/paperbench/paperbench/metrics.py\n@@ -231,7 +231,11 @@ def parse_entry_by_format(\n \n         run_group_id = entry[\"data\"][\"run_group_id\"]\n         paper_run_id = entry[\"data\"][\"run_id\"]\n-        agent_id = run_group_id.split(\"_\")[-1]\n+        agent_id = (\n+            run_group_id.rsplit(\"_run-group_\", 1)[-1]\n+            if \"_run-group_\" in run_group_id\n+            else run_group_id.split(\"_\")[-1]\n+        )\n         paper_id = pb_result[\"paper_id\"]\n         timestamp = dateutil.parser.parse(entry[\"timestamp\"]).timestamp()\n \ndiff --git a/project/paperbench/tests/unit/test_metrics.py b/project/paperbench/tests/unit/test_metrics.py\nnew file mode 100644\nindex 00000000..cddc3192\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_metrics.py\n@@ -0,0 +1,40 @@\n+import json\n+\n+from paperbench.metrics import parse_run_data\n+\n+\n+def test_parse_run_data_preserves_solver_shortname_with_underscores(tmp_path):\n+    entry = {\n+        \"record_type\": \"extra\",\n+        \"timestamp\": \"2026-01-01T00:00:00Z\",\n+        \"data\": {\n+            \"run_group_id\": \"2026-01-01T00-00-00-UTC_run-group_direct_submission_solver\",\n+            \"run_id\": \"paper-a_run-1\",\n+            \"pb_result\": {\n+                \"paperbench_result\": {\n+                    \"paper_id\": \"paper-a\",\n+                    \"judge_output\": {\n+                        \"graded_task_tree\": {\n+                            \"id\": \"task\",\n+                            \"requirements\": \"test requirement\",\n+                            \"weight\": 1,\n+                            \"sub_tasks\": [],\n+                            \"task_category\": \"Code Development\",\n+                            \"score\": 1.0,\n+                            \"valid_score\": True,\n+                            \"explanation\": \"ok\",\n+                        }\n+                    },\n+                }\n+            },\n+        },\n+    }\n+    run_file = tmp_path / \"runs.jsonl\"\n+    run_file.write_text(f\"{json.dumps(entry)}\\n\")\n+\n+    runs = parse_run_data(tmp_path)\n+\n+    assert list(runs) == [\"direct_submission_solver\"]\n+    assert runs[\"direct_submission_solver\"][0].paper_evaluations[\"paper-a\"].paper_run_id == (\n+        \"paper-a_run-1\"\n+    )\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-19T23:57:08Z",
+  "github_updated_at": "2026-08-19T23:57:08Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/174",
+    "https://github.com/openai/frontier-evals/pull/174/files"
+  ]
+}

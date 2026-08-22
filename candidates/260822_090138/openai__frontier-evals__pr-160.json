@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/160",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 160,
+  "title": "Fix PaperBench rubric pruning at subtree boundaries",
+  "body": "## Summary\n\n- assign the existing `Subtree` task category when pruning an internal rubric node into a leaf\n- preserve the original task category when the pruned node is already a leaf\n- keep rubric IDs, requirements, weights, and fine-grained categories unchanged\n\n`TaskNode` requires every leaf to have a task category and every internal node to have no task category. `prune_to_depth()` currently copies `self.task_category` when replacing a node with a leaf. For an internal node that value is necessarily `None`, so pruning at the requested depth raises `ValueError` instead of producing a pruned tree.\n\n`Subtree` is already a supported category used for approximate subtree grading, so it is the natural category for a collapsed internal node.\n\nRegression coverage prunes an internal root at depth zero and verifies it becomes a valid `Subtree` leaf.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/paperbench/paperbench/rubric/tasks.py b/project/paperbench/paperbench/rubric/tasks.py\nindex 887e6984..4dae6226 100644\n--- a/project/paperbench/paperbench/rubric/tasks.py\n+++ b/project/paperbench/paperbench/rubric/tasks.py\n@@ -312,7 +312,7 @@ def prune_to_depth(self, max_depth: int, current_depth: int = 0) -> TaskNode:\n                 requirements=self.requirements,\n                 weight=self.weight,\n                 sub_tasks=[],\n-                task_category=self.task_category,\n+                task_category=self.task_category or \"Subtree\",\n                 finegrained_task_category=self.finegrained_task_category,\n             )\n \ndiff --git a/project/paperbench/tests/unit/test_rubric_tasks.py b/project/paperbench/tests/unit/test_rubric_tasks.py\nnew file mode 100644\nindex 00000000..3853e61b\n--- /dev/null\n+++ b/project/paperbench/tests/unit/test_rubric_tasks.py\n@@ -0,0 +1,24 @@\n+from paperbench.rubric.tasks import TaskNode\n+\n+\n+def test_prune_to_depth_marks_collapsed_internal_node_as_subtree() -> None:\n+    leaf = TaskNode(\n+        id=\"leaf\",\n+        requirements=\"leaf requirement\",\n+        weight=1,\n+        task_category=\"Code Development\",\n+    )\n+    root = TaskNode(\n+        id=\"root\",\n+        requirements=\"root requirement\",\n+        weight=1,\n+        sub_tasks=[leaf],\n+    )\n+\n+    pruned = root.prune_to_depth(0)\n+\n+    assert pruned.is_leaf()\n+    assert pruned.task_category == \"Subtree\"\n+    assert pruned.id == root.id\n+    assert pruned.requirements == root.requirements\n+    assert pruned.weight == root.weight\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:46:50Z",
+  "github_updated_at": "2026-08-17T21:46:50Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "This Frontier Evals thread concerns MCQ, ShortAnswer, PaperBench, EVMbench, nanoeval infrastructure, or compatibility behavior without evidence tying it to the current SWE-Lancer Diamond benchmark variant. It is outside the watched benchmark artifact for this repo.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/160",
+    "https://github.com/openai/frontier-evals/pull/160/files"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-tw__scaleapi__swe-atlas__pr-20",
+  "benchmark_name": "scale-ai__swe-atlas-tw",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "TW: provision uv and Python 3.11 in the simple-login task images",
+  "summary": "Ten SWE-Atlas TW simple-login task images lacked uv and Python 3.11 even though their verifier resolves Python from the uv tool directory, preventing offline verification.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/20",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/20",
+    "https://github.com/scaleapi/SWE-Atlas/pull/20/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-20T19:04:09Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "decision_note": "L2 source-read audit. The merged PR body identifies ten TW simple-login tasks and explains that tests/test.sh resolves Python from the uv tool directory while the images ship Python 3.10 and no uv, with runtime hosts unable to fetch them. The diff provisions uv and CPython 3.11 in the affected TW images. Existing TW artifacts cover network allowlisting and Modal keepalive, not this missing-runtime root cause."
+}

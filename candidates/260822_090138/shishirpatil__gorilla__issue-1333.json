@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1333",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1333,
+  "title": "[BFCL] DeepSeek v4?",
+  "body": "**Describe the issue**\nIs there any plan to have/add deepseek v4 into leader board, I just want to know the score of DeepSeek v4.\n\n**ID datapoint**\n1. Datapoint / Model Handler permalink: \n2. Issue: \n2. Gorilla repo commit #: \n\n**What is the issue**\n\n**Proposed Changes**\n\n{\n 'previous_datapoint':[], \n 'updated_datapoint':[]\n}\n\n**Additional context**\nAdd any other context about the problem here.\n",
+  "comments": [
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1333#issuecomment-5339419101",
+      "user": "avshalomd",
+      "created_at": "2026-08-19T08:17:47Z",
+      "updated_at": "2026-08-19T08:17:47Z",
+      "body": "Looking at this against the current handler layout: `api_inference/deepseek.py` already wraps the DeepSeek API generically (`DeepSeekAPIHandler`, OpenAI-compatible client against `https://api.deepseek.com`), and `deepseek-chat` / `deepseek-reasoner` are both just `ModelConfig` entries in `constants/model_config.py` pointing at that one handler class — no per-model handler code. If DeepSeek exposes V4 under the same OpenAI-compatible endpoint (as `deepseek-chat`/`deepseek-reasoner` do), adding it looks like a new `ModelConfig` entry plus a `supported_models.py` line, not a new handler.\n\nI can put that PR together if the model identifier and FC-support details check out on DeepSeek's side — happy to take this if nobody's already on it.\n\n*Disclosure: drafted with AI assistance; I reviewed and tested the change myself.*\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-05-04T08:34:31Z",
+  "github_updated_at": "2026-08-19T08:17:48Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "This BFCL thread is a model/leaderboard addition or request, not evidence of a benchmark artifact defect.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1333"
+  ]
+}

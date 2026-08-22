@@ -6,16 +6,17 @@
   "task_names": [
     "16912-manager-0"
   ],
-  "resolution": "found",
+  "resolution": "fixing",
   "title": "Overly-strict test in swelancer sample 16912_4",
   "summary": "Frontier Evals issue shows SWELancer sample 16912_4 instructions allow either consistent “format” or “e.g.” wording, but tests only accept changing bank account page to “e.g.”.",
   "canonical_source_url": "https://github.com/openai/frontier-evals/issues/100",
   "evidence_urls": [
-    "https://github.com/openai/frontier-evals/issues/100"
+    "https://github.com/openai/frontier-evals/issues/100",
+    "https://github.com/openai/frontier-evals/pull/129"
   ],
   "audit_level": "L2",
   "first_reported_at": "2025-12-31T03:40:15.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 1,
   "migration": {

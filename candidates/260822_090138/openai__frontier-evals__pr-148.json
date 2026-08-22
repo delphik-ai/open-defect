@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/148",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 148,
+  "title": "Fix SWE-Lancer token usage totals",
+  "body": "## Summary\n\nRemove the phantom one-token offset from SWE-Lancer aggregate usage metrics.\n\n`SWELancerEval.get_full_summary()` currently initializes each aggregate token counter to `1` before adding the per-result grader usage. Every run therefore reports one extra input, output, and reasoning token, including an empty run.\n\nFixes #139.\n\n## Fix\n\nInitialize `total_input_tokens`, `total_output_tokens`, and `total_reasoning_tokens` to zero before accumulation.\n\n## Regression coverage\n\nAdds a focused empty-summary regression verifying all three aggregate token totals are exactly zero when no results are present.\n\nPer-result token extraction, `results.csv` contents, earned-value aggregation, and grading behavior are unchanged.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/swelancer/swelancer/eval.py b/project/swelancer/swelancer/eval.py\nindex 8dd5d6ec..4e72e82f 100644\n--- a/project/swelancer/swelancer/eval.py\n+++ b/project/swelancer/swelancer/eval.py\n@@ -608,9 +608,9 @@ async def get_full_summary(\n         )\n         summary[\"length_stats\"] = self._get_convo_len_stats(results)\n \n-        summary[\"total_input_tokens\"] = 1\n-        summary[\"total_output_tokens\"] = 1\n-        summary[\"total_reasoning_tokens\"] = 1\n+        summary[\"total_input_tokens\"] = 0\n+        summary[\"total_output_tokens\"] = 0\n+        summary[\"total_reasoning_tokens\"] = 0\n         for _task, result in results:\n             if isinstance(result, FinalResult):\n                 try:\ndiff --git a/project/swelancer/tests/test_token_totals.py b/project/swelancer/tests/test_token_totals.py\nnew file mode 100644\nindex 00000000..0335339d\n--- /dev/null\n+++ b/project/swelancer/tests/test_token_totals.py\n@@ -0,0 +1,23 @@\n+import asyncio\n+from types import SimpleNamespace\n+from typing import Any, cast\n+\n+from swelancer.eval import SWELancerEval\n+\n+\n+def test_empty_summary_reports_zero_token_totals(tmp_path) -> None:\n+    run_group_id = \"token-total-regression\"\n+    (tmp_path / run_group_id).mkdir()\n+    eval_stub = SimpleNamespace(\n+        runs_dir=str(tmp_path),\n+        run_group_id=run_group_id,\n+        _get_convo_len_stats=lambda results: {},\n+    )\n+\n+    summary = asyncio.run(\n+        SWELancerEval.get_full_summary(cast(Any, eval_stub), [])\n+    )\n+\n+    assert summary[\"total_input_tokens\"] == 0\n+    assert summary[\"total_output_tokens\"] == 0\n+    assert summary[\"total_reasoning_tokens\"] == 0\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-16T19:51:08Z",
+  "github_updated_at": "2026-08-16T19:51:08Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 audit matched PR #148 to the issue #139 root cause. The diff changes SWELancerEval.get_full_summary token-total initialization from 1 to 0 and adds an empty-summary regression test.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/148",
+    "https://github.com/openai/frontier-evals/pull/148/files",
+    "https://github.com/openai/frontier-evals/issues/139"
+  ],
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__issue-139",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "PR #148 fixes the SWE-Lancer phantom token totals tracked by issue #139."
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/issues/536",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_issue",
+  "github_number": 536,
+  "title": "Wrong answer in Syllogism",
+  "body": "## Generated problem:\n\nConsider these statements:\n1. All ants are dolphins\n2. Some dolphins are not spiders\n\nDoes it logically follow that:\nSome ants are not spiders?\n(Answer Yes or No)\n\nGenerated answer: Yes\n\n## Actual answer\n\nNo. In fact, to an analogous but realistic example is:\n\n1. All ants are animals.\n2. Some animals are not insects.\n\nSome ants are not insects? No.\n\n## Code to reproduce\n\n```python\nfrom reasoning_gym.logic.syllogisms import SyllogismConfig, SyllogismDataset\n\nconfig = SyllogismConfig(size=100, seed=0)\ndataset = SyllogismDataset(config)\nitem = dataset[11]  # source_index 11 -> RGYM-syllogism-0012\n\nprint(item[\"question\"])\nprint()\nprint(\"library's answer:\", item[\"answer\"])\nprint(\"metadata:\", item[\"metadata\"])\n```\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-21T09:26:28Z",
+  "github_updated_at": "2026-08-21T09:26:28Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "The issue appears to report a wrong generated answer in upstream reasoning-gym, but the repo maps to both reasoning-gym-easy and reasoning-gym-hard and the thread does not prove which current Delphik benchmark variant or task row is affected. Without variant attribution, it cannot be counted as confirmed or duplicate_evidence.",
+  "reviewed_at": "2026-08-22T00:07:09.734Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/issues/536"
+  ]
+}
