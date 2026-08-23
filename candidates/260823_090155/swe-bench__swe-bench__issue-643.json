@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/643",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 643,
+  "title": "Optional EvalPort interop for SWEbenchInstance / eval reports",
+  "body": "Hi SWE-bench team — I maintain [EvalPort](https://github.com/adhabnr-ux/evalport), an open, framework-agnostic JSON spec for portable LLM eval datasets and results (a `TestCase`/`Suite`/`ResultSet` schema with a validator, so a dataset or a graded run can move between tools without hand-writing a converter each time).\n\nI installed `swebench` (5.0.2) and read the real types in `swebench/types.py` and `swebench/harness/grading.py` rather than guessing:\n\n- `SWEbenchInstance` (`repo`, `instance_id`, `problem_statement`, `patch`, `FAIL_TO_PASS`, `PASS_TO_PASS`, ...) maps onto an EvalPort `TestCase`: `problem_statement` is the input, `patch` is the reference/gold solution, and `FAIL_TO_PASS`/`PASS_TO_PASS` describe a `custom` grader (run these named tests against the patched repo, they must flip from failing to passing / stay passing) rather than any of the string-match graders — this is executable-test grading, not text comparison, so `custom` with the test lists preserved as config is the honest mapping, not a forced `exact_match`.\n- `get_eval_report()`'s output (a dict keyed by `instance_id` with a `resolved: bool` per instance, from `grading.py`) maps directly onto an EvalPort `ResultSet` — one graded result per test case.\n\nSo a `SWEbenchInstance` dataset plus a completed `get_eval_report()` run maps onto an EvalPort `Suite` + `ResultSet` pair, with the repo/commit/patch machinery riding along as grader config rather than being force-fit into a text-comparison grader.\n\nTwo ways I could see this landing, and I don't have a strong preference:\n\n1. **A standalone `swebench-openeval-adapter` package** in the EvalPort repo, depending on `swebench` as a normal dependency. Zero footprint on this repo.\n2. **A small optional module inside this repo** if you'd rather it live here.\n\nEither way, real tests would validate against EvalPort's actual JSON Schema, not a mock. Filing this as an issue first since I don't see a CONTRIBUTING.md with a different norm — happy to be pointed at one if it exists.\n\nLet me know which direction you'd prefer, or if this isn't a fit for your roadmap right now — no worries either way.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-22T19:21:27Z",
+  "github_updated_at": "2026-08-22T19:21:27Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-08-23T00:08:30.000Z",
+  "decision_note": "L1 thread audit. The thread is an optional EvalPort interoperability proposal for SWEbenchInstance and eval reports and does not report a defect in a current benchmark task, dataset, harness, scorer, or evaluator artifact.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/643"
+  ]
+}

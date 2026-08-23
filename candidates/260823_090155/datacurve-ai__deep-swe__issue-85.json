@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/85",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 85,
+  "title": "Terra is missing",
+  "body": "Terra 5.6 is missing from https://deepswe.datacurve.ai/",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-22T21:23:13Z",
+  "github_updated_at": "2026-08-22T21:23:13Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-08-23T00:08:30.000Z",
+  "decision_note": "L1 thread audit. The thread is a website/leaderboard listing request saying Terra 5.6 is missing and does not report a defect in a current benchmark task, dataset, harness, scorer, or evaluator artifact.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/85"
+  ]
+}

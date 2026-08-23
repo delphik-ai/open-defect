@@ -1,0 +1,27 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__issue-536",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-logic-syllogism-hard0292e21f-seed45-0",
+    "reasoning-gym-logic-syllogism-hard0292e21f-seed45-1",
+    "reasoning-gym-logic-syllogism-hard0292e21f-seed45-2"
+  ],
+  "resolution": "found",
+  "title": "Wrong answer in Syllogism",
+  "summary": "Reasoning Gym syllogism generation marks undistributed-middle forms as valid, causing hard syllogism task rows to reward invalid conclusions as correct.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Gold/reference answer bug",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/issues/536",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/issues/536",
+    "https://github.com/open-thought/reasoning-gym/issues/536#issuecomment-5378450965",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/logic/syllogisms.py",
+    "https://github.com/open-thought/reasoning-gym/tree/main/reasoning_gym/logic"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-08-21T09:26:28Z",
+  "last_reviewed_at": "2026-08-23T00:08:30.000Z",
+  "decision_note": "L3 reproduction audit. Preflight passed: harbor 0.21.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction command used a fresh public clone of open-thought/reasoning-gym main in /tmp, pip install -e, then instantiated SyllogismDataset with SyllogismConfig(size=100, seed=0) and SyllogismConfig(size=200, seed=0). The reported source_index 11 and comment source_index 32 both produced answer Yes with metadata.is_valid true. An exhaustive 3-term Venn-region model enumeration with existential import found countermodels for both forms where the premises hold and the conclusion is false, matching the issue claim. Existing reasoning-gym-hard artifacts cover other logic/scoring defects but not syllogism undistributed-middle validity labels. The task naming follows the current reasoning-gym-hard logic task row pattern used by existing artifacts."
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/150",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 150,
+  "title": "Would an EvalPort-format export of LiveCodeBench be welcome in EvalPort's benchmarks/?",
+  "body": "Hi LiveCodeBench team — I maintain [EvalPort](https://github.com/adhabnr-ux/evalport), an open JSON spec for portable LLM eval datasets and results, whose `benchmarks/` directory converts public benchmarks into validated EvalPort suites.\n\nI read the real dataclass in this repo, `lcb_runner/benchmarks/code_generation.py`:\n```python\nclass CodeGenerationProblem:\n    question_title: str\n    question_content: str\n    platform: Platform       # leetcode / codeforces / atcoder\n    question_id: str\n    contest_id: str\n    contest_date: datetime\n    starter_code: str\n    difficulty: Difficulty\n    public_test_cases: list[Test]\n    private_test_cases: list[Test]\n    metadata: dict\n```\nThat maps onto EvalPort cleanly: `question_content` + `starter_code` -> `TestCase.input`, `public_test_cases`/`private_test_cases` -> `TestCase.expected_output`, graded with a `code` grader running the same stdin/functional check LiveCodeBench already uses, with `contest_date` preserved as metadata so the contamination-window filtering your `release_v*` versions already do can still work.\n\nWould your maintainers be open to an EvalPort-format export (respecting your existing release date windows) living in EvalPort's `benchmarks/`, with attribution and license preserved? Happy to do the conversion and open a PR for review first. No worries if this isn't a fit.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-22T19:48:53Z",
+  "github_updated_at": "2026-08-22T19:48:53Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-08-23T00:08:30.000Z",
+  "decision_note": "L1 thread audit. The thread is an EvalPort interoperability/export proposal for LiveCodeBench and does not report a defect in a current benchmark task, dataset, harness, scorer, or evaluator artifact.",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/150"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1360",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1360,
+  "title": "Would an EvalPort-format export of BFCL be welcome in EvalPort's benchmarks/?",
+  "body": "Hi Gorilla/BFCL team — I maintain [EvalPort](https://github.com/adhabnr-ux/evalport), an open JSON spec for portable LLM eval datasets and results. Its `benchmarks/` directory already converts 14 public benchmarks (GSM8K, ARC, HumanEval, SQuAD, etc.) into validated EvalPort suites, each checked against the real validator in CI.\n\nI installed `bfcl-eval` (2026.3.23) and read real files rather than guessing, e.g. `bfcl_eval/data/possible_answer/BFCL_v4_simple_java.json`:\n```\n{\"id\": \"simple_java_1\", \"ground_truth\": [{\"SQLCompletionAnalyzer.makeProposalsFromObject\": {\"object\": [\"Customers\"], \"useShortName\": [true], \"params\": [{\"limit\": [50], \"schemaFilter\": [\"public\"]}]}}]}\n```\nand a matching question file with `{\"id\", \"question\": [[{\"role\",\"content\"}]], \"function\": [{\"name\",\"description\",\"parameters\"}]}`.\n\nThat maps onto EvalPort cleanly: `question` + `function` -> `TestCase.input`, `ground_truth` -> `TestCase.expected_output`, graded with a `code` grader doing the same AST/param match BFCL already defines.\n\nWould your maintainers be open to an EvalPort-format export of BFCL (or a subset — e.g. the non-executable simple/multiple/parallel categories) living in EvalPort's `benchmarks/`, with attribution and license preserved, and a link back to this repo and the leaderboard? Happy to do the conversion work and open a PR here first if you'd rather review the mapping before anything lands in EvalPort — whichever you prefer. No worries if this isn't useful for you right now.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-22T19:48:39Z",
+  "github_updated_at": "2026-08-22T19:48:39Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "reviewed_at": "2026-08-23T00:08:30.000Z",
+  "decision_note": "L1 thread audit. The thread is an EvalPort-format export proposal for BFCL/Gorilla data and does not report a defect in a current benchmark task, dataset, harness, scorer, or evaluator artifact.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1360"
+  ]
+}

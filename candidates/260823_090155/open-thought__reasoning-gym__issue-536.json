@@ -1,0 +1,48 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/issues/536",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_issue",
+  "github_number": 536,
+  "title": "Wrong answer in Syllogism",
+  "body": "## Generated problem:\n\nConsider these statements:\n1. All ants are dolphins\n2. Some dolphins are not spiders\n\nDoes it logically follow that:\nSome ants are not spiders?\n(Answer Yes or No)\n\nGenerated answer: Yes\n\n## Actual answer\n\nNo. In fact, to an analogous but realistic example is:\n\n1. All ants are animals.\n2. Some animals are not insects.\n\nSome ants are not insects? No.\n\n## Code to reproduce\n\n```python\nfrom reasoning_gym.logic.syllogisms import SyllogismConfig, SyllogismDataset\n\nconfig = SyllogismConfig(size=100, seed=0)\ndataset = SyllogismDataset(config)\nitem = dataset[11]  # source_index 11 -> RGYM-syllogism-0012\n\nprint(item[\"question\"])\nprint()\nprint(\"library's answer:\", item[\"answer\"])\nprint(\"metadata:\", item[\"metadata\"])\n```\n",
+  "comments": [
+    {
+      "url": "https://github.com/open-thought/reasoning-gym/issues/536#issuecomment-5378450965",
+      "user": "absolutedimension",
+      "created_at": "2026-08-22T06:29:54Z",
+      "updated_at": "2026-08-22T06:29:54Z",
+      "body": "Confirming this, and adding a **second broken form** plus prevalence numbers — same root cause, same generator.\n\nI hit this while differential-testing my own syllogism engine against `reasoning-gym` (v0.1.25) and found the disagreements are confined to exactly **two** quantifier patterns, both fallacies of the **undistributed middle**:\n\n| Form asserted `is_valid=True` | Reality |\n|---|---|\n| `All X are Y` ; `Some Y are not Z` ⊢ `Some X are not Z` | **Invalid** — this is the one reported above |\n| `All X are Y` ; `Some Y are Z` ⊢ `Some X are Z` | **Invalid** — not yet reported |\n\nBoth reproduce at the reporter's exact config (`SyllogismConfig(size=200, seed=0)`):\n\n```python\nfrom reasoning_gym.logic.syllogisms import SyllogismConfig, SyllogismDataset\nds = SyllogismDataset(SyllogismConfig(size=200, seed=0))\n\nds[11][\"metadata\"]   # All ants are dolphins / Some dolphins are not spiders\n                     #   => Some ants are not spiders      is_valid=True   (invalid)\nds[32][\"metadata\"]   # All parents are writers / Some writers are doctors\n                     #   => Some parents are doctors       is_valid=True   (invalid)\n```\n\n**Countermodel for the second form.** Occupy only the regions `XY` and `YZ`: every X is a Y, some Y is a Z, and no X is a Z. So the premises hold and the conclusion fails.\n\nIn plain terms: *All elephants are teachers. Some teachers are animals.* It does not follow that some elephants are animals — the teachers who are animals need not be the elephants.\n\n### Prevalence\n\nOver 4,000 items (`seed=20260822`), validity labels checked against brute-force enumeration of every model over the occupied Venn cells, with existential import assumed:\n\n| `metadata.type` | mismatched | total | rate |\n|---|---|---|---|\n| `syllogism` | 506 | 2,802 | **18.1%** |\n| `inversion` | 0 | 1,198 | 0.0% |\n\nSplit of the 506: 266 are the `(all, some, some)` form, 240 are the `(all, some_not, some_not)` form. Nothing else disagreed — the E/I conversion logic behind `type=inversion` looks correct.\n\n### Why this one is worth prioritising\n\n`reasoning-gym` ships as RLVR reward data, so this isn't only a wrong label in an eval set — any policy trained against the `syllogism` task is being **positively rewarded for committing the undistributed middle**, on roughly one in five of that task's items.\n\nHappy to send a PR adding a brute-force validity oracle as a test if that's useful — it's about 20 lines and runs the full 3-term form space (13,824 cases) in a couple of seconds.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-21T09:26:28Z",
+  "github_updated_at": "2026-08-22T06:29:54Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "reasoning-gym-hard",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "reasoning-gym-hard__open-thought__reasoning-gym__issue-536",
+  "task_names": [
+    "reasoning-gym-logic-syllogism-hard0292e21f-seed45-0",
+    "reasoning-gym-logic-syllogism-hard0292e21f-seed45-1",
+    "reasoning-gym-logic-syllogism-hard0292e21f-seed45-2"
+  ],
+  "resolution": "found",
+  "summary": "Reasoning Gym syllogism generation marks undistributed-middle forms as valid, causing hard syllogism task rows to reward invalid conclusions as correct.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Gold/reference answer bug",
+  "decision_note": "L3 reproduction audit. Preflight passed: harbor 0.21.0, Docker 29.4.3, git-lfs 3.7.1. Reproduction command used a fresh public clone of open-thought/reasoning-gym main in /tmp, pip install -e, then instantiated SyllogismDataset with SyllogismConfig(size=100, seed=0) and SyllogismConfig(size=200, seed=0). The reported source_index 11 and comment source_index 32 both produced answer Yes with metadata.is_valid true. An exhaustive 3-term Venn-region model enumeration with existential import found countermodels for both forms where the premises hold and the conclusion is false, matching the issue claim. Existing reasoning-gym-hard artifacts cover other logic/scoring defects but not syllogism undistributed-middle validity labels. The task naming follows the current reasoning-gym-hard logic task row pattern used by existing artifacts.",
+  "reviewed_at": "2026-08-23T00:08:30.000Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/issues/536",
+    "https://github.com/open-thought/reasoning-gym/issues/536#issuecomment-5378450965",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/logic/syllogisms.py",
+    "https://github.com/open-thought/reasoning-gym/tree/main/reasoning_gym/logic"
+  ]
+}
