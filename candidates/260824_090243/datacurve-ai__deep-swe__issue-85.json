@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/85",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 85,
+  "title": "Terra is missing",
+  "body": "Terra 5.6 is missing from https://deepswe.datacurve.ai/",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/85#issuecomment-5388485711",
+      "user": "coygeek",
+      "created_at": "2026-08-23T21:11:36Z",
+      "updated_at": "2026-08-23T21:11:36Z",
+      "body": "Yes, that's what I noticed and asked to clarify:\nhttps://github.com/datacurve-ai/deep-swe/issues/82"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-22T21:23:13Z",
+  "github_updated_at": "2026-08-23T21:11:36Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue reports that Terra 5.6 is missing from the public DeepSWE leaderboard and links to issue #82 about default model selection. That is a leaderboard/model visibility or presentation request, not a benchmark task, harness, dataset, or evaluator defect affecting current benchmark scoring.",
+  "reviewed_at": "2026-08-24T00:05:15Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/85",
+    "https://github.com/datacurve-ai/deep-swe/issues/82"
+  ]
+}

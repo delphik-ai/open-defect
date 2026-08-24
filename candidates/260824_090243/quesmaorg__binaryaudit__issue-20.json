@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/QuesmaOrg/BinaryAudit/issues/20",
+  "repo": "quesmaorg/binaryaudit",
+  "source_type": "github_issue",
+  "github_number": 20,
+  "title": "Adapter idea: results.json (RunResult) -> EvalPort portable ResultSet",
+  "body": "EvalPort (https://github.com/adhabnr-ux/evalport) is an open interchange spec + Python SDK (`evalport-sdk` on PyPI, `openeval.validate.validate_result_set()`) for portable LLM/agent eval results, so a benchmark's per-run scores can be diffed, archived, or fed into a common dashboard without a bespoke parser per tool.\n\n`scripts/process_results.py` already gives BinaryAudit a clean, uniform schema for this: the `RunResult` pydantic model (`TaskName`, `ModelDisplay`, `Attempt`, `Passed`, `Reward`, `CostUSD`, `InputTokens`, `OutputTokens`, `CacheTokens`, `Turns`, `Duration`, `StartedAt`/`FinishedAt`, `Error`, `TrialDir`), written flat to `results.json` — one entry per trial, each with its own pass/fail and score. That's already \"one result per test case with a grader score,\" which is exactly EvalPort's `ResultSet` shape, so the mapping is close to mechanical rather than a redesign.\n\nSketch, grouping by `ModelDisplay` since one `results.json` can hold several models' runs:\n\n```python\nimport json\nfrom binaryaudit_openeval_adapter import results_to_openeval\n\nruns = json.loads(open(\"results.json\").read())\nruns_for_model = [r for r in runs if r[\"ModelDisplay\"] == \"claude-opus-4-6\"]\n\nresult_set = results_to_openeval(\n    runs_for_model,\n    suite_id=\"binaryaudit\",\n    run_id=\"claude-opus-4-6-2026-07-14\",\n)\n# -> {\"version\": \"1.0.0\", \"suite_id\": \"binaryaudit\", \"run_id\": \"claude-opus-4-6-2026-07-14\",\n#     \"results\": [\n#       {\"test_case_id\": \"lighttpd-backdoor-detect\", \"passed\": True,\n#        \"grader_results\": [{\"grader_id\": \"reward\", \"type\": \"custom\",\n#                             \"score\": 1.0, \"passed\": True}],\n#        \"metadata\": {\"binaryaudit\": {\"CostUSD\": 0.42, \"Turns\": 11,\n#                                      \"Duration\": 96000, \"Attempt\": 1,\n#                                      \"TrialDir\": \"...\", \"Error\": \"\"}}},\n#       ...\n#     ],\n#     \"summary\": {\"total\": 46, \"passed\": 22, \"failed\": 24,\n#                  \"pass_rate\": 0.478, \"avg_score\": 0.478}}\n```\n\nEach `RunResult` becomes one `Result`: `TaskName` -> `test_case_id`, `Reward` -> `grader_results[].score` (already a float in the right range), `Passed` -> both the per-result `passed` flag and rolled into `summary.pass_rate`. Everything Harbor-specific that EvalPort's spec doesn't have a field for — `CostUSD`, token counts, `Turns`, `Duration`, `Error`, `TrialDir`, `Attempt` — gets preserved verbatim under `metadata` rather than dropped, so nothing is lost, it's just made comparable across benchmarks.\n\nI'd build this as a standalone package (`adapters/binaryaudit-openeval-adapter/`, depending only on `evalport-sdk`, zero footprint on BinaryAudit itself — it only reads `results.json`, no changes to `tasks/` or the Harbor config) with tests run against a real `results.json` produced by `process_results.py`, and submit it as a PR — either here or to EvalPort, whichever you'd rather host it. Let me know if that's of interest and which repo you'd want the PR against.\n\n— Independent contributor, not affiliated with BinaryAudit or Quesma.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-23T20:08:45Z",
+  "github_updated_at": "2026-08-23T20:08:45Z",
+  "candidate_benchmark_names": [
+    "binary-audit"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue proposes a new EvalPort adapter package that maps BinaryAudit results.json RunResult entries into a portable ResultSet. It explicitly describes a standalone integration with no changes to tasks or Harbor config, so it is feature/integration work rather than a current benchmark defect.",
+  "reviewed_at": "2026-08-24T00:05:15Z",
+  "checked_urls": [
+    "https://github.com/QuesmaOrg/BinaryAudit/issues/20"
+  ]
+}
