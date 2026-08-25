@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/pull/279",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_pr",
+  "github_number": 279,
+  "title": "Stream Parameter Golf dataset tokenization",
+  "body": "## Summary\n\nEncode WikiText in bounded batches of complete source rows and stream `uint16` token IDs directly to the output shard.\n\nThe previous implementation retained the complete corpus, a Python list containing every token ID, and a NumPy copy concurrently, which can exhaust build memory. Batching complete rows bounds transient memory without introducing artificial mid-row tokenization boundaries.\n\n## Scope\n\n- Preserve the existing shard header and output format.\n- Preserve source-row tokenization boundaries.\n- Change only dataset generation memory behavior.\n",
+  "comments": [
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/pull/279#issuecomment-5396565400",
+      "user": "github-actions[bot]",
+      "created_at": "2026-08-24T14:21:32Z",
+      "updated_at": "2026-08-24T15:27:41Z",
+      "body": "## 📋 Task Implementation Rubric Review\n\n⚠️ Review not available (job may have failed)\n\n\n📋 [View run logs](https://github.com/abundant-ai/swe-marathon/actions/runs/32744829496)\n\n<sub>Ran on <a href=\"https://github.com/abundant-ai/swe-marathon/commit/942691d248b912e129b8cc810433363cc80fc077\"><code>942691d</code></a>. Automatically runs on each push. See <a href=\"https://github.com/abundant-ai/swe-marathon/blob/main/resources/task-implementation.toml\">task-implementation.toml</a>.</sub>\n\n<!-- Sticky Pull Request Commentrubric-review -->"
+    },
+    {
+      "url": "https://github.com/abundant-ai/swe-marathon/pull/279#issuecomment-5396567102",
+      "user": "github-actions[bot]",
+      "created_at": "2026-08-24T14:21:39Z",
+      "updated_at": "2026-08-24T15:28:22Z",
+      "body": "## 🔍 Task Validation Results\n\n| Task | Similarity | Docker | Oracle | Nop | Metrics | Harbor Check | AI Detection |\n|------|------------|--------|--------|-----|---------|--------------|--------------|\n| `parameter-golf` | ⏭️ | ⏭️ | ⏭️ | ⏭️ | ⏭️ | ⏭️ | ⏭️ |\n\n📋 [View run summary for detailed output](https://github.com/abundant-ai/swe-marathon/actions/runs/32744829533)\n\n<details>\n<summary>Legend</summary>\n\n- **Similarity**: Task instruction is not too similar to existing tasks (TF-IDF cosine ≥ 80% fails)\n- **Docker**: Environment builds successfully\n- **Oracle**: Solution (`solve.sh`) produces reward 1.0\n- **Nop**: Doing nothing produces reward 0.0\n- **Metrics**: `metrics.json` parses, has numeric `partial_score` ∈ [0, 1], and oracle's score = 1.0\n- **Harbor Check**: `harbor check` passes all structural validations\n- **AI Detection**: Instruction and solve.sh don't look primarily LLM-drafted (Claude judge, 70% threshold)\n- ⏭️ = Skipped (prerequisite failed)\n\n</details>\n\n<sub>Ran on <a href=\"https://github.com/abundant-ai/swe-marathon/commit/942691d248b912e129b8cc810433363cc80fc077\"><code>942691d</code></a>. Automatically runs on each push.</sub>\n\n<!-- Sticky Pull Request Commenttask-validation -->"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/tasks/parameter-golf/environment/build_dataset.py b/tasks/parameter-golf/environment/build_dataset.py\nindex 52bbc6c64..1a920b093 100644\n--- a/tasks/parameter-golf/environment/build_dataset.py\n+++ b/tasks/parameter-golf/environment/build_dataset.py\n@@ -141,14 +141,31 @@ def train_tokenizer(sample_path: Path) -> None:\n     )\n \n \n-def write_shard(path: Path, tokens: np.ndarray) -> None:\n+def write_shard(path: Path, sp: spm.SentencePieceProcessor, text: str) -> int:\n+    # SentencePiece returns Python ints, whose object overhead makes encoding the\n+    # entire ~500 MB corpus exceed even large Cloud Build workers. Encode and\n+    # write bounded chunks while reserving the fixed header up front.\n     header = np.zeros(256, dtype=\"<i4\")\n     header[0] = 20240520\n     header[1] = 1\n-    header[2] = int(tokens.size)\n-    with path.open(\"wb\") as f:\n+    token_count = 0\n+    with path.open(\"wb+\") as f:\n         header.tofile(f)\n-        tokens.astype(\"<u2\", copy=False).tofile(f)\n+        lines = text.splitlines()\n+        for start in range(0, len(lines), 4096):\n+            # The corpus joins stripped parquet rows with newlines. SentencePiece\n+            # normalizes those separators to its word-boundary marker, so encoding\n+            # complete rows independently preserves token identity while bounding\n+            # the transient Python-int lists. Never split at an arbitrary byte.\n+            encoded_lines = sp.encode(lines[start : start + 4096])\n+            for encoded in encoded_lines:\n+                tokens = np.asarray(encoded, dtype=\"<u2\")\n+                tokens.tofile(f)\n+                token_count += int(tokens.size)\n+        header[2] = token_count\n+        f.seek(0)\n+        header.tofile(f)\n+    return token_count\n \n \n def main() -> None:\n@@ -176,20 +193,20 @@ def main() -> None:\n         flush=True,\n     )\n \n-    train_ids = np.array(sp.encode(train_text), dtype=np.uint16)\n-    print(f\"Train: {train_ids.size:,} tokens (~{len(train_text) / max(train_ids.size, 1):.2f} chars/token)\", flush=True)\n-    if train_ids.size < 5_000_000:\n-        raise RuntimeError(f\"Training corpus tokenized to {train_ids.size} tokens; expected >> 5M\")\n-    write_shard(DATA_DIR / \"wikitext_train_000000.bin\", train_ids)\n+    train_token_count = write_shard(\n+        DATA_DIR / \"wikitext_train_000000.bin\", sp, train_text\n+    )\n+    print(f\"Train: {train_token_count:,} tokens (~{len(train_text) / max(train_token_count, 1):.2f} chars/token)\", flush=True)\n+    if train_token_count < 5_000_000:\n+        raise RuntimeError(f\"Training corpus tokenized to {train_token_count} tokens; expected >> 5M\")\n \n-    val_ids = np.array(sp.encode(val_text), dtype=np.uint16)\n-    print(f\"Val:   {val_ids.size:,} tokens (~{len(val_text) / max(val_ids.size, 1):.2f} chars/token)\", flush=True)\n-    if val_ids.size < 100_000:\n-        raise RuntimeError(f\"Validation tokenized to {val_ids.size} tokens; expected >> 100k\")\n-    write_shard(DATA_DIR / \"wikitext_val_000000.bin\", val_ids)\n+    val_token_count = write_shard(DATA_DIR / \"wikitext_val_000000.bin\", sp, val_text)\n+    print(f\"Val:   {val_token_count:,} tokens (~{len(val_text) / max(val_token_count, 1):.2f} chars/token)\", flush=True)\n+    if val_token_count < 100_000:\n+        raise RuntimeError(f\"Validation tokenized to {val_token_count} tokens; expected >> 100k\")\n \n     print(\n-        f\"Wrote {train_ids.size:,} train tokens and {val_ids.size:,} val tokens\",\n+        f\"Wrote {train_token_count:,} train tokens and {val_token_count:,} val tokens\",\n         flush=True,\n     )\n \n",
+  "github_state": "open",
+  "github_created_at": "2026-08-24T14:18:10Z",
+  "github_updated_at": "2026-08-24T15:33:43Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "Required L3 audit not satisfied. The PR targets current SWE-Marathon task parameter-golf and the diff changes tasks/parameter-golf/environment/build_dataset.py to stream WikiText tokenization, but the author is not a maintainer/collaborator, the PR is open, GitHub validation skipped after a failed prerequisite, and this run did not reproduce the claimed build-memory exhaustion or a pre/post build success signal. Source-read evidence is plausible but insufficient for a build/memory behavior claim without social proof, so leave unverified.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/279",
+    "https://github.com/abundant-ai/swe-marathon/pull/279/files",
+    "https://github.com/abundant-ai/swe-marathon/actions/runs/32744829533"
+  ],
+  "reviewed_at": "2026-08-25T00:07:09.443Z"
+}

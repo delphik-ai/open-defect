@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/pull/537",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_pr",
+  "github_number": 537,
+  "title": "fix: minor leg counting bugs",
+  "body": "This commit fixes two minor bugs in the `leg_counting` dataset:\r\n\r\n1. Previously, the dataset always pluralized animal names by appending `s`. This yielded incorrect results like `jellyfishs` or `butterflys`. This PR fixes this (producing e.g. `jellyfishes` and `butterflies` respectively).\r\n2. Previously, the curriculum had a hard-coded `levels=list(range(1, 37))`. Since there are 37 animals, this made it impossible to select all available animals. The line is now `levels=list(range(1, len(ANIMALS) + 1))`.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/reasoning_gym/arithmetic/leg_counting.py b/reasoning_gym/arithmetic/leg_counting.py\nindex 4c515aa3..0a3c9d8f 100644\n--- a/reasoning_gym/arithmetic/leg_counting.py\n+++ b/reasoning_gym/arithmetic/leg_counting.py\n@@ -55,6 +55,12 @@\n     \"woodlouse\": 14,\n }\n \n+IRREGULAR_PLURALS = {\n+    \"deer\": \"deer\",\n+    \"sheep\": \"sheep\",\n+    \"woodlouse\": \"woodlice\",\n+}\n+\n QUESTION_TEMPLATE = \"\"\"Your task is to count how many legs there are in total when given a list of animals.\n \n Now, how many legs are there in total if you have {animals}?\n@@ -63,6 +69,17 @@\n DATASET_NAME = \"leg_counting\"\n \n \n+def _pluralize(animal: str) -> str:\n+    \"\"\"Return the plural form of an animal name used by this dataset.\"\"\"\n+    if animal in IRREGULAR_PLURALS:\n+        return IRREGULAR_PLURALS[animal]\n+    if animal.endswith(\"y\") and animal[-2] not in \"aeiou\":\n+        return f\"{animal[:-1]}ies\"\n+    if animal.endswith((\"s\", \"x\", \"z\", \"ch\", \"sh\")):\n+        return f\"{animal}es\"\n+    return f\"{animal}s\"\n+\n+\n @dataclass\n class LegCountingConfig:\n     \"\"\"Configuration for leg counting task generation\"\"\"\n@@ -115,7 +132,8 @@ def __getitem__(self, idx: int) -> dict:\n         # Format animal counts for question\n         animal_list = []\n         for animal, count in animals.items():\n-            animal_list.append(f\"{count} {animal}{'s' if count > 1 else ''}\")\n+            animal_name = _pluralize(animal) if count > 1 else animal\n+            animal_list.append(f\"{count} {animal_name}\")\n \n         return {\n             \"question\": QUESTION_TEMPLATE.format(animals=\", \".join(animal_list)),\n@@ -142,7 +160,7 @@ def __init__(self):\n         self._define_attributes(\n             RangeAttributeDefinition(\n                 name=\"num_animals\",\n-                levels=list(range(1, 37)),\n+                levels=list(range(1, len(ANIMALS) + 1)),\n                 description=\"Number of animals in question\",\n                 lower_field_name=\"min_animals\",\n                 upper_field_name=\"max_animals\",\ndiff --git a/tests/test_leg_counting.py b/tests/test_leg_counting.py\nindex 7ecbf265..2366f7dc 100644\n--- a/tests/test_leg_counting.py\n+++ b/tests/test_leg_counting.py\n@@ -61,6 +61,37 @@ def test_leg_counting_dataset_items():\n         assert total_legs == item[\"metadata\"][\"total_legs\"]\n \n \n+def test_leg_counting_pluralizes_animal_names():\n+    \"\"\"Test regular and irregular plural forms used in generated questions.\"\"\"\n+    config = LegCountingConfig(\n+        min_animals=len(ANIMALS),\n+        max_animals=len(ANIMALS),\n+        min_instances=2,\n+        max_instances=2,\n+        size=1,\n+        seed=42,\n+    )\n+    question = LegCountingDataset(config)[0][\"question\"]\n+\n+    assert \"2 jellyfishes\" in question\n+    assert \"2 starfishes\" in question\n+    assert \"2 leeches\" in question\n+    assert \"2 cockroaches\" in question\n+    assert \"2 butterflies\" in question\n+    assert \"2 fireflies\" in question\n+    assert \"2 praying mantises\" in question\n+    assert \"2 deer\" in question\n+    assert \"2 sheep\" in question\n+    assert \"2 woodlice\" in question\n+\n+    assert \"2 butterflys\" not in question\n+    assert \"2 fireflys\" not in question\n+    assert \"2 praying mantiss\" not in question\n+    assert \"2 deers\" not in question\n+    assert \"2 sheeps\" not in question\n+    assert \"2 woodlouses\" not in question\n+\n+\n def test_leg_counting_dataset_iteration():\n     \"\"\"Test that iteration respects dataset size\"\"\"\n     config = LegCountingConfig(size=5, seed=42)\n@@ -109,3 +140,9 @@ def test_leg_counting_curriculum():\n     partially_decreased_cfg = curriculum.generate_configuration(base_value)\n     assert partially_decreased_cfg.min_animals == 1 and partially_decreased_cfg.max_animals == 1\n     assert partially_decreased_cfg.min_instances == 2 and partially_decreased_cfg.max_instances == 8\n+\n+    # test that the highest level can use every available animal\n+    num_animals_attr = curriculum.get_attribute(\"num_animals\")\n+    curriculum.set_attr_level(\"num_animals\", len(num_animals_attr.levels) - 1)\n+    max_animals_cfg = curriculum.generate_configuration(base_value)\n+    assert max_animals_cfg.min_animals == 1 and max_animals_cfg.max_animals == len(ANIMALS)\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-24T18:26:21Z",
+  "github_updated_at": "2026-08-24T18:26:21Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "reasoning-gym-hard",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-537",
+  "task_names": [
+    "reasoning-gym-arithmetic-leg-counting-hard0292e21f-seed45-0",
+    "reasoning-gym-arithmetic-leg-counting-hard0292e21f-seed45-1",
+    "reasoning-gym-arithmetic-leg-counting-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "summary": "Reasoning Gym leg_counting generates ungrammatical animal plurals and its curriculum cannot select all 37 available animals.",
+  "decision_note": "L3 deterministic source reproduction. Command: python3 snippet reconstructing current ANIMALS/range/pluralization from reasoning_gym/arithmetic/leg_counting.py. Observed len(ANIMALS)=37 but levels=list(range(1,37)) has only 36 levels/max 36, matching the PR claim that the curriculum cannot select every animal. The same snippet shows current pluralization emits jellyfishs, butterflys, deers, sheeps, and woodlouses for count 2. The PR diff updates the current leg_counting dataset and adds regression tests. No existing reasoning-gym-hard artifact covers this root cause.",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/537",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/arithmetic/leg_counting.py",
+    "https://github.com/open-thought/reasoning-gym/pull/537/files"
+  ],
+  "reviewed_at": "2026-08-25T00:07:09.443Z"
+}

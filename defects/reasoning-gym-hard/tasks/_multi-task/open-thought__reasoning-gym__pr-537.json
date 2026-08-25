@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-537",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-arithmetic-leg-counting-hard0292e21f-seed45-0",
+    "reasoning-gym-arithmetic-leg-counting-hard0292e21f-seed45-1",
+    "reasoning-gym-arithmetic-leg-counting-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "title": "fix: minor leg counting bugs",
+  "summary": "Reasoning Gym leg_counting generates ungrammatical animal plurals and its curriculum cannot select all 37 available animals.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/537",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/537",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/arithmetic/leg_counting.py",
+    "https://github.com/open-thought/reasoning-gym/pull/537/files"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-08-24T18:26:21Z",
+  "last_reviewed_at": "2026-08-25T00:07:09.443Z",
+  "decision_note": "L3 deterministic source reproduction. Command: python3 snippet reconstructing current ANIMALS/range/pluralization from reasoning_gym/arithmetic/leg_counting.py. Observed len(ANIMALS)=37 but levels=list(range(1,37)) has only 36 levels/max 36, matching the PR claim that the curriculum cannot select every animal. The same snippet shows current pluralization emits jellyfishs, butterflys, deers, sheeps, and woodlouses for count 2. The PR diff updates the current leg_counting dataset and adds regression tests. No existing reasoning-gym-hard artifact covers this root cause."
+}

@@ -1,0 +1,61 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiberCoders/FeatureBench/issues/5",
+  "repo": "libercoders/featurebench",
+  "source_type": "github_issue",
+  "github_number": 5,
+  "title": "Interface Description defects in lite split — gold tests exercise APIs absent from the Problem Statement (L1 + L2)",
+  "body": "---\n\nThanks for FeatureBench — the test-driven, feature-level design is a genuinely useful benchmark. While evaluating the **lite split** we found what look like systematic defects in the Interface Description / Problem Statement generation: several gold tests exercise APIs that are **absent from — or contradict — the provided Problem Statement**, so no implementer (agent or human) can produce them from the spec alone.\n\n**Dataset revision:** `LiberCoders/FeatureBench` @ SHA `e99d6ef` (lastModified 2026-03-27) — the current `main`.\n\n## Affected instances\n\n### L2 — `pydata__xarray.97f3a746.test_treenode.aa8ba777.lv2` (27+ tests)\n- **`NamedNode` class missing** — gold tests import `agent_code.NamedNode` (concrete class: `name` ctor param, `__repr__`, `__str__`, `children` kwarg), but the Interface Description lists only `TreeNode` and the `AnyNamedNode` Protocol. `NamedNode` appears only in the narrative, never in the spec. (15 tests)\n- **`TreeNode(children={...})` ctor not specified** — spec shows only the zero-arg `TreeNode()`; the `children` kwarg is never defined. (8 tests)\n- **`TreeNode.__delitem__` not specified** — gold uses `del john[\"Mary\"]`; spec describes deletion only via `ChildrenProxy`. (1 test)\n- **Root path value wrong** — spec states 3× that the root path is `\"\"` (with example `(\"\", root_node)`); gold expects `\".\"`. Following the spec faithfully yields the wrong value. (cascaded)\n- **`depth` self-contradictory** — one paragraph: depth measured *from this node* (leaf→0); Notes 3 lines later: *from the root* (leaf→tree depth). Gold follows the Notes. (cascaded)\n- **Error-message strings not specified** — gold uses `pytest.raises(match=...)` for specific substrings; spec gives only exception types. (3 tests)\n\n### L1 — `mlflow__mlflow.93dab383.test_judge_tool_search_traces.cad8fc4b.lv1` (7+ tests)\nThe masking patch **fully deletes transitive dependencies that the Interface Description never covers**, yet the gold test exercises them: `TraceData.request` / `.response` / `_get_root_span` (trace_data.py), `Span.parent_id` (span.py), `AssessmentSource.__init__` / `_parse` / `__str__` (assessment_source.py). The spec scopes the work to 5 functions across 3 other files; there is no documented path from \"implement `invoke()` in `search_traces.py`\" to \"also restore `TraceData.response`.\" (The gold test file itself is deleted by masking, and the repo's 536 test files / 30–60 min suite runtime make discovery infeasible within the 1-hour budget.)\n\n### L1 — `huggingface__transformers.e2e8dbed.test_serve.4e7860c7.lv1` (3 tests)\n- **`system_fingerprint`** — gold asserts it in `MANDATORY_FIELDS` for every `ChatCompletionChunk`; absent from `build_chat_completion_chunk`'s signature, docstring, and notes. (1 test, 4 sub-cases)\n- **`GET /health`** — gold starts a server and expects `200 {\"status\":\"ok\"}`; the spec explicitly enumerates the 4 endpoints the server \"exposes\" and `/health` is not among them. (1 test)\n- **VLM image key `\"url\"`** — gold expects `{\"type\":\"image\",\"url\":filepath}`; the spec says only \"with appropriate data\" and never fixes the key name. (1 test)\n\n## Root cause\nThe Interface Description generation doesn't capture the full **dependency closure** of the tested functions:\n- **L2**: concrete classes used by gold tests are dropped from the spec (e.g. `NamedNode`).\n- **L1**: the masking patch operates on transitive deps the spec doesn't cover.\n\n## Suggested fixes\n1. L2: ensure every public class/function in gold-test imports appears in the Interface Description.\n2. L1: limit masking to functions listed in the spec, **or** expand the spec to cover everything masking deletes.\n3. Add a contradiction check for self-opposing docstrings (the `depth` case).\n4. Cross-check concrete values in the spec vs gold assertions (the root-path `\"\"` vs `\".\"` case).\n\nHappy to share the full per-defect report (with test names and line references) and additional L1 instances showing the same transitive-masking pattern.",
+  "comments": [
+    {
+      "url": "https://github.com/LiberCoders/FeatureBench/issues/5#issuecomment-5018626607",
+      "user": "potatoQi",
+      "created_at": "2026-07-20T03:57:42Z",
+      "updated_at": "2026-07-20T03:57:42Z",
+      "body": "Hi @white-gandalf,\n\nThank you for the detailed and well-structured report. The concrete examples you provided are very helpful, and I agree that discrepancies between the Interface Description and the gold tests could affect the fairness and reliability of the benchmark.\n\nCould you please send me the full per-defect report, including the test names, line references, and the additional L1 cases you mentioned? You can send it to **qixingzhou1125@gmail.com**. If you have any supporting scripts or reproduction notes, those would also be greatly appreciated.\n\nI will carefully review the reported cases and use the findings to improve both the affected data instances and our data-generation and validation pipeline. Once the updated data has been released, we will reply again in this issue with the details.\n\nAfter the findings have been verified and incorporated, we would also be happy to acknowledge your contribution to correcting the dataset in the project README and add you to a Contributors section, with your permission.\n\nThanks again for taking the time to evaluate FeatureBench so thoroughly and for helping us improve it."
+    },
+    {
+      "url": "https://github.com/LiberCoders/FeatureBench/issues/5#issuecomment-5033830000",
+      "user": "white-gandalf",
+      "created_at": "2026-07-21T12:14:30Z",
+      "updated_at": "2026-07-21T12:14:30Z",
+      "body": "Thanks @potatoQi  I have sent the full per-defect report to [qixingzhou1125@gmail.com](mailto:qixingzhou1125@gmail.com).\n\nA quick preview of what it contains:\n\n- Exact references, all re-verified against the pinned revision (e99d6ef): test names, line numbers in each problem_statement, and line numbers in the gold test reconstructed from test_patch.\n\n- Additional L1 cases: a mechanical scan of all 26 L1 instances finds 16 that mask ≥1 function in a file whose name never appears in the Problem Statement. I flag which of those are genuine defects versus hard-but-fair — some masked symbols are reachable by tracing the call graph from a documented function (e.g. sympy dup_content via DomainMatrix.primitive()), so those aren't defects.\n\n- A small self-contained reproduction script so you can regenerate every reference yourself.\n\nLooking forward to the updated data once you've had a chance to review, happy to help verify the fixes against the affected instances. Happy to be credited under the GitHub handle only. \nThanks again for looking into these."
+    },
+    {
+      "url": "https://github.com/LiberCoders/FeatureBench/issues/5#issuecomment-5390182507",
+      "user": "potatoQi",
+      "created_at": "2026-08-24T02:57:45Z",
+      "updated_at": "2026-08-24T02:57:45Z",
+      "body": "Hi @white-gandalf,\n\nThank you again for the detailed report and reproduction materials. We have now completed a review of all 200 tasks in the full split, checking the generated content in each Problem Statement against the pinned upstream repository and the complete gold tests.\n\nThe resulting corrections have been released as [FeatureBench Dataset V1.1](https://huggingface.co/datasets/LiberCoders/FeatureBench/tree/v1.1).\n\nThe cases highlighted in this issue were addressed as follows:\n\n- **xarray TreeNode L2:** restored missing public interfaces, including the `TreeNode` constructor, deletion support, and `NamedNode`; corrected the contradictory `depth`, root-path, and traversal-order descriptions; and clarified required error behavior.\n- **Transformers Serve L1:** documented the `/health` endpoint, required streaming chunk fields including `system_fingerprint`, and the VLM image object’s `url` field.\n- **MLflow Search Traces L1:** clarified how trace request and response values are derived from the root span and restored malformed source-type constants.\n\nFor the broader review, we distinguished missing externally observable requirements from implementation details that agents are expected to discover from the repository. Only the `problem_statement` field was changed; tests, patches, repository revisions, and other dataset fields remain unchanged. The corrections were also reviewed to avoid prescribing implementation strategies or exposing hidden tests.\n\nWe have also released [FeatureBench 0.2.2](https://github.com/LiberCoders/FeatureBench/releases/tag/0.2.2), which defaults new runs to Dataset V1.1 and supports explicit dataset revision pinning.\n\nWe consider the issues reported here addressed in Dataset V1.1. Thank you again for bringing them to our attention."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-13T21:04:24Z",
+  "github_updated_at": "2026-08-24T02:57:45Z",
+  "candidate_benchmark_names": [
+    "featurebench",
+    "featurebench-lite",
+    "featurebench-lite-modal",
+    "featurebench-modal"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "featurebench-lite",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "featurebench-lite__libercoders__featurebench__issue-5",
+  "task_names": [
+    "pydata__xarray.97f3a746.test_treenode.aa8ba777.lv2",
+    "mlflow__mlflow.93dab383.test_judge_tool_search_traces.cad8fc4b.lv1",
+    "huggingface__transformers.e2e8dbed.test_serve.4e7860c7.lv1"
+  ],
+  "resolution": "fixed",
+  "summary": "FeatureBench lite interface descriptions omitted or contradicted APIs and concrete values required by gold tests; maintainer reports the highlighted cases fixed in Dataset V1.1.",
+  "decision_note": "L2 thread/comment audit. The issue body explicitly attributes the report to the lite split and names the same three task ids already recorded in canonical defect featurebench-lite__libercoders__featurebench__issue-5. The 2026-08-24 maintainer comment says all 200 full-split tasks were reviewed, the highlighted cases were addressed in Dataset V1.1, and FeatureBench 0.2.2 defaults new runs to Dataset V1.1. Same root cause, so this run is duplicate/fix evidence and resolution is fixed.",
+  "checked_urls": [
+    "https://github.com/LiberCoders/FeatureBench/issues/5",
+    "https://github.com/LiberCoders/FeatureBench/issues/5#issuecomment-5390182507",
+    "https://github.com/LiberCoders/FeatureBench/releases/tag/0.2.2"
+  ],
+  "reviewed_at": "2026-08-25T00:07:09.443Z"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/facebookresearch/MLGym/issues/24",
+  "repo": "facebookresearch/mlgym",
+  "source_type": "github_issue",
+  "github_number": 24,
+  "title": "Local data missing for some tasks",
+  "body": "I noticed that the local data for 3SAT, COCO, etc tasks are missing and cannot run the tasks that require local data. Is this intentional? How can I get generate or download the data? ",
+  "comments": [
+    {
+      "url": "https://github.com/facebookresearch/MLGym/issues/24#issuecomment-3212095678",
+      "user": "omi-n",
+      "created_at": "2025-08-21T21:15:58Z",
+      "updated_at": "2025-08-21T21:15:58Z",
+      "body": "+1 on 3SAT, can't find the data anywhere. COCO Captions you can download yourself https://cocodataset.org/#captions-2015"
+    },
+    {
+      "url": "https://github.com/facebookresearch/MLGym/issues/24#issuecomment-5397984821",
+      "user": "semi-nothing",
+      "created_at": "2026-08-24T16:10:59Z",
+      "updated_at": "2026-08-24T16:10:59Z",
+      "body": "Hi, we are reproducing the 3SATTime task at MLGym commit 9d40c1b5035202018cd7091fb4e83a9c68b377c0.\nconfigs/datasets/3SAT.yaml points to data/3SATTime/data, and evaluate.py requires data/dataset.pkl, but this dataset is not included in the repository.\n\nWould it be possible to share the original dataset.pkl used for the published MLGym-Bench trajectories, ideally with a SHA256 checksum? Alternatively, could you provide the exact generation script, random seed, and generation parameters?\n\nWe specifically need the original benchmark instances rather than an approximately regenerated dataset because we are replaying published trajectories and running controlled forks from historical decision points."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-07-05T18:09:19Z",
+  "github_updated_at": "2026-08-24T16:11:00Z",
+  "candidate_benchmark_names": [
+    "mlgym-bench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "mlgym-bench",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "mlgym-bench__facebookresearch__mlgym__issue-24",
+  "task_names": [
+    "3SATTime",
+    "imageCaptioningCOCO"
+  ],
+  "resolution": "found",
+  "summary": "MLGym-Bench tasks declare local dataset paths for 3SATTime and imageCaptioningCOCO, but the repository tree does not include those data directories.",
+  "decision_note": "L2 source audit. The issue and 2026-08-24 comment identify missing local data for current MLGym-Bench tasks. configs/datasets/3SAT.yaml declares is_local true and data_path data/3SATTime/data; data/3SATTime/evaluate.py loads data/dataset.pkl, but the GitHub tree has no data/3SATTime/data/dataset.pkl or data/3SATTime/data path. configs/datasets/coco.yaml likewise declares is_local true with data/imageCaptioningCOCO/data, and the tree has no such data directory. Existing mlgym-bench canonical artifacts cover evaluation-loss and missing-baseline root causes, not missing benchmark data.",
+  "checked_urls": [
+    "https://github.com/facebookresearch/MLGym/issues/24",
+    "https://github.com/facebookresearch/MLGym/issues/24#issuecomment-5397984821",
+    "https://github.com/facebookresearch/MLGym/blob/main/configs/datasets/3SAT.yaml",
+    "https://github.com/facebookresearch/MLGym/blob/main/configs/tasks/3SATTime.yaml",
+    "https://github.com/facebookresearch/MLGym/blob/main/data/3SATTime/evaluate.py",
+    "https://github.com/facebookresearch/MLGym/blob/main/configs/datasets/coco.yaml"
+  ],
+  "reviewed_at": "2026-08-25T00:07:09.443Z"
+}

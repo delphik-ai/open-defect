@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/86",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 86,
+  "title": "Add MAI to the bench?",
+  "body": "it would be nice if https://deepswe.datacurve.ai/ had some tests run on these:\n- https://microsoft.ai/news/introducingmai-code-1-flash/\n- https://microsoft.ai/news/mai-code-1-1-flash-br-better-faster-at-a-quarter-of-the-cost/",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-24T16:22:42Z",
+  "github_updated_at": "2026-08-24T16:22:42Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests adding Microsoft MAI model runs to the Deep-SWE website/bench results and does not claim a benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/86"
+  ],
+  "reviewed_at": "2026-08-25T00:07:09.443Z"
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/pull/118",
+  "repo": "openai/simple-evals",
+  "source_type": "github_pr",
+  "github_number": 118,
+  "title": "Make the grader parser robust",
+  "body": "No PR body provided.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/simpleqa_eval.py b/simpleqa_eval.py\nindex 0fc26680..9263b975 100644\n--- a/simpleqa_eval.py\n+++ b/simpleqa_eval.py\n@@ -96,6 +96,22 @@\n CHOICE_STRINGS = [\"CORRECT\", \"INCORRECT\", \"NOT_ATTEMPTED\"]\n CHOICE_LETTER_TO_STRING = dict(zip(CHOICE_LETTERS, CHOICE_STRINGS))\n \n+\n+def parse_grader_response(grading_response: str) -> str:\n+    \"\"\"Parse an unambiguous letter or named SimpleQA grade.\"\"\"\n+    label_patterns = {\n+        \"A\": r\"\\b(?:A|CORRECT)\\b\",\n+        \"B\": r\"\\b(?:B|INCORRECT)\\b\",\n+        \"C\": r\"\\b(?:C|NOT[ _]ATTEMPTED)\\b\",\n+    }\n+    matched_labels = {\n+        label\n+        for label, pattern in label_patterns.items()\n+        if re.search(pattern, grading_response, flags=re.IGNORECASE)\n+    }\n+    return matched_labels.pop() if len(matched_labels) == 1 else \"C\"\n+\n+\n class SimpleQAEval(Eval):\n     def __init__(self, grader_model: SamplerBase, num_examples: int | None = None, n_repeats: int = 1):\n         df = pandas.read_csv(\n@@ -122,8 +138,7 @@ def grade_sample(self, question: str, target: str, predicted_answer: str) -> str\n         sampler_response = self.grader_model(prompt_messages)   \n         grading_response = sampler_response.response_text\n         \n-        match = re.search(r\"(A|B|C)\", grading_response)\n-        return match.group(0) if match else \"C\"  # Default to \"NOT_ATTEMPTED\" if no match\n+        return parse_grader_response(grading_response)\n \n     def __call__(self, sampler: SamplerBase) -> EvalResult:\n             def fn(row: dict):\n@@ -193,4 +208,3 @@ def fn(row: dict):\n             \n             return common.aggregate_results(results)\n     \n-\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-24T00:53:31Z",
+  "github_updated_at": "2026-08-24T00:56:06Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "simpleqa",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "simpleqa__openai__simple-evals__pr-118",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SimpleQA grader parsing scans for any A/B/C character, so named labels such as INCORRECT, CORRECT, and NOT_ATTEMPTED can be mapped to the wrong grade.",
+  "decision_note": "L3 deterministic parser reproduction. Command: python3 snippet using the current simpleqa_eval.py rule re.search(r\"(A|B|C)\", grading_response) against named grader outputs. Observed old parser maps \"The answer is INCORRECT.\" to C, \"CORRECT\" to C, and \"NOT_ATTEMPTED\" to A, while the PR parser maps them to B, A, and C respectively. The defect is benchmark-level because SimpleQAEval.grade_sample is shared by all SimpleQA rows. No existing simpleqa artifact covers this exact parser root cause.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/pull/118",
+    "https://github.com/openai/simple-evals/blob/main/simpleqa_eval.py",
+    "https://github.com/openai/simple-evals/pull/118/files"
+  ],
+  "reviewed_at": "2026-08-25T00:07:09.443Z"
+}

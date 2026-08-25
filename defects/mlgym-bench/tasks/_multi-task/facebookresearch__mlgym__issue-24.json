@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "mlgym-bench__facebookresearch__mlgym__issue-24",
+  "benchmark_name": "mlgym-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "3SATTime",
+    "imageCaptioningCOCO"
+  ],
+  "resolution": "found",
+  "title": "Local data missing for some tasks",
+  "summary": "MLGym-Bench tasks declare local dataset paths for 3SATTime and imageCaptioningCOCO, but the repository tree does not include those data directories.",
+  "canonical_source_url": "https://github.com/facebookresearch/MLGym/issues/24",
+  "evidence_urls": [
+    "https://github.com/facebookresearch/MLGym/issues/24",
+    "https://github.com/facebookresearch/MLGym/issues/24#issuecomment-5397984821",
+    "https://github.com/facebookresearch/MLGym/blob/main/configs/datasets/3SAT.yaml",
+    "https://github.com/facebookresearch/MLGym/blob/main/configs/tasks/3SATTime.yaml",
+    "https://github.com/facebookresearch/MLGym/blob/main/data/3SATTime/evaluate.py",
+    "https://github.com/facebookresearch/MLGym/blob/main/configs/datasets/coco.yaml"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-07-05T18:09:19Z",
+  "last_reviewed_at": "2026-08-25T00:07:09.443Z",
+  "decision_note": "L2 source audit. The issue and 2026-08-24 comment identify missing local data for current MLGym-Bench tasks. configs/datasets/3SAT.yaml declares is_local true and data_path data/3SATTime/data; data/3SATTime/evaluate.py loads data/dataset.pkl, but the GitHub tree has no data/3SATTime/data/dataset.pkl or data/3SATTime/data path. configs/datasets/coco.yaml likewise declares is_local true with data/imageCaptioningCOCO/data, and the tree has no such data directory. Existing mlgym-bench canonical artifacts cover evaluation-loss and missing-baseline root causes, not missing benchmark data."
+}

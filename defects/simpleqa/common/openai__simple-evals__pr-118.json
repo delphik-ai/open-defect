@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "simpleqa__openai__simple-evals__pr-118",
+  "benchmark_name": "simpleqa",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Make the grader parser robust",
+  "summary": "SimpleQA grader parsing scans for any A/B/C character, so named labels such as INCORRECT, CORRECT, and NOT_ATTEMPTED can be mapped to the wrong grade.",
+  "canonical_source_url": "https://github.com/openai/simple-evals/pull/118",
+  "evidence_urls": [
+    "https://github.com/openai/simple-evals/pull/118",
+    "https://github.com/openai/simple-evals/blob/main/simpleqa_eval.py",
+    "https://github.com/openai/simple-evals/pull/118/files"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-08-24T00:53:31Z",
+  "last_reviewed_at": "2026-08-25T00:07:09.443Z",
+  "decision_note": "L3 deterministic parser reproduction. Command: python3 snippet using the current simpleqa_eval.py rule re.search(r\"(A|B|C)\", grading_response) against named grader outputs. Observed old parser maps \"The answer is INCORRECT.\" to C, \"CORRECT\" to C, and \"NOT_ATTEMPTED\" to A, while the PR parser maps them to B, A, and C respectively. The defect is benchmark-level because SimpleQAEval.grade_sample is shared by all SimpleQA rows. No existing simpleqa artifact covers this exact parser root cause."
+}
