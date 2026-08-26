@@ -18,6 +18,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-07-13T21:04:24Z",
-  "last_reviewed_at": "2026-08-25T00:07:09.443Z",
+  "last_reviewed_at": "2026-08-26T00:05:48.353Z",
   "decision_note": "L2 audit: issue title/body explicitly attribute the report to the lite split at current SHA e99d6ef and name three affected task ids. Maintainer acknowledgement agrees that Interface Description/gold-test discrepancies can affect fairness and requests the full per-defect report, providing social proof. No existing FeatureBench lite canonical artifact covers this root cause."
 }

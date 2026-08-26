@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/85",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 85,
+  "title": "Terra is missing",
+  "body": "Terra 5.6 is missing from https://deepswe.datacurve.ai/",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/85#issuecomment-5388485711",
+      "user": "coygeek",
+      "created_at": "2026-08-23T21:11:36Z",
+      "updated_at": "2026-08-23T21:11:36Z",
+      "body": "Yes, that's what I noticed and asked to clarify:\nhttps://github.com/datacurve-ai/deep-swe/issues/82"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/85#issuecomment-5398110700",
+      "user": "Omzig",
+      "created_at": "2026-08-24T16:20:42Z",
+      "updated_at": "2026-08-24T16:20:42Z",
+      "body": "its in the filter, you have to turn it on every time you visit the site"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/85#issuecomment-5398275702",
+      "user": "TheDirigible",
+      "created_at": "2026-08-24T16:34:25Z",
+      "updated_at": "2026-08-24T16:34:25Z",
+      "body": "Ahh, thanks. I would rename Configs to Models."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/85#issuecomment-5398291175",
+      "user": "Omzig",
+      "created_at": "2026-08-24T16:35:49Z",
+      "updated_at": "2026-08-24T16:35:49Z",
+      "body": "i would leave this open, as an enhancement"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-22T21:23:13Z",
+  "github_updated_at": "2026-08-24T23:36:59Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue reports that a Terra model entry is missing from the DeepSWE website/leaderboard. That is a presentation/model-result listing issue, not a benchmark defect in the current task set, dataset, harness, evaluator, or scoring logic.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/85"
+  ],
+  "reviewed_at": "2026-08-26T00:05:48.353Z"
+}

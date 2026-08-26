@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/85",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 85,
+  "title": "EvalPort interchange adapter for reward.json / score_from_reward.py gating?",
+  "body": "Hi — I'm Sahi, working on EvalPort (https://github.com/adhabnr-ux/evalport), an open interchange format for portable eval datasets/results (`TestCase`/`Grader`/`Result`/`ResultSet`/`GraderResult`, Python `evalport-sdk` + a TS SDK). Not affiliated with FrontierSWE — just looking at eval-format converters, and the `reward.json` + `scripts/score_from_reward.py` gating here looked like a clean fit for one, so wanted to float it before writing a PR nobody wants.\n\nWhat I'm reading out of `score_from_reward.py` / `SCORING.md`:\n- each task's verifier writes `reward.json` with a raw `reward`/`score` plus category-specific components (`additional_data.correctness_passed/total`, `subscores`, `geometric_mean_speedup`, etc.)\n- `extract_score()` derives `(correctness, speedup)` per task, and `compute_gated_score()` applies the category gate — implementation → correctness; performance → `0.5*correctness`, or `0.5 + 0.5*speedup` once correctness hits 1.0; ml_research → raw reward (with `frogsgame-rl`'s board-count/500 special case)\n- `scoring/anticheat.json` zeroes a trial's score post-hoc regardless of the above\n\nThat maps fairly directly onto EvalPort's `Result`/`GraderResult`:\n\n```python\n# frontier_swe_openeval_adapter/__init__.py — sketch, same shape as\n# adapters/braintrust-openeval-adapter in the evalport repo\nfrom openeval.types import Result, GraderResult\nfrom scripts.score_from_reward import extract_score, compute_gated_score, category_of\n\ndef reward_to_result(task: str, reward_data: dict, anticheat_flagged: bool = False) -> Result:\n    correctness, speedup = extract_score(reward_data, task)\n    gated = 0.0 if anticheat_flagged else compute_gated_score(correctness, speedup, task)\n    return Result(\n        test_case_id=task,\n        passed=correctness >= 1.0 and not anticheat_flagged,\n        grader_results=[GraderResult(\n            grader_id=f\"gr_{task}_gated_score\",\n            type=\"custom\",\n            score=gated,\n            passed=correctness >= 1.0,\n            reason=\"anticheat flagged\" if anticheat_flagged else None,\n            metadata={\n                \"category\": category_of(task),\n                \"correctness\": correctness,\n                \"speedup\": speedup,\n                \"raw_reward\": reward_data.get(\"reward\") or reward_data.get(\"score\"),\n            },\n        )],\n        metadata={\"anticheat_flagged\": anticheat_flagged},\n    )\n```\n\nFive trials per task → five `Result`s in one `ResultSet` (`run_id` = the agent/model run, `summary` carrying the Avg/Best Score and \"Correctness X/5\" columns straight off the leaderboard).\n\nI'd build this as a standalone `frontier-swe-openeval-adapter` package — importing `score_from_reward.py`'s public functions rather than reimplementing the per-task gating, since that script is explicitly named as the source of truth — and open a PR, unless a gist/external adapter is a better fit than landing it in this repo. Before doing the work: is this something you'd want, and would `score_from_reward.py`'s module path / function signatures be reasonable to treat as stable to import against, or is that logic expected to move?\n\n— Sahi, independent contributor (not affiliated with this project)",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-25T04:00:27Z",
+  "github_updated_at": "2026-08-25T04:00:27Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue proposes an EvalPort adapter for FrontierSWE reward/result interchange. It does not claim a defect in the current benchmark task set, harness, evaluator, or scoring.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/85"
+  ],
+  "reviewed_at": "2026-08-26T00:05:48.353Z"
+}

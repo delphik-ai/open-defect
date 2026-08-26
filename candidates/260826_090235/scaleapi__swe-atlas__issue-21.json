@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-Atlas/issues/21",
+  "repo": "scaleapi/swe-atlas",
+  "source_type": "github_issue",
+  "github_number": 21,
+  "title": "RF tasks: exclude /builddir when generating model patch?",
+  "body": "Hi,\n\nI found that a common failure mode for those tasks in language c/c++ in RF task is that, the agent tried to compile or build the project during thre resolution process. Therefore, it generated `/builddir` and many other artifacts, and all of them are included into the agent.patch in the evaluation stage.\n\nAs a result, the patch is too large and in the llm judge stage, it will raise an exception regarding \"prompt is too long\" and the rubrics fail directly. In many cases, those artifacts in the agent patch results in the failure in cmake clean/build, and the agent fails in test directly.\n\nEven when I run the evaluation with opus 4.7/4.8, the above issue happens.\n\nI wonder if this is what we expected? It seems more reasonable to me that we should exclude those artifacts.\n\nI'm also curious about the reported score in your official website: did you exclude those artifacts in agent.patch or not during the evaluation?\n\nFor reference, here are the tasks with this issue (maybe not completed):\n\ntask-69b7c2a04b6f8ff9ed98812c\ntask-69b7c2a04b6f8ff9ed98812d\ntask-69b7c2a04b6f8ff9ed98812e\ntask-69d196f015a150488265afc1\ntask-69d196f015a150488265afc0\n\n\nThanks!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-25T11:39:47Z",
+  "github_updated_at": "2026-08-25T11:42:55Z",
+  "candidate_benchmark_names": [
+    "scale-ai__swe-atlas-qna",
+    "scale-ai__swe-atlas-tw"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue explicitly attributes the claimed /builddir patch-size failure to RF C/C++ tasks and lists RF task ids. The watched SWE-Atlas benchmarks for this repo are QnA and TW, so this may be a real RF issue but is outside the current benchmark variants counted here.",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/issues/21"
+  ],
+  "reviewed_at": "2026-08-26T00:05:48.353Z"
+}

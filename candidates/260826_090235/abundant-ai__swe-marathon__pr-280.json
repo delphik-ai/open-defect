@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/pull/280",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_pr",
+  "github_number": 280,
+  "title": "Add validated GLM 5.3 archive importer",
+  "body": "<!-- CURSOR_SUMMARY -->\n> [!NOTE]\n> **Low Risk**\n> Tooling-only updates to canonical configuration lists and alias maps; no changes to benchmarks, auth, or data pipelines.\n> \n> **Overview**\n> Extends **`read-swe-marathon-logs.py`** so archived **GLM 5.3** runs under **`claude-code`** are treated as first-class v1.1 configurations instead of unknown model IDs.\n> \n> Adds three canonical slots for **`zai/glm-5.3`** at reasoning efforts **low**, **high**, and **max**, which feeds **`audit --check-canonical-matrix`** when checking the expected 8-trial coverage per task. **`MODEL_ALIASES`** now maps shorthand and **`[1m]`** context-window variants (**`glm-5.3`**, **`glm-5.3[1m]`**, **`zai/glm-5.3[1m]`**) to **`zai/glm-5.3`** so sync/audit grouping matches the public model name used elsewhere in the suite (same pattern as GLM 5.2).\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 35e451342ed3896b83e222ef43290f9cd17d92ad. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/scripts/read-swe-marathon-logs.py b/scripts/read-swe-marathon-logs.py\nindex 6f8e25a77..8cf1cfeac 100755\n--- a/scripts/read-swe-marathon-logs.py\n+++ b/scripts/read-swe-marathon-logs.py\n@@ -132,6 +132,9 @@\n     (\"codex\", \"openai/gpt-5.6-terra\", \"max\"),\n     (\"grok-build\", \"xai/grok-4.5\", None),\n     (\"grok-build\", \"xai/grok-4.6\", \"high\"),\n+    (\"claude-code\", \"zai/glm-5.3\", \"low\"),\n+    (\"claude-code\", \"zai/glm-5.3\", \"high\"),\n+    (\"claude-code\", \"zai/glm-5.3\", \"max\"),\n     (\"kimi-claude-code\", \"moonshotai/kimi-k3\", None),\n     (\"kimi-code\", \"moonshotai/kimi-k3\", None),\n ]\n@@ -183,6 +186,9 @@\n     \"zai/glm-5.2[1m]\": \"zai/glm-5.2\",\n     \"glm-x-preview[1m]\": \"zai/glm-5.2\",\n     \"zai/glm-x-preview[1m]\": \"zai/glm-5.2\",\n+    \"glm-5.3\": \"zai/glm-5.3\",\n+    \"glm-5.3[1m]\": \"zai/glm-5.3\",\n+    \"zai/glm-5.3[1m]\": \"zai/glm-5.3\",\n     \"minimax/minimax-m2.7\": \"openrouter/minimax/minimax-m2.7\",\n }\n \n",
+  "github_state": "closed",
+  "github_created_at": "2026-08-25T04:51:12Z",
+  "github_updated_at": "2026-08-25T04:52:21Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: PR body and diff are tooling-only changes to scripts/read-swe-marathon-logs.py model/config alias handling for archived GLM 5.3 runs. It does not claim a benchmark task, harness, dataset, evaluator, or scoring defect.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/280"
+  ],
+  "reviewed_at": "2026-08-26T00:05:48.353Z"
+}
