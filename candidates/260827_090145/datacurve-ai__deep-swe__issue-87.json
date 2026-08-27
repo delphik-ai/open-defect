@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/87",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 87,
+  "title": "zai-org/GLM-5.3-Flash",
+  "body": "Please measure:\nhttps://x.com/Zai_org/status/2092616204787626030\nhttps://openrouter.ai/z-ai/glm-5.3-flash",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/87#issuecomment-5426877207",
+      "user": "coygeek",
+      "created_at": "2026-08-26T14:33:23Z",
+      "updated_at": "2026-08-26T14:33:33Z",
+      "body": "Vendor-reported DeepSWE results are:\n63.4%"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-26T14:30:08Z",
+  "github_updated_at": "2026-08-26T14:33:33Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue #87 requests measuring/reporting GLM-5.3-Flash on DeepSWE and adds a vendor-reported score. It is a leaderboard/model-evaluation request, not a benchmark defect.",
+  "reviewed_at": "2026-08-27T00:09:34.479Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/87"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/650",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 650,
+  "title": "SWE-bench Verified: 54% of instances no longer discriminate among the top 25 submissions",
+  "body": "Hi — thank you for publishing per-instance results in `swe-bench/experiments`. Very\nfew benchmarks do, and it makes the analysis below possible at all. This is offered\nas a measurement, not a criticism: what I found is mostly what saturation looks\nlike when a benchmark has done its job.\n\nI applied classical test theory (item analysis, the toolkit used to build\ncertification exams) to the 134 public submissions across all 500 Verified\ninstances. Code and data to reproduce everything:\nhttps://github.com/JudeDesigns/itemwise/tree/main/analysis/swebench\n\nMethod notes: `no_generation`/`no_logs` count as unresolved, matching leaderboard\nscoring. The 32 instances no submission has ever resolved appear in no `resolved`\nlist, so they're recovered via the per-repo denominators in `resolved_by_repo.json`.\n\n## 1. Dead instances by cohort\n\nAn instance solved by every system in a cohort — or by none — has zero variance\nand therefore carries no information about which system is better.\n\n| cohort  | dead       | %     | all solve | none solve |\n|---------|-----------:|------:|----------:|-----------:|\n| top 5   |    394/500 | 78.8% |       334 |         60 |\n| top 10  |    336/500 | 67.2% |       285 |         51 |\n| top 25  |    270/500 | 54.0% |       230 |         40 |\n| top 50  |    181/500 | 36.2% |       146 |         35 |\n| top 100 |     53/500 | 10.6% |        21 |         32 |\n| all 134 |     32/500 |  6.4% |         0 |         32 |\n\nAcross the full field the benchmark discriminates well. The saturation is\nspecifically at the frontier.\n\n## 2. The informative subset reproduces the ranking exactly\n\nRestricting to the 230 non-dead instances reproduces the full-500 top-25 ranking\nwith **Spearman ρ = +1.000** — exactly, not approximately.\n\nThis seems like the actionable part: a distilled subset of roughly half the\ninstances appears to carry all of the current ranking signal, at half the\nevaluation cost. If a \"Verified Core\" split would be useful, I'm happy to open a PR\nwith the instance list and the selection code.\n\n## 3. The top of the leaderboard is within measurement error\n\nStandard error of measurement for the top-25 cohort gives a 95% minimum real gap\nof **15.24 instances (3.05 pp)**. All 24 of the 24 adjacent pairs fall inside it;\neight systems are statistically tied with first place.\n\nA bootstrap over instances — sharing none of CTT's assumptions — agrees:\n\n```\nP(truly #1)\n  35.9%  sonar-foundation-agent + claude-opus-4-5   396/500\n  33.8%  livesweagent + claude-opus-4-5             396/500\n  25.5%  trae + doubao-seed-code                    394/500\n   2.0%  livesweagent + gemini-3-pro-preview        387/500\n```\n\nDisplaying a confidence interval or a tie band alongside resolution rate would\ncommunicate this without changing anything about how submissions are scored.\n\n## What I checked and did not find\n\nI initially flagged 37 instances as potential grader inversions (weaker systems\nresolving them more often than stronger ones). A curveball randomisation holding\nitem difficulties and system totals fixed produced 44.7 ± 4.0 such instances under\nthe null, against 37 observed — `p = 0.99`. **All 37 were noise**, caused by a bug\nin my own threshold. After fixing it: zero flagged at every cohort size. I mention\nit so the numbers above are read by someone who checked their own work.\n\n## Caveats\n\n- Submissions are single runs; the SEM bounds item-universe error, not run-to-run\n  variance, so true uncertainty is larger than reported.\n- Submissions span Oct 2023 – Dec 2025 across harness versions; not one population.\n- Instances aren't independent — 231 of 500 are from `django/django`.\n\nHappy to be told I've misread the data. Everything reruns in about 15 seconds,\nstandard library only.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-26T16:02:56Z",
+  "github_updated_at": "2026-08-26T16:02:56Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue #650 is a statistical/item-analysis proposal about SWE-bench Verified saturation and a possible distilled split. It explicitly says the observed grader-inversion suspicion was a bug in the reporter analysis and found zero flagged instances after correction, so it is not a benchmark defect claim.",
+  "reviewed_at": "2026-08-27T00:09:34.479Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/650"
+  ]
+}

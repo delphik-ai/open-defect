@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1362",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Irrelevance detection credits a tool call that failed to parse as a correct abstention",
+  "summary": "BFCL v4 irrelevance scoring treats decode failures as no function call, so malformed tool-call outputs can be credited as correct abstentions in published irrelevance results.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1362",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1362",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/eval_checker/eval_runner.py",
+    "https://github.com/HuanzhiMao/BFCL-Result/blob/main/2025-12-16/score/tiiuae_Falcon3-1B-Instruct-FC/non_live/BFCL_v4_irrelevance_score.json",
+    "https://github.com/HuanzhiMao/BFCL-Result/blob/main/2025-12-16/result/tiiuae_Falcon3-1B-Instruct-FC/non_live/BFCL_v4_irrelevance_result.json",
+    "https://github.com/HuanzhiMao/BFCL-Result/blob/main/2025-12-16/score/tiiuae_Falcon3-1B-Instruct-FC/live/BFCL_v4_live_irrelevance_score.json",
+    "https://github.com/HuanzhiMao/BFCL-Result/blob/main/2025-12-16/result/tiiuae_Falcon3-1B-Instruct-FC/live/BFCL_v4_live_irrelevance_result.json",
+    "https://github.com/HuanzhiMao/BFCL-Result/blob/main/2025-12-16/score/nvidia_llama-3.1-nemotron-ultra-253b-v1/non_live/BFCL_v4_simple_python_score.json",
+    "https://github.com/HuanzhiMao/BFCL-Result/blob/main/2025-12-16/score/nvidia_llama-3.1-nemotron-ultra-253b-v1/live/BFCL_v4_live_relevance_score.json"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-08-26T20:10:09Z",
+  "last_reviewed_at": "2026-08-27T00:09:34.479Z",
+  "decision_note": "L3 audit: no Harbor preflight was needed because the claim is reproducible from public GitHub BFCL source and published result/score artifacts. Command used: curl the current ShishirPatil/gorilla eval_runner.py and HuanzhiMao/BFCL-Result 2025-12-16 score/result JSON files, then compare credited entries against raw outputs. Source inspection shows _evaluate_single_relevance_entry sets contain_func_call=False on decode_ast exception and success=not contain_func_call for irrelevance. Reproduction matched the claim: tiiuae_Falcon3-1B-Instruct-FC had BFCL_v4_irrelevance 229/240 credited correct with 228 credited outputs containing <tool_call, and BFCL_v4_live_irrelevance 700/884 credited correct with 588 credited outputs containing <tool_call. nvidia_llama-3.1-nemotron-ultra-253b-v1 showed BFCL_v4_irrelevance and live_irrelevance at 1.0 while BFCL_v4_simple_python and live_relevance were 0.0. No existing bfcl common artifact covers this decode-failure-as-abstention root cause; resolution is found because issue #1362 is open and no fix evidence was present in the thread."
+}

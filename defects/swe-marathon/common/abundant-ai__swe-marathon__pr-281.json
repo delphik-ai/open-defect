@@ -16,6 +16,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-25T21:26:52Z",
-  "last_reviewed_at": "2026-08-26T00:05:48.353Z",
+  "last_reviewed_at": "2026-08-27T00:09:34.479Z",
   "decision_note": "L2 audit: PR #281 body and README/CHANGELOG diff explicitly state that short GitHub tags v1.0 and v1.1 did not match the public leaderboards and document canonical v1.0-official/v1.1-official pins. GitHub release/ref checks show v1.0-official and v1.1-official exist while short v1.0/v1.1 refs return 404, giving clear upstream source evidence. No existing swe-marathon common artifact covers leaderboard-version tag mislabeling. Resolution is fixed because the corrected official release tags exist and the misapplied short tags are deleted, even though the documentation PR remains open."
 }
