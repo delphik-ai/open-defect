@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/87",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 87,
+  "title": "zai-org/GLM-5.3-Flash",
+  "body": "Please measure:\nhttps://x.com/Zai_org/status/2092616204787626030\nhttps://openrouter.ai/z-ai/glm-5.3-flash",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/87#issuecomment-5426877207",
+      "user": "coygeek",
+      "created_at": "2026-08-26T14:33:23Z",
+      "updated_at": "2026-08-26T14:33:33Z",
+      "body": "Vendor-reported DeepSWE results are:\n63.4%"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/87#issuecomment-5433392696",
+      "user": "coygeek",
+      "created_at": "2026-08-27T01:58:27Z",
+      "updated_at": "2026-08-27T01:58:27Z",
+      "body": "DeepSWE measured glm-5.3-flash [max]:\n63%\n\nThanks DeepSWE!"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-26T14:30:08Z",
+  "github_updated_at": "2026-08-27T01:58:27Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue #87 is a request to measure a model on DeepSWE and a maintainer reply with measured/vendor-reported percentages. It does not report a benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/87"
+  ],
+  "reviewed_at": "2026-08-28T01:07:14.304Z"
+}

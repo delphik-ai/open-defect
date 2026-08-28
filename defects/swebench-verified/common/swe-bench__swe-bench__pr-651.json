@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-651",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Update SWE-bench v5 local eval docs for task repos",
+  "summary": "The SWE-bench README local evaluation setup omitted the required swe-bench-tasks checkout and --task-repo argument for current v5 CLI image builds, leaving the verified example with obsolete namespace guidance.",
+  "defect_type_main": "Reproducibility",
+  "defect_type_sub": "documentation_command_mismatch",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/651",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/651",
+    "https://github.com/SWE-bench/SWE-bench/pull/651/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-27T11:22:04Z",
+  "last_reviewed_at": "2026-08-28T01:07:14.304Z",
+  "decision_note": "L2 audit. PR #651 is an open README-only fix whose body and diff update the current v5 local evaluation instructions: clone and validate swe-bench-tasks, pass --task-repo to swebench eval verified, and remove obsolete --namespace guidance. The example explicitly targets the verified split with sympy__sympy-20590, so attribution is swebench-verified rather than multilingual. Existing swebench-verified common artifacts do not cover this v5 task-repo documentation mismatch. Resolution is fixing because the PR is open and unmerged."
+}

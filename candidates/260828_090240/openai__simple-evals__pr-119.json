@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/pull/119",
+  "repo": "openai/simple-evals",
+  "source_type": "github_pr",
+  "github_number": 119,
+  "title": "Fix MATH grading to use last Answer and harden equality check",
+  "body": "Fixes #115\n\nmath_eval now grades the last `Answer:` line, not the first. Uses `re.findall` and takes the final match. This matches the prompt that asks for the last line to hold the answer. Self correction mid response no longer flips the score.\n\ncommon now wraps both expressions in quotes in the equality prompt. Candidate text is delimited and cannot read as instructions. Adds guard for `None` extracts.\n\ncommon now parses the grader reply with a tolerant check. Searches for word `yes`. Handles case, punctuation, and short rationales like `yes.` or `The answer is yes`.\n\nTesting: reproduced both flip directions and the prompt injection and strict parse failures without API calls. Verified patched extraction picks last answer and tolerant parse accepts all expected yes variants. No existing repo tests affected.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/common.py b/common.py\nindex 33a9c2a0..0f24155b 100644\n--- a/common.py\n+++ b/common.py\n@@ -1,5 +1,6 @@\n import io\n import os\n+import re\n from collections import defaultdict\n from concurrent.futures import ThreadPoolExecutor, as_completed\n from multiprocessing.pool import ThreadPool\n@@ -131,8 +132,8 @@\n \n Respond with only \"Yes\" or \"No\" (without quotes). Do not include a rationale.\n \n-    Expression 1: %(expression1)s\n-    Expression 2: %(expression2)s\n+    Expression 1: \"%(expression1)s\"\n+    Expression 2: \"%(expression2)s\"\n \"\"\".strip()\n \n \n@@ -155,10 +156,16 @@ def format_multichoice_question(row):\n \n \n def check_equality(sampler: SamplerBase, expr1: str, expr2: str):\n+    # Guard against None (no extract) and ensure string\n+    if expr1 is None:\n+        expr1 = \"\"\n+    if expr2 is None:\n+        expr2 = \"\"\n     prompt = EQUALITY_TEMPLATE % {\"expression1\": expr1, \"expression2\": expr2}\n     sampler_response = sampler([dict(content=prompt, role=\"user\")])\n     response_text = sampler_response.response_text\n-    return response_text.lower().strip() == \"yes\"\n+    # Tolerant parse: accept \"yes\", \"yes.\", \"Yes!\" or \"The answer is yes\"\n+    return bool(re.search(r\"\\byes\\b\", response_text.lower()))\n \n \n def _compute_stat(values: list, stat: str):\ndiff --git a/math_eval.py b/math_eval.py\nindex 6e0ca0e9..43bb2b0f 100644\n--- a/math_eval.py\n+++ b/math_eval.py\n@@ -50,8 +50,8 @@ def fn(row: dict):\n             sampler_response = sampler(prompt_messages)\n             response_text = sampler_response.response_text\n             actual_queried_prompt_messages = sampler_response.actual_queried_message_list\n-            match = re.search(ANSWER_PATTERN, response_text)\n-            extracted_answer = match.group(1) if match else None\n+            matches = re.findall(ANSWER_PATTERN, response_text)\n+            extracted_answer = matches[-1].strip() if matches else None\n             score = float(check_equality(self.equality_checker, row[\"Answer\"], extracted_answer))\n             html = common.jinja_env.from_string(HTML_JINJA).render(\n                 prompt_messages=actual_queried_prompt_messages,\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-24T17:35:35Z",
+  "github_updated_at": "2026-08-27T20:45:19Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "L2 audit. The watched repo maps to simpleqa, but PR #119 is explicitly about MATH grading and changes math_eval.py plus shared equality helper behavior for MATH answer extraction. It does not provide SimpleQA benchmark attribution evidence and is outside the current simpleqa artifact scope.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/pull/119",
+    "https://github.com/openai/simple-evals/pull/119/files"
+  ],
+  "reviewed_at": "2026-08-28T01:07:14.304Z"
+}

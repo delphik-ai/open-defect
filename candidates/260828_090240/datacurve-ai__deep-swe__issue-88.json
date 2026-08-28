@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/88",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 88,
+  "title": "Qwen/Qwen3.8-Flash-Next",
+  "body": "Please measure \nhttps://x.com/Alibaba_Qwen/status/2092591393424515114\n\nUpdate:\nOpenRouter is live https://openrouter.ai/qwen/qwen3.8-flash\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/88#issuecomment-5426869049",
+      "user": "coygeek",
+      "created_at": "2026-08-26T14:32:47Z",
+      "updated_at": "2026-08-26T14:32:47Z",
+      "body": "Vendor-reported DeepSWE results are:\n58.7%"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-26T14:31:08Z",
+  "github_updated_at": "2026-08-26T23:14:26Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. Issue #88 is an open request to measure Qwen/Qwen3.8-Flash on DeepSWE with a vendor-reported result comment. It is a leaderboard/evaluation request, not a defect in benchmark artifacts.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/88"
+  ],
+  "reviewed_at": "2026-08-28T01:07:14.304Z"
+}

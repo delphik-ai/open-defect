@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-194",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "mastodon-clone"
+  ],
+  "resolution": "found",
+  "title": "Harden mastodon-clone CUA verifier and oracle contract",
+  "summary": "The mastodon-clone task had a soft-gated CUA verifier plus oracle and contract gaps, including venv PATH failures, invalid CSS comments, Alpine bindings blocked by strict CSP, missing Mastodon UX routes, and undocumented vendored asset paths that made valid runs fail before meaningful CUA grading.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "oracle_false_negative",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/194",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/194",
+    "https://github.com/abundant-ai/swe-marathon/pull/194/files",
+    "https://github.com/abundant-ai/swe-marathon/pull/209",
+    "https://github.com/abundant-ai/swe-marathon/pull/194#issuecomment-4465764367"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-10T19:03:40Z",
+  "last_reviewed_at": "2026-08-28T01:07:14.304Z",
+  "decision_note": "L2 audit. PR #194 is explicitly scoped to tasks/mastodon-clone and its body, commit messages, diff, and CI comments document concrete current-task verifier/oracle defects: required=false CUA grading could no-op, test.sh/start.sh dropped /opt/venv/bin causing PEP 668 or missing uvicorn, CSS began with a JS-style // comment, Alpine bindings were incompatible with strict CSP, required Mastodon Local/@handle/avatar/icon UX was absent, and the vendored asset contract was hidden until stacked PR #209 was folded into #194. Existing mastodon-clone artifact #273 covers only the zero-notification badge and does not cover these root causes. The PR was closed without merge, so resolution remains found rather than fixed."
+}
