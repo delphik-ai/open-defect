@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spreadsheetbench-verified__ruckbreasoning__spreadsheetbench__issue-38",
+  "benchmark_name": "spreadsheetbench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "[Bug] Official inference/evaluation pipeline does not consume generated outputs",
+  "summary": "SpreadsheetBench official evaluation and inference pipeline selects original input workbooks instead of generated outputs and uses inconsistent conversation JSONL paths, so generated workbooks may not be evaluated reliably.",
+  "canonical_source_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/38",
+  "evidence_urls": [
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/issues/38",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/evaluation/evaluation.py",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/inference/inference_single.py",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/inference/inference_multiple.py",
+    "https://github.com/RUCKBReasoning/SpreadsheetBench/commit/03242e9678e4d1502ab625aa848361e73c1a6717"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-08-29T15:17:41Z",
+  "last_reviewed_at": "2026-08-30T00:04:54.017Z",
+  "decision_note": "Benchmark attribution is SpreadsheetBench Verified from the watched repo and the issue cites the published 912-task archive. Existing SpreadsheetBench common defects cover requirements pins and formula recalculation, not this root cause. L3 audit: cloned public RUCKBReasoning/SpreadsheetBench HEAD 49b73a94775fb489063f60ca1865e3a650079a79 and ran a Python assertion script against evaluation/evaluation.py, inference/inference_single.py, and inference/inference_multiple.py. Observed evaluation proc_path points to data/<dataset>/spreadsheet/<id>/*_input.xlsx while the intended outputs path is commented; single and multiple inference write conv JSONL under inference/outputs but run_solution reads data/<dataset>/outputs; evaluation default remains all_data_912. These observations match the issue claim and affect shared official pipeline behavior rather than one task row."
+}

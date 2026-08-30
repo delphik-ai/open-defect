@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/195",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 195,
+  "title": "[Spider2-Snow] external knowledge documents inconsistent with gold answers — request review/correction",
+  "body": "\n### Summary\n\nWhile running Spider2-Snow tasks, we found that some documents under `spider2-snow/resource/documents/` describe logic that **does not match the gold SQL / gold results**. This can mislead agents and models that rely on `external_knowledge`, causing correct implementations (per the doc) to fail evaluation.\n\nWe would like to ask: **can these resource documents be updated (or aligned with gold)?** Ideally there could also be a systematic audit of `resource/documents/` vs. gold answers for tasks that reference them.\n\n### Motivation\n\nSpider2-Snow tasks can attach `external_knowledge` (see `spider2-snow.jsonl`). Agents are expected to follow these documents when writing SQL. When the document and gold diverge, benchmark results may reflect **documentation errors** rather than model capability.\n\n### Concrete example: `haversine_formula.md`\n\n**Affected tasks:** `sf_local010` (and related: `sf_local009`)\n\n**Document says** (`spider2-snow/resource/documents/haversine_formula.md`, section *Symmetry of Routes*):\n\n> To identify unique flight routes between two cities, we standardize the order of cities in each route. Specifically, we ensure that the lexicographically smaller city name is always listed as the first city (`city1`), and the larger city is listed as the second city (`city2`). **This ensures that a flight from City A to City B is treated the same as a flight from City B to City A.**\n\n**Gold SQL does** (`spider2-snow/evaluation_suite/gold/sql/sf_local010.sql`):\n\n```sql\n-- Calculate the average distance for each unique combination of from_city and to_city\nSELECT\n    \"from_city\",\n    \"to_city\",\n    AVG(\"distance_km\") AS \"average_distance_km\"\nFROM ( ... )\nGROUP BY \"from_city\", \"to_city\"\n```\n\nGold groups by **directional** `(from_city, to_city)` pairs. It does **not** canonicalize city order (e.g. `LEAST/GREATEST` or lexicographic ordering). So **A→B and B→A are counted as two separate pairs**, which contradicts the document.\n\n**Task wording adds ambiguity:** `sf_local010` asks to distribute **\"unique city pairs\"** by average distance, which naturally suggests undirected pairs — consistent with the document, not with gold.\n\n**Gold answer:** `6` (from `evaluation_suite/gold/exec_result/sf_local010.csv`).\n\nFollowing the document (treating A↔B as one pair) would likely produce a different histogram and a different final count.\n\n### Impact\n\n- Models/agents that **trust `external_knowledge`** may write logically correct SQL per the doc but **fail evaluation**.\n- The issue is not limited to Haversine: we suspect other `resource/documents/*.md` files may have similar mismatches with gold.\n\n### Proposed actions\n\n1. **Clarify policy:** Should `external_knowledge` be treated as authoritative, or is gold always authoritative when they conflict?\n2. **Fix the inconsistency** for `haversine_formula.md`, either by:\n   - **(A)** Updating the document to state that city pairs are **directional** (`from_city`, `to_city`), and removing/clarifying the \"Symmetry of Routes\" section; or\n   - **(B)** Updating gold SQL for `sf_local010` (and any related tasks) to canonicalize city pairs as described in the document.\n3. **Broader audit:** Review all tasks with non-null `external_knowledge` in `spider2-snow.jsonl` and verify each referenced document against gold SQL / exec results.\n\n### Environment\n\n- Repo: `xlang-ai/Spider2`\n- Subset: Spider2-Snow\n- Example files:\n  - `spider2-snow/resource/documents/haversine_formula.md`\n  - `spider2-snow/evaluation_suite/gold/sql/sf_local010.sql`\n  - `spider2-snow/spider2-snow.jsonl` (`sf_local010`, `external_knowledge: \"haversine_formula.md\"`)\n\n### Question for maintainers\n\nAre contributions welcome to fix `resource/documents/` (and/or gold) once inconsistencies are confirmed? We are happy to help identify more cases or open a PR after alignment on the intended semantics.",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/195#issuecomment-4533211508",
+      "user": "chaozwn",
+      "created_at": "2026-05-25T09:36:59Z",
+      "updated_at": "2026-05-25T09:36:59Z",
+      "body": "### Follow-up question\n\nAre users/contributors allowed to modify the `resource/documents/` external knowledge files themselves (e.g., via PR), or should such changes only be made by the maintainers after review?\n\nWe want to understand the expected workflow:\n- Can we open a PR to fix documented inconsistencies (like the `haversine_formula.md` case above)?\n- Or should we only report issues and wait for an official update?\n\nThanks!"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/195#issuecomment-5464477844",
+      "user": "linhongyu510",
+      "created_at": "2026-08-29T19:45:34Z",
+      "updated_at": "2026-08-29T19:45:34Z",
+      "body": "Update from a systematic audit across the whole Spider2-Snow split.\n\nWe opened #211 with a **read-only consistency audit CLI** (`spider2-snow/tools/audit_dataset.py`) that validates external-knowledge references and released Gold artifacts at scale, so findings can be reproduced without trusting a single report.\n\nCurrent dataset run (547 instances):\n- 107 instances declare `external_knowledge`, all referenced documents exist (0 missing)\n- 120 released Gold SQL files, 0 missing Gold results\n- **1 semantic conflict detected: `sf_local010`** — the Haversine document defines city pairs as undirected (lexicographic canonicalization, A↔B identical), while the Gold SQL groups by the directional `(from_city, to_city)` pair and counts A→B and B→A separately\n\nThe audit runs in strict/JSON mode and is covered by unit tests; it does **not** modify documents, Gold SQL, Gold results, or the evaluator — we deliberately leave the authoritative-artifact policy question (doc vs gold) to maintainers, per the question above.\n\nTo answer @chaozwn: we are happy to either (a) keep shipping read-only audit tooling + reports via PR, or (b) follow up with a PR that updates `haversine_formula.md` to state that pairs are directional, once a maintainer confirms which artifact is authoritative. Happy to proceed with whichever fits your workflow.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-05-25T09:35:37Z",
+  "github_updated_at": "2026-08-29T19:45:34Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Thread explicitly targets the Spider2-Snow subset, citing spider2-snow/resource/documents, spider2-snow/evaluation_suite, and task ids sf_local010/sf_local009. The watch-map candidate for this repo is spider2-dbt, and no current spider2-dbt task or artifact attribution is present.",
+  "reviewed_at": "2026-08-30T00:04:54.017Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/195",
+    "https://github.com/xlang-ai/Spider2/issues/195#issuecomment-5464477844"
+  ]
+}

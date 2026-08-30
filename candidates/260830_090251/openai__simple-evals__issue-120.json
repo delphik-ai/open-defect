@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/120",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 120,
+  "title": "OpenAI-compat: ChatCompletionSampler plus OPENAI_BASE_URL /v1",
+  "body": "## Working config (`ChatCompletionSampler` + env `OPENAI_BASE_URL` `/v1`)\n\n`ChatCompletionSampler` builds `OpenAI()` with no `base_url` argument, so the SDK reads `OPENAI_BASE_URL`. The Responses-path sampler is a different class. Default model `gpt-3.5-turbo` is not a catalog id.\n\nA Chat Completions host whose public catalog is `GET https://api.pzero.studio/v1/models` (no key) fits if `OPENAI_BASE_URL` is the `/v1` root:\n\n```bash\nexport OPENAI_API_KEY=\"<Bearer key for that host>\"\nexport OPENAI_BASE_URL=\"https://api.pzero.studio/v1\"\n```\n\n```python\nfrom sampler.chat_completion_sampler import ChatCompletionSampler\n\nsampler = ChatCompletionSampler(model=\"deepseek-v4-flash\")\n```\n\nDo not paste the chat path into `OPENAI_BASE_URL` (the SDK appends it).\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-28T08:24:52Z",
+  "github_updated_at": "2026-08-28T08:24:52Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread is an OpenAI-compatible ChatCompletionSampler configuration note about OPENAI_BASE_URL and model selection. It does not identify an incorrect SimpleQA dataset row, evaluator, harness, scoring rule, or other benchmark artifact defect.",
+  "reviewed_at": "2026-08-30T00:04:54.017Z",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/120"
+  ]
+}
