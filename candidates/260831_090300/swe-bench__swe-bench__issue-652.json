@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/652",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 652,
+  "title": "Windows host: CRLF in eval.sh/patch.diff makes every instance grade unresolved (silent zeros)",
+  "body": "## Summary\n\nWhen the evaluation harness runs on a **Windows host**, every instance grades unresolved regardless of patch quality — including SWE-bench's own gold patches. The failure is silent: runs complete \"successfully\" with `resolved: 0`.\n\n## Root cause\n\n`swebench/harness/run_evaluation.py` writes the two files it copies into the Linux eval container with `Path.write_text(...)` and no `newline=` argument:\n\n- `patch_file.write_text(pred[\"model_patch\"] or \"\")` (~line 291)\n- `eval_file.write_text(...)` (~line 360)\n\nOn Windows, text-mode writes translate `\\n` to `\\r\\n`. Inside the container:\n\n- `eval.sh` fails line-by-line: `set: pipefail: invalid option name`, `cd $'/testbed\\r': No such file or directory`, conda never activates — the eval script cannot run;\n- `git apply` rejects the CRLF `patch.diff` → `patch_successfully_applied: False`.\n\n## Minimal repro (Windows host, Docker Desktop/WSL2 backend)\n\n1. Build a predictions file whose `model_patch` is the dataset's own **gold patch** for any N instances.\n2. `python -m swebench.harness.run_evaluation --dataset_name SWE-bench/SWE-bench_Verified --split test --predictions_path gold_preds.json --run_id gold_check`\n3. Observed: **0/N resolved**; per-instance `test_output.txt` begins with `set: pipefail: invalid option name` and `cd $'/testbed\\r'` errors.\n\nVerified on swebench 5.0.2, Windows 11, Python 3.12. The bug is present unchanged on current `main` (same two unguarded `write_text` calls).\n\n## Fix (two lines)\n\nAdd `newline=\"\\n\"` to both writes. With that change, the identical gold-patch run grades **10/10 resolved** in our validation.\n\nHappy to open the PR if useful.\n\n## Why this matters\n\nAny Windows-host run of the harness currently publishes silent zeros — we initially attributed 240 rollouts of 0% resolve across two models to scaffold hostility before gold-patch validation exposed the grader. Model-side artifacts (patches, trajectories) are fine; only grading is affected.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-30T14:22:50Z",
+  "github_updated_at": "2026-08-30T14:22:50Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "The issue attributes the claim to SWE-bench Verified and current source-read confirmed run_evaluation.py on main still writes patch.diff and eval.sh with Path.write_text(...) without newline=\"\\n\". However, the claim is high-fanout and Windows-host-specific, has no maintainer acknowledgement, merged fix, maintainer-authored fix PR, regression test, or clear upstream fix diff. L3 preflight passed (harbor 0.21.0, Docker 29.4.3, git-lfs 3.7.1), but no valid Windows host + Docker Desktop/WSL2 reproduction command could be run from this macOS environment; the required gold-patch run was therefore not reproduced, so the defect remains unverified.",
+  "reviewed_at": "2026-08-31T00:04:58Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/652",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/run_evaluation.py"
+  ]
+}
