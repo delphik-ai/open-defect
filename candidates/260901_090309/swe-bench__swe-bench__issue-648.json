@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/648",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 648,
+  "title": "Support DeepSeek (and other OpenAI-compatible) models in swebench.inference.run_api",
+  "body": "### Summary\n\n`swebench.inference.run_api` only supports OpenAI (`gpt-*`) and Anthropic\n(`claude-*`) models. There is no way to run inference against DeepSeek or any\nother OpenAI-compatible endpoint (vLLM, Together, Groq, etc.), because the\nscript hard-codes both the provider routing and the OpenAI endpoint.\n\nDeepSeek exposes an OpenAI-compatible chat completions API, so the fix is small:\nreuse the existing OpenAI path instead of adding a new provider.\n\n### Current behavior\n\nRunning against a non-OpenAI/non-Anthropic model fails in several places:\n\n1. `--model_name_or_path` is restricted by an argparse `choices` list derived\n   from `MODEL_LIMITS`, so `deepseek-chat` is rejected before anything runs.\n2. The dispatch in `main()` raises `ValueError` for any model that does not\n   start with `gpt` or `claude`.\n3. The OpenAI path assumes `api.openai.com` (no `base_url` override) and uses\n   `tiktoken.encoding_for_model(model)`, which raises `KeyError` for unknown\n   model names.\n4. `calc_cost` indexes `MODEL_COST_PER_INPUT/OUTPUT[model_name]` and raises\n   `KeyError` for unknown models.\n\n### Potential Solutions\n\nMake the OpenAI path usable with any OpenAI-compatible provider:\n\n- Add `deepseek-chat` / `deepseek-reasoner` to `MODEL_LIMITS` and the cost\n  tables.\n- When the model is a DeepSeek model, set\n  `openai.base_url = \"https://api.deepseek.com\"`.\n- Fall back to the `cl100k_base` encoding when `tiktoken` does not recognize\n  the model.\n- Make `calc_cost` tolerant of unknown model names (default cost `0`) instead\n  of raising `KeyError`.\n- Route any non-Claude model through `openai_inference` instead of raising.\n- Drop the argparse `choices` restriction so arbitrary model names are accepted.\n\nExisting `gpt-*` and `claude-*` behavior is unchanged.\n\n### Notes for reviewers\n\n- The DeepSeek per-token cost values are illustrative; DeepSeek has off-peak\n  pricing, so maintainers may prefer different numbers (or dropping them, since\n  `calc_cost` now tolerates missing entries and only feeds `--max_cost`).\n- The change relies on the module-level `openai.base_url` setter, consistent\n  with the existing module-level `openai.api_key` usage in this file.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-25T03:13:22Z",
+  "github_updated_at": "2026-08-31T18:24:49Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue requests support for DeepSeek and other OpenAI-compatible inference endpoints in swebench.inference.run_api. That is an inference backend feature request, not a current SWE-bench Verified or Multilingual benchmark artifact defect in task data, scoring, verifier behavior, or required evaluation execution.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/648"
+  ],
+  "reviewed_at": "2026-09-01T00:05:43.073Z"
+}

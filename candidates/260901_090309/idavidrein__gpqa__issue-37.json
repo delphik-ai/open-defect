@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/idavidrein/gpqa/issues/37",
+  "repo": "idavidrein/gpqa",
+  "source_type": "github_issue",
+  "github_number": 37,
+  "title": "Request for some license and other details",
+  "body": "Hi, thanks for sharing this. Could you please confirm whether private organizational custody is permitted after accepting the no-online-example term and whether the public password-protected ZIP carries the same condition? Could you also bind that archive to the exact Hugging Face revision, clarify whether the dataset is CC BY while the software is MIT, and publish stable question IDs plus the membership relationship among Extended, Main, Diamond, and Experts? Thanks again.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-31T14:09:51Z",
+  "github_updated_at": "2026-08-31T14:09:51Z",
+  "candidate_benchmark_names": [
+    "gpqa-diamond"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue requests licensing/custody clarification, archive revision binding, dataset/software license separation, stable question IDs, and split membership documentation. It is metadata/governance clarification, not a reported GPQA Diamond benchmark defect affecting a current task, evaluator, dataset answer, or score.",
+  "checked_urls": [
+    "https://github.com/idavidrein/gpqa/issues/37"
+  ],
+  "reviewed_at": "2026-09-01T00:05:43.073Z"
+}

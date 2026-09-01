@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/651",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 651,
+  "title": "docs: update local evaluation setup for v5 task repos",
+  "body": "## What does this implement/fix?\r\n\r\nUpdates the README v5 local evaluation setup to match the current task-repo based CLI.\r\n\r\n- Adds the required `swe-bench-tasks` checkout and validation step.\r\n- Passes `--task-repo ./swe-bench-tasks` to the evaluation example.\r\n- Updates image build/check examples to use the task repo path.\r\n- Removes the obsolete `--namespace` guidance, which no longer controls local image builds in the current CLI.\r\n\r\n## Validation\r\n\r\n- `git diff --check`\r\n- `.venv/bin/python -m compileall -q swebench`\r\n- `.venv/bin/swebench eval --help`\r\n- `.venv/bin/swebench images build --help`\r\n\r\nThis is a documentation-only change.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/651#issuecomment-5482536867",
+      "user": "john-b-yang",
+      "created_at": "2026-08-31T18:14:43Z",
+      "updated_at": "2026-08-31T18:14:43Z",
+      "body": "Thanks so much for the docs update! Really appreciate it, merged."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex 22b3af727..47cf2cb7a 100644\n--- a/README.md\n+++ b/README.md\n@@ -60,16 +60,22 @@ Finally, to build SWE-bench from source, follow these steps:\n git clone git@github.com:SWE-bench/SWE-bench.git\n cd SWE-bench\n pip install -e .\n+\n+# Required for local image builds with the v5 CLI. This path is only an example.\n+git clone --depth 1 https://github.com/SWE-bench/swe-bench-tasks.git ./swe-bench-tasks\n+swebench dataset check ./swe-bench-tasks\n ```\n+You can replace this path with any local checkout location.\n \n Test your installation by running:\n ```bash\n-swebench eval verified --gold -i sympy__sympy-20590 --run-id validate-gold\n+swebench eval verified --gold \\\n+    -i sympy__sympy-20590 \\\n+    --run-id validate-gold \\\n+    --task-repo ./swe-bench-tasks\n ```\n > [!NOTE]\n-> If using a MacOS M-series or other ARM-based systems, add `--namespace ''` to the above script.\n-> By default, the evaluation script pulls images (built for Linux) from [DockerHub](https://hub.docker.com/u/swebench).\n-> Adding `--namespace ''` will cause evaluation images to be built locally instead.\n+> The current v5 CLI builds images from a task repo. On an M-series Mac or another ARM-based system, use `--task-repo` so the images are built locally with Docker Buildx.\n \n ## 💽 Usage\n Evaluate patch predictions with the following command:\n",
+  "github_state": "closed",
+  "github_created_at": "2026-08-27T11:22:04Z",
+  "github_updated_at": "2026-08-31T18:14:47Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-651",
+  "task_names": [],
+  "resolution": "fixed",
+  "summary": "Merged follow-up evidence for the existing SWE-bench Verified v5 local evaluation documentation defect: the README now documents swe-bench-tasks and --task-repo for current CLI image builds.",
+  "decision_note": "L2 PR status/diff audit. This is the same root cause as existing canonical defect swebench-verified__swe-bench__swe-bench__pr-651: the v5 local evaluation README omitted the swe-bench-tasks checkout and --task-repo argument and carried obsolete namespace guidance. The PR is now merged at c3fb69c46c7eb4d16b82699dd9115728812b9ebd, so it is duplicate/fix evidence and resolution is fixed.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/651",
+    "https://github.com/SWE-bench/SWE-bench/pull/651/files"
+  ],
+  "reviewed_at": "2026-09-01T00:05:43.073Z"
+}

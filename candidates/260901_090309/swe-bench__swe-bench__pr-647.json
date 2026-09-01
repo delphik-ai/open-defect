@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/647",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 647,
+  "title": "Forward proxy environment variables into evaluation containers",
+  "body": "Network-dependent test suites (e.g. the psf__requests-* instances in SWE-bench Lite, which talk to httpbin.org) hang and time out when the host can only reach the internet through a proxy, because evaluation containers are created without the host's proxy environment.\r\n\r\nCollect HTTP(S)_PROXY / NO_PROXY (and lowercase variants) from os.environ and pass them via environment=... to both client.containers.create(...) calls in create_container(). When no proxy is set, the helper returns an empty dict and behavior is unchanged.\r\n\r\n#### Reference Issues/PRs\r\n\r\nFixes #646\r\n\r\n#### What does this implement/fix? Explain your changes.\r\n\r\nEvaluation containers are currently created without any proxy environment\r\nvariables, so test suites that make outbound HTTP requests (e.g. the\r\n`psf__requests-*` instances in SWE-bench Lite) hang and time out on hosts that\r\ncan only reach the internet through a proxy.\r\n\r\nThis PR forwards the host's proxy settings into each evaluation container:\r\n\r\n- Adds `PROXY_ENV_KEYS` and a `_proxy_environment()` helper in\r\n  `swebench/harness/run_evaluation.py` that collects\r\n  `HTTP_PROXY` / `HTTPS_PROXY` / `FTP_PROXY` / `ALL_PROXY` (and their lowercase\r\n  forms) plus `NO_PROXY` / `no_proxy` from `os.environ`.\r\n- Passes `environment=_proxy_environment()` to both\r\n  `client.containers.create(...)` calls in `create_container()`.\r\n\r\nWhen no proxy variables are set on the host, the helper returns an empty dict\r\nand behavior is unchanged. This only affects the environment of the evaluation\r\ncontainer, not image pulls (which the Docker daemon already handles separately).\r\n\r\n#### Any other comments?\r\n\r\nVerified manually by running `psf__requests-863` behind a proxy: the instance\r\npreviously timed out after 1800s; with this change the test suite completes and\r\nthe network-dependent tests can reach `httpbin.org`.\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/pull/647#issuecomment-5482899766",
+      "user": "john-b-yang",
+      "created_at": "2026-08-31T18:46:40Z",
+      "updated_at": "2026-08-31T18:46:40Z",
+      "body": "I think this is better as a local fix, if this works for you, rather than an official one.\r\n\r\nThe Docker SDK already forwards proxies configured in ~/.docker/config.json by default. Copying host proxy variables into the container may introduce some unwanted leakage / vulnerabilities that other users may not want (model code can run on proxies, there's no opt-in allowed for this logic, override's docker's own explicit proxy configs).\r\n\r\nThanks for the contribution, but i think the default behavior is ok as is. I'm potentially open to an opt-in version of this PR, but the existing code already enables internet at evaluation time. Empirically checked w/ `psf/requests` task instances, and eval is working fine."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/swebench/harness/run_evaluation.py b/swebench/harness/run_evaluation.py\nindex bf1522207..42a079d87 100644\n--- a/swebench/harness/run_evaluation.py\n+++ b/swebench/harness/run_evaluation.py\n@@ -61,6 +61,29 @@\n DOCKER_CLIENT_TIMEOUT = int(os.environ.get(\"SWEBENCH_DOCKER_TIMEOUT\", \"1800\"))\n DOCKER_CLIENT_POOL_SIZE = int(os.environ.get(\"SWEBENCH_DOCKER_POOL_SIZE\", \"128\"))\n \n+PROXY_ENV_KEYS = (\n+    \"HTTP_PROXY\",\n+    \"HTTPS_PROXY\",\n+    \"FTP_PROXY\",\n+    \"ALL_PROXY\",\n+    \"http_proxy\",\n+    \"https_proxy\",\n+    \"ftp_proxy\",\n+    \"all_proxy\",\n+    \"NO_PROXY\",\n+    \"no_proxy\",\n+)\n+\n+\n+def _proxy_environment() -> dict:\n+    \"\"\"\n+    Forward proxy settings from the host process into evaluation containers so\n+    network-dependent test suites (e.g. requests, which talks to httpbin.org)\n+    can reach the internet through the host's proxy. Returns an empty dict when\n+    the host has no proxy variables set.\n+    \"\"\"\n+    return {k: v for k, v in os.environ.items() if k in PROXY_ENV_KEYS}\n+\n \n def _docker_client() -> docker.DockerClient:\n     return docker.from_env(\n@@ -119,6 +142,7 @@ def create_container(\n                 user=CONTAINER_USER,\n                 detach=True,\n                 command=\"tail -f /dev/null\",\n+                environment=_proxy_environment(),\n                 # Docker's default seccomp profile only permits CLONE_NEWUSER with\n                 # CAP_SYS_ADMIN, which browser sandboxes need (e.g. openlayers karma)\n                 cap_add=[\"SYS_ADMIN\"],\n@@ -136,6 +160,7 @@ def create_container(\n                     user=CONTAINER_USER,\n                     detach=True,\n                     command=\"tail -f /dev/null\",\n+                    environment=_proxy_environment(),\n                     # Docker's default seccomp profile only permits CLONE_NEWUSER with\n                     # CAP_SYS_ADMIN, which browser sandboxes need (e.g. openlayers karma)\n                     cap_add=[\"SYS_ADMIN\"],\n",
+  "github_state": "closed",
+  "github_created_at": "2026-08-25T02:42:03Z",
+  "github_updated_at": "2026-08-31T18:46:41Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread/comment audit. The PR proposes forwarding host proxy environment variables into evaluation containers for local proxy setups. The maintainer closed it as a local/opt-in preference, noted Docker SDK proxy forwarding via ~/.docker/config.json, and said current evaluation works empirically for psf/requests tasks. This is not a confirmed benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/647"
+  ],
+  "reviewed_at": "2026-09-01T00:05:43.073Z"
+}

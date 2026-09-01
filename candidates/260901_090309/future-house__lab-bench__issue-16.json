@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Future-House/LAB-Bench/issues/16",
+  "repo": "future-house/lab-bench",
+  "source_type": "github_issue",
+  "github_number": 16,
+  "title": "License clarification",
+  "body": "Hi, thanks for sharing this. \nFor release 5c77cec648430f30611808808861eb86f81d5eaa, do you assert that every embedded FigQA and TableQA image may be redistributed under CC-BY-SA-4.0? If so, could you provide a per-asset creator, source, license, permission, and attribution ledger, including the TableQA assets from DOI 10.1016/j.tig.2018.01.004? Otherwise, could you clarify whether private access-controlled research custody and evaluation are authorized and under which terms? Thanks again.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-31T14:10:29Z",
+  "github_updated_at": "2026-08-31T14:10:29Z",
+  "candidate_benchmark_names": [
+    "labbench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue asks maintainers to clarify licensing, redistribution, attribution, and private custody terms for embedded FigQA/TableQA images. It does not identify a current LAB-Bench task, dataset row, harness, evaluator, or scoring root cause that makes benchmark results incorrect.",
+  "checked_urls": [
+    "https://github.com/Future-House/LAB-Bench/issues/16"
+  ],
+  "reviewed_at": "2026-09-01T00:05:43.073Z"
+}

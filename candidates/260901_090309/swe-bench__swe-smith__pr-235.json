@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/235",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 235,
+  "title": "[pre-commit.ci] pre-commit autoupdate",
+  "body": "<!--pre-commit.ci start-->\nupdates:\n- [github.com/astral-sh/ruff-pre-commit: v0.15.4 → v0.16.5](https://github.com/astral-sh/ruff-pre-commit/compare/v0.15.4...v0.16.5)\n<!--pre-commit.ci end-->",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/235#issuecomment-4026795877",
+      "user": "codecov[bot]",
+      "created_at": "2026-03-09T20:44:52Z",
+      "updated_at": "2026-03-09T20:44:52Z",
+      "body": "## [Codecov](https://app.codecov.io/gh/SWE-bench/SWE-smith/pull/235?dropdown=coverage&src=pr&el=h1&utm_medium=referral&utm_source=github&utm_content=comment&utm_campaign=pr+comments&utm_term=SWE-bench) Report\n:white_check_mark: All modified and coverable lines are covered by tests.\n<details><summary> :rocket: New features to boost your workflow: </summary>\n\n- :snowflake: [Test Analytics](https://docs.codecov.com/docs/test-analytics): Detect flaky tests, report on failures, and find test suite problems.\n- :package: [JS Bundle Analysis](https://docs.codecov.com/docs/javascript-bundle-analysis): Save yourself from yourself by tracking and limiting bundle sizes in JS merges.\n</details>"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml\nindex b0b0d027..58ca357d 100644\n--- a/.pre-commit-config.yaml\n+++ b/.pre-commit-config.yaml\n@@ -1,7 +1,7 @@\n repos:\n - repo: https://github.com/astral-sh/ruff-pre-commit\n   # Ruff version\n-  rev: v0.15.4\n+  rev: v0.16.5\n   hooks:\n     # Run the linter\n     - id: ruff\ndiff --git a/README.md b/README.md\nindex 1f35c755..dbf42b6c 100644\n--- a/README.md\n+++ b/README.md\n@@ -48,10 +48,13 @@ Training SWE-agent's using the [SWE-smith dataset](https://huggingface.co/datase\n ```python\n from swesmith.profiles import registry\n from datasets import load_dataset\n-ds = load_dataset(\"SWE-bench/SWE-smith\", split=\"train\") # Loads all 52k task instances\n+\n+ds = load_dataset(\"SWE-bench/SWE-smith\", split=\"train\")  # Loads all 52k task instances\n for task in ds:\n     rp = registry.get_from_inst(task)  # Get the RepoProfile for the task\n-    container = rp.get_container(task) # Returns pointer to a Docker container with the task initialized\n+    container = rp.get_container(\n+        task\n+    )  # Returns pointer to a Docker container with the task initialized\n \n     \"\"\"TODO: Train!\"\"\"\n ```\ndiff --git a/docs/guides/train_swe_agent.md b/docs/guides/train_swe_agent.md\nindex 4c347433..80934f18 100644\n--- a/docs/guides/train_swe_agent.md\n+++ b/docs/guides/train_swe_agent.md\n@@ -26,13 +26,20 @@ To curate a subset, you might use the following logic.\n import json\n \n from datasets import load_dataset\n+\n swesmith = load_dataset(\"SWE-bench/SWE-smith\", split=\"train\")\n \n subset_name = \"subset0\"\n+\n+\n def criteria(task_instance):\n-    return \".pr_\" in task_instance[\"instance_id\"] and \\\n-        len(task_instance[\"FAIL_TO_PASS\"]) <= 5 and \\\n-        len(task_instance[\"FAIL_TO_PASS\"]) >= 2\n+    return (\n+        \".pr_\" in task_instance[\"instance_id\"]\n+        and len(task_instance[\"FAIL_TO_PASS\"]) <= 5\n+        and len(task_instance[\"FAIL_TO_PASS\"]) >= 2\n+    )\n+\n+\n bugs = [x for x in swesmith if criteria(x)]\n print(f\"Found {len(bugs)} bugs that match criteria\")\n with open(f\"logs/experiments/{subset_name}.json\", \"w\") as f:\n",
+  "github_state": "open",
+  "github_created_at": "2026-03-09T19:52:44Z",
+  "github_updated_at": "2026-08-31T19:59:44Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 body/diff audit. The PR is a pre-commit.ci dependency autoupdate plus formatting/documentation churn for SWE-smith. It does not report or fix a SWE-smith benchmark task, generation, evaluator, harness, dataset, or scoring defect.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/235"
+  ],
+  "reviewed_at": "2026-09-01T00:05:43.073Z"
+}
