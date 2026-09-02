@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/646",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 646,
+  "title": "Evaluation containers do not inherit host proxy settings, so network-dependent tests time out",
+  "body": "### Describe the bug\n\nWhen the host machine can only reach the internet through an HTTP/HTTPS proxy,\nSWE-bench evaluation containers are created without any proxy environment\nvariables. As a result, test suites that make outbound HTTP requests (notably\nthe `psf__requests-*` instances in SWE-bench Lite, which talk to `httpbin.org`)\ncannot reach the network and hang until the per-instance timeout is hit.\n\n\n## Root cause\ncreate_container() in swebench/harness/run_evaluation.py calls\nclient.containers.create(...) without an environment argument, so none of\nthe host's proxy variables (HTTP_PROXY, HTTPS_PROXY, http_proxy,\nhttps_proxy, NO_PROXY, …) are passed into the evaluation container. The\nDocker daemon may be configured with a proxy (in daemon.json), but that only\naffects image pulls — it does not apply to the containers themselves.\n\n## Proposed fix\nForward the host's proxy-related environment variables into evaluation\ncontainers when they are created. A minimal implementation adds a helper that\ncollects the proxy variables from os.environ and passes them via\nenvironment=... to both client.containers.create(...) calls in\ncreate_container().\n\n### Steps/Code to Reproduce\n\nRun a gold evaluation for a network-dependent instance on a host that is behind\na proxy (e.g. `HTTP_PROXY=http://<proxy-host>:<port>` is exported in the shell):\n\n```bash\nswebench eval lite --gold \\\n  -i psf__requests-863 \\\n  --run-id repro-$(date +%s) \\\n  --workers 1 --timeout 1800\n\n### Expected Results\n\nThe container inherits the host's proxy settings and the test suite reaches\nhttpbin.org through the proxy, completing normally.\n\n### Actual Results\n\nThe run hangs and is reported as a timeout / ambiguous failure:\n\n\nError in evaluation for psf__requests-863: Test timed out after 1800 seconds.\n...\ntest_requests.py F\nTimeout error: 1800 seconds exceeded.\nDiagnosis: the container's DNS resolves httpbin.org, but a direct TCP\nconnection from inside the container fails because the host only has proxy\naccess. Injecting the proxy variables manually fixes it:\n\n\ndocker run --rm \\\n  -e https_proxy=http://<proxy-host>:<port> \\\n  -e http_proxy=http://<proxy-host>:<port> \\\n  swebench/sweb.eval.x86_64.psf_1776_requests-1963:latest \\\n  python -c \"import urllib.request; print(urllib.request.urlopen('https://httpbin.org/get', timeout=10).status)\"\n# 200\n\n### System Information\n\nubuntu22.04 python3.10 linux-x64\nswebench version: githut main branch",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-08-25T02:22:46Z",
+  "github_updated_at": "2026-09-01T01:58:42Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue explicitly reproduces the proxy problem on SWE-bench Lite psf__requests-863. The watched repo candidates are swebench-verified and swebench_multilingual, and the thread does not provide attribution to either current variant.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/646"
+  ],
+  "reviewed_at": "2026-09-02T00:06:15.726Z"
+}

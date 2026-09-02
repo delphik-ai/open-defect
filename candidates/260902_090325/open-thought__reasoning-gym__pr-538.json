@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/pull/538",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_pr",
+  "github_number": 538,
+  "title": "docs: fix smart quote in README.md",
+  "body": "Replaced a smart quote with a standard apostrophe in the README.md to fix formatting.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex d7e3d8e0..ecaf64f8 100644\n--- a/README.md\n+++ b/README.md\n@@ -22,7 +22,7 @@\n \n It currently provides **more than 100** tasks over many domains, including but not limited to _algebra_, _arithmetic_, _computation_, _cognition_, _geometry_, _graph theory_, _logic_, and many common _games_.\n \n-Some tasks have a single correct answer, while others, such as [Rubik‘s Cube](https://en.wikipedia.org/wiki/Rubik%27s_Cube) and [Countdown](<https://en.wikipedia.org/wiki/Countdown_(game_show)#Numbers_Round>), have many correct solutions. To support this, we provide a standard interface for procedurally verifying solutions.\n+Some tasks have a single correct answer, while others, such as [Rubik's Cube](https://en.wikipedia.org/wiki/Rubik%27s_Cube) and [Countdown](<https://en.wikipedia.org/wiki/Countdown_(game_show)#Numbers_Round>), have many correct solutions. To support this, we provide a standard interface for procedurally verifying solutions.\n \n ## 🖼️ Dataset Gallery\n \n",
+  "github_state": "open",
+  "github_created_at": "2026-09-01T00:22:03Z",
+  "github_updated_at": "2026-09-01T00:22:03Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L2",
+  "decision_note": "L2 PR diff audit. The PR changes only a README smart quote in prose documentation and does not affect reasoning-gym task generation, scoring, dataset rows, or evaluator behavior.",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/538",
+    "https://github.com/open-thought/reasoning-gym/pull/538/files"
+  ],
+  "reviewed_at": "2026-09-02T00:06:15.726Z"
+}

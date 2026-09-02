@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/230",
+  "repo": "alibabaresearch/damo-convai",
+  "source_type": "github_issue",
+  "github_number": 230,
+  "title": "[EvoTrainer] Any plan to support ms-swift as a training backend?",
+  "body": "Thanks for open-sourcing EvoTrainer. The `diagnosis → revision → backtesting → skill accumulation` loop and `skills/ANALYSIS_PLAYBOOK.md` are the most concrete write-up of an autonomous RL-tuning harness I have come across.\n\n**Question:** is there any plan to support [ms-swift](https://github.com/modelscope/ms-swift) as a training backend in addition to ROLL?\n\n**Context:** we run GRPO on ms-swift (`swift rlhf --rlhf_type grpo --use_vllm --vllm_mode colocate`) and would like to reuse EvoTrainer's harness rather than rebuild the diagnosis loop from scratch. From reading the tree, `roll/pipeline/agentic/` and its `env_manager/` look fairly tied to ROLL.\n\nIf there is no such plan, a few questions that would help us evaluate porting it ourselves:\n\n**1. How framework-agnostic are the diagnostic dimensions?**\n`skills/harness/agentic-rl-harness.md` describes reading rollout-level pkl files and TensorBoard events. Is that pkl schema documented and stable, or would a third-party backend need to match it exactly? Put differently: is there a minimal *evidence contract* — just the fields the rule engine actually consumes — that is smaller than ROLL's full dump?\n\n**2. Where is the seam for the harness itself?**\nThe harness is described as reward composites + group filtering (e.g. `StdGroupFilter` with EMA threshold) + agent interaction constraints (`max_steps`, sequence length). Are those reachable through a defined interface that another trainer could implement, or are they inlined in the ROLL pipeline?\n\n**3. Are the accumulated skills portable across GRPO implementations?**\nRules such as the Dead Group Ratio threshold and the Echo Trap / turn-inflation trigger appear to depend on GRPO group semantics rather than on ROLL specifically. Would you expect `skills/` to transfer to any GRPO implementation, or are the thresholds calibrated against ROLL's defaults?\n\nHappy to contribute a swift adapter if the seams already exist and you would take a PR.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-01T11:38:06Z",
+  "github_updated_at": "2026-09-01T11:38:06Z",
+  "candidate_benchmark_names": [
+    "bird-bench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks whether EvoTrainer can support ms-swift as an additional RL training backend and discusses adapter seams. It does not report a BIRD benchmark task, dataset, harness, scorer, or evaluator defect.",
+  "checked_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/230"
+  ],
+  "reviewed_at": "2026-09-02T00:06:15.726Z"
+}
