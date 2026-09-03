@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/90",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 90,
+  "title": "Add OrcaRouter as an optional AI provider",
+  "body": "Hi maintainers,\n\nWe'd like to propose adding [OrcaRouter](https://www.orcarouter.ai) as an optional AI provider alongside the providers already supported by the project.\n\nOrcaRouter exposes an OpenAI-compatible API and uses standard API-key authentication, so the integration should be able to reuse the project's existing OpenAI/provider abstraction with minimal changes.\n\n## What this would add\n\n- Access to multiple chat, reasoning, image, and video models through one endpoint\n- Automatic model routing and provider failover\n- Standard API-key authentication\n- Prompt caching\n- Usage tracking, budgets, and team access controls\n\nThe integration would not replace or modify any existing provider. OrcaRouter would simply appear as another provider option that users can configure with their own API key.\n\n## Existing OSS ecosystem\n\nOrcaRouter is already integrated with or available across a growing open-source ecosystem, including RAGFlow, Dify, goose, promptfoo, NocoBase, DB-GPT, CAMEL, and models.dev / OpenCode.\n\n## Partner program disclosure\n\nOrcaRouter operates an optional open-source partner program. Approved OSS projects can receive a 5% revenue share from OrcaRouter usage attributed to their integration.\n\nParticipation in the partner program is not required for the provider integration, and we're happy to follow any disclosure or governance requirements maintained by the project.\n\nMore information:\n\nhttps://www.orcarouter.ai/built-with\n\nIf this sounds useful, we'd be happy to discuss the integration details and, with the maintainers' approval, open a PR with the implementation.\n\nI'm an engineer on the OrcaRouter team.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-02T08:20:46Z",
+  "github_updated_at": "2026-09-02T08:20:46Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue proposes adding OrcaRouter as an optional provider integration. It is a feature/provider request and does not identify a benchmark defect in DeepSWE's current tasks, harness, evaluator, dataset, or scoring.",
+  "reviewed_at": "2026-09-03T05:10:30Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/90"
+  ]
+}

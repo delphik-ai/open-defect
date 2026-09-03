@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/213",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 213,
+  "title": "Snowflake account restored, but shared Spider2-Lite schemas are unavailable",
+  "body": "Hi, our Spider2-Lite Snowflake account is no longer suspended, and we can successfully log in and use the assigned warehouse with the provided credentials.\n\nHowever, some schemas required by the benchmark are currently unavailable. For example, running the official gold SQL for `sf001` returns:\n\n  `Schema 'GLOBAL_WEATHER__CLIMATE_DATA_FOR_BI.STANDARD_TILE' does not exist or not authorized.`\n\nThe same account previously had access to these datasets and successfully completed Snowflake evaluations. Could you please check whether the shared/Marketplace datasets need to be reattached or re-granted after the account recovery?\n\nThanks!",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/213#issuecomment-5490527307",
+      "user": "banrichard",
+      "created_at": "2026-09-01T07:34:50Z",
+      "updated_at": "2026-09-01T07:34:50Z",
+      "body": "Hi, I still have the account suspension problem. How did you solve it? "
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/213#issuecomment-5503532309",
+      "user": "KyranFang",
+      "created_at": "2026-09-02T02:42:27Z",
+      "updated_at": "2026-09-02T02:42:27Z",
+      "body": "still have the account suspension problem"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-01T03:30:50Z",
+  "github_updated_at": "2026-09-02T02:42:27Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue explicitly concerns Spider2-Lite Snowflake account/schema grants and task sf001, including a Snowflake schema authorization error. The watched xlang-ai/spider2 benchmark variant is spider2-dbt, and Snow/Snowflake credential or schema availability issues are outside spider2-dbt scope.",
+  "reviewed_at": "2026-09-03T05:10:30Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/213"
+  ]
+}

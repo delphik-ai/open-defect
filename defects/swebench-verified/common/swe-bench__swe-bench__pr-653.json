@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-653",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix: write eval.sh and patch.diff with LF on Windows hosts",
+  "summary": "SWE-bench harness writes container-bound eval.sh and patch.diff with host-default newlines, so Windows hosts can poison Linux evaluation with CRLF.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/653",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/653",
+    "https://github.com/SWE-bench/SWE-bench/issues/652"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-02T13:39:07Z",
+  "last_reviewed_at": "2026-09-03T05:10:30Z",
+  "decision_note": "L2 source-read audit. The PR fixes issue #652 and its body attributes the repro to SWE-bench Verified gold-patch evaluation on Windows hosts. The diff replaces Path.write_text calls for patch.diff and eval.sh with write_container_text(newline=\"\\n\") and adds a regression test asserting no CR bytes. The previous #652 candidate was unverified because no Windows L3 reproduction was available and no social proof existed then; this PR supplies a clear upstream source diff and regression test for the same root cause. The repo also backs swebench_multilingual, but this candidate is counted only for swebench-verified because the issue/PR evidence names SWE-bench Verified as the validated benchmark variant."
+}

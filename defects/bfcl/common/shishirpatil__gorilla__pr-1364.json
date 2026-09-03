@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1364",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix(bfcl): exclude never-evaluated categories from aggregate scores",
+  "summary": "BFCL aggregate scoring treated deliberately never-evaluated categories as zero instead of excluding them from Overall Acc and related aggregates.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1364",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1364",
+    "https://github.com/ShishirPatil/gorilla/issues/1353"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-02T09:03:59Z",
+  "last_reviewed_at": "2026-09-03T05:10:30Z",
+  "decision_note": "L2 source-read audit. The PR is explicitly BFCL and fixes issue #1353 by adding a not_evaluated flag in get_category_score and changing weighted, unweighted, and percentage-weighted aggregate helpers to skip never-evaluated categories. The diff also records unit and end-to-end verification for partial-coverage and full-coverage leaderboard cases. Existing BFCL canonical artifacts include earlier N/A display handling and related scoring issues, but none covers this aggregate-denominator root cause; the older #1353 candidate was unverified because it lacked social proof. This open fix PR supplies the needed source diff evidence, so the defect is counted as fixing."
+}

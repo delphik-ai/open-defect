@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/89",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 89,
+  "title": "Add Fable 5.1 to the bench",
+  "body": "(empty GitHub issue body)",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-02T00:35:23Z",
+  "github_updated_at": "2026-09-02T00:35:23Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a request to add Fable 5.1 to DeepSWE benchmarking. It contains no defect claim about the current benchmark artifact, harness, evaluator, dataset, or task set.",
+  "reviewed_at": "2026-09-03T05:10:30Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/89"
+  ]
+}
