@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/89",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 89,
+  "title": "Add Fable 5.1, Muse Spark 1.3 & GPT 6 Astra to the bench",
+  "body": "GitHub issue body is empty.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-02T00:35:23Z",
+  "github_updated_at": "2026-09-03T22:37:22Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The GitHub issue has no body or comments, and the title only asks to add Fable 5.1, Muse Spark 1.3, and GPT 6 Astra to the Deep-SWE bench. That is a leaderboard/model coverage request, not a benchmark defect in the current task set, harness, dataset, evaluator, or metadata.",
+  "reviewed_at": "2026-09-04T00:08:30Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/89"
+  ]
+}

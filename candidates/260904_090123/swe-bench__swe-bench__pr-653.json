@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/653",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 653,
+  "title": "fix: write eval.sh and patch.diff with LF on Windows hosts",
+  "body": "#### Reference Issues/PRs\n\nFixes #652\n\n#### What does this implement/fix? Explain your changes.\n\nOn Windows hosts, `Path.write_text(...)` translates `\\n` to `\\r\\n`. The harness then copies `patch.diff` and `eval.sh` into Linux eval containers, where bash rejects `set -euo pipefail` / paths with trailing `\\r` and `git apply` rejects the CRLF patch — every instance grades unresolved, including gold patches.\n\nThis change writes those two container-bound files through `write_container_text()` (`newline=\"\\n\"`) so the bytes stay LF regardless of host OS. Added a unit test that asserts the written files contain no `\\r`.\n\n#### Any other comments?\n\nValidated with `pytest tests/test_write_container_text.py` (1 passed). Full gold-patch Docker regrade was not re-run here; the issue reporter already verified that adding `newline=\"\\n\"` recovers gold resolves on Windows.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/harness/run_evaluation.py b/swebench/harness/run_evaluation.py\nindex bf9680f8d..87c48f6f8 100644\n--- a/swebench/harness/run_evaluation.py\n+++ b/swebench/harness/run_evaluation.py\n@@ -47,6 +47,7 @@\n     get_predictions_from_file,\n     run_threadpool,\n     str2bool,\n+    write_container_text,\n )\n \n from swebench.logger import setup_logger, close_logger\n@@ -288,7 +289,7 @@ def run_instance(\n         if not skip_patch:\n             # Copy model prediction as patch file to container\n             patch_file = Path(log_dir / \"patch.diff\")\n-            patch_file.write_text(pred[\"model_patch\"] or \"\")\n+            write_container_text(patch_file, pred[\"model_patch\"] or \"\")\n             logger.info(\n                 f\"Intermediate patch for {instance_id} written to {patch_file}, now applying to container...\"\n             )\n@@ -357,7 +358,9 @@ def run_instance(\n         )\n \n         eval_file = Path(log_dir / \"eval.sh\")\n-        eval_file.write_text(_inject_asset_restore(test_spec.eval_script, restore_cmds))\n+        write_container_text(\n+            eval_file, _inject_asset_restore(test_spec.eval_script, restore_cmds)\n+        )\n         logger.info(\n             f\"Eval script for {instance_id} written to {eval_file}; copying to container...\"\n         )\ndiff --git a/swebench/harness/utils.py b/swebench/harness/utils.py\nindex 2ee7bcbff..7365e4438 100644\n--- a/swebench/harness/utils.py\n+++ b/swebench/harness/utils.py\n@@ -210,6 +210,15 @@ def optional_str(value: str) -> str | None:\n     return value\n \n \n+def write_container_text(path: Path, text: str) -> None:\n+    \"\"\"Write text with LF endings for files that Linux eval containers will read.\n+\n+    Path.write_text() uses the platform newline on Windows, so eval.sh / patch.diff\n+    become CRLF and bash / git apply fail inside the container (silent 0% resolve).\n+    \"\"\"\n+    path.write_text(text, newline=\"\\n\")\n+\n+\n def parse_eval_script(eval_script: str) -> list[str]:\n     \"\"\"Parse an eval.sh script into a command list (strip shebang + set flags).\"\"\"\n     return [\ndiff --git a/tests/test_write_container_text.py b/tests/test_write_container_text.py\nnew file mode 100644\nindex 000000000..afd705507\n--- /dev/null\n+++ b/tests/test_write_container_text.py\n@@ -0,0 +1,20 @@\n+\"\"\"Regression for Windows CRLF poisoning files copied into Linux eval containers.\"\"\"\n+\n+from pathlib import Path\n+\n+from swebench.harness.utils import write_container_text\n+\n+\n+def test_write_container_text_keeps_lf_even_when_platform_uses_crlf(tmp_path: Path) -> None:\n+    script = \"#!/bin/bash\\nset -euo pipefail\\ncd /testbed\\n\"\n+    patch = \"diff --git a/x b/x\\n+++ b/x\\n+ok\\n\"\n+    eval_file = tmp_path / \"eval.sh\"\n+    patch_file = tmp_path / \"patch.diff\"\n+\n+    write_container_text(eval_file, script)\n+    write_container_text(patch_file, patch)\n+\n+    assert eval_file.read_bytes() == script.encode(\"utf-8\")\n+    assert patch_file.read_bytes() == patch.encode(\"utf-8\")\n+    assert b\"\\r\" not in eval_file.read_bytes()\n+    assert b\"\\r\" not in patch_file.read_bytes()\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-02T13:39:07Z",
+  "github_updated_at": "2026-09-02T13:39:07Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-653",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench harness writes container-bound eval.sh and patch.diff with host-default newlines, so Windows hosts can poison Linux evaluation with CRLF.",
+  "decision_note": "L2 source-read audit. This PR is the same root cause already represented by canonical defect swebench-verified__swe-bench__swe-bench__pr-653. The PR body fixes #652, which explicitly reports SWE-bench/SWE-bench_Verified gold-patch evaluation on Windows hosts silently resolving 0/N because patch.diff and eval.sh are written with CRLF. The diff replaces the two Path.write_text calls for files copied into Linux eval containers with write_container_text(newline=\"\\n\") and adds a regression test asserting no CR bytes. The candidate is attributed to swebench-verified because issue #652 names the Verified dataset; the repo also maps to swebench_multilingual, but no multilingual variant evidence is present.",
+  "reviewed_at": "2026-09-04T00:08:30Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/653",
+    "https://github.com/SWE-bench/SWE-bench/pull/653/files",
+    "https://github.com/SWE-bench/SWE-bench/issues/652"
+  ]
+}

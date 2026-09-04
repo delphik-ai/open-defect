@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/pull/151",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_pr",
+  "github_number": 151,
+  "title": "Allow overriding the gated Llama-3 tokenizer used for the LLaMa3 prompt style",
+  "body": "## Summary\n\n`format_prompt_generation` renders the `LMStyle.LLaMa3` prompt by loading the tokenizer of `meta-llama/Meta-Llama-3-8B-Instruct`, purely to call `apply_chat_template`. That repo is gated, so anyone whose HF account has not been granted access to it gets an HTTP 403 from `AutoTokenizer.from_pretrained` and every Llama-3-style evaluation fails, even when the model being evaluated is a different (accessible) Llama 3 checkpoint.\n\nThis PR keeps the default unchanged and adds an environment-variable override, `LCB_LLAMA3_TOKENIZER`, so the chat template can be rendered from any Llama 3 family checkpoint the user can access (the chat template is the same across Llama 3 / 3.1 / 3.2 instruct models), e.g.\n\n```\nLCB_LLAMA3_TOKENIZER=meta-llama/Llama-3.2-3B-Instruct python -m lcb_runner.runner.main --model ... --scenario codegeneration\n```\n\nNo behaviour change when the variable is not set.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/lcb_runner/prompts/code_generation.py b/lcb_runner/prompts/code_generation.py\nindex 22ba3f82..61242cd2 100644\n--- a/lcb_runner/prompts/code_generation.py\n+++ b/lcb_runner/prompts/code_generation.py\n@@ -1,4 +1,5 @@\n import json\n+import os\n \n try:\n     from anthropic import HUMAN_PROMPT, AI_PROMPT\n@@ -264,8 +265,13 @@ def format_prompt_generation(\n         ]\n         from transformers import AutoTokenizer\n \n+        # The tokenizer is only used to render the Llama 3 chat template. The default repo is gated, so any\n+        # Llama 3 family checkpoint the user can access (same chat template) may be substituted via\n+        # LCB_LLAMA3_TOKENIZER.\n         tokenizer = AutoTokenizer.from_pretrained(\n-            \"meta-llama/Meta-Llama-3-8B-Instruct\", padding_side=\"left\", use_fast=False\n+            os.environ.get(\"LCB_LLAMA3_TOKENIZER\", \"meta-llama/Meta-Llama-3-8B-Instruct\"),\n+            padding_side=\"left\",\n+            use_fast=False,\n         )\n         return tokenizer.apply_chat_template(\n             chat_messages,\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-03T19:58:27Z",
+  "github_updated_at": "2026-09-03T19:58:27Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "L3 required because the PR makes a high-fanout claim that every Llama-3-style evaluation can fail for users without access to a gated Hugging Face tokenizer, and there is no maintainer acknowledgement, merged fix, regression test on main, or other social proof. Source-read confirmed current LiveCodeBench main hardcodes AutoTokenizer.from_pretrained(\"meta-llama/Meta-Llama-3-8B-Instruct\") for LMStyle.LLaMa3, and the PR diff adds an override. L3 reproduction was attempted with a temporary /tmp venv command to install transformers and call AutoTokenizer.from_pretrained for that repo, but python3 -m venv hung in ensurepip for over three minutes and was interrupted before the claimed HTTP 403 behavior could be observed. Without valid L3 reproduction, this candidate cannot be counted as confirmed.",
+  "reviewed_at": "2026-09-04T00:08:30Z",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/151",
+    "https://github.com/LiveCodeBench/LiveCodeBench/blob/main/lcb_runner/prompts/code_generation.py",
+    "https://github.com/LiveCodeBench/LiveCodeBench/blob/main/lcb_runner/lm_styles.py"
+  ]
+}
