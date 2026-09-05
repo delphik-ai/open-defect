@@ -1,0 +1,67 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/202",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 202,
+  "title": "Sent a request 12+ hours ago and no response - please advise",
+  "body": "Dear Spider 2.0 Team,\n\nI sent a request for access 12+ hours ago and haven't had a response.\n\nPlease could you advise or check for me? My email is benhummerston@gmail.com\n\nThanks!",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5029427920",
+      "user": "selina0609",
+      "created_at": "2026-07-21T02:11:36Z",
+      "updated_at": "2026-07-21T02:11:36Z",
+      "body": "same issue. My email is **selina4231@gmail.com** and **selina_luo@phison.com**\nThanks!"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5052348083",
+      "user": "sby854905420-netizen",
+      "created_at": "2026-07-22T22:41:06Z",
+      "updated_at": "2026-07-22T22:41:06Z",
+      "body": "same issue. I fill the form for three times. Please reply me. My email is sby854905420@gmail.com"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5128046215",
+      "user": "KenaHemnani",
+      "created_at": "2026-07-30T07:43:15Z",
+      "updated_at": "2026-07-30T07:43:15Z",
+      "body": "I am also facing same issue. I fill the form for twice. Please reply me. My email is kenahemnani@gmail.com"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5353079658",
+      "user": "KenaHemnani",
+      "created_at": "2026-08-20T07:58:24Z",
+      "updated_at": "2026-08-20T07:58:24Z",
+      "body": "Hi, Please Check in Spam - for me I received in Spam."
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5537020785",
+      "user": "akhileshpatil27",
+      "created_at": "2026-09-04T07:09:41Z",
+      "updated_at": "2026-09-04T07:09:41Z",
+      "body": "Hey, did anyone manage to get access to the Spider 2.0 Snowflake environment? I’m facing the same access issue and wanted to check if there’s any update.\n@selina0609 @KenaHemnani @sby854905420-netizen @BH490 "
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/202#issuecomment-5545655365",
+      "user": "KenaHemnani",
+      "created_at": "2026-09-04T19:44:56Z",
+      "updated_at": "2026-09-04T19:44:56Z",
+      "body": "@akhileshpatil27 I got the access (email in spam), but now get this error \"Your account is suspended due to lack of payment method\".  "
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-20T16:08:37Z",
+  "github_updated_at": "2026-09-04T19:44:57Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue and latest comments concern Spider2 Snowflake account access/payment-status problems. The watched benchmark variant for xlang-ai/spider2 is spider2-dbt, and Snow/Snowflake credential or account provisioning issues are outside spider2-dbt scope.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/202"
+  ],
+  "reviewed_at": "2026-09-05T00:10:03.251Z"
+}

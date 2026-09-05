@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-654",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "xfail(run=False) on a FAIL_TO_PASS test grades as resolved without the test running",
+  "summary": "SWE-bench Verified grading counts XFAIL as a passed FAIL_TO_PASS test, so xfail(run=False) can mark an unresolved instance as resolved without executing the target test.",
+  "defect_type_main": "Evaluation harness",
+  "defect_type_sub": "FAIL_TO_PASS status semantics",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/654",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/654"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-04T19:52:14Z",
+  "last_reviewed_at": "2026-09-05T00:10:03.251Z",
+  "decision_note": "L3 equivalent reproduction audit. Harbor preflight passed. Command used: fetch public SWE-bench grading.py and constants/__init__.py at commit 02e7a74, load get_eval_tests_report/get_resolution_status in an isolated Python process, and compare one FAIL_TO_PASS case reported as XFAIL, SKIPPED, FAILED, and PASSED. Observed result matched the claim: XFAIL was placed in FAIL_TO_PASS success and get_resolution_status returned RESOLVED_FULL, while SKIPPED and FAILED returned RESOLVED_NO. The thread explicitly attributes this to SWE-bench Verified and names scikit-learn__scikit-learn-14141, matplotlib-24637, and pytest-dev__pytest-7982 examples, but the root cause is shared grading behavior rather than one task row. Existing #598 covers SKIPPED pytest log parsing, not F2P XFAIL acceptance. No fix PR is present, so resolution is found."
+}

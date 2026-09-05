@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/214",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 214,
+  "title": "## Snowflake access request pending for more than 24 hours",
+  "body": "Hi Spider2 team,\n\n\nI submitted the Spider2 Snowflake Access form more than 24 hours ago, but I have not received the Snowflake account sign-up email yet.\n\nThe repository mentions that the account sign-up email should be sent within 12 hours, so I wanted to check whether my request was received successfully or if there is anything else I need to do.\n\nI am currently blocked from running my Spider2-Snow experiments and this is time-sensitive.\n\nThe email address I used in the access form is:\n\n`akhileshpatil027@gmail.com`\n\nCould someone please check the status of my access request or let me know the fastest way to get access?\n\nThank you!\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-04T06:48:38Z",
+  "github_updated_at": "2026-09-04T06:48:38Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue explicitly concerns Spider2 Snowflake access request delay and Spider2-Snow experiments. The watched xlang-ai/spider2 artifact is spider2-dbt, so Snowflake access/provisioning is outside the current benchmark variant.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/214"
+  ],
+  "reviewed_at": "2026-09-05T00:10:03.251Z"
+}

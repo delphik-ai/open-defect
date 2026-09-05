@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/81",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 81,
+  "title": "torch-tensor-parallelism, torch-pipeline-parallelism: `mp.spawn(join=True)` behind `dist.barrier()` has no timeout — one failing rank blocks for gloo's 30-minute default",
+  "body": "`torch-tensor-parallelism` and `torch-pipeline-parallelism` call `torch.multiprocessing.spawn(..., join=True)` with no timeout, and the spawned workers end at `dist.barrier()`. If one rank fails an assertion and exits before the barrier, the surviving ranks block on the barrier until gloo's default process-group timeout of 30 minutes. Both tasks declare `[verifier] timeout_sec = 900.0`, so a single such case consumes the whole verifier budget and the run ends with no reward file rather than a recorded failure.\n\n## Code\n\n`torch-tensor-parallelism/tests/test_outputs.py:28-39`:\n\n```python\ndef _setup_process_group(rank, world_size):\n    os.environ[\"MASTER_ADDR\"] = \"localhost\"\n    os.environ[\"MASTER_PORT\"] = \"12355\"\n\n    backend = \"gloo\"\n    dist.init_process_group(backend, rank=rank, world_size=world_size)\n\n\ndef _cleanup_process_group():\n    dist.barrier()\n    dist.destroy_process_group()\n```\n\n`:193-198` and `:209-211`:\n\n```python\nmp.spawn(\n    _test_column_parallel_linear,\n    args=(world_size, bias),\n    nprocs=world_size,\n    join=True,\n)\n```\n\n`join=True` takes no timeout. Twelve parametrized cases run (`world_size in {1, 2, 4}` x `bias in {True, False}`, two test functions), each spawning a fresh group.\n\n`torch-pipeline-parallelism/tests/test_outputs.py` has the same shape: `MASTER_PORT` `12355` at `:49`, `backend = \"gloo\"` at `:51`, `dist.barrier()` at `:57`, `mp.spawn(..., join=True)` at `:178`.\n\n## Two failure modes\n\n1. **Asymmetric rank failure.** An agent implementation that is correct on rank 0 and wrong on rank 1 (or that raises on one rank only) leaves the surviving ranks in `dist.barrier()`. Nothing bounds that wait except the gloo default, 30 minutes.\n2. **Fixed `MASTER_PORT`.** Consecutive cases in one pytest process reuse port `12355`. A case that leaves the port in `TIME_WAIT` can stall the next case's rendezvous.\n\nBoth turn a wrong answer into a hang. The verifier cannot then report a failure: it is killed at its own timeout with no `reward.txt` written.\n\n## Suggested fix\n\nBound the rendezvous rather than the assertions:\n\n```python\ndist.init_process_group(\n    backend, rank=rank, world_size=world_size,\n    timeout=datetime.timedelta(seconds=120),\n)\n```\n\nAt this problem size the tensors are small (`2 x 64 x 48` in `torch-tensor-parallelism`), so a correct implementation never waits 120 seconds on a peer. An implementation that does wait that long was not going to pass. The change converts an untimed hang into a reported failure; it does not change which implementations pass.\n\nA coarser alternative is a per-test cap via `pytest-timeout`, or wrapping the `uvx` invocation in `timeout <n>`.\n\nThe exact number is a judgment call and should be set against measured rendezvous time on the task's own container (`cpus = 1`), not from this report.\n\n## Reproduction\n\n```bash\nrg -n \"join=True|MASTER_PORT|dist.barrier|init_process_group\" \\\n   torch-tensor-parallelism/tests/test_outputs.py \\\n   torch-pipeline-parallelism/tests/test_outputs.py\n```\n\nThen run the verifier against an implementation that raises on ranks >= 1 only, and observe that the pytest process does not return within the 900-second verifier budget.\n\nEnvironment: read 2026-09-04 against this repository at `2fd12b88aafdd04a52c298e3940bcb189f9766d6`. Both files are unchanged since the initial commit `3dbbcbbedc34919bd044f5780a87b00eb99b2b35`.\n\nRelated: both tasks also install the CUDA build of torch on a `gpus = 0` container, filed separately as #80.\n",
+  "comments": [
+    {
+      "url": "https://github.com/harbor-framework/terminal-bench-2/issues/81#issuecomment-5542776025",
+      "user": "chilang",
+      "created_at": "2026-09-04T15:30:23Z",
+      "updated_at": "2026-09-04T15:30:23Z",
+      "body": "Closing this for now — filed prematurely on my side, before the maintainers had been consulted. Reopening later if still useful. Apologies for the noise."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-09-04T15:10:23Z",
+  "github_updated_at": "2026-09-04T15:30:24Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue identifies Terminal-Bench 2.1 tasks and describes a possible mp.spawn/dist.barrier hang, but it was closed by the reporter as filed prematurely before maintainer consultation. No maintainer acknowledgement, fix PR, upstream diff, or reproduced asymmetric-rank verifier hang was available in this run, so the claimed defect is left unverified.",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/81"
+  ],
+  "reviewed_at": "2026-09-05T00:10:03.251Z"
+}

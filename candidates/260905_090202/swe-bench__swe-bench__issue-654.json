@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/654",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 654,
+  "title": "xfail(run=False) on a FAIL_TO_PASS test grades as resolved without the test running",
+  "body": "I ran into this while auditing some Verified instances.\n\n`test_passed` counts XFAIL as a pass. So a patch can put `@pytest.mark.xfail(run=False)` on the FAIL_TO_PASS test, never run it, and the instance still grades resolved. The bug the task is about stays exactly where it was.\n\nThe same hole for SKIPPED is already closed a few lines further down in `test_failed`, and the comment there spells out why. XFAIL just never got the same treatment.\n\n## Repro\n\nYou can do this from a `conftest.py` that already exists in the repo. It isn't in the instance's `test_patch`, so the pre-test checkout leaves it alone.\n\n```python\ndef pytest_collection_modifyitems(config, items):\n    for item in items:\n        if item.name == \"test_get_deps_info\":\n            item.add_marker(pytest.mark.xfail(run=False))\n```\n\nOn `scikit-learn__scikit-learn-14141`, with `sklearn/utils/_show_versions.py` byte identical to base:\n\n```\nXFAIL sklearn/utils/tests/test_show_versions.py::test_get_deps_info\n2 passed, 1 xfailed in 0.52s\n\nreport.json says \"resolved\": true\n```\n\nChange `xfail(run=False)` to `pytest.mark.skip` and the same patch gets caught:\n\n```\n2 passed, 1 skipped\nreport.json says \"resolved\": false\n```\n\nOnly the marker changed. The bug is untouched in both runs.\n\nI hit this on three of the five instances I was looking at. scikit-learn-14141, matplotlib-24637 and pytest-dev__pytest-7982. Each one used a `conftest.py` that was already sitting in the repo.\n\n## Where it comes from\n\n`grading.py:85`\n\n```python\ndef test_passed(case: str, sm: dict[str, str]) -> bool:\n    key = _resolve_case(case, sm)\n    return key is not None and sm[key] in [\n        TestStatus.PASSED.value,\n        TestStatus.XFAIL.value,\n    ]\n```\n\n`xfail(run=False)` reports XFAIL without ever running the test body, so the F2P test lands in `success`.\n\nFifteen lines down, `test_failed` already handles the same situation for SKIPPED:\n\n```python\n        TestStatus.FAILED.value,\n        TestStatus.ERROR.value,\n        # a skipped F2P test is not a resolution; without this, a patch that makes\n        # every F2P test skip lands in neither list and scores RESOLVED_FULL\n        TestStatus.SKIPPED.value,\n```\n\nThat comment applies just as well to XFAIL. An xfailed F2P test isn't a resolution either.\n\n## Not a one line change though\n\n`test_passed` also backs `test_maintained` on the P2P side. If you just drop XFAIL from `test_passed`, a P2P test that is legitimately xfailed in the tree stops counting as maintained, and real instances start failing. So it needs scoping to the F2P path, the same way the SKIPPED handling already is.\n\nOne other thing while I'm here. `eval.sh` only runs `git checkout <base_commit> --` on the test_patch files, so every `conftest.py` and test runner in the repo is still writable by the model at grading time. Resetting those as well would shut this and a few similar tricks at the same time.\n\n## Setup\n\nswebench 5.0.2 (02e7a74), SWE-bench Verified, Python 3.11.16, Docker Desktop 29.4.3.\n\nPatches, logs and per instance reports are here if they're useful: https://github.com/cero753/swe-bench-audit\n\nHappy to put up a PR if the F2P scoped version is the way you want to go.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-04T19:52:14Z",
+  "github_updated_at": "2026-09-04T19:52:14Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-654",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "SWE-bench Verified grading counts XFAIL as a passed FAIL_TO_PASS test, so xfail(run=False) can mark an unresolved instance as resolved without executing the target test.",
+  "defect_type_main": "Evaluation harness",
+  "defect_type_sub": "FAIL_TO_PASS status semantics",
+  "decision_note": "L3 equivalent reproduction audit. Harbor preflight passed. Command used: fetch public SWE-bench grading.py and constants/__init__.py at commit 02e7a74, load get_eval_tests_report/get_resolution_status in an isolated Python process, and compare one FAIL_TO_PASS case reported as XFAIL, SKIPPED, FAILED, and PASSED. Observed result matched the claim: XFAIL was placed in FAIL_TO_PASS success and get_resolution_status returned RESOLVED_FULL, while SKIPPED and FAILED returned RESOLVED_NO. The thread explicitly attributes this to SWE-bench Verified and names scikit-learn__scikit-learn-14141, matplotlib-24637, and pytest-dev__pytest-7982 examples, but the root cause is shared grading behavior rather than one task row. Existing #598 covers SKIPPED pytest log parsing, not F2P XFAIL acceptance. No fix PR is present, so resolution is found.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/654",
+    "https://raw.githubusercontent.com/SWE-bench/SWE-bench/02e7a74/swebench/harness/grading.py",
+    "https://raw.githubusercontent.com/SWE-bench/SWE-bench/02e7a74/swebench/harness/constants/__init__.py"
+  ],
+  "reviewed_at": "2026-09-05T00:10:03.251Z"
+}

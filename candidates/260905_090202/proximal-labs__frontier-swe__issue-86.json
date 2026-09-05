@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/86",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 86,
+  "title": "Re-running FrontierSWE v1 tasks produces high variance in the results",
+  "body": "Hi there,\n\nThanks for this great project.\n\nWe are trying to run the v1 tasks in this repo to reproduce your results, and are seeing high variance in the results. Can you please confirm if this is expected based on your own evaluations? We suspect this might be the case due to the large published gaps between mean and max scores ([example](https://www.frontierswe.com/v1/granite-mamba2-inference-optimization))\n\nTo give one example of what we are seeing:\n\n**Evaluation**\n- Task: [Granite Mamba2 Inference Optimization task](https://www.frontierswe.com/v1/granite-mamba2-inference-optimization)\n- Agent: Opus 4.8, effort = max, Claude Code used as harness\n\n**Results**\n- For n = 6, we had 5/6 correctness\nFor the 5 correct trials:\n- Mean reward: 0.6966\n- Max reward: 1.106\n- 95% CI: (0.413, 0.981)\n\nYour leaderboard for this task shows mean: 0.793 and max: 1.185. \n\nWould you describe the variance we're seeing as atypical? Would you be able to share your full results (5 values per model/task) for the published v1 leaderboard?\n\nThank you,\n@lucyhe, @stevemessick",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-04T22:36:23Z",
+  "github_updated_at": "2026-09-04T22:36:23Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks whether observed FrontierSWE v1 run-to-run score variance is expected and requests full result disclosure. It does not identify a task artifact, harness bug, evaluator error, or dataset root cause, so it is outside benchmark defect scope.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/86"
+  ],
+  "reviewed_at": "2026-09-05T00:10:03.251Z"
+}
