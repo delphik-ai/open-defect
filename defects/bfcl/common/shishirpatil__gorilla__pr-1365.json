@@ -17,6 +17,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-09-04T23:56:04Z",
-  "last_reviewed_at": "2026-09-05T00:10:03.251Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
   "decision_note": "L3 equivalent reproduction audit. Harbor preflight passed. Command used: create a clean Python 3.13 venv, install bfcl-eval==2026.3.23, block soundfile via a meta_path finder, then run bfcl_eval.__main__ with argv [bfcl, --help]. Observed failure matched the claim: bfcl_eval.__main__ imports _llm_response_generation, model_config imports api_inference.qwen, qwen imports qwen_agent, and qwen_agent.utils imports soundfile, raising ModuleNotFoundError before help can run. PR #1365 changes qwen.py to defer get_chat_model import behind handler initialization and adds a regression test for bfcl --help without qwen_agent import. Existing BFCL artifacts cover Qwen prompt/parser and aggregate scoring issues, not this CLI startup dependency root cause. The PR is open, so resolution is fixing."
 }

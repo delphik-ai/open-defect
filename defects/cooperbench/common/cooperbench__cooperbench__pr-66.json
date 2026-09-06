@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-66",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "release: v0.0.17",
+  "summary": "CooperBench Claude Code auto-proxy streamed malformed vLLM tool-call events through LiteLLM, making agent loops abort with Content block not found during evaluated runs.",
+  "defect_type_main": "Runtime/harness",
+  "defect_type_sub": "Adapter streaming bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/66",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/66",
+    "https://github.com/cooperbench/CooperBench/pull/66/files",
+    "https://github.com/vllm-project/vllm/issues/39056"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-26T01:20:58Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged release PR #66 states vLLM streaming tool-call extractors intermittently emitted content_block_delta without content_block_start, causing Claude Code to raise API Error: Content block not found and abort mid-task. The diff forces non-streaming upstream LiteLLM calls and validation shows errors dropping from 8 to 0 on the same Qwen3.5-9B dspy subset. Existing CooperBench defects do not cover this vLLM/LiteLLM auto-proxy streaming root cause. PR #66 merged on 2026-05-26, so resolution is fixed."
+}

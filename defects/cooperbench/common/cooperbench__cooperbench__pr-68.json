@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-68",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "release: v0.0.19",
+  "summary": "CooperBench Claude Code trajectory parsing dropped every assistant turn when recent session JSONL stored the role only in the top-level event.type field.",
+  "defect_type_main": "Result integrity",
+  "defect_type_sub": "Trajectory parsing bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/68",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/68",
+    "https://github.com/cooperbench/CooperBench/pull/68/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-26T03:15:09Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged release PR #68 states parse_session_jsonl rejected assistant events whose message.role was null, leaving agent trajectory JSON with only user tool_result entries for affected Claude Code runs. The diff falls back to event.type and validation re-parses a broken session from 43 all-user messages to 129 user+assistant messages. Existing CooperBench artifacts cover earlier adapter execution and proxy bugs, not this trajectory parser role root cause. PR #68 merged on 2026-05-26, so resolution is fixed."
+}

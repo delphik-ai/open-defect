@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-53",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "team mode: fs mirror, typed protocol, MCP server, in-loop refresh",
+  "summary": "CooperBench team-mode prompts let members write diffs only to the scratchpad, so evaluation saw no submitted patch and scored otherwise completed team runs as zero.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Submission protocol bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/53",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/53",
+    "https://github.com/cooperbench/CooperBench/pull/53/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-17T00:54:08Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged PR #53 body identifies a prompt fix surfaced by end-to-end team-mode runs where members wrote diffs to scratchpad only and scored 0/2; the diff adds explicit final-submission instructions requiring patch.txt, the only file evaluated. Existing CooperBench defects cover coop timestamp sorting, prompt read-only remote, peer liveness, and dataset gradeability, not this team-mode patch submission prompt root cause. PR #53 merged upstream, so resolution is fixed."
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-55",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "team mode: wire team prompt + env into the three Python-loop adapters",
+  "summary": "CooperBench team-mode and adapter plumbing had multiple benchmark-running blockers, including Modal stdin hangs, missing adapter dependencies, wrong backend dispatch, patch normalization, and misleading merge fallback policy.",
+  "defect_type_main": "Runtime/harness",
+  "defect_type_sub": "Adapter execution bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/55",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/55",
+    "https://github.com/cooperbench/CooperBench/pull/55/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-17T15:26:57Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged PR #55 body lists compounding bugs found during a real 10-pair core subset run and fixes them in source: Codex exec hanging in Modal because stdin stayed open, swe_agent import/extras/backend dispatch failures, CLI adapters ignoring --backend modal, raw strip-based patch normalization in mini_swe_agent_v2, Modal sandbox keepalive, and eval policy that could reward union/member-only fallbacks. These are benchmark harness/evaluator defects with upstream fix evidence. Existing CooperBench artifacts do not cover this combined team-mode adapter/back-end plumbing root cause; PR #55 merged on 2026-05-21, so resolution is fixed."
+}

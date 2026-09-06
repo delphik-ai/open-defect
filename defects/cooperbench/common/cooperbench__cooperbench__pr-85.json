@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-85",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "dataset: verify every feature against combined.patch, on both architectures",
+  "summary": "CooperBench lacked the combined.patch invariant used by coop evaluation; a sweep found 19 features across five tasks whose tests failed against the merged gold tree, making affected pairs unwinnable.",
+  "defect_type_main": "Dataset correctness",
+  "defect_type_sub": "Gold/combined patch incompatibility",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/85",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/85",
+    "https://github.com/cooperbench/CooperBench/pull/85/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-05T21:40:24Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged PR #85 body and diff add the missing check_combined invariant and document that all 199 features were verified on Modal linux/amd64 and local Docker linux/arm64. It found 19 features in dspy/8563, dspy/8635, tiktoken/0, jinja/1559, and jinja/1465 whose tests failed against combined.patch even though coop eval runs tests on that merged tree; the PR fixes tests.patch/combined.patch/image issues and updates SPEC_AUDIT. Earlier CooperBench artifacts cover individual combined.patch bugs and a prior gradeability sweep, but not this missing combined.patch invariant across the full current dataset. PR #85 merged on 2026-09-05, so resolution is fixed."
+}

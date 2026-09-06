@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "livecodebench__livecodebench__livecodebench__issue-153",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "--not_fast silently ignores --start_date/--end_date and --release_version; other scenarios ignore the date flags too",
+  "summary": "LiveCodeBench date-window and release-version CLI flags are honored only on the default code_generation_lite path, while not_fast, selfrepair, testoutputprediction, and codeexecution silently ignore them.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Dataset selection bug",
+  "canonical_source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/153",
+  "evidence_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/153",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/154",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/154/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-05T07:44:45Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: issue #153 names the current LiveCodeBench main commit and specific loader/router/parser files where start_date, end_date, and release_version are accepted but not forwarded. PR #154 confirms the same root cause in its body and source diff by adding those parameters to the affected loader paths. Existing LiveCodeBench artifacts cover dataset loading, code extraction, and tokenizer/prompt issues, not silently ignored contamination-window/release-version flags. The issue and fix PR are open, so resolution is fixing."
+}

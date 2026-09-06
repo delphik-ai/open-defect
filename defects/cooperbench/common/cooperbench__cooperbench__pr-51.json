@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-51",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "agents/codex: add Codex adapter; lift shared coop bits into _coop",
+  "summary": "CooperBench CLI adapters stripped patch.txt output before evaluation, removing trailing newline/context required by git apply and causing valid generated patches to be rejected.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Patch application bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/51",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/51",
+    "https://github.com/cooperbench/CooperBench/pull/51/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-16T20:41:13Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged PR #51 body explicitly says Codex solo surfaced `.strip()` on patch.txt eating the trailing newline required by git apply. The diff adds shared normalize_patch coverage for CLI adapters. Existing CooperBench artifacts cover default agent naming, rerun policy, Docker/Modal setup, pass-rate display, timestamp sorting, dataset gradeability, and peer-liveness, but not this patch normalization root cause. PR #51 merged on 2026-05-18, so resolution is fixed."
+}

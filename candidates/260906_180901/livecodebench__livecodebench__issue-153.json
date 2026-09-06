@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/153",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 153,
+  "title": "--not_fast silently ignores --start_date/--end_date and --release_version; other scenarios ignore the date flags too",
+  "body": "# --not_fast silently ignores --start_date/--end_date and --release_version; other scenarios ignore the date flags too\n\n## Affected\n\nLiveCodeBench/LiveCodeBench@28fef95 (main, 2026-09-02)\n\n- lcb_runner/benchmarks/code_generation.py:139-143 (`load_code_generation_dataset_not_fast`)\n- lcb_runner/benchmarks/code_generation.py:124-136 (`load_code_generation_dataset`, the only loader that honors the flags)\n- lcb_runner/runner/scenario_router.py:50-77 (`build_prompt_benchmark`)\n- lcb_runner/benchmarks/test_output_prediction.py:62-66 and code_execution.py:59-63 (release_version accepted, never used)\n- lcb_runner/runner/parser.py:121-133 (the flags are accepted for every scenario)\n\n## Summary\n\n`--start_date` and `--end_date` select the contamination window and `--release_version` pins the dataset revision. All three are honored only on the default `code_generation_lite` code path. When `--not_fast` is passed (the README's documented way to run the original benchmark with the full private test suites), `build_prompt_benchmark` calls `load_code_generation_dataset_not_fast(args.release_version)`, which:\n\n1. never forwards `release_version` to `load_dataset` (`load_dataset(\"livecodebench/code_generation\", split=\"test\")` has no `version_tag`), so the request silently resolves to whatever the Hub repo's default config currently is, and\n2. has no date parameters at all, so `args.start_date`/`args.end_date` are silently dropped and every problem in the dataset is loaded, including problems after the requested end date.\n\nNo warning, error, or log line mentions either drop. The same silent drop applies to `--scenario selfrepair` (dates dropped, release version forwarded) and to `--scenario testoutputprediction`/`codeexecution` (dates and release version both dropped).\n\n## Impact\n\nThe contamination-free property of a run is decided by the union of the loaded problems, not by the flags on the command line. A user replicating the paper's windowed evaluation (for example \"only problems released after August 2023\" as documented in the README) with `--not_fast` gets the full dataset, and if they then compute scores without re-filtering (because they believe generation was already windowed), contaminated problems silently enter the score. A user pinning `--release_version release_v2` with `--not_fast` silently benchmarks against a different, drifting dataset revision. Cross-model comparisons built this way compare different problem sets without any signal.\n\n## Reproduction\n\nPoC: `poc/poc_f1_dropped_window_flags.py` (runs via `poc/run_all.sh`; evidence in `poc/out/f1/run{1,2}/evidence.json`, double-run byte-identical).\n\nIt calls the real `build_prompt_benchmark` at the pin with a stubbed HuggingFace `load_dataset` boundary that records its arguments and returns four synthetic problems (two inside the 2024-01-01 to 2024-06-01 window, one before, one after):\n\n- fast path (control): 2 problems loaded, `version_tag=\"release_v5\"` forwarded\n- `--not_fast` with identical flags: 4 problems loaded (both out-of-window problems included), no `version_tag` in the `load_dataset` call\n- `--scenario selfrepair` with identical flags: 4 problems loaded, dates dropped\n- `--scenario testoutputprediction` with identical flags: out-of-window rows included, dates and version dropped\n\n## Suggested fix\n\nHonor or reject: either thread `start_date`/`end_date` (and `version_tag`) through every loader, or raise/warn when selection flags are provided that the chosen path does not implement. For `--not_fast`, at minimum forward the release version and apply the same date filter used by the fast path.\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-05T07:44:45Z",
+  "github_updated_at": "2026-09-05T07:44:45Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "reviewed_at": "2026-09-06T09:13:22.807Z",
+  "terminal_status": "confirmed",
+  "benchmark_name": "livecodebench",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "livecodebench__livecodebench__livecodebench__issue-153",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "LiveCodeBench date-window and release-version CLI flags are honored only on the default code_generation_lite path, while not_fast, selfrepair, testoutputprediction, and codeexecution silently ignore them.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Dataset selection bug",
+  "decision_note": "L2 source-read audit: issue #153 names the current LiveCodeBench main commit and specific loader/router/parser files where start_date, end_date, and release_version are accepted but not forwarded. PR #154 confirms the same root cause in its body and source diff by adding those parameters to the affected loader paths. Existing LiveCodeBench artifacts cover dataset loading, code extraction, and tokenizer/prompt issues, not silently ignored contamination-window/release-version flags. The issue and fix PR are open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/153",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/154",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/154/files"
+  ]
+}

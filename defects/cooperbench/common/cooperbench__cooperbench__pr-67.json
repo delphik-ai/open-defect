@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-67",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "release: v0.0.18",
+  "summary": "CooperBench Claude Code proxy routing through LiteLLM could rewrite thinking requests to /v1/responses or ignore stream disabling, producing validation errors and adapter failures against vLLM endpoints.",
+  "defect_type_main": "Runtime/harness",
+  "defect_type_sub": "Provider proxy bug",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/67",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/67",
+    "https://github.com/cooperbench/CooperBench/pull/67/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-05-26T02:33:41Z",
+  "last_reviewed_at": "2026-09-06T09:13:22.807Z",
+  "decision_note": "L2 source-read audit: merged release PR #67 removes the LiteLLM proxy after source/validation showed vLLM natively exposes Anthropic Messages API. The PR body lists concrete benchmark-running failures from the prior proxy path: /v1/responses rewrites with hundreds of validation errors, ignored non-streaming controls, and content-block stream errors. The diff deletes the proxy path and validation on the same anyhow pair reports no validation errors or /v1/responses references. Existing CooperBench artifacts do not cover this proxy-route assumption/root cause. PR #67 merged on 2026-05-26, so resolution is fixed."
+}
