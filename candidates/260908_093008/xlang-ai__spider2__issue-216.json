@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/216",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 216,
+  "title": "Spider2-Lite local029 Gold SQL 可能因支付表 JOIN 导致交付订单数计数膨胀",
+  "body": "## 问题概述\n\n`Spider2-Lite` 实例 `local029` 的官方 Gold SQL 似乎没有按照题目要求统计“交付订单数”，而是在连接支付表后统计支付记录行数。这会造成多对多/一对多 JOIN 后的计数膨胀，并使官方 Gold 结果与题目语义不一致。\n\n这不是 SQL 语法错误：SQL 可以正常执行，但排序指标的业务粒度可能错误。\n\n## 复现信息\n\n- 实例：`local029`\n- 数据库：`Brazilian_E_Commerce`\n- Gold SQL：`spider2-lite/evaluation_suite/gold/sql/local029.sql`\n- Gold 结果：`spider2-lite/evaluation_suite/gold/exec_result/local029.csv`\n- 题目含义：找出按 `customer_unique_id` 统计的交付订单数最高的前三名客户，并提供平均支付值、城市和州。\n\n## 当前 Gold SQL 的关键片段\n\n```sql\nFROM olist_customers c\nJOIN olist_orders o ON c.customer_id = o.customer_id\nJOIN olist_order_payments p ON o.order_id = p.order_id\nWHERE o.order_status = 'delivered'\nGROUP BY c.customer_unique_id, c.customer_city, c.customer_state\n```\n\n并使用：\n\n```sql\nCOUNT(o.order_id) AS Total_Orders_By_Customers\n```\n\n由于 `olist_order_payments` 对同一个 `order_id` 可以有多条记录，连接支付表之后，`COUNT(o.order_id)` 统计的是支付行数，而不是交付订单数。若指标是订单数量，应使用 `COUNT(DISTINCT o.order_id)`，或在连接支付表之前先按订单粒度聚合。\n\n## 数据证据\n\n在发布的 SQLite 数据库上执行相同逻辑并同时查看订单数和支付连接行数，Gold 排出的三组结果对应的数据大致为：\n\n| 客户 | 交付订单数 | 支付连接行数 |\n|---|---:|---:|\n| `9a736b248f67d166d2fbb006bcb877c3` | 2 | 33 |\n| `569aa12b73b5f7edeaa6f2a01603e381` | 1 | 26 |\n| `f9ae226291893fda10af7965268fb7f6` | 2 | 23 |\n\nGold CSV 中的三行数值正好是这些支付行数排序后的结果：\n\n```text\n7.075454545454545,sao paulo,SP\n2.4107692307692306,sao paulo,SP\n22.65521739130435,guarulhos,SP\n```\n\n相反，直接按照交付订单数排序，前几名为：\n\n```text\n8d50f5eadf50201ccdcedfb9e2ac8455 | 15\n3e43e6105506432c953e165fb2acf44c | 9\n1b6c7548a2a1f9037c1fd3ddfed95f33 | 7\n```\n\n用于复现排名的查询：\n\n```sql\nSELECT\n    c.customer_unique_id,\n    COUNT(DISTINCT o.order_id) AS delivered_orders,\n    c.customer_city,\n    c.customer_state\nFROM olist_customers c\nJOIN olist_orders o ON c.customer_id = o.customer_id\nWHERE o.order_status = 'delivered'\nGROUP BY c.customer_unique_id, c.customer_city, c.customer_state\nORDER BY delivered_orders DESC, c.customer_unique_id\nLIMIT 3;\n```\n\n## 其他疑点\n\n1. Gold SQL 的最终投影没有包含 `customer_unique_id`，因此结果无法真正识别题目要求的前三名客户。\n2. `AVG(p.payment_value)` 是支付记录行级平均值。如果题目意图是“每个订单的平均支付金额”，则应先对 `olist_order_payments` 按 `order_id` 求和，再计算订单级平均值；当前题目没有明确这一粒度。\n3. `ORDER BY Total_Orders_By_Customers DESC` 没有稳定的并列处理规则。\n\n## 影响\n\n按照题目字面语义使用 `COUNT(DISTINCT o.order_id)` 的 Agent，可能得到更符合业务含义的客户排名，却会因为与当前 Gold SQL/Gold 结果不一致而被官方评测判错。\n\n## 请求\n\n请维护者核实该实例的业务口径，并在确认后考虑：\n\n- 修正 Gold SQL 的订单计数粒度；\n- 明确 `AVG(payment_value)` 是支付记录级平均还是订单级平均；\n- 明确是否必须输出 `customer_unique_id`；\n- 重新生成对应的 Gold 结果和评测基准；\n- 为并列排名增加确定性的 tie-breaker。\n\n如果这是有意定义的评测口径，也请在题目或数据说明中明确“支付记录行数”和平均值的粒度，避免与“交付订单数”的自然语义冲突。\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-07T09:05:25Z",
+  "github_updated_at": "2026-09-07T09:05:25Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "Issue #216 names Spider2-Lite local029 and the source-read check confirms the cited gold SQL path is spider2-lite/evaluation_suite/gold/sql/local029.sql with COUNT(o.order_id) after joining olist_order_payments. The repo watch map for xlang-ai/Spider2 currently maps only spider2-dbt, so this Spider2-Lite task-specific claim is outside the current benchmark variant.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/216",
+    "https://github.com/xlang-ai/Spider2/blob/main/spider2-lite/evaluation_suite/gold/sql/local029.sql"
+  ],
+  "reviewed_at": "2026-09-08T00:37:08Z"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/215",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 215,
+  "title": "Spider2-dbt protocol clarification: submission artifacts, evaluation clock, and underspecified conventions",
+  "body": "Title: Spider2-dbt protocol clarification: submission artifacts, evaluation clock, and underspecified conventions\n\nHello, could you clarify three points about the intended Spider2-dbt evaluation protocol?\n\nI read the evaluation-suite README at commit cafb867313aab4e674652054198f383cf4018943. It describes results_metadata.jsonl, submitted DuckDB files, and duckdb_match. I also checked the existing missing-gold and denominator discussions (#156 and #201); these questions concern separate protocol details.\n\n1. For a reproducible leaderboard submission, are materialized DuckDB results plus results_metadata.jsonl sufficient, or must the modified dbt project also be submitted and rebuilt by the evaluator? Is there a prescribed dbt/DuckDB/package-version environment for that rebuild?\n2. When supplied project SQL uses current_date or current_timestamp, should a run use the actual execution clock, a fixed benchmark as-of date, or another task-specific anchor? If fixed, where is the canonical date/timezone specified, and how should it be applied without changing the task semantics?\n3. Where a task does not specify conventions such as calendar boundaries, generated identifiers, or rounding/NULL handling, should implementations preserve the supplied project's existing behavior? Is there any additional participant-facing specification, or a documented process for evaluating semantically reasonable alternatives to a reference convention?\n\nA link to the authoritative instructions would be very helpful. This is a protocol clarification request, not a benchmark-result submission. Thank you.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-07T08:14:52Z",
+  "github_updated_at": "2026-09-07T08:14:52Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Issue #215 asks for protocol clarification about Spider2-dbt submission artifacts, evaluation clock, and conventions. It is not a concrete defect claim with a root cause that can be counted.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/215"
+  ],
+  "reviewed_at": "2026-09-08T00:37:08Z"
+}

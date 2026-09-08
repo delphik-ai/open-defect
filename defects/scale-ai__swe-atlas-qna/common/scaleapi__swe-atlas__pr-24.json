@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-qna__scaleapi__swe-atlas__pr-24",
+  "benchmark_name": "scale-ai__swe-atlas-qna",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "qa/tw: make the judge JSON parsers tolerant of fences, control characters, and trailing text",
+  "summary": "SWE-Atlas QnA judge evaluators used brittle JSON extraction and strict parsing, so fenced replies or literal control characters could make valid judge ratings fail to parse until open PR #24 replaces the parser.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Judge response parser rejects valid output",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/24",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/24",
+    "https://github.com/scaleapi/SWE-Atlas/pull/24/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-07T17:22:30Z",
+  "last_reviewed_at": "2026-09-08T00:37:08Z",
+  "decision_note": "L2 source-read audit. The PR body identifies the QnA variant via data/qa/*/tests/evaluate_answer.py and explains that the existing parser cuts at the first json fence, brace-counts without string awareness, and uses strict json.loads, causing valid judge replies with nested fences or literal control characters to fail. The diff applies a shared _extract_json_object parser across QA evaluator copies. Existing QnA artifacts cover gold-answer/rubric content and run config issues, not this judge-response parser root cause. The PR remains open, so resolution is fixing. The same source also mentions TW, but the v5 candidate schema records one benchmark per source candidate; this artifact records the QnA variant."
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/89",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 89,
+  "title": "Add Fable 5.1, Muse Spark 1.3 & GPT 6 Astra to the bench",
+  "body": "(empty GitHub body)",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5534333406",
+      "user": "coygeek",
+      "created_at": "2026-09-04T01:23:57Z",
+      "updated_at": "2026-09-04T01:23:57Z",
+      "body": "GPT-6 Astra are posted:\n\nxhigh = 74%\nhigh = 73%\nmax = 73%\nmedium = 73%\nlow = 67%\n\nMedium seems to be sweet spot.\n\nThe other 2 models, Fable 5.1 and Muse Spark 1.3 still missing. "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5543731223",
+      "user": "tidjani94",
+      "created_at": "2026-09-04T16:48:52Z",
+      "updated_at": "2026-09-04T16:48:52Z",
+      "body": "Could we add benchmark coverage for the newly released Anthropic frontier models Claude Fable 5.1 (`claude-fable-5-1`) and Claude Mythos 5.1 (`claude-mythos-5-1`)? They were announced on September 1, 2026. Fable 5.1 is Anthropic’s generally available model for long-horizon coding and knowledge work; Mythos 5.1 shares the same underlying model with a different safeguard regime and is limited to vetted organizations. Since the safeguard regimes differ, reporting both separately would make the results more useful and reproducible.\n\nOfficial references:\n- https://www.anthropic.com/claude/fable\n- https://www.anthropic.com/claude/mythos"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5571997435",
+      "user": "Orel-A",
+      "created_at": "2026-09-07T14:21:01Z",
+      "updated_at": "2026-09-07T14:21:59Z",
+      "body": "seems like for Muse Spark 1.3 the benchmark is published here:\nhttps://developer.meta.com/ai/models/muse-spark/\nA score of 75.4 on DeepSWE v1.1 for Muse Spark 1.3 (max).\n\n<img width=\"1797\" height=\"1097\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7e1248e3-8343-4f84-97f6-68cecf11dea9\" />"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-02T00:35:23Z",
+  "github_updated_at": "2026-09-07T14:21:59Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks for adding/reporting new model results on DeepSWE and contains model-score references. It does not claim a benchmark artifact, task, harness, dataset, evaluator, or scoring defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/89"
+  ],
+  "reviewed_at": "2026-09-08T00:37:08Z"
+}
