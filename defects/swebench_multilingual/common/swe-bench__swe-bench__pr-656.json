@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench_multilingual__swe-bench__swe-bench__pr-656",
+  "benchmark_name": "swebench_multilingual",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Flag task Dockerfiles that ship a broken .bashrc (#638)",
+  "summary": "SWE-bench Multilingual task Dockerfiles write an unguarded .bashrc that sources a missing Miniconda profile, adding shell noise and preventing conda activation for agent harnesses.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/656",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/656",
+    "https://github.com/SWE-bench/SWE-bench/pull/656/files",
+    "https://github.com/SWE-bench/swe-bench-multilingual-tasks",
+    "https://github.com/SWE-bench/swe-bench-multilingual-tasks/blob/main/tasks/apache__druid-13704/Dockerfile"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-09T21:32:20Z",
+  "last_reviewed_at": "2026-09-10T00:07:41Z",
+  "decision_note": "L3 equivalent source-data reproduction. Harbor preflight was not needed because the defect is directly reproducible from public GitHub task Dockerfiles. Command used: enumerate SWE-bench/swe-bench-multilingual-tasks Dockerfiles from the GitHub tree, fetch each raw Dockerfile, and apply the PR #656 detector condition: no conda install/base image plus an unguarded /root/.bashrc line sourcing /opt/miniconda3/etc/profile.d/conda.sh. Observed 300/300 Dockerfiles flagged, matching the PR body; sample tasks apache__druid-13704 through apache__druid-16875 all write the unguarded source line. The PR body distinguishes swe-bench-tasks and multimodal as 0 flagged, proving this belongs to SWE-bench Multilingual rather than Verified. No existing Multilingual canonical artifact covers this missing-conda .bashrc root cause; PR #656 is open and adds a checker, so resolution is fixing."
+}

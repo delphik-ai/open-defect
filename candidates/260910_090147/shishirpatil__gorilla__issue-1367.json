@@ -1,0 +1,43 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1367",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1367,
+  "title": "[BFCL] Several multi_turn_base items have ground truth that cannot be produced from the environment",
+  "body": "Several `multi_turn_base` items have ground truth that cannot be produced from\nthe environment the model is given. They are unpassable regardless of model\ncapability.\n\n## How these were found\n\nWe benchmark local open-weight models on `multi_turn_base`. 27 of the 200 items\nare failed by **all 18 models** we have measured. Since `multi_turn_checker`\nexecutes the ground truth live against the same API classes, a malformed answer\nkey is ruled out by construction, so we had a frontier model sit 8 of the 27\nblind — it saw only the user turns, the tool docs, and the execution results of\nits own calls, never `possible_answer` — and graded it with BFCL's own checker.\n\nIt passed 2 and failed 6. Four of those six are defects rather than capability\ngaps: in three of them every call, argument, tag and mention matched ground\ntruth exactly and only a string literal differed.\n\n## The defect: gold contains text the tools never produce\n\n**`multi_turn_base_4`** — `report.txt` is a single line. `sort()` sorts *lines*,\nso it is a no-op and returns the input unchanged. Gold's tweet is an\nalphabetised version that no sequence of calls yields:\n\n```\nreport.txt          : \"Initial report content Unsorted data More unsorted data\"\nsort() returns      : \"Initial report content Unsorted data More unsorted data\"\ngold post_tweet     : \"Initial report content More unsorted data Unsorted data\"\n```\n\n**`multi_turn_base_8`** — the user asks to post \"the verbatim results of diff\".\nGold's tweet content is about research topics and literature reviews, which\nappears nowhere in this scenario; it looks copy-pasted from another item:\n\n```\ndiff() returns  : \"- Observation 1: Normal Observation 2: Anomaly detected ...\\n+ Observation A: ...\"\ngold post_tweet : \"- Research topic selection+ Data analysis- Literature review+ Data collection...\"\n```\n\n**`multi_turn_base_35`** — gold writes a truncated, newline-stripped fragment of\nwhat `diff()` returns:\n\n```\ndiff() returns : \"- Initialization of the system Error in module Setup complete Initialization successful Error detected\\n+ Real Config.\"\ngold echo      : \"- Initialization of the system+ Real Config.\"\n```\n\n**`multi_turn_base_18`** — same shape, newline stripped from the `diff()` output.\nAlso inconsistent mention formatting: gold here uses `mentions=['Jerry']` where\n`multi_turn_base_4`'s gold uses `mentions=['@Julia']`.\n\n## A separate defect: prompt and answer key disagree\n\n**`multi_turn_base_10`** — turn 3's user says *\"get cracking on a new file, call\nit **'notes.md'**\"*. Gold is `touch(file_name='note.md')`. Every other turn of\nour run matched gold exactly. An agent that follows the user's literal\ninstruction cannot pass.\n\n## Free-text exact matching (already reported as #914, still present)\n\n`multi_turn_base_178`, `_180`, `_187` require an exact free-text string the user\nnever dictates. In 178 the user says *\"insurance-related issues that haven't been\nresolved\"*; gold's ticket description is `'Insurance-related issues that need\nresolution'`. Semantically identical, lexically different, graded as wrong.\n\nThis is the same problem [#914](https://github.com/ShishirPatil/gorilla/issues/914)\nraised for `multi_turn_base_186` in February 2025, which was closed without a\ndocumented response.\n\n## These are current, not stale\n\nWe diffed the packaged dataset between `bfcl_eval 2025.8.6.2` and `2026.3.23`:\n\n```\nquestion (user turns) : 0 of 200 changed\ninitial_config        : 0 of 200 changed\ninvolved_classes      : 0 of 200 changed\nground_truth          : 0 of 200 changed\n```\n\n`multi_turn_base` is byte-identical across those seven months, including\n`multi_turn_base_154`, which the changelog lists as fixed in #1177 — that fix\ndoes not appear in the v3 file.\n\n## Why it matters beyond these items\n\nAt least 10 of the 27 hardest items are unsound, a floor of 37%, and our\ndetector is blind to two of the failure modes so the real figure is likely\nhigher. Rankings across models survive, since everyone meets the same broken\nitems, but absolute `multi_turn` accuracy is understated for every model on the\nleaderboard, and per-item error analysis is unreliable.\n\nHappy to share the screening script. It executes ground truth turn by turn and\nflags any string literal in a gold call that cannot be derived from the user's\nwords, the initial config, or an earlier tool output. It catches 4 of the 6\nproblems above, with one false positive in five flags, so it needs a human pass\nrather than being trusted alone.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-09T02:45:53Z",
+  "github_updated_at": "2026-09-09T02:45:53Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "bfcl",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "bfcl__shishirpatil__gorilla__issue-1367",
+  "task_names": [
+    "bfcl-multi-turn-base-4",
+    "bfcl-multi-turn-base-8",
+    "bfcl-multi-turn-base-10",
+    "bfcl-multi-turn-base-18",
+    "bfcl-multi-turn-base-35",
+    "bfcl-multi-turn-base-178",
+    "bfcl-multi-turn-base-180",
+    "bfcl-multi-turn-base-187"
+  ],
+  "resolution": "found",
+  "summary": "BFCL v4 multi_turn_base contains current tasks whose gold calls require strings or file effects not derivable from the user turns, initial state, or tool outputs.",
+  "decision_note": "L3 equivalent source-data reproduction. Harbor preflight was not needed because the claim is directly reproducible from public GitHub BFCL source data. Command used: fetch current main BFCL_v4_multi_turn_base.json and possible_answer/BFCL_v4_multi_turn_base.json, then inspect the named rows from issue #1367. Observed current source matches the claim for representative rows: multi_turn_base_4 has a one-line report.txt but gold posts a reordered string that sort() cannot produce; multi_turn_base_8 asks for verbatim diff and current gold posts a fixed diff string; multi_turn_base_10 asks for notes.md but gold touches notes.md after it already exists; multi_turn_base_18 and _35 store newline-stripped diff fragments; _178/_180/_187 still require exact free-text support messages. Existing PR #719 covers earlier multi-turn base execution/config fixes, but it does not cover these currently present impossible/literal gold strings, so this is a new task-specific canonical defect.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1367",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/BFCL_v4_multi_turn_base.json",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/possible_answer/BFCL_v4_multi_turn_base.json",
+    "https://github.com/ShishirPatil/gorilla/pull/719",
+    "https://github.com/ShishirPatil/gorilla/issues/914"
+  ],
+  "reviewed_at": "2026-09-10T00:07:41Z"
+}

@@ -1,0 +1,47 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/pull/57",
+  "repo": "openai/simple-evals",
+  "source_type": "github_pr",
+  "github_number": 57,
+  "title": "Small typo in grader",
+  "body": "There was a small typo in the grader to be precise the error was in this line \r\nFor the question \"What is the height of Jason Wei in meters?\", the gold target is \"1.73 m\". The predicted answer \"1.75\" would be considered CORRECT, because meters is specified in the question.\r\n\r\nHere the predicted answer should be 1.73\r\n",
+  "comments": [
+    {
+      "url": "https://github.com/openai/simple-evals/pull/57#issuecomment-5297573082",
+      "user": "chiruu12",
+      "created_at": "2026-08-14T19:57:23Z",
+      "updated_at": "2026-08-14T19:57:23Z",
+      "body": "Bumping this. It is a one character typo fix and still applies to main. Happy to close it if the repo is not taking outside PRs."
+    },
+    {
+      "url": "https://github.com/openai/simple-evals/pull/57#issuecomment-5595929401",
+      "user": "chiruu12",
+      "created_at": "2026-09-09T04:43:05Z",
+      "updated_at": "2026-09-09T04:43:05Z",
+      "body": "Anything you need from me here? It is a one line change.\n\nThe docstring example says the predicted answer \"1.75\" is correct against a gold target of\n\"1.73 m\". It should read 1.73, otherwise the example tells the grader the opposite of what\nit means."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/simpleqa_eval.py b/simpleqa_eval.py\nindex 7ec3640b..9f034bf8 100644\n--- a/simpleqa_eval.py\n+++ b/simpleqa_eval.py\n@@ -70,7 +70,7 @@\n - Do not punish predicted answers if they omit information that would be clearly inferred from the question.\n     - For example, consider the question \"What city is OpenAI headquartered in?\" and the gold target \"San Francisco, California\". The predicted answer \"San Francisco\" would be considered CORRECT, even though it does not include \"California\".\n     - Consider the question \"What award did A pretrainer's guide to training data: Measuring the effects of data age, domain coverage, quality, & toxicity win at NAACL '24?\", the gold target is \"Outstanding Paper Award\". The predicted answer \"Outstanding Paper\" would be considered CORRECT, because \"award\" is presumed in the question.\n-    - For the question \"What is the height of Jason Wei in meters?\", the gold target is \"1.73 m\". The predicted answer \"1.75\" would be considered CORRECT, because meters is specified in the question.\n+    - For the question \"What is the height of Jason Wei in meters?\", the gold target is \"1.73 m\". The predicted answer \"1.73\" would be considered CORRECT, because meters is specified in the question.\n     - For the question \"What is the name of Barack Obama's wife?\", the gold target is \"Michelle Obama\". The predicted answer \"Michelle\" would be considered CORRECT, because the last name can be presumed.\n - Do not punish for typos in people's name if it's clearly the same name. \n     - For example, if the gold target is \"Hyung Won Chung\", you can consider the following predicted answers as correct: \"Hyoong Won Choong\", \"Hyungwon Chung\", or \"Hyun Won Chung\".\n",
+  "github_state": "open",
+  "github_created_at": "2025-03-25T08:39:34Z",
+  "github_updated_at": "2026-09-09T04:43:05Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "simpleqa",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "simpleqa__openai__simple-evals__issue-51",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SimpleQA grader prompt example says 1.75 should match a 1.73 m target; PR #57 changes the example prediction to 1.73.",
+  "decision_note": "L2 source-read audit. The PR diff changes the same SimpleQA grader prompt example covered by canonical issue #51: the Jason Wei height example incorrectly says predicted answer 1.75 is correct against gold 1.73 m. The PR is open and still applies, so it is duplicate/fix evidence for the existing benchmark-level prompt defect rather than a new root cause.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/pull/57",
+    "https://github.com/openai/simple-evals/pull/57/files",
+    "https://github.com/openai/simple-evals/issues/51"
+  ],
+  "reviewed_at": "2026-09-10T00:07:41Z"
+}

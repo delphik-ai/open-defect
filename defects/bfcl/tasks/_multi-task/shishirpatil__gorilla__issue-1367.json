@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1367",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-multi-turn-base-4",
+    "bfcl-multi-turn-base-8",
+    "bfcl-multi-turn-base-10",
+    "bfcl-multi-turn-base-18",
+    "bfcl-multi-turn-base-35",
+    "bfcl-multi-turn-base-178",
+    "bfcl-multi-turn-base-180",
+    "bfcl-multi-turn-base-187"
+  ],
+  "resolution": "found",
+  "title": "[BFCL] Several multi_turn_base items have ground truth that cannot be produced from the environment",
+  "summary": "BFCL v4 multi_turn_base contains current tasks whose gold calls require strings or file effects not derivable from the user turns, initial state, or tool outputs.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1367",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1367",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/BFCL_v4_multi_turn_base.json",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/possible_answer/BFCL_v4_multi_turn_base.json",
+    "https://github.com/ShishirPatil/gorilla/pull/719",
+    "https://github.com/ShishirPatil/gorilla/issues/914"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-09T02:45:53Z",
+  "last_reviewed_at": "2026-09-10T00:07:41Z",
+  "decision_note": "L3 equivalent source-data reproduction. Harbor preflight was not needed because the claim is directly reproducible from public GitHub BFCL source data. Command used: fetch current main BFCL_v4_multi_turn_base.json and possible_answer/BFCL_v4_multi_turn_base.json, then inspect the named rows from issue #1367. Observed current source matches the claim for representative rows: multi_turn_base_4 has a one-line report.txt but gold posts a reordered string that sort() cannot produce; multi_turn_base_8 asks for verbatim diff and current gold posts a fixed diff string; multi_turn_base_10 asks for notes.md but gold touches notes.md after it already exists; multi_turn_base_18 and _35 store newline-stripped diff fragments; _178/_180/_187 still require exact free-text support messages. Existing PR #719 covers earlier multi-turn base execution/config fixes, but it does not cover these currently present impossible/literal gold strings, so this is a new task-specific canonical defect."
+}
