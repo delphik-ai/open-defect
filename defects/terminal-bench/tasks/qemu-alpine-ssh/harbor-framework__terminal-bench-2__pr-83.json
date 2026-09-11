@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__pr-83",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "qemu-alpine-ssh"
+  ],
+  "resolution": "fixing",
+  "title": "fix(qemu-alpine-ssh): make the oracle wait for the guest SSH setup to finish",
+  "summary": "qemu-alpine-ssh oracle exits before guest SSH setup finishes, causing intermittent verifier failure.",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/pull/83",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/pull/83",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/83/files",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/31"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-10T14:43:57Z",
+  "last_reviewed_at": "2026-09-11T01:50:58.038Z",
+  "decision_note": "L3-equivalent public PR audit. The PR is for current Terminal-Bench-2.1 task qemu-alpine-ssh, and the diff changes solution/solve.sh so expect waits for a guest-computed SETUP_DONE_2 marker instead of terminal-echoed setup strings. The PR body reports Harbor oracle verification on Ray Sandbox: the unpatched oracle was intermittent with one pass and one ssh reset failure while the guest was still at udhcpc, and the patched oracle passed 3/3 at reward 1.0 in 2m17s. Existing PR #31 touched qemu-alpine-ssh for a different Modal telnet-session issue, so this is a distinct canonical root cause."
+}
