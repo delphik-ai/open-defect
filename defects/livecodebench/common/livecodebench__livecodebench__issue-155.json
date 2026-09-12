@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "livecodebench__livecodebench__livecodebench__issue-155",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "[Bug] Non-editable `pip install` of lcb_runner yields a broken package: all subpackages are missing",
+  "summary": "Non-editable LiveCodeBench wheel builds omit lcb_runner subpackages because pyproject.toml lists only the top-level package, breaking harness imports outside editable installs.",
+  "canonical_source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/155",
+  "evidence_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/155",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/156",
+    "https://github.com/LiveCodeBench/LiveCodeBench/blob/main/pyproject.toml"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-11T03:38:38Z",
+  "last_reviewed_at": "2026-09-12T00:07:47Z",
+  "decision_note": "L3 reproduction on a shallow clone of LiveCodeBench HEAD. Harbor preflight was not needed because this is a Python packaging defect in the benchmark harness. Command used: git clone --depth 1 https://github.com/LiveCodeBench/LiveCodeBench.git /tmp/lcb-l3-260912; python -m pip wheel --no-deps --no-build-isolation .; inspect the built wheel with zipfile. Observed pre-fix wheel contained only 1 lcb_runner file and omitted lcb_runner/evaluation/testing_util.py, lcb_runner/benchmarks/__init__.py, and lcb_runner/runner/main.py, matching issue #155. Applying PR #156 locally and rebuilding produced a wheel with 40 lcb_runner files including evaluation/testing_util.py, benchmarks/__init__.py, and runner/main.py. Existing LiveCodeBench installation artifacts cover Python 3.11/pyext and prior Poetry metadata issues, not this setuptools package-discovery root cause. PR #156 is open, so resolution is fixing."
+}

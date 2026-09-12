@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/218",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 218,
+  "title": "Snowflake account - \"Your account is suspended due to lack of payment method.\"",
+  "body": "When attempting to create a workspace in the Snowflake web console, the page displays the following message and prevents me from proceeding:\n\nYour account is suspended due to lack of payment method.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-11T07:31:35Z",
+  "github_updated_at": "2026-09-11T07:31:35Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "Thread-only audit. The report is about a Snowflake web-console account suspension due to missing payment method. The current watch-map candidate is spider2-dbt, and the issue belongs to the Spider2-Snow/Snowflake external account setup path rather than the current Spider2-DBT benchmark variant. Per the variant attribution gate, it cannot count as a spider2-dbt defect.",
+  "reviewed_at": "2026-09-12T00:07:47Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/218"
+  ]
+}

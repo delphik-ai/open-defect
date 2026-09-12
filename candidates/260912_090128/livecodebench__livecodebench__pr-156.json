@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/pull/156",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_pr",
+  "github_number": 156,
+  "title": "[Bug] Fix setuptools packaging: include all lcb_runner subpackages",
+  "body": "A non-editable `pip install` of this repo yields a broken `lcb_runner` package: only\nthe top-level module is shipped because `pyproject.toml` pins\n`packages = [\"lcb_runner\"]`. All subpackages (`benchmarks`, `evaluation`, `prompts`,\n`runner`, `utils`) are missing, so the harness is unusable for anyone installing\nnon-editable (pip install . / wheel / sdist / container images). The README's\neditable `-e .` flow masks the issue.\n\n## Changes\n\n- `pyproject.toml`: replace the explicit package list with\n  `[tool.setuptools.packages.find] include = [\"lcb_runner*\"]` so all subpackages are\n  discovered and shipped. No runtime code changes.\n\n## Test Plan\n\n- Non-editable install: `pip install .` (or `uv pip install .`).\n- `python -c \"import lcb_runner.evaluation.testing_util\"` succeeds.\n- `python -m lcb_runner.runner.main --help` is reachable.\n- Judge smoke: `lcb_runner.evaluation.compute_code_generation_metrics.check_correctness`\n  on a call-based and a stdio sample (correct solution passes, wrong solution fails).\n\n## Test Result\n\n- After the fix, `site-packages/lcb_runner/` contains `benchmarks`, `evaluation`,\n  `prompts`, `runner`, `utils`.\n- Imports and judge path verified on Python 3.12.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/pyproject.toml b/pyproject.toml\nindex e2b5b910..6fadb7d6 100644\n--- a/pyproject.toml\n+++ b/pyproject.toml\n@@ -19,4 +19,5 @@ dependencies = [\n ]\n \n [tool.setuptools]\n-packages = [\"lcb_runner\"]\n+[tool.setuptools.packages.find]\n+include = [\"lcb_runner*\"]\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-11T04:37:48Z",
+  "github_updated_at": "2026-09-11T04:37:48Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "livecodebench",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "livecodebench__livecodebench__livecodebench__issue-155",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "PR #156 is fix evidence for the LiveCodeBench non-editable packaging defect: it switches setuptools to discover all lcb_runner subpackages.",
+  "decision_note": "L3 reproduction paired PR #156 with issue #155. Baseline wheel built from LiveCodeBench HEAD with python -m pip wheel --no-deps --no-build-isolation . contained only 1 lcb_runner file and omitted core subpackages. After applying the PR diff, the rebuilt wheel contained 40 lcb_runner files, including lcb_runner/evaluation/testing_util.py, lcb_runner/benchmarks/__init__.py, and lcb_runner/runner/main.py. This confirms the PR fixes the same root cause as the canonical issue rather than representing a separate defect.",
+  "reviewed_at": "2026-09-12T00:07:47Z",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/156",
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/155"
+  ]
+}

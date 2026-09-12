@@ -1,0 +1,67 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/91",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 91,
+  "title": "DeepSeek V4.1 Flash",
+  "body": "need update",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5614119529",
+      "user": "XiaoXiaoJiangYun",
+      "created_at": "2026-09-10T06:22:11Z",
+      "updated_at": "2026-09-10T06:22:11Z",
+      "body": "<img width=\"1080\" height=\"554\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/263651d4-06e6-4017-b8b2-60c0fa245e33\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5614121150",
+      "user": "XiaoXiaoJiangYun",
+      "created_at": "2026-09-10T06:22:22Z",
+      "updated_at": "2026-09-10T06:22:22Z",
+      "body": "<img width=\"1080\" height=\"1110\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cef80785-3c1f-404d-a1e5-efbfbc0cd89a\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5614662508",
+      "user": "coygeek",
+      "created_at": "2026-09-10T07:15:36Z",
+      "updated_at": "2026-09-10T07:15:36Z",
+      "body": "Published DeepSWE results of 74% is insane.\n\nNeed independent verification!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5619603655",
+      "user": "Perusae",
+      "created_at": "2026-09-10T13:38:51Z",
+      "updated_at": "2026-09-10T13:38:51Z",
+      "body": "> Need independent verification!\n\nNeeds a newer version of DeepSWE (with new data) because it feels like a lot of models are all producing the same scores. The benchmark is starting to lose it meaning."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5628159547",
+      "user": "hexxt-git",
+      "created_at": "2026-09-11T01:44:17Z",
+      "updated_at": "2026-09-11T01:44:17Z",
+      "body": "what effort level is the 74% from?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5628573273",
+      "user": "xzg5101",
+      "created_at": "2026-09-11T02:32:16Z",
+      "updated_at": "2026-09-11T02:32:16Z",
+      "body": "> what effort level is the 74% from?\n\nOn their huggingface model card it says \"max reasoning effort\", so I think it's safe to assume the best scores of this model are all from reasoning effort `100` (yeah, for DeepSeek V4.1 Flash the reasoning effort can be any integer between 1 and 100, interesting design decision)"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-10T06:21:28Z",
+  "github_updated_at": "2026-09-11T02:32:16Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread-only audit. The issue discusses DeepSeek V4.1 Flash reported scores, effort level, benchmark freshness, and independent verification. It does not name a current DeepSWE task, dataset, harness, evaluator, or scoring root cause that is defective, so it is a model-result/benchmark-discussion thread rather than a benchmark defect.",
+  "reviewed_at": "2026-09-12T00:07:47Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/91"
+  ]
+}
