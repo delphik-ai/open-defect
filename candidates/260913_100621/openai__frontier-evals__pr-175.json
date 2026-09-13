@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/175",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 175,
+  "title": "Fix Alcatraz host port release order during container cleanup",
+  "body": "`_create_container()` registers container removal before port-lease cleanup on an `AsyncExitStack`. Because callbacks run in reverse order, cleanup returns the host ports to `_FREE_PORTS` before awaiting `ctr.remove()`. Another coroutine in the same process can reuse a port while the old container still holds its Docker binding.\n\nRegister port cleanup first so container removal finishes before its ports return to the pool. Add a regression test that pauses removal in its worker thread and checks that the ports remain leased while another coroutine runs, then become available after removal completes.\n\nValidation: the regression test fails on the original code and passes with the fix; Ruff, mypy, pylint, and `git diff --check` pass. The test uses a mocked Docker client and synchronization events, without requiring a Docker daemon or relying on timing sleeps.\n\nRun the regression test from `project/common/alcatraz` with `uv run pytest tests/test_container_cleanup.py`.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/project/common/alcatraz/alcatraz/clusters/local.py b/project/common/alcatraz/alcatraz/clusters/local.py\nindex af39ed91..bffd6ee8 100644\n--- a/project/common/alcatraz/alcatraz/clusters/local.py\n+++ b/project/common/alcatraz/alcatraz/clusters/local.py\n@@ -411,13 +411,14 @@ async def _create_container(\n                     },\n                 ),\n             )\n+            # Exit stacks unwind in reverse order, so register port cleanup first\n+            # to keep the leases until container removal completes.\n+            self._exit_stack.push(stack.__exit__)\n             if isinstance(self, LocalCluster):\n                 # Add the container to the exit stack so it gets removed when we're done.\n                 self._exit_stack.push_async_callback(\n                     lambda: asyncio.to_thread(ctr.remove, force=True)\n                 )\n-            # Also free our host port leases when we're done with this container.\n-            self._exit_stack.push(stack.__exit__)\n             logger.info(\"Started new container! Container name: %s\", ctr.name)\n \n             return host_port_leases, ctr\ndiff --git a/project/common/alcatraz/tests/test_container_cleanup.py b/project/common/alcatraz/tests/test_container_cleanup.py\nnew file mode 100644\nindex 00000000..cbd2246f\n--- /dev/null\n+++ b/project/common/alcatraz/tests/test_container_cleanup.py\n@@ -0,0 +1,46 @@\n+import asyncio\n+import threading\n+from unittest.mock import MagicMock\n+\n+import pytest\n+\n+from alcatraz.clusters import local\n+\n+\n+@pytest.mark.asyncio\n+async def test_ports_remain_leased_until_container_removal_finishes(\n+    monkeypatch: pytest.MonkeyPatch,\n+) -> None:\n+    available_ports = {10000, 10001}\n+    monkeypatch.setattr(local, \"_FREE_PORTS\", available_ports.copy())\n+    cluster = local.LocalCluster(image=\"alpine:latest\")\n+    cluster.docker_client = MagicMock()\n+    container = cluster.docker_client.containers.run.return_value\n+\n+    loop = asyncio.get_running_loop()\n+    removal_started = asyncio.Event()\n+    finish_removal = threading.Event()\n+\n+    def remove(*, force: bool) -> None:\n+        assert force\n+        loop.call_soon_threadsafe(removal_started.set)\n+        assert finish_removal.wait(timeout=10), \"Container removal was not released\"\n+\n+    container.remove.side_effect = remove\n+    host_ports, _ = await cluster._create_container(container_ports=[80, 81])\n+    assert set(host_ports) == available_ports\n+    assert not local._FREE_PORTS\n+\n+    cleanup = asyncio.create_task(cluster._exit_stack.aclose())\n+    try:\n+        await asyncio.wait_for(removal_started.wait(), timeout=5)\n+        # Another coroutine can run while Docker removal is pending. It must\n+        # not be able to allocate any of the container's host ports yet.\n+        assert not cleanup.done()\n+        assert not local._FREE_PORTS\n+    finally:\n+        finish_removal.set()\n+        await asyncio.wait_for(cleanup, timeout=5)\n+\n+    container.remove.assert_called_once_with(force=True)\n+    assert local._FREE_PORTS == available_ports\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-12T01:54:34Z",
+  "github_updated_at": "2026-09-12T02:03:46Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swe-lancer-diamond",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__pr-175",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "Frontier Evals Alcatraz returns host-port leases before container removal finishes, allowing another container to reuse a still-bound port.",
+  "decision_note": "L2 source-read audit. The PR diff shows LocalCluster registers port cleanup after async container removal on an AsyncExitStack, whose callbacks unwind in reverse order, so ports are returned before ctr.remove(force=True) completes. The PR adds a regression test asserting ports remain leased while removal is blocked. Existing SWE-Lancer artifacts cover other Alcatraz/network issues, not this host-port release-order race.",
+  "reviewed_at": "2026-09-13T03:50:24.758Z",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/175",
+    "https://github.com/openai/frontier-evals/pull/175/files"
+  ],
+  "defect_type_main": "harness",
+  "defect_type_sub": "resource_lifecycle_race"
+}

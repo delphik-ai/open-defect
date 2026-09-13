@@ -21,6 +21,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-07-13T23:29:49Z",
-  "last_reviewed_at": "2026-08-15T00:08:50.994Z",
+  "last_reviewed_at": "2026-09-13T03:50:24.758Z",
   "decision_note": "L3-equivalent prior audit reproduced that parsed pytest stdout without a test-command exit-code check could mark forged PASSED lines as resolved. Refreshed L1 evidence shows PR #620 merged on 2026-08-14 as commit 62ad43a, and maintainer comments confirm grading now reads the saved test command exit code, so resolution is fixed."
 }

@@ -9,11 +9,12 @@
   "summary": "MedAgentBench external evaluation reports 100 percent by prefetch-and-execute architecture versus much lower raw HTTP scores, suggesting a benchmark shortcut surface.",
   "canonical_source_url": "https://github.com/stanfordmlgroup/MedAgentBench/issues/6",
   "evidence_urls": [
-    "https://github.com/stanfordmlgroup/MedAgentBench/issues/6"
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/6",
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/10"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-04-02T13:12:06.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-09-13T03:50:24.758Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

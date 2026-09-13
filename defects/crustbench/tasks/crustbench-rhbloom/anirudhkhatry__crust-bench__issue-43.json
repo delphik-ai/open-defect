@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "crustbench__anirudhkhatry__crust-bench__issue-43",
+  "benchmark_name": "crustbench",
+  "scope": "task_specific",
+  "task_names": [
+    "crustbench-rhbloom"
+  ],
+  "resolution": "found",
+  "title": "rhbloom Rust test stricter than C test: two-sided .abs() rejects a valid filter",
+  "summary": "CRUST-bench rhbloom Rust test uses a two-sided false-positive tolerance, rejecting lower-than-target rates that the C test accepts.",
+  "defect_type_main": "task",
+  "defect_type_sub": "oracle_mismatch",
+  "canonical_source_url": "https://github.com/anirudhkhatry/CRUST-bench/issues/43",
+  "evidence_urls": [
+    "https://github.com/anirudhkhatry/CRUST-bench/issues/43",
+    "https://github.com/anirudhkhatry/CRUST-bench/blob/main/datasets/CRUST_bench.zip"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-12T14:39:34Z",
+  "last_reviewed_at": "2026-09-13T03:50:24.758Z",
+  "decision_note": "L2 source-read audit. The current public dataset ZIP contains CBench/rhbloom/test.c with the one-sided check hits/n - p > 0.1, while RBench/rhbloom/src/bin/test.rs uses (hits/n - p).abs() > 0.1. That makes the Rust port stricter for lower false-positive rates even though the C oracle accepts them. Existing CRUST-bench issue #42 covers razz_simulation RNG-test mismatch, not rhbloom false-positive tolerance."
+}

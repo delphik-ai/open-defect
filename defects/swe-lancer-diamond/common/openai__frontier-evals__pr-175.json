@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__pr-175",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Fix Alcatraz host port release order during container cleanup",
+  "summary": "Frontier Evals Alcatraz returns host-port leases before container removal finishes, allowing another container to reuse a still-bound port.",
+  "defect_type_main": "harness",
+  "defect_type_sub": "resource_lifecycle_race",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/pull/175",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/pull/175",
+    "https://github.com/openai/frontier-evals/pull/175/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-12T01:54:34Z",
+  "last_reviewed_at": "2026-09-13T03:50:24.758Z",
+  "decision_note": "L2 source-read audit. The PR diff shows LocalCluster registers port cleanup after async container removal on an AsyncExitStack, whose callbacks unwind in reverse order, so ports are returned before ctr.remove(force=True) completes. The PR adds a regression test asserting ports remain leased while removal is blocked. Existing SWE-Lancer artifacts cover other Alcatraz/network issues, not this host-port release-order race."
+}

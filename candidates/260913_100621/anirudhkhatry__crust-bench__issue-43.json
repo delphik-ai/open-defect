@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/anirudhkhatry/CRUST-bench/issues/43",
+  "repo": "anirudhkhatry/crust-bench",
+  "source_type": "github_issue",
+  "github_number": 43,
+  "title": "rhbloom Rust test stricter than C test: two-sided .abs() rejects a valid filter",
+  "body": "### Summary\n\nThe Rust port of `rhbloom`'s test uses a **two-sided** tolerance on the false-positive rate, while the original C test is **one-sided**. A correctly-built filter with *fewer* false positives than the target `p` (which is acceptable, even desirable) passes in C but **panics in Rust**. So a faithful C→Rust translation fails this test for a reason that is not a translation defect.\n\nThis is the same class of issue as #42 (razz_simulation: C and Rust tests not equivalent), on a different benchmark and with a different root cause.\n\n### The two checks, side by side\n\n```c\n// C — CBench/rhbloom/test.c:107   (one-sided: complains only about TOO MANY false positives)\nif ((double)hits/n - p > 0.1 && n > 0)\n    assert(!\"bad probability\");\n```\n```rust\n// Rust — RBench/rhbloom/src/bin/test.rs:93   (two-sided: the .abs() also rejects TOO FEW)\nif (hits as f64 / n as f64 - p).abs() > 0.1 && n > 0 {\n    panic!(\"bad probability\");\n}\n```\n\n### Reproducer / where it fails\n\nAt `n = 1000, p = 0.31`: a correctly-built filter, probed on keys that were never inserted, yields a false-positive rate `hits/n ≈ 0`, far **below** `p`, so `hits/n - p ≈ -0.31`.\n\n- **C:** `-0.31 > 0.1` → false → **passes**.\n- **Rust:** `|-0.31| > 0.1` → true → **panics (\"bad probability\")**.\n\nFewer false positives than requested is acceptable behaviour, so the Rust assertion is over-strict.\n\n### Fix (one line)\n\nMatch the C test's one-sided check:\n\n```rust\nif hits as f64 / n as f64 - p > 0.1 && n > 0 {   // drop the .abs()\n    panic!(\"bad probability\");\n}\n```\n\n### How it was found\n\nA Rust translation of `rhbloom` that is bit-identical to the C on every membership query still fails `cargo test`; the failure localizes to this assertion at exactly `n=1000, p=0.31`, matching the C algorithm's own false-positive behaviour. The translation is correct; the shipped Rust test is stricter than the C one.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-12T14:39:34Z",
+  "github_updated_at": "2026-09-12T14:39:34Z",
+  "candidate_benchmark_names": [
+    "crustbench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "crustbench",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "crustbench__anirudhkhatry__crust-bench__issue-43",
+  "task_names": [
+    "crustbench-rhbloom"
+  ],
+  "resolution": "found",
+  "summary": "CRUST-bench rhbloom Rust test uses a two-sided false-positive tolerance, rejecting lower-than-target rates that the C test accepts.",
+  "decision_note": "L2 source-read audit. The current public dataset ZIP contains CBench/rhbloom/test.c with the one-sided check hits/n - p > 0.1, while RBench/rhbloom/src/bin/test.rs uses (hits/n - p).abs() > 0.1. That makes the Rust port stricter for lower false-positive rates even though the C oracle accepts them. Existing CRUST-bench issue #42 covers razz_simulation RNG-test mismatch, not rhbloom false-positive tolerance.",
+  "reviewed_at": "2026-09-13T03:50:24.758Z",
+  "checked_urls": [
+    "https://github.com/anirudhkhatry/CRUST-bench/issues/43",
+    "https://github.com/anirudhkhatry/CRUST-bench/blob/main/datasets/CRUST_bench.zip"
+  ],
+  "defect_type_main": "task",
+  "defect_type_sub": "oracle_mismatch"
+}
