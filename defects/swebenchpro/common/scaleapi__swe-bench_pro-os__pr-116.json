@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__pr-116",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Graviton arm64",
+  "summary": "SWE-bench Pro local Docker evaluation treats Linux arm64 hosts as Apple Silicon, forcing amd64 emulation and recording infrastructure failures as ordinary patch failures.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/pull/116",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/116",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/116/files",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/blob/main/swe_bench_pro_eval.py#L508-L533"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-13T20:44:46Z",
+  "last_reviewed_at": "2026-09-14T00:36:06.962Z",
+  "decision_note": "L3-equivalent source/logic audit. The PR body identifies current swe_bench_pro_eval.py lines 508-533: when --use_local_docker is set and --docker_platform is omitted, py_platform.machine() in {arm64,aarch64} unconditionally selects linux/amd64. Reading the current public source confirms that branch and confirms the selected value is passed into eval_with_docker as docker_platform. That deterministic branch misclassifies native Linux arm64 Docker engines as the Apple Silicon compatibility case, causing amd64 emulation or no native-image reporting path. The linked PR diff adds Docker server-platform detection, image-architecture checks, InfrastructureError classification, infra_errors.json, and accounting that separates never-ran instances from scored patch failures. Existing swebenchpro common artifacts cover Docker image URI lookup, Docker client timeouts, binary patch application, and future git history, but not this Linux arm64 platform-selection/infrastructure-accounting root cause. PR #116 is open, so resolution is fixing."
+}

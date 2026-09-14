@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-659",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Evaluate the host architecture's images, and report absent ones as their own class",
+  "summary": "SWE-bench v5 Verified cannot consistently evaluate non-amd64 image families because architecture defaults and runtime image selection stay x86_64-centric.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/659",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/659",
+    "https://github.com/SWE-bench/SWE-bench/pull/659/files",
+    "https://github.com/SWE-bench/SWE-bench/issues/520#issuecomment-5295913269",
+    "https://github.com/SWE-bench/SWE-bench/issues/523#issuecomment-5295865225",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/image_builder/image_spec.py#L19-L63",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/run_evaluation.py#L89-L145",
+    "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/task/checks.py#L66-L140"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-13T19:18:24Z",
+  "last_reviewed_at": "2026-09-14T00:36:06.962Z",
+  "decision_note": "L2 PR/source audit with social proof from related maintainer thread. PR #659 explicitly targets SWE-bench v5 and Verified, references #520/#523, and its diff adds --arch plumbing, ImageSpec architecture normalization/retargeting, platform= on image pull/container creation, run arch recording, unavailable_image_ids reporting, and task checks that accept both image families. Current public source confirms ImageSpec defaults arch to amd64 and names sweb.eval.x86_64 images by default, run_evaluation pulls and creates containers from test_spec.image without platform=, and task/checks.py derives only sweb.eval.x86_64 names. Related issue #520 was closed by a SWE-bench member after noting the v5 refactor was finished, harness side was only partly there, nothing auto-detected host architecture, and a fresh PR would be reviewed. Existing swebench-verified artifacts cover other image/build issues, seccomp/stdout spoofing, docs, and git-history leakage, but not this v5 non-amd64 image selection/reporting root cause. Attribution is swebench-verified rather than multilingual because the PR body quantifies Verified 500 images and related #520/#523 track v5 Verified/local harness ARM64 support."
+}
