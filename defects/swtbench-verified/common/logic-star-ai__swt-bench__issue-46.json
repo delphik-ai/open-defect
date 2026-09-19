@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swtbench-verified__logic-star-ai__swt-bench__issue-46",
+  "benchmark_name": "swtbench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Django log parser drops tests when multiple results appear on one line and also has some problems with the FAIL status",
+  "summary": "SWT-Bench Django log parser can greedily merge multiple test results on one line and drop or mislabel later tests.",
+  "canonical_source_url": "https://github.com/logic-star-ai/swt-bench/issues/46",
+  "evidence_urls": [
+    "https://github.com/logic-star-ai/swt-bench/issues/46",
+    "https://github.com/logic-star-ai/swt-bench/pull/50"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-02-12T09:12:57Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 thread/source audit. The issue provides SWT-Bench log examples where Django emits multiple results on one line and the parser drops tests or mishandles FAIL. Existing swtbench-verified artifacts cover other parser/setup issues, not this Django per-test parsing root cause. Fix PR #50 is open, so resolution is fixing."
+}

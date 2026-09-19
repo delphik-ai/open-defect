@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-marathon__abundant-ai__swe-marathon__pr-288",
+  "benchmark_name": "swe-marathon",
+  "scope": "task_specific",
+  "task_names": [
+    "find-network-alignments",
+    "biofabric-rust-rewrite",
+    "rust-c-compiler",
+    "embedding-eval",
+    "zstd-decoder"
+  ],
+  "resolution": "fixing",
+  "title": "Packaging gate fixes for five marathon tasks",
+  "summary": "SWE Marathon PR seals packaging leaks across five current tasks where baseline gate evidence showed nop fails and oracle passes.",
+  "canonical_source_url": "https://github.com/abundant-ai/swe-marathon/pull/288",
+  "evidence_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/288",
+    "https://github.com/abundant-ai/swe-marathon/pull/288/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-18T06:19:33Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 PR/source audit. The PR body identifies five current swe-marathon task directories and reports baseline gate evidence with nop=0 and oracle=1. The diff seals agent-visible golden files/configs and grader harnesses for find-network-alignments, biofabric-rust-rewrite, rust-c-compiler, embedding-eval, and zstd-decoder. Existing swe-marathon artifacts cover different tasks/root causes, so this is a new multi-task packaging defect. PR is open, so resolution is fixing."
+}

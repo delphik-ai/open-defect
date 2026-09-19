@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/93",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 93,
+  "title": "Fix Obsidian scorer IDs changing with candidate rule labels",
+  "body": "The Obsidian verifier derives all 41 scored test IDs from `AutoToc.getRule().getName()`, which a candidate can change without changing the behavior under test. With a candidate label of `Auto TOC`, the frozen scorer reported 0/41 new checks even though Jest executed and passed 37 of them (see #75).\n\nThis patch pins the verifier's suite label before `ruleTest` runs. It changes no assertions or candidate instructions. Replaying the same sealed candidate patch with the corrected test patch produced 37/41 new checks, 1131/1131 existing checks, and reward 0 because four behavior cases still fail. In an isolated replay, all 41 executed Jest IDs match the allowlist; correcting the four behavior failures in a diagnostic copy then yields 41/41 with the candidate label still `Auto TOC`.\n\nValidation: `git apply --check` against the sealed candidate; isolated Jest replay; AWS official-image verifier replay returned RC 0 and the exact original model-patch SHA-256 `41357afa4e209defe1b5af9c566fc6c299fb07167034e67fa49e352d0f4d71cc`. The original official reward remains unchanged; this contribution fixes the scorer identity for future runs.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/obsidian-linter-auto-table-of-contents/tests/test.patch b/tasks/obsidian-linter-auto-table-of-contents/tests/test.patch\nindex 916760af..74b3b8d6 100644\n--- a/tasks/obsidian-linter-auto-table-of-contents/tests/test.patch\n+++ b/tasks/obsidian-linter-auto-table-of-contents/tests/test.patch\n@@ -3,10 +3,12 @@ new file mode 100644\n index 0000000..8851c67\n --- /dev/null\n +++ b/__tests__/auto-toc.test.ts\n-@@ -0,0 +1,1117 @@\n+@@ -0,0 +1,1119 @@\n +import AutoToc from '../src/rules/auto-toc';\n +import dedent from 'ts-dedent';\n +import {ruleTest} from './common';\n++// The scored suite identity must not depend on a candidate's display label.\n++jest.spyOn(AutoToc.getRule(), 'getName').mockReturnValue('Auto Table of Contents');\n +\n +ruleTest({\n +  RuleBuilderClass: AutoToc,\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-15T12:37:53Z",
+  "github_updated_at": "2026-09-15T14:47:15Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 duplicate audit. The PR body and diff address the same root cause as canonical issue #75: scored test IDs derive from AutoToc.getRule().getName(), so candidate rule labels can change verifier IDs. The PR pins the suite label in the same task test.patch, making it duplicate/fix evidence for the existing artifact.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/93",
+    "https://github.com/datacurve-ai/deep-swe/pull/93/files"
+  ],
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-75",
+  "task_names": [
+    "obsidian-linter-auto-table-of-contents"
+  ],
+  "resolution": "fixing",
+  "summary": "PR #93 fixes the existing Obsidian Auto TOC scorer-id defect by pinning the rule label before ruleTest runs."
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/221",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 221,
+  "title": "Spider2-lite schema files silently unreadable on Windows: 3,231 of 8,255 exceed MAX_PATH at a typical clone depth",
+  "body": "Thanks for the benchmark — the per-table schema JSONs under `spider2-lite/resource/databases/` are what make it usable for retrieval work at all. This is a report about how they behave on Windows, with numbers taken from the current `main` tree rather than from my machine, so they can be reproduced without cloning.\n\n## What happens\n\nThe schema files are nested as `databases/<engine>/<db>/<project.dataset>/<table>.json`. The longest of those paths, relative to `databases/`, is **154 characters**:\n\n```\nbigquery/pancancer_atlas_2/isb-cgc-bq.pancancer_atlas/Filtered_jhu_usc_edu_PANCAN_merged_HumanMethylation27_HumanMethylation450_betaValue_whitelisted.json\n```\n\nWindows refuses to open any absolute path over 260 characters unless it is prefixed with `\\\\?\\`. So everything to the left of `databases/` has a budget of **105 characters**, and a checkout rooted deeper than that starts losing files — silently, because `open()` raises `FileNotFoundError`, and a loader with an `except Exception: continue` turns that into \"this database has fewer tables than it has\".\n\nCounted over the 8,255 table JSONs in `main` today (tree not truncated):\n\n| `databases/` root length | files unreadable on Windows |\n|---|---|\n| ≤ 105 chars | 0 |\n| 150 | 66 (1%) |\n| 182 | **3,231 (39%)** |\n| 183 | 3,419 (41%) |\n| 200 | 6,526 (79%) |\n\n182 characters is not exotic — it is roughly `C:\\Users\\<name>\\Documents\\<project>\\<venv-or-cache>\\Spider2\\spider2-lite\\resource\\databases`. One extra character of directory depth moves the count by ~190 files, which is why anyone's specific number is a property of their directory, not of the dataset; the durable facts are the 154 and the 105.\n\n## Why it matters more than a crash would\n\nA crash would be noticed. This is not a crash: a retriever scored against a schema that is missing 39% of its tables faces an easier problem than the benchmark intends, and reports a *higher* number. That is exactly what happened to me — an earlier figure I published for schema retrieval on Spider2-lite was inflated by this before I found it, and I have since corrected it in public. Anyone else measuring on Windows will get the same flattering error unless they know to look.\n\n## Suggested fixes, any of which would close this\n\n1. **Document it** in `spider2-lite/resource/README.md`: \"on Windows, clone to a short path (≤ 105 characters before `databases/`) or enable long paths\" — with the one-liner `git config --system core.longpaths true` plus the OS-level `LongPathsEnabled` registry setting, since both are needed for Git and for Python respectively.\n2. **Flatten the layout** on the next data release, e.g. `databases/<engine>/<db>/<project.dataset>__<table>.json`, which removes one directory level; or shorten the handful of very long table names.\n3. **Have the reference loader use extended-length paths** on Windows: prefix `\\\\?\\` when the absolute path exceeds ~250 characters (a small margin below 260 is deliberate, so a relative path handed in by a caller does not sit one character from failing).\n\nI have a self-contained diagnostic that prints the table above for any checkout — `benchmarks/longpath.py` in [schemagate](https://github.com/ashishsinha1602/schemagate) — and I am happy to send a PR for option 1 or 3 if that is useful. Reproducing the counts above needs no clone at all: the GitHub tree API for `main` with `recursive=1`, filter to `spider2-lite/resource/databases/**/*.json`, and measure path lengths.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-18T15:39:48Z",
+  "github_updated_at": "2026-09-18T15:39:48Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 source-thread audit. The issue gives reproducible path-length counts for spider2-lite/resource/databases schema JSON files, including the longest relative path and threshold arithmetic. This belongs to the watched spider2-dbt/lite artifact family rather than Spider2-Snow, and existing spider2-dbt artifacts cover evaluator/gold issues, not filesystem path accessibility.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/221"
+  ],
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-221",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Spider2-lite schema JSON paths can exceed Windows MAX_PATH at typical clone depths, making thousands of database schema files unreadable."
+}

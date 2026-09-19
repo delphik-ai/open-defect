@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/222",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 222,
+  "title": "Document the schema JSON format: `description` is a per-column list aligned to `nested_column_names` (or `column_names`), not a table description",
+  "body": "This is a documentation request, with the evidence that made me need it. I initially read it as a data defect and want to be clear that it is not one — the files are consistent; the format is just undocumented, and the obvious reading of the field name is the wrong one.\n\n## What the files contain\n\nEvery table JSON under `spider2-lite/resource/databases/` has these keys (40 files sampled at random from the 8,255 in `main`, all 40 identical in shape):\n\n```\ntable_name, table_fullname, column_names, column_types, description, sample_rows\n+ nested_column_names, nested_column_types   (31 of the 40)\n```\n\n`description` is **always a list**, never a string — 150 of 150 in a seeded random sample. Its entries are per-column, aligned by index, and may be `null`:\n\n```\nbigquery/CPTAC_PDC/isb-cgc-bq.CPTAC/quant_phosphoproteome_CPTAC_PDA_discovery_study_pdc_current.json\n  description[0] = \"Unique identifier associated with a specific patient (e.g. 24cb0fcb-…)\"\n  description[1] = \"Unique PDC identifier for this sample (e.g. e8d83eb9-…)\"\n```\n\nWhich column list it aligns to depends on whether the table has nested columns:\n\n| table has `nested_column_names` | `len(description)` equals | sampled |\n|---|---|---|\n| yes | `len(nested_column_names)` | 31 / 31 |\n| no | `len(column_names)` | 9 / 9 |\n\nFor example `bigquery/gnomAD/bigquery-public-data.gnomAD/v3_genomes__chr7.json` has 61 entries in `column_names`, 181 in `nested_column_names`, and 181 in `description` — so a consumer aligning to `column_names` gets the wrong text on every column past the first nested one, and a consumer expecting a table-level string gets a Python list.\n\n## Why it is worth a line in the README\n\nNothing in `spider2-lite/resource/README.md` describes these keys. A consumer writing `str(table[\"description\"])` gets `\"['Unique identifier …', 'Unique PDC …']\"`; one writing `\" \".join(...)` (which is what I did) gets a plausible-looking paragraph and silently throws away the column alignment, which is the most valuable part of the file for retrieval and for text-to-SQL prompting. Neither mistake produces an error. I only caught mine by sampling the raw files.\n\n## Suggested change\n\nA short \"Schema file format\" section in `spider2-lite/resource/README.md`:\n\n- `column_names` / `column_types`: top-level columns.\n- `nested_column_names` / `nested_column_types`: the flattened column list including nested/repeated fields, present only when the table has them.\n- `description`: one entry per column, aligned by index to `nested_column_names` when present, otherwise to `column_names`; entries may be `null`.\n- `sample_rows`: …\n\nOptionally, renaming the key to `column_descriptions` in the next data release would make the shape self-describing; that is a bigger change and the README line alone closes this.\n\nAll counts above come from the public tree of `main` via the GitHub API, so they are reproducible without a clone. Happy to send the README PR if that is easier.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-18T15:39:54Z",
+  "github_updated_at": "2026-09-18T15:39:54Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The author explicitly frames this as a documentation request and says the files are consistent and not a data defect. It is outside counted benchmark defect scope.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/222"
+  ]
+}

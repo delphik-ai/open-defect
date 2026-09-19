@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "aider-polyglot__aider-ai__polyglot-benchmark__pr-16",
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "task_names": [
+    "polyglot_java_rational-numbers"
+  ],
+  "resolution": "fixing",
+  "title": "fix(java): restore the rational-numbers equality tolerance",
+  "summary": "Aider Polyglot Java rational-numbers uses an absolute double tolerance too small for the exercise exponentiation case.",
+  "canonical_source_url": "https://github.com/Aider-AI/polyglot-benchmark/pull/16",
+  "evidence_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/16",
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/16/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-18T08:14:03Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 PR/source audit. The PR diff changes RationalTest DOUBLE_EQUALITY_TOLERANCE from 1e-15 to 1e-8 and uses isCloseTo. The body identifies 8^(4/3) as a correctly rounded value rejected by the old tolerance. No existing aider-polyglot artifact covers this Java rational-numbers tolerance root cause."
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "aider-polyglot__aider-ai__polyglot-benchmark__pr-9",
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "task_names": [
+    "polyglot_cpp_spiral-matrix"
+  ],
+  "resolution": "fixing",
+  "title": "Added a function declaration for `spiral_matrix` in the header file and implemented in source file",
+  "summary": "Aider Polyglot C++ spiral-matrix lacks the public function declaration, causing first attempts to fail before exercising algorithmic behavior.",
+  "canonical_source_url": "https://github.com/Aider-AI/polyglot-benchmark/pull/9",
+  "evidence_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/9",
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/9/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2025-07-14T14:41:27Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 PR/comment audit. The diff adds spiral_matrix declaration/implementation for the C++ exercise, and follow-up evidence says the missing declaration costs first attempts across several arms. This maps to the current cpp/spiral-matrix task and is not covered by existing aider-polyglot artifacts."
+}

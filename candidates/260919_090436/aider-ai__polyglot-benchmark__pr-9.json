@@ -1,0 +1,48 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Aider-AI/polyglot-benchmark/pull/9",
+  "repo": "aider-ai/polyglot-benchmark",
+  "source_type": "github_pr",
+  "github_number": 9,
+  "title": "Added a function declaration for `spiral_matrix` in the header file and implemented in source file",
+  "body": "(GitHub source body was empty when fetched.)",
+  "comments": [
+    {
+      "url": "https://github.com/Aider-AI/polyglot-benchmark/pull/9#issuecomment-3069874842",
+      "user": "avinash98262",
+      "created_at": "2025-07-14T14:43:58Z",
+      "updated_at": "2025-07-14T14:43:58Z",
+      "body": "Hi Paul,\r\nPlease look the code for the spiral matrix problem , if it is good Please let me know and will raise the PR for other problems soon.\r\n@paul-gauthier \r\n\r\nThankyou"
+    },
+    {
+      "url": "https://github.com/Aider-AI/polyglot-benchmark/pull/9#issuecomment-5727257337",
+      "user": "fernandaspets",
+      "created_at": "2026-09-18T08:18:57Z",
+      "updated_at": "2026-09-18T08:18:57Z",
+      "body": "Corroborating data: the missing declaration costs the first attempt in every arm we have.\n\n`cpp/spiral-matrix` across the six 512-topk arms on our lane (DeepSeek-V4.1-Flash, same\nexercise tree):\n\n```\nr40   [False, True]      r90   [False, True]\nr50   [False, True]      r75b  [False, True]\nr75a  [False, True]      r100  [False, True]\npass@1 0/6   pass@2 6/6\n```\n\nIt is not unwinnable - it passes on the retry every time - but try 1 fails consistently,\nwhich is the signature of a declaration the model cannot see. With the declaration present\nthose six retries would plausibly be six first-try passes, i.e. roughly +1.7 points of\npass@1 in that arm.\n"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/cpp/exercises/practice/spiral-matrix/spiral_matrix.cpp b/cpp/exercises/practice/spiral-matrix/spiral_matrix.cpp\nindex 3428b393..603604b0 100644\n--- a/cpp/exercises/practice/spiral-matrix/spiral_matrix.cpp\n+++ b/cpp/exercises/practice/spiral-matrix/spiral_matrix.cpp\n@@ -2,4 +2,43 @@\n \n namespace spiral_matrix {\n \n+     std::vector<std::vector<uint32_t>> spiral_matrix(uint32_t size) {\n+        std::vector<std::vector<uint32_t>> matrix(size, std::vector<uint32_t>(size, 0));\n+\n+        if (size == 0)\n+            return matrix;\n+\n+        uint32_t num = 1;\n+        int top = 0, bottom = size - 1;\n+        int left = 0, right = size - 1;\n+\n+        while (top <= bottom && left <= right) {\n+            // move right\n+            for (int col = left; col <= right; ++col)\n+                matrix[top][col] = num++;\n+            ++top;\n+\n+            // move down\n+            for (int row = top; row <= bottom; ++row)\n+                matrix[row][right] = num++;\n+            --right;\n+\n+            // move left\n+            if (top <= bottom) {\n+                for (int col = right; col >= left; --col)\n+                    matrix[bottom][col] = num++;\n+                --bottom;\n+            }\n+\n+            // move up\n+            if (left <= right) {\n+                for (int row = bottom; row >= top; --row)\n+                    matrix[row][left] = num++;\n+                ++left;\n+            }\n+        }\n+\n+        return matrix;\n+    }\n+\n }  // namespace spiral_matrix\ndiff --git a/cpp/exercises/practice/spiral-matrix/spiral_matrix.h b/cpp/exercises/practice/spiral-matrix/spiral_matrix.h\nindex cc56ad3f..9c080f4e 100644\n--- a/cpp/exercises/practice/spiral-matrix/spiral_matrix.h\n+++ b/cpp/exercises/practice/spiral-matrix/spiral_matrix.h\n@@ -1,8 +1,11 @@\n-#if !defined(SPIRAL_MATRIX_H)\n+#ifndef SPIRAL_MATRIX_H\n #define SPIRAL_MATRIX_H\n \n-namespace spiral_matrix {\n+#include <vector>\n+#include <cstdint>\n \n+namespace spiral_matrix {\n+    std::vector<std::vector<uint32_t>> spiral_matrix(uint32_t size);\n }  // namespace spiral_matrix\n \n #endif  // SPIRAL_MATRIX_H\n",
+  "github_state": "open",
+  "github_created_at": "2025-07-14T14:41:27Z",
+  "github_updated_at": "2026-09-18T08:18:57Z",
+  "candidate_benchmark_names": [
+    "aider-polyglot"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 PR/comment audit. The diff adds spiral_matrix declaration/implementation for the C++ exercise, and follow-up evidence says the missing declaration costs first attempts across several arms. This maps to the current cpp/spiral-matrix task and is not covered by existing aider-polyglot artifacts.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/9",
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/9/files"
+  ],
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "linked_defect_id": "aider-polyglot__aider-ai__polyglot-benchmark__pr-9",
+  "task_names": [
+    "polyglot_cpp_spiral-matrix"
+  ],
+  "resolution": "fixing",
+  "summary": "Aider Polyglot C++ spiral-matrix lacks the public function declaration, causing first attempts to fail before exercising algorithmic behavior."
+}

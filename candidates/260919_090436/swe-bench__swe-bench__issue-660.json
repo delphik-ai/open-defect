@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/660",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 660,
+  "title": "pytest's `[100%]` progress artifact is a phantom test in the gold PASS_TO_PASS of two instances (`pytest-5262`, `pytest-7521`)",
+  "body": "## Summary\n\npytest prints a running `[100%]` progress indicator. Dataset construction\ncaptured `PASSED [100%]` as if `[100%]` were a test name, and it survives in the\ngold `PASS_TO_PASS` of two instances.\n\n`log_parsers/python.py` already carries:\n\n```\nTODO(john-b-yang): repair those two P2P lists, then widen\n[the skip-summary filter] to any bare bracketed count\n```\n\nThis issue supplies the instance ids and the verification for both halves of\nthat TODO.\n\n## Verified two ways, at zero cost\n\n**Mechanism, on the real parser.** `parse_log_pytest(\"... PASSED [100%]\")`\nreturns a test named `[100%]` with status `PASSED`.\n\n**Data, on the real dataset** (`princeton-nlp/SWE-bench`):\n\n| instance | P2P entries | `[100%]` entries |\n|---|--:|--:|\n| `pytest-dev__pytest-5262` | 108 | 1 |\n| `pytest-dev__pytest-7521` | 125 | 1 |\n\n## Why it is worth fixing rather than ignoring\n\nBenign at eval time: a phantom test that trivially passes. But it is a real gold\nlabel correctness defect, and it welds the parser to pytest's exact progress\nformat. The parser cannot filter the pollution today, because if it did, those\ntwo instances would fail. A change to pytest's progress output breaks both.\n\nSo it is doubly recorded: a non-test in the gold labels, and a parser\nconstrained by it.\n\n## What this audit does not claim\n\nSolution leakage in `problem_statement` and weak or underspecified tests are\ndocumented in prior work and are the reason SWE-bench Verified exists.\nConfirming those properly needs executing the task images, which was not done.\nThis claims only what was run against the real code and data.\n\n**It is also worth recording what the harness gets right**, since this audit\nfound the opposite of what it expected. `grading.py` is hardened against the\nscores-as-resolved bug family, and its comments say so:\n\n- `test_failed` counts a SKIPPED fail-to-pass test as failed, with the comment\n  *\"a patch that makes every F2P test skip lands in neither list and scores\n  RESOLVED_FULL\"* without it. Verified live.\n- `get_logs_eval` returns \"not applied / invalid\" when there are no parsed\n  results and no sign the suite ran, with the comment *\"under\n  EvalType.FAIL_ONLY an absent test counts as success, so without this a suite\n  that never started scores every F2P test as resolved\"*.\n\nBoth are the careful direction. That is not the norm in this class of harness.\n\n## Reproduction\n\nNo API key, no Docker, no spend. The real parse and grading functions are\nimported from a clone; only the docker/unidiff backends, unused by the parse\nlayer, are stubbed. The `[100%]` dataset confirmation needs a free HuggingFace\nread; the parser mechanism is fully offline.\n\n```bash\ngit clone https://github.com/swe-bench/SWE-bench SWE-bench\ngit -C SWE-bench checkout c7fd5abffe0b2086a8bb9389d23c47d930ef571f\npython audit.py SWE-bench\n```\n\nAudit script and full write-up:\nhttps://github.com/collapseindex/dinostomp/tree/main/audits/swebench\n\nFound with [dinostomp](https://github.com/collapseindex/dinostomp).\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-16T08:02:40Z",
+  "github_updated_at": "2026-09-16T08:02:40Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L3",
+  "decision_note": "L3 duplicate audit via existing canonical artifact. The issue identifies pytest-dev__pytest-5262 and pytest-dev__pytest-7521 PASS_TO_PASS entries containing the phantom [100%] progress marker. That exact root cause and task set is already canonical as issue #289.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/660"
+  ],
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-289",
+  "task_names": [
+    "pytest-dev__pytest-5262",
+    "pytest-dev__pytest-7521"
+  ],
+  "resolution": "found",
+  "summary": "Issue #660 restates the existing SWE-bench Verified pytest [100%] phantom PASS_TO_PASS metadata defect."
+}

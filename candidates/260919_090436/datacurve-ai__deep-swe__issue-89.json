@@ -1,0 +1,88 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/89",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 89,
+  "title": "Add Fable 5.1, Muse Spark 1.3 & GPT 6 Astra to the bench",
+  "body": "(GitHub source body was empty when fetched.)",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5534333406",
+      "user": "coygeek",
+      "created_at": "2026-09-04T01:23:57Z",
+      "updated_at": "2026-09-04T01:23:57Z",
+      "body": "GPT-6 Astra are posted:\n\nxhigh = 74%\nhigh = 73%\nmax = 73%\nmedium = 73%\nlow = 67%\n\nMedium seems to be sweet spot.\n\nThe other 2 models, Fable 5.1 and Muse Spark 1.3 still missing. "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5543731223",
+      "user": "tidjani94",
+      "created_at": "2026-09-04T16:48:52Z",
+      "updated_at": "2026-09-04T16:48:52Z",
+      "body": "Could we add benchmark coverage for the newly released Anthropic frontier models Claude Fable 5.1 (`claude-fable-5-1`) and Claude Mythos 5.1 (`claude-mythos-5-1`)? They were announced on September 1, 2026. Fable 5.1 is Anthropic’s generally available model for long-horizon coding and knowledge work; Mythos 5.1 shares the same underlying model with a different safeguard regime and is limited to vetted organizations. Since the safeguard regimes differ, reporting both separately would make the results more useful and reproducible.\n\nOfficial references:\n- https://www.anthropic.com/claude/fable\n- https://www.anthropic.com/claude/mythos"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5571997435",
+      "user": "Orel-A",
+      "created_at": "2026-09-07T14:21:01Z",
+      "updated_at": "2026-09-07T14:21:59Z",
+      "body": "seems like for Muse Spark 1.3 the benchmark is published here:\nhttps://developer.meta.com/ai/models/muse-spark/\nA score of 75.4 on DeepSWE v1.1 for Muse Spark 1.3 (max).\n\n<img width=\"1797\" height=\"1097\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/7e1248e3-8343-4f84-97f6-68cecf11dea9\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5666978529",
+      "user": "Trikos",
+      "created_at": "2026-09-14T16:09:07Z",
+      "updated_at": "2026-09-14T16:10:32Z",
+      "body": "Why maintainers didnt execute the tests in order to publish the result? There are some issues doing it? Can we help them?\nThanks"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5670278640",
+      "user": "Orel-A",
+      "created_at": "2026-09-14T20:22:02Z",
+      "updated_at": "2026-09-14T20:22:02Z",
+      "body": "I don't know.\nMaybe they are working on a new version.\nI see the recent new models are all achieving 73%+ scores.\nSo it could mean there is a problem with the benchmark.\nIn the meantime you can look at the Terminal-Bench 4.0 scores:\nhttps://www.tbench.ai/"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5670591519",
+      "user": "coygeek",
+      "created_at": "2026-09-14T20:47:39Z",
+      "updated_at": "2026-09-14T20:47:39Z",
+      "body": "I don't work for any labs, but here's my thoughts on your questions:\n\n1. There are some issues doing it? \nPeople have noticed that models are able to benchmaxx the DeepSWE v1.1 already. Look at Google gemini-3.8-flash[high] crushing this benchmark. The model is a piece of shit, but Google already benchmaxxed this benchmark to get to the top. Once a benchmark is already easily \"hacked\" by a weaker models, it becomes less trustworthy, since anyone else can reach the top.\nThat's why labs (and DeepSWE included) should always revise their benchmark as the models progress, otherwise, people will loose trust in the benchmark. \n\n2.  Can we help them?\nLets look at the competitor to DeepSWE, Artificial Analysis for Fable 5.1 (the benchmark missing from DeepSWE). \nhttps://artificialanalysis.ai/models/claude-fable-5-1\nLook at the \"Cost to Run Artificial Analysis Intelligence Index\", it says AA paid $13,129 to actually run their whole benchmark.\n<img width=\"379\" height=\"348\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/00016bdb-e4dc-4e35-88b0-4a43210c9cd0\" />\nAs you can see, that's just a single reasoning level and we know AA tested all the levels. \nAt this point, we're talking $50k just to run their benchmarks. \nNow, AA gets a lot of money, so they have the budget. \nIn comparison, DeepSWE is a much much smaller lab compared to AA, so their budget is much smaller. \nSo it costs them thousands of dollars just to run these. \nIn other words, there's no way users (like all of us) can help them since we won't be able to afford these benchmarks.\n\nCheers!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5679522947",
+      "user": "Trikos",
+      "created_at": "2026-09-15T11:36:51Z",
+      "updated_at": "2026-09-15T11:36:51Z",
+      "body": "> I don't work for any labs, but here's my thoughts on your questions:\n> \n> 1. There are some issues doing it?\n>    People have noticed that models are able to benchmaxx the DeepSWE v1.1 already. Look at Google gemini-3.8-flash[high] crushing this benchmark. The model is a piece of shit, but Google already benchmaxxed this benchmark to get to the top. Once a benchmark is already easily \"hacked\" by a weaker models, it becomes less trustworthy, since anyone else can reach the top.\n>    That's why labs (and DeepSWE included) should always revise their benchmark as the models progress, otherwise, people will loose trust in the benchmark.\n> 2. Can we help them?\n>    Lets look at the competitor to DeepSWE, Artificial Analysis for Fable 5.1 (the benchmark missing from DeepSWE).\n>    https://artificialanalysis.ai/models/claude-fable-5-1\n>    Look at the \"Cost to Run Artificial Analysis Intelligence Index\", it says AA paid $13,129 to actually run their whole benchmark.\n> \n> <img alt=\"Image\" width=\"379\" height=\"348\" src=\"https://private-user-images.githubusercontent.com/65363919/651650912-00016bdb-e4dc-4e35-88b0-4a43210c9cd0.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3ODk0NzIyNjgsIm5iZiI6MTc4OTQ3MTk2OCwicGF0aCI6Ii82NTM2MzkxOS82NTE2NTA5MTItMDAwMTZiZGItZTRkYy00ZTM1LTg4YjAtNGE0MzIxMGM5Y2QwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjA5MTUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwOTE1VDExMzI0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTdiMmI2ZTYwODVmMjZhN2EwZWU5Nzc5NDU2YTY4OGI3NmRkM2JlNTg4NWNmZTU0YzZlOGM5NTFiODg5NWVhZWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JnJlc3BvbnNlLWNvbnRlbnQtdHlwZT1pbWFnZSUyRnBuZyJ9.O0RWPvCS2qEas5lgZnAAU62SY-KTG_FmS_NhofXHzeI\"> As you can see, that's just a single reasoning level and we know AA tested all the levels. At this point, we're talking $50k just to run their benchmarks. Now, AA gets a lot of money, so they have the budget. In comparison, DeepSWE is a much much smaller lab compared to AA, so their budget is much smaller. So it costs them thousands of dollars just to run these. In other words, there's no way users (like all of us) can help them since we won't be able to afford these benchmarks.\n> Cheers!\n\nSo I shouldnt trust 3.8-flash so seriously? I based my coding agent on deepSWE benchmark in order to use the \"best\" coding agent. \nThanks for the explanation"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5680256226",
+      "user": "Orel-A",
+      "created_at": "2026-09-15T12:36:08Z",
+      "updated_at": "2026-09-15T12:36:08Z",
+      "body": "It's becoming difficult to recommend a model because there is an increase in variety and people don't switch models so easily.\nIt's also a case of how much you are willing to pay.\nThe best right now is Fable 5.1 and GPT-6 Astra.\nBut value for money is a different matter."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/89#issuecomment-5680418928",
+      "user": "Trikos",
+      "created_at": "2026-09-15T12:48:22Z",
+      "updated_at": "2026-09-15T12:48:22Z",
+      "body": "> It's becoming difficult to recommend a model because there is an increase in variety and people don't switch models so easily. It's also a case of how much you are willing to pay. The best right now is Fable 5.1 and GPT-6 Astra. But value for money is a different matter.\n\nExactly what I meant, fable and astra are for realy complex work. I need just simple coding ahahah :) Fable and Astra can review the code I guess"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-02T00:35:23Z",
+  "github_updated_at": "2026-09-15T12:48:22Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests adding/updating model results and discusses leaderboard freshness; it does not claim a benchmark artifact defect.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/89"
+  ]
+}

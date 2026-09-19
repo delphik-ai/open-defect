@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "aider-polyglot__aider-ai__polyglot-benchmark__pr-15",
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "task_names": [
+    "polyglot_javascript_resistor-color-trio",
+    "polyglot_javascript_affine-cipher"
+  ],
+  "resolution": "fixing",
+  "title": "fix(javascript): replace removed toThrowError matcher with toThrow",
+  "summary": "Aider Polyglot JavaScript tasks use removed Jest toThrowError assertions that fail under Jest 30 after benchmark unskips xtest cases.",
+  "canonical_source_url": "https://github.com/Aider-AI/polyglot-benchmark/pull/15",
+  "evidence_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/15",
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/15/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-14T01:36:06Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 PR/source audit. The PR diff replaces toThrowError with toThrow in resistor-color-trio and affine-cipher specs. The body/comment explain benchmark/npm-test.sh unskips xtest cases and current unpinned installs can resolve Jest 30, where toThrowError is removed. No existing aider-polyglot artifact covers this JavaScript matcher root cause."
+}

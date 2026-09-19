@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bird-bench__alibabaresearch__damo-convai__issue-232",
+  "benchmark_name": "bird-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "dev question 16"
+  ],
+  "resolution": "found",
+  "title": "Wrong SQL on Question ID: 16 in Dev.json",
+  "summary": "BIRD dev question 16 asks for Alameda but the gold SQL filters Lake County.",
+  "canonical_source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/232",
+  "evidence_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/232"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-18T11:30:33Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 source-thread audit. The issue quotes the current Dev.json question and gold SQL: the natural-language question asks for merged Alameda schools but the SQL filters T1.County = Lake. The repo maps to bird-bench and no existing BIRD artifact covers this Q16 county mismatch."
+}

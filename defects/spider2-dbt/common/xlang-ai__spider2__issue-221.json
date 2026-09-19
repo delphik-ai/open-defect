@@ -1,0 +1,18 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-221",
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Spider2-lite schema files silently unreadable on Windows: 3,231 of 8,255 exceed MAX_PATH at a typical clone depth",
+  "summary": "Spider2-lite schema JSON paths can exceed Windows MAX_PATH at typical clone depths, making thousands of database schema files unreadable.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/221",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/221"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-18T15:39:48Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 source-thread audit. The issue gives reproducible path-length counts for spider2-lite/resource/databases schema JSON files, including the longest relative path and threshold arithmetic. This belongs to the watched spider2-dbt/lite artifact family rather than Spider2-Snow, and existing spider2-dbt artifacts cover evaluator/gold issues, not filesystem path accessibility."
+}

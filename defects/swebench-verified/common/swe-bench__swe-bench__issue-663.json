@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-663",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Truncated-id fallback can resolve a P2P case to a skipped sibling, hiding a failure",
+  "summary": "SWE-bench Verified truncated-id fallback can resolve a PASS_TO_PASS case to a skipped sibling and hide an actual failure.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/663",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/663",
+    "https://github.com/SWE-bench/SWE-bench/pull/664"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-18T20:52:04Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 source-thread audit. The issue quotes the grading fallback added for Verified issue #290 and explains that SKIPPED and FAILED are both treated as non-passing although they grade differently for PASS_TO_PASS. This is distinct from the original truncated-id dataset defect because the root cause is the fallback equivalence class. Fix PR #664 is open, so resolution is fixing."
+}

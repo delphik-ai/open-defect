@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/219",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 219,
+  "title": "Follow-up on Spider 2.0 Snowflake account access request — Fanaesar",
+  "body": "Hi Spider 2.0 team,\n\nThank you for your work on Spider 2.0!\n\nI submitted a Snowflake account access request through the official application form on **September 12, 2026**, but I have not yet received a response or account setup email.\n\nMy request details are:\n- Requested username: **Fanaesar**\n- Submission date: **September 12, 2026**\n\nI would like to use Spider 2.0 to evaluate an NL2SQL system. Could you please confirm whether my request was received and let me know the expected timeline for account creation?\n\nI also noticed the announcement about the Snowflake evaluation account suspension. Is this still affecting new account requests? If access is currently unavailable, is there an alternative way to access the databases and run evaluations?\n\nI can provide the email address used in my application privately if needed.\n\nThank you for your time and help!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-14T03:01:59Z",
+  "github_updated_at": "2026-09-14T03:01:59Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 attribution audit. The issue is a Spider2 Snowflake account access request and references Snowflake account suspension. The watched benchmark variant is spider2-dbt, so this Snowflake credential/access issue is out of scope.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/219"
+  ]
+}

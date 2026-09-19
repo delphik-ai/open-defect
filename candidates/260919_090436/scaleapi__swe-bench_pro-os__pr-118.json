@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/pull/118",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_pr",
+  "github_number": 118,
+  "title": "Isolate concurrent attempt workspaces",
+  "body": "Include the attempt prefix in each evaluation workspace path so concurrent attempts for the same instance do not share files.\n\nAdded a regression test covering independent attempt workspaces.\n\n\n\n\n<!-- greptile_comment -->\n\n<!-- greptile_summary -->\n\n<h2><a href=\"https://app.greptile.com/api/retrigger?id=65929404\"><picture><source media=\"(prefers-color-scheme: dark)\" srcset=\"https://greptile-static-assets.s3.amazonaws.com/badges/RetriggerDark.svg?v=2\"><source media=\"(prefers-color-scheme: light)\" srcset=\"https://greptile-static-assets.s3.amazonaws.com/badges/Retrigger.svg?v=2\"><img alt=\"Retrigger\" src=\"https://greptile-static-assets.s3.amazonaws.com/badges/Retrigger.svg?v=2\" align=\"right\"></picture></a>Confidence Score: 5/5</h2>\n\nThe PR appears safe to merge. No new issue remains.\n\nWhat we checked:\n- Concurrent attempts share files: No. A non-empty `prefix` gives each attempt its own workspace path, and the test writes separate files to both paths.\n\n<h3>Summary</h3>\n\nEvaluation attempts now use separate workspaces, so attempts for the same instance do not overwrite each other. Empty prefixes keep the original workspace name for compatibility.\n\n- Adds the attempt prefix to each workspace directory.\n- Reuses the matching workspace when loading an existing result.\n- Adds regression tests for independent and default workspace names.\n\n<details><summary>Diagram</summary>\n\n```mermaid\nsequenceDiagram\n    participant Runner\n    participant Prepare as prepare_run\n    participant Disk\n    Runner->>Prepare: instance, output dir, prefix\n    Prepare->>Disk: Create instance directory\n    Prepare->>Disk: Check prefixed output file\n    alt Output exists and redo is false\n        Disk-->>Prepare: Saved result\n        Prepare-->>Runner: Result, output path, workspace path\n    else Run is needed\n        Prepare->>Disk: Create prefixed workspace\n        Prepare-->>Runner: Empty result, output path, workspace path\n        Runner->>Disk: Write attempt files to its workspace\n    end\n```\n</details>\n\n<sub>Reviews (2) · Last reviewed commit: [\"Preserve the default workspace path\"](https://github.com/scaleapi/swe-bench_pro-os/commit/54ad6a50e14e3f9e909de82bf75b57e8c5fad097)</sub>\n\n<!-- /greptile_comment -->",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swe_bench_pro_eval.py b/swe_bench_pro_eval.py\nindex cac63a62..1654d6ef 100644\n--- a/swe_bench_pro_eval.py\n+++ b/swe_bench_pro_eval.py\n@@ -166,11 +166,11 @@ def prepare_run(uid, output_dir, prefix, redo):\n     uid_dir = os.path.join(output_dir, uid)\n     os.makedirs(uid_dir, exist_ok=True)\n     output_path = os.path.join(uid_dir, f\"{prefix}_output.json\")\n+    workspace_dir = os.path.join(uid_dir, f\"{prefix}_workspace\" if prefix else \"workspace\")\n     if not redo and os.path.exists(output_path):\n         print(f\"Skipping {uid} - output already exists\")\n         with open(output_path, \"r\") as f:\n-            return json.load(f), output_path, os.path.join(uid_dir, \"workspace\")\n-    workspace_dir = os.path.join(uid_dir, \"workspace\")\n+            return json.load(f), output_path, workspace_dir\n     os.makedirs(workspace_dir, exist_ok=True)\n     return None, output_path, workspace_dir\n \ndiff --git a/test_swe_bench_pro_eval.py b/test_swe_bench_pro_eval.py\nnew file mode 100644\nindex 00000000..4f9362ff\n--- /dev/null\n+++ b/test_swe_bench_pro_eval.py\n@@ -0,0 +1,28 @@\n+import json\n+from pathlib import Path\n+\n+from swe_bench_pro_eval import prepare_run, write_files_local\n+\n+\n+def test_attempt_workspaces_are_independent(tmp_path):\n+    _, output_a, workspace_a = prepare_run(\"instance\", tmp_path, \"attempt-a\", False)\n+    _, output_b, workspace_b = prepare_run(\"instance\", tmp_path, \"attempt-b\", False)\n+\n+    assert output_a != output_b\n+    assert workspace_a != workspace_b\n+    write_files_local(workspace_a, {\"patch.diff\": \"first\"})\n+    write_files_local(workspace_b, {\"patch.diff\": \"second\"})\n+    assert Path(workspace_a, \"patch.diff\").read_text() == \"first\"\n+    assert Path(workspace_b, \"patch.diff\").read_text() == \"second\"\n+\n+    Path(output_a).write_text(json.dumps({\"resolved\": True}))\n+    existing, existing_output, existing_workspace = prepare_run(\"instance\", tmp_path, \"attempt-a\", False)\n+    assert existing == {\"resolved\": True}\n+    assert existing_output == output_a\n+    assert existing_workspace == workspace_a\n+\n+\n+def test_prepare_run_preserves_default_workspace_name(tmp_path):\n+    _, _, workspace = prepare_run(\"instance\", tmp_path, \"\", False)\n+\n+    assert workspace == str(tmp_path / \"instance\" / \"workspace\")\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-18T07:17:00Z",
+  "github_updated_at": "2026-09-18T07:48:01Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 PR/source audit. The PR body says it includes the attempt prefix in each evaluation workspace path so concurrent attempts for the same instance do not share files, with a regression test. Existing swebenchpro artifacts cover other evaluator issues, not concurrent workspace collision. PR is open, so resolution is fixing.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/118",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/118/files"
+  ],
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebenchpro__scaleapi__swe-bench_pro-os__pr-118",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench Pro concurrent attempts for the same instance can share evaluation workspaces because attempt prefixes were omitted from workspace paths."
+}

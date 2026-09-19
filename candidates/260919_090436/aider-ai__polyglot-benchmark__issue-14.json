@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Aider-AI/polyglot-benchmark/issues/14",
+  "repo": "aider-ai/polyglot-benchmark",
+  "source_type": "github_issue",
+  "github_number": 14,
+  "title": "Go counter receives a passing grade with zero tests executed",
+  "body": "## Observed behavior\n\nI found that the Go `counter` exercise can receive a passing grade with zero tests executed. In a frozen five-agent comparison using the Harbor Aider Polyglot adapter, the three completed agents currently show `go test` output containing `[no tests to run]` and receive reward 1. I have preserved the original scores and the full task denominator.\n\n## Source of the behavior\n\nAt the current Polyglot revision `7e0611e77b54e2dea774cdc0aa00cf9f7ed6144f`:\n\n- The exercise instructions ask for a test suite that detects faults in the supplied counter implementations.\n- [The metadata](https://github.com/Aider-AI/polyglot-benchmark/blob/7e0611e77b54e2dea774cdc0aa00cf9f7ed6144f/go/exercises/practice/counter/.meta/config.json) declares `counter.go` as the solution and `counter_test.go` as the fixed test file.\n- [The fixed test file](https://github.com/Aider-AI/polyglot-benchmark/blob/7e0611e77b54e2dea774cdc0aa00cf9f7ed6144f/go/exercises/practice/counter/counter_test.go) contains a package declaration and a placeholder comment, with no test functions.\n- [The current Aider verification entry point](https://github.com/Aider-AI/aider/blob/5dc9490bb35f9729ef2c95d00a19ccd30c26339c/benchmark/benchmark.py#L1007-L1048) restores the declared test files before running the command and treats exit code 0 as success.\n- The current Harbor adapter also restores the declared tests and grades the command exit status.\n\nOne observed agent wrote a test suite during its first attempt. Verification replaced that file with the fixed placeholder. After resolving a duplicate `Counter` declaration, the final command produced:\n\n```text\ntesting: warning: no tests to run\nPASS\nok counter 0.027s [no tests to run]\n```\n\nThis passing grade establishes successful compilation and an empty test invocation. Test-suite quality remains unmeasured for this exercise.\n\nCould you clarify the intended status of Go `counter` in the 225-task benchmark and the scoring policy for this empty suite? An explicit catalog note would help downstream evaluations preserve standard scores and communicate their scope accurately.\n",
+  "comments": [
+    {
+      "url": "https://github.com/Aider-AI/polyglot-benchmark/issues/14#issuecomment-5727256097",
+      "user": "fernandaspets",
+      "created_at": "2026-09-18T08:18:50Z",
+      "updated_at": "2026-09-18T08:18:50Z",
+      "body": "Reproduced independently, and it does move reported scores.\n\nRun `2026-09-18-03-21-46--dsv41_flash_1mctx_16seq_dspark7_2fixes_r100_cuda134`\n(DeepSeek-V4.1-Flash local lane, aider 0.86.3.dev) records `go/counter` as\n`[False, True]`: try 1 fails the build, try 2 fixes the type collision, and the graded\nrun executes zero tests but exits 0. The final test output in that case's\n`.aider.chat.history.md` is literally:\n\n```\nok  \tcounter\t(cached) [no tests to run]\n```\n\nIn this arm it is also a *new win* versus our reference arm, so the defect moves pass@2\nin both directions - worth noting for anyone comparing arms.\n\nOne thing that would help: state what the intended grading contract is. Per this issue's\ndescription the exercise asks the model to author the test suite that detects faults in\nthe supplied implementations, in which case \"the model's own tests are absent\" and\n\"no tests to run\" needs an explicit failure rather than exit 0.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-12T10:11:49Z",
+  "github_updated_at": "2026-09-18T08:18:50Z",
+  "candidate_benchmark_names": [
+    "aider-polyglot"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 duplicate audit. The issue and comment are additional evidence for the existing Aider Polyglot Go counter artifact: the fixed counter_test.go contains no executable tests, so benchmark.py can report reward 1 from go test with no tests run. Same benchmark, task, and root cause as the canonical artifact.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/issues/14"
+  ],
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "linked_defect_id": "aider-polyglot__aider-ai__polyglot-benchmark__issue-14",
+  "task_names": [
+    "polyglot_go_counter"
+  ],
+  "resolution": "found",
+  "summary": "Follow-up issue/comment independently corroborates the existing Go counter empty-test-suite defect."
+}

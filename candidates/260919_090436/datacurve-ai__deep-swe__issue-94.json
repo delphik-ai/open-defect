@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/94",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 94,
+  "title": "Licence for the published v1.1 trial artifacts (trials.json and per-trial trajectories)?",
+  "body": "Thanks for publishing the run artifacts alongside the leaderboard. I have been reading the v1.1 trial artifacts (trials.json and the per-trial trajectory and verifier files served from the data page) for academic analysis of agent\nfailures, and I would like to be clear about the terms before building on them.\n\nThe repo's Apache-2.0 licence and PROVENANCE.md cover the task specifications, harness, verifiers and curation. I could not find a licence or terms of use for the run artifacts themselves on deepswe.datacurve.ai or on the data page. \n\nThe only notice I found is the canary line about training corpora.\n\nCould you state the licence that applies to the published trial artifacts? In particular:\n\n1. May they be downloaded and analysed for academic research, with citation?\n2. May excerpts (for example, a few steps of a trajectory) be quoted in a paper\n   or a talk, with attribution?\n3. May annotated derivatives be redistributed, for example a research dataset\n   that pairs your trial artifacts with third-party labels and republishes the\n   underlying trajectory files alongside them, with attribution and the same\n   canary notice?\n\nIf it helps, a short line on the data page such as \"Run artifacts are released under CC BY 4.0\" (or whatever you prefer) would settle all three for everyone.\n\nIf the answer to (3) is no, a dataset could still ship only labels, step references and checksums, with a script that fetches the files from your CDN, so I would appreciate knowing that too.\n\nHappy to cite DeepSWE in any form you prefer.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-18T08:21:37Z",
+  "github_updated_at": "2026-09-18T08:22:19Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks about licensing/terms for published run artifacts and does not claim a benchmark defect.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/94"
+  ]
+}

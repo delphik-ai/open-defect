@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/663",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 663,
+  "title": "Truncated-id fallback can resolve a P2P case to a skipped sibling, hiding a failure",
+  "body": "### Describe the bug\n\nThe truncated-id fallback added for #290 (535db3e) resolves a case by prefix when the\ncandidates \"agree on pass-vs-fail\":\n\n```python\npassing = {TestStatus.PASSED.value, TestStatus.XFAIL.value}\nif matches and len({sm[k] in passing for k in matches}) == 1:\n    return matches[0]\n```\n\n`SKIPPED` and `FAILED` are both non-passing, so a group holding one of each passes that\nguard. But they do not grade alike for a `PASS_TO_PASS` case — `test_maintained` treats a\nskip as no regression and a failure as one — so `matches[0]`, i.e. whichever the log\nlisted first, decides the verdict.\n\nWith the skip listed first, the failure is invisible and the case counts as maintained.\n\n### Steps/Code to Reproduce\n\n```python\nfrom swebench.harness.grading import test_maintained\n\ntruncated = \"tests/test_a.py::test_x[a\"          # the #290 shape, as in the dataset\nskip_first = {\"tests/test_a.py::test_x[a b]\": \"SKIPPED\", \"tests/test_a.py::test_x[a c]\": \"FAILED\"}\nfail_first = {\"tests/test_a.py::test_x[a c]\": \"FAILED\", \"tests/test_a.py::test_x[a b]\": \"SKIPPED\"}\n\nprint(test_maintained(truncated, skip_first))   # True  <- the failure is hidden\nprint(test_maintained(truncated, fail_first))   # False\n```\n\nA parametrization failed in both maps. Only the log order differs.\n\n### Expected Results\n\nThe same verdict either way, and a failed P2P candidate reported as a regression.\n\n### Actual Results\n\n`True` when the skipped sibling happens to come first, so the instance can score resolved\nwith a P2P regression in the log.\n\n### Why it's reachable\n\n`parse_log_pytest_v2` keeps the full id (`\" \".join(test_case[1:])`), and\n`parse_log_astropy`, `parse_log_scikit` and `parse_log_sphinx` are aliases of it — so for\nthose repos the map holds full ids while the dataset holds truncated ones, which is\nexactly when the fallback runs. Those three repos account for 159 of the truncated ids in\nSWE-bench_Verified (astropy 24, scikit-learn 73, sphinx-doc 62).\n\nMixed-status prefix groups are not hypothetical: `test_mixed_passed_and_xfail_matches_resolve`\nin `tests/test_grading_truncated_ids.py` documents a real one in\n`scikit-learn__scikit-learn-15100`. A skip mixed with a failure is the same shape, and\nskipped parametrizations are ordinary in those suites.\n\nI can't point at a specific instance that flips today — I don't have the eval containers\nrunning here — so I'm reporting the resolution logic rather than a measured score change.\n\n### Suggested fix\n\nGroup the statuses by how they grade rather than by pass-vs-fail: PASSED/XFAIL and\nFAILED/ERROR keep resolving as they do now, while a skip mixed with a failure stops\nresolving, which leaves the case unresolved — the conservative reading. Small diff, and\ntwo of the four tests I added fail without it. Happy to open the PR.\n\n### System Information\n\n```text\nSWE-bench main @ 02e7a74, Python 3.12, macOS\n```\n\n---\n\nDisclosure: found and written with Claude Code, by reading the #290 fallback against the\ngrading semantics around it. I reviewed the reasoning and can walk through it.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-18T20:52:04Z",
+  "github_updated_at": "2026-09-18T20:52:04Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 source-thread audit. The issue quotes the grading fallback added for Verified issue #290 and explains that SKIPPED and FAILED are both treated as non-passing although they grade differently for PASS_TO_PASS. This is distinct from the original truncated-id dataset defect because the root cause is the fallback equivalence class. Fix PR #664 is open, so resolution is fixing.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/663"
+  ],
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-663",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-bench Verified truncated-id fallback can resolve a PASS_TO_PASS case to a skipped sibling and hide an actual failure."
+}

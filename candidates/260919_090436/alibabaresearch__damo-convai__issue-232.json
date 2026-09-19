@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/232",
+  "repo": "alibabaresearch/damo-convai",
+  "source_type": "github_issue",
+  "github_number": 232,
+  "title": "Wrong SQL on Question ID: 16 in Dev.json",
+  "body": "Q16: How many schools in merged Alameda have number of test takers less than 100?\n\nGold SQL: SELECT COUNT(T1.CDSCode) FROM schools AS T1 INNER JOIN satscores AS T2 ON T1.CDSCode = T2.cds WHERE T1.StatusType = 'Merged' AND T2.NumTstTakr < 100 AND T1.County = 'Lake';\n\nIssue: County was explicitly mentioned as the Alameda in the Question but the Lake County was used.\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-18T11:30:33Z",
+  "github_updated_at": "2026-09-18T11:30:33Z",
+  "candidate_benchmark_names": [
+    "bird-bench"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 source-thread audit. The issue quotes the current Dev.json question and gold SQL: the natural-language question asks for merged Alameda schools but the SQL filters T1.County = Lake. The repo maps to bird-bench and no existing BIRD artifact covers this Q16 county mismatch.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/232"
+  ],
+  "benchmark_name": "bird-bench",
+  "scope": "task_specific",
+  "linked_defect_id": "bird-bench__alibabaresearch__damo-convai__issue-232",
+  "task_names": [
+    "dev question 16"
+  ],
+  "resolution": "found",
+  "summary": "BIRD dev question 16 asks for Alameda but the gold SQL filters Lake County."
+}

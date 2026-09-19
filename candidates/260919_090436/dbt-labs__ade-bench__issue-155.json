@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/dbt-labs/ade-bench/issues/155",
+  "repo": "dbt-labs/ade-bench",
+  "source_type": "github_issue",
+  "github_number": 155,
+  "title": "Evaluate dbt project changes beyond model output",
+  "body": "@vdfaller shared some insights earlier this morning with me and @C00ldudeNoonan -- here's a quick attempt at writing what we talked about.\n\n### The big idea\n\nADE-bench should be able to evaluate whether an agent successfully changed a dbt project — not just whether it successfully produced the right rows from a dbt model.\n\n### Background\n\nCurrently, ADE-bench only does evals on the output of dbt models.\n\nBut so much of what an analytics engineer wants to accomplish with their coding agents extends beyond just writing dbt models that execute SQL. They want agents to add data tests, unit tests, model contracts, exposures, sources, seeds, and other dbt resources / configuration.\n\nIn order to understand how well different agents (like dbt Wizard, Claude Code, etc) do on dbt-specific tasks, wouldn't we want ADE-bench to support evals for these kinds of tasks too?\n\nFor example, evaluating tasks like:\n\n- Add a not_null data test to a column\n- Add a unit test for a model\n- Add / configure a model contract\n- Add an exposure with the correct dependencies\n- Add or modify a source\n- Make other changes to dbt project metadata\n\nOne promising way to accomplish this might be the [dbt information schema](https://docs.getdbt.com/docs/build/dbt-information-schema?version=2) -- dbt can produce Parquet files containing tabular representations of dbt metadata, which are also used by [dbt checks](https://docs.getdbt.com/docs/build/dbt-information-schema?version=2#using-the-information-schema-in-checks).\n\nThat seems like a really natural evaluation surface for ADE-bench: rather than only querying the output of models, evals could also query the dbt information schema to determine whether the expected dbt resources / metadata exist.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-16T19:14:51Z",
+  "github_updated_at": "2026-09-16T19:14:51Z",
+  "candidate_benchmark_names": [
+    "ade-bench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue proposes expanding ADE-bench evaluation criteria beyond model output. It is a feature/design request, not a current benchmark defect claim.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/dbt-labs/ade-bench/issues/155"
+  ]
+}

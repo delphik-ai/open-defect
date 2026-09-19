@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Aider-AI/polyglot-benchmark/pull/15",
+  "repo": "aider-ai/polyglot-benchmark",
+  "source_type": "github_pr",
+  "github_number": 15,
+  "title": "fix(javascript): replace removed toThrowError matcher with toThrow",
+  "body": "## Problem\n\nTwo JavaScript exercise specs use `toThrowError(`, which Jest 30 removed (it is a\ndeprecated alias of `toThrow`). On an image whose `jest` resolves to 30.x the assertion\nthrows before it can compare anything:\n\n```\nTypeError: expect(...).toThrowError is not a function\n```\n\nAffected:\n\n- `javascript/exercises/practice/resistor-color-trio/resistor-color-trio.spec.js` (1 occurrence)\n- `javascript/exercises/practice/affine-cipher/affine-cipher.spec.js` (2 occurrences)\n\n## Why the surrounding `xtest(` does not save them\n\nThe calls sit inside `xtest(...)` blocks, which would normally be skipped. The benchmark\ndoes not run the specs as shipped: `benchmark/npm-test.sh` unskips them before invoking\njest,\n\n```sh\nsed -i 's/\\bxtest(/test(/g' *.spec.js     # benchmark/npm-test.sh:11\n```\n\nand the Java runner does the equivalent (it strips `@Disabled(...)` in `benchmark.py`).\nThe removed matcher therefore executes on every benchmark run.\n\nMeasured on a reference arm that scored the exercise `[False, False]`:\n\n```\n✓ Orange and orange and black\n✓ Blue and grey and brown\n✓ Red and black and red\n✓ Green and brown and orange\n✓ Yellow and violet and yellow\n✕ Invalid color\nTest Suites: 1 failed, 1 total\nTests:       1 failed, 5 passed, 6 total\n```\n\nEvery other assertion passes; the removed matcher is the only thing keeping the case\nfrom scoring. Across 246 local runs on one machine (140 of them attempting this\nexercise, spanning many models), `resistor-color-trio` has never passed once.\n\n## Fix\n\n`.toThrowError(` -> `.toThrow(` in the two specs. `toThrow` is the canonical matcher and\nbehaves identically on jest 29 and 30, so the change is safe on both.\n\nOne caution for anyone applying this by hand: keep the call's paren structure, i.e.\n`).toThrow(...)`. Introducing an extra `)` leaves the spec at paren depth -1, Babel\nrefuses to parse the file, and the case then fails harder than the original bug\n(`Tests: 0 total`). The diff here is balanced.\n\n## Tests\n\nIn the benchmark container (jest 30.4.1):\n\n- before: `expect(...).toThrowError(...)` -> `TypeError: expect(...).toThrowError is not a function`\n- after: `expect(...).toThrow(...)` -> the assertion is evaluated normally\n\n## Scope\n\nOnly these two files. No other exercise under `javascript/` uses `toThrowError`. The\nimage-side alternative is Aider-AI/aider#5726 (pin `jest` to 29.x); either change fixes\nthe failure, and the two together remove both the dead alias and the version drift.\n",
+  "comments": [
+    {
+      "url": "https://github.com/Aider-AI/polyglot-benchmark/pull/15#issuecomment-5724250568",
+      "user": "fernandaspets",
+      "created_at": "2026-09-18T02:30:32Z",
+      "updated_at": "2026-09-18T02:30:32Z",
+      "body": "Adding field evidence from a benchmark container that has the unpinned install.\n\nThat image resolves jest 30.4.1, from the unpinned `jest` alongside pinned `@types/jest@29.5.12` and `babel-jest@29.6.4`. In that container:\n\n```\n$ jest --version\n30.4.1\n$ jest        # one spec using toThrow, one using toThrowError\n✓ toThrow works\n✕ toThrowError works\n  TypeError: expect(...).toThrowError is not a function\n```\n\nTwo observations from aider polyglot runs that make the impact concrete.\n\n1. `resistor-color-trio` is a guaranteed fail. Across four separate arms - two lane configurations, a DSpark-off lane and the official DeepSeek API - the recorded outcome is `[False, False]` in every one, with `toThrowError is not a function` in the chat history. No model can pass it, and both attempts are spent on a case that cannot succeed.\n\n2. `affine-cipher` recorded a pass, but not by solving the exercise: the model detected the dead matcher and re-registered it from inside its own solution file. From `affine-cipher.js`:\n\n```js\n// The bundled spec asserts with `toThrowError`, an alias of `toThrow` that\n// newer versions of Jest no longer provide. Re-register it when it is missing\n// so the suite keeps working without changing the tests.\nconst registerToThrowErrorMatcher = () => { ... expect.extend(...) };\n```\n\nSo within the same suite one case can never pass and another passes only when the model works around the harness. Both directions contaminate the recorded scores, and it makes the JS pass rates partly a measure of workaround ability rather than of the exercises.\n\nMinor note on a reference in the description: the unpinned `jest` lives in `benchmark/Dockerfile` in Aider-AI/aider - Aider-AI/polyglot-benchmark has no Dockerfile.\n\nThe spec change here is right on its own terms: `toThrow` behaves identically under jest 29 and 30. I am sending the Dockerfile pin separately so the two fixes are independent.\n"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/javascript/exercises/practice/affine-cipher/affine-cipher.spec.js b/javascript/exercises/practice/affine-cipher/affine-cipher.spec.js\nindex 8431242a..c6141765 100644\n--- a/javascript/exercises/practice/affine-cipher/affine-cipher.spec.js\n+++ b/javascript/exercises/practice/affine-cipher/affine-cipher.spec.js\n@@ -46,7 +46,7 @@ describe('Affine cipher', () => {\n     xtest('encode with a not coprime to m', () => {\n       expect(() => {\n         encode('This is a test.', { a: 6, b: 17 });\n-      }).toThrowError('a and m must be coprime.');\n+      }).toThrow('a and m must be coprime.');\n     });\n   });\n   describe('decode', () => {\n@@ -87,7 +87,7 @@ describe('Affine cipher', () => {\n     xtest('decode with a not coprime to m', () => {\n       expect(() => {\n         decode('Test', { a: 13, b: 5 });\n-      }).toThrowError('a and m must be coprime.');\n+      }).toThrow('a and m must be coprime.');\n     });\n   });\n });\ndiff --git a/javascript/exercises/practice/resistor-color-trio/resistor-color-trio.spec.js b/javascript/exercises/practice/resistor-color-trio/resistor-color-trio.spec.js\nindex 135dd9c2..9aa5ab3e 100644\n--- a/javascript/exercises/practice/resistor-color-trio/resistor-color-trio.spec.js\n+++ b/javascript/exercises/practice/resistor-color-trio/resistor-color-trio.spec.js\n@@ -39,6 +39,6 @@ describe('Resistor Color Trio', () => {\n   xtest('Invalid color', () => {\n     expect(\n       () => new ResistorColorTrio(['yellow', 'purple', 'black']).label,\n-    ).toThrowError(/invalid color/);\n+    ).toThrow(/invalid color/);\n   });\n });\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-14T01:36:06Z",
+  "github_updated_at": "2026-09-18T08:13:39Z",
+  "candidate_benchmark_names": [
+    "aider-polyglot"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 PR/source audit. The PR diff replaces toThrowError with toThrow in resistor-color-trio and affine-cipher specs. The body/comment explain benchmark/npm-test.sh unskips xtest cases and current unpinned installs can resolve Jest 30, where toThrowError is removed. No existing aider-polyglot artifact covers this JavaScript matcher root cause.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/15",
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/15/files"
+  ],
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "linked_defect_id": "aider-polyglot__aider-ai__polyglot-benchmark__pr-15",
+  "task_names": [
+    "polyglot_javascript_resistor-color-trio",
+    "polyglot_javascript_affine-cipher"
+  ],
+  "resolution": "fixing",
+  "summary": "Aider Polyglot JavaScript tasks use removed Jest toThrowError assertions that fail under Jest 30 after benchmark unskips xtest cases."
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/issues/245",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_issue",
+  "github_number": 245,
+  "title": "Gold evaluation can undo its own repair when a patched source file appears in PASS_TO_PASS",
+  "body": "## Summary\n\nAt SWE-smith commit `9b74ac08118a85c39c356802f7961893af73e07f`, the official gold evaluation reports the following instance as unresolved:\n\n`r1chardj0n3s__parse.30da9e4f.func_basic__j0z3z0co`\n\nThe reversed bug patch is applied successfully to `parse.py`, but the evaluator then restores `parse.py` because it also appears in `PASS_TO_PASS`. This discards the gold repair before pytest runs.\n\nThis looks like an incompatibility between this task and the test-file anti-cheating restore policy. I am not assuming that test restoration should simply be disabled.\n\n## Minimal reproduction\n\nFrom a checkout of `9b74ac08118a85c39c356802f7961893af73e07f` with Docker available:\n\n```bash\npython -m swesmith.harness.eval \\\n  -p gold \\\n  --run_id repro_gold_parse \\\n  -w 1 \\\n  -i r1chardj0n3s__parse.30da9e4f.func_basic__j0z3z0co\n```\n\nObserved summary:\n\n```text\nUsing gold predictions for eval (ignoring `predictions_path` argument)\nResolved 0/1 instances.\n```\n\nThe per-instance log contains:\n\n```text\nApplied patch parse.py cleanly.\nReverted changes to test files in container: tests/test_parse.py README.rst parse.py tests/test_bugs.py tests/test_findall.py tests/test_parse.py tests/test_parsetype.py tests/test_pattern.py tests/test_result.py tests/test_search.py\n```\n\nThe test result then includes:\n\n```text\nFAILED tests/test_parse.py::test_parser_format - AttributeError: 'int' object...\n=================== 1 failed, 97 passed, 1 skipped ====================\n```\n\nExpected: the gold evaluation resolves the instance (`1/1`).\n\nActual: the gold evaluation leaves it unresolved (`0/1`).\n\n## Diagnostic\n\n`PythonProfile.get_test_files()` maps both `FAIL_TO_PASS` and `PASS_TO_PASS` identifiers to file paths. For this instance it returns:\n\n```text\nFAIL_TO_PASS files:\n['tests/test_parse.py']\n\nPASS_TO_PASS files:\n['README.rst', 'parse.py', 'tests/test_bugs.py', 'tests/test_findall.py',\n 'tests/test_parse.py', 'tests/test_parsetype.py', 'tests/test_pattern.py',\n 'tests/test_result.py', 'tests/test_search.py']\n```\n\nThe instance's bug patch modifies `parse.py`. In the gold path:\n\n1. `eval.py` uses the dataset `patch` as the gold prediction.\n2. `_apply_patch(..., is_gold=True)` reverses that patch, repairing `parse.py`.\n3. `run_patch_in_container()` calls `get_test_files(instance)`.\n4. `git checkout -- ... parse.py ...` restores the buggy version of `parse.py`.\n5. Pytest therefore evaluates the task after the repair has been undone.\n\nA manual check inside the task image confirms that the target test fails at the bug stage and passes immediately after reversing the bug patch, before the test-file restore.\n\nRelevant code:\n\n- `swesmith/profiles/python.py`: `PythonProfile.get_test_files()`\n- `swesmith/harness/utils.py`: the `git checkout -- {test_files}` block after patch application\n\n## Question\n\nWhat is the intended handling for instances where a bug patch touches a file that is also identified as an F2P/P2P test file (for example, a production module containing doctests)?\n\nPossible directions seem to be:\n\n- reject/filter these instances during task generation or validation; or\n- refine the restore behavior so it preserves the submitted/gold source change without exposing hidden tests.\n\nI can provide the complete per-instance log or test a proposed fix if useful.",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/issues/245#issuecomment-5716219940",
+      "user": "samratashoka007",
+      "created_at": "2026-09-17T14:38:34Z",
+      "updated_at": "2026-09-17T14:38:34Z",
+      "body": "I reproduced this on current main (9b74ac08118a85c39c356802f7961893af73e07f): gold still resolves 0/1.\n\nI traced the failure to PythonProfile.get_test_files(): it treats the path prefix of every F2P/P2P node as a protected test file, so collected doctests such as parse.py::parse.with_pattern cause the production file parse.py to be restored after the gold repair is applied.\n\nI considered excluding all patch-modified paths from the restore, but that seems too broad because a model could then modify an actual test file and exempt it from anti-cheat restoration.\n\nA narrower fix would be to restore only paths that the profile considers actual test artifacts (e.g. via the existing _is_test_path() logic), while allowing production files containing doctests to remain patched. I can add a regression covering this instance and the restore behavior.\n\nWould you prefer that approach, or do you consider instances where production files appear in F2P/P2P invalid and want them filtered during task generation instead?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-29T09:44:35Z",
+  "github_updated_at": "2026-09-17T14:38:34Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "audit_level": "L2",
+  "decision_note": "L2 duplicate audit. The issue/comment match the existing task-specific SWE-smith artifact: gold evaluation applies the patch, then restores parse.py because PASS_TO_PASS maps to parse.py, undoing the repair. Same task and root cause.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/issues/245"
+  ],
+  "benchmark_name": "swesmith",
+  "scope": "task_specific",
+  "linked_defect_id": "swesmith__swe-bench__swe-smith__issue-245",
+  "task_names": [
+    "r1chardj0n3s__parse.30da9e4f.func_basic__j0z3z0co"
+  ],
+  "resolution": "found",
+  "summary": "Updated issue/comment corroborates the existing SWE-smith parse.py PASS_TO_PASS restore defect."
+}

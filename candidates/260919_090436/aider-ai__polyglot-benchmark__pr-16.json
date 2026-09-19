@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Aider-AI/polyglot-benchmark/pull/16",
+  "repo": "aider-ai/polyglot-benchmark",
+  "source_type": "github_pr",
+  "github_number": 16,
+  "title": "fix(java): restore the rational-numbers equality tolerance",
+  "body": "## Problem\n\n`java/exercises/practice/rational-numbers/src/test/java/RationalTest.java` compares\nexponentiation results with an absolute tolerance of `1e-15`:\n\n```java\nprivate static final double DOUBLE_EQUALITY_TOLERANCE = 1e-15;\n...\nassertThat(x).isEqualTo(y, within(DOUBLE_EQUALITY_TOLERANCE));\n```\n\nAt the magnitudes this exercise tests, `1e-15` is smaller than the gap between\nrepresentable doubles, so a correctly rounded result is rejected.\n\n## Why it bites\n\nThe exercise's own instructions define \"exponentiation of a real number x to a rational\nnumber r = a/b\" as `x^(a/b)`, and its test asks for `8^(4/3)`:\n\n```java\ndouble expected = 16.0;\ndouble actual = new Rational(4, 3).exp(8.0);\nassertDoublesEqual(expected, actual);\n```\n\n`Math.pow(8.0, 4.0/3.0)` returns the nearest double, `16.0 - 1 ULP`. The spacing between\n`16.0` and the adjacent double below it is `1.776e-15`, which already exceeds the\ntolerance, so the standard implementation fails:\n\n```\nExpecting actual:\n  16.0\nto be close to:\n  15.999999999999998\nby less than 1.0E-15 but difference was 1.776e-15\n```\n\nThe case is therefore decided by rounding rather than by the algorithm, and a\nmathematically correct implementation can fail.\n\n## Fix\n\nRestore the form used by `exercism/java`:\n\n```java\nprivate static final double DOUBLE_EQUALITY_TOLERANCE = 1e-8;\n...\nassertThat(x).isCloseTo(y, within(DOUBLE_EQUALITY_TOLERANCE));\n```\n\nThe copy in this repository has been tightened from upstream's `isCloseTo(y, 1e-8)` to\n`isEqualTo(y, 1e-15)` - seven orders of magnitude tighter, and below one representable\nstep at `|v| >= ~4.5`. Restoring the upstream value keeps the assertion meaningful (it\nstill rejects a wrong result by many orders of magnitude) while not failing on ULP-level\nrounding.\n\n## Tests\n\n- Diff against upstream `exercism/java`, same exercise: `isCloseTo` with `1e-8` upstream\n  versus `isEqualTo` with `1e-15` here.\n- Arithmetic: `Math.ulp(16.0)` and the adjacent-double gap are both `> 1e-15`, so the\n  current tolerance cannot be satisfied by a result one step off; `1e-8` is ~7 orders of\n  magnitude above the rounding error and still ~6 below the smallest genuine error this\n  exercise can produce.\n- The recorded assertion message above is from a benchmark run of this repository's tree.\n\n## Scope\n\nOne test file, two lines. No production code and no other exercise is touched.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/java/exercises/practice/rational-numbers/src/test/java/RationalTest.java b/java/exercises/practice/rational-numbers/src/test/java/RationalTest.java\nindex 7eb88268..8a26c474 100644\n--- a/java/exercises/practice/rational-numbers/src/test/java/RationalTest.java\n+++ b/java/exercises/practice/rational-numbers/src/test/java/RationalTest.java\n@@ -8,10 +8,10 @@ public class RationalTest {\n \n     // Helper methods\n \n-    private static final double DOUBLE_EQUALITY_TOLERANCE = 1e-15;\n+    private static final double DOUBLE_EQUALITY_TOLERANCE = 1e-8;\n \n     private void assertDoublesEqual(double x, double y) {\n-        assertThat(x).isEqualTo(y, within(DOUBLE_EQUALITY_TOLERANCE));\n+        assertThat(x).isCloseTo(y, within(DOUBLE_EQUALITY_TOLERANCE));\n     }\n \n     // Tests\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-18T08:14:03Z",
+  "github_updated_at": "2026-09-18T08:14:03Z",
+  "candidate_benchmark_names": [
+    "aider-polyglot"
+  ],
+  "terminal_status": "confirmed",
+  "audit_level": "L2",
+  "decision_note": "L2 PR/source audit. The PR diff changes RationalTest DOUBLE_EQUALITY_TOLERANCE from 1e-15 to 1e-8 and uses isCloseTo. The body identifies 8^(4/3) as a correctly rounded value rejected by the old tolerance. No existing aider-polyglot artifact covers this Java rational-numbers tolerance root cause.",
+  "reviewed_at": "2026-09-19T00:09:21.964Z",
+  "checked_urls": [
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/16",
+    "https://github.com/Aider-AI/polyglot-benchmark/pull/16/files"
+  ],
+  "benchmark_name": "aider-polyglot",
+  "scope": "task_specific",
+  "linked_defect_id": "aider-polyglot__aider-ai__polyglot-benchmark__pr-16",
+  "task_names": [
+    "polyglot_java_rational-numbers"
+  ],
+  "resolution": "fixing",
+  "summary": "Aider Polyglot Java rational-numbers uses an absolute double tolerance too small for the exercise exponentiation case."
+}

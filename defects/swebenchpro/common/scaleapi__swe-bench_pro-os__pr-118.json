@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__pr-118",
+  "benchmark_name": "swebenchpro",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Isolate concurrent attempt workspaces",
+  "summary": "SWE-bench Pro concurrent attempts for the same instance can share evaluation workspaces because attempt prefixes were omitted from workspace paths.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/pull/118",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/118",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/118/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-18T07:17:00Z",
+  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "decision_note": "L2 PR/source audit. The PR body says it includes the attempt prefix in each evaluation workspace path so concurrent attempts for the same instance do not share files, with a regression test. Existing swebenchpro artifacts cover other evaluator issues, not concurrent workspace collision. PR is open, so resolution is fixing."
+}
