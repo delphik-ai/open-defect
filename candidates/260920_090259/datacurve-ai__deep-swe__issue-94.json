@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/94",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 94,
+  "title": "Licence for the published v1.1 trial artifacts (trials.json and per-trial trajectories)?",
+  "body": "Thanks for publishing the run artifacts alongside the leaderboard. I have been reading the v1.1 trial artifacts (trials.json and the per-trial trajectory and verifier files served from the data page) for academic analysis of agent\nfailures, and I would like to be clear about the terms before building on them.\n\nThe repo's Apache-2.0 licence and PROVENANCE.md cover the task specifications, harness, verifiers and curation. I could not find a licence or terms of use for the run artifacts themselves on deepswe.datacurve.ai or on the data page. \n\nThe only notice I found is the canary line about training corpora.\n\nCould you state the licence that applies to the published trial artifacts? In particular:\n\n1. May they be downloaded and analysed for academic research, with citation?\n2. May excerpts (for example, a few steps of a trajectory) be quoted in a paper\n   or a talk, with attribution?\n3. May annotated derivatives be redistributed, for example a research dataset\n   that pairs your trial artifacts with third-party labels and republishes the\n   underlying trajectory files alongside them, with attribution and the same\n   canary notice?\n\nIf it helps, a short line on the data page such as \"Run artifacts are released under CC BY 4.0\" (or whatever you prefer) would settle all three for everyone.\n\nIf the answer to (3) is no, a dataset could still ship only labels, step references and checksums, with a script that fetches the files from your CDN, so I would appreciate knowing that too.\n\nHappy to cite DeepSWE in any form you prefer.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/94#issuecomment-5746202383",
+      "user": "simkimsia",
+      "created_at": "2026-09-19T23:47:07Z",
+      "updated_at": "2026-09-19T23:47:07Z",
+      "body": "Following up with a concrete shape, in case that is easier to answer than a general licence question.\n\nTwo existing datasets already publish third-party labels over agent trajectories, and between them they cover the two answers you might want to give.\n\n**TRAIL** (Patronus AI) is the one you can inspect end to end:\n\n- Paper: https://arxiv.org/abs/2505.08638\n- Dataset: https://huggingface.co/datasets/PatronusAI/TRAIL\n- Code: https://github.com/patronus-ai/trail-benchmark\n\n148 human-annotated traces from GAIA and SWE-bench Lite tasks, published under MIT, with an access gate asking that the data not be used to train systems that automate human evaluation. The traces ship alongside the labels rather than being fetched at use time.\n\n**MegaRCA-Mix** (Scale AI) is described in https://arxiv.org/abs/2609.13463 (section 3.2): 50 failure trials drawn from the Harbor Index (https://harbor-index.org/, https://arxiv.org/abs/2609.04298), each human-annotated with a root cause. Beyond the trajectory it carries the full evaluation record, including trial configuration, agent-side logs, verifier output and sandbox artifacts. I could not find a public download for it, so I cite it for the shape rather than as something to click through.\n\nThe difference in my case, and the reason I am asking rather than assuming, is that both of those groups generated their own traces by running agents over someone else's tasks. Mine would be your published trials.\n\nConcretely, the package would be on the order of 100 to 150 trials from the v1.1 artifacts, each carrying:\n\n- our labels, against a rubric frozen before labelling,\n- the specific step citations each label rests on,\n- the trajectory and verifier files for those trials,\n- attribution to DeepSWE, your canary notice carried through unchanged, and a pointer to your data page as the authoritative copy.\n\nSo the narrower question is: is that shape acceptable to you, and under what attribution?\n\nIf the answer is no, the package ships labels, step references and checksums only, with a script that fetches the trial files from your CDN at use time. That works. It is just less durable for anyone trying to reproduce the labels later, since a step citation stops resolving if the file layout changes. Either answer is useful, and one line is enough.\n\nFor reference on where the wider practice sits: SWE-bench publishes submitted predictions, execution logs and trajectories at https://github.com/SWE-bench/experiments with no licence file, and a substantial literature analyses and quotes from them (for example https://arxiv.org/abs/2506.17208 and https://arxiv.org/abs/2605.12270). That is roughly the position your artifacts are in today, which settles questions 1 and 2 by custom but leaves question 3 genuinely open.\n\nOne small related note: the Hugging Face copy at https://huggingface.co/datasets/datacurve/deep-swe is gated and carries no licence field, and https://deepswe.datacurve.ai/run carries only the canary line. If you do settle on terms, stating them in both places would save the next person this question.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-18T08:21:37Z",
+  "github_updated_at": "2026-09-19T23:47:07Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks for licensing/terms for published DeepSWE run artifacts and trajectory files. It does not claim a defect in current benchmark tasks, harness, evaluator, dataset contents, or health counting.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/94"
+  ],
+  "reviewed_at": "2026-09-20T00:05:06.494Z"
+}

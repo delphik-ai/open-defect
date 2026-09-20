@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/157",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 157,
+  "title": "[Model Submission] Jesse: Zero-Weight Empirical Reasoning & AST Repair Engine (100% Pass@1)",
+  "body": "# LiveCodeBench Official Model Submission: Jesse (Zero-Weight Empirical)\n\n*Submission to the official LiveCodeBench leaderboard (livecodebench.github.io).*\n\n---\n\n## 1. General Model Information\n- **Model Name**: Jesse\n- **Display Name on Leaderboard**: `Jesse (Zero-Weight Empirical & AST Repair)`\n- **Model ID / API String**: `jesse`\n- **Organization / Developer**: solidSF Research ([solidsf.com](https://solidsf.com))\n- **Primary Contact**: Andrew Norris, Founder & CEO (`andrew@solidsf.com` / `research@solidsf.com`)\n- **Model Category**: Open Weights / Zero-Weight Architecture (0 Neural Parameters, 100% Integer RAM / Empirical Memory)\n- **License**: Permissive Open Research\n- **Inference Cost**: $0.00 / task (0 GPU tokens consumed)\n\n---\n\n## 2. Architectural Paradigm & Highlights\nJesse replaces black-box neural code generation with discrete combinatorial Abstract Syntax Tree (AST) mutations, Weisfeiler-Lehman topological graph color retrieval, and persistent Bayesian belief priors:\n- **Zero Floating-Point Weights**: Evaluates code synthesis and repair deterministically without transformer neural sampling.\n- **Sente/Gote Search Dynamics**:\n  - *Sente*: Identifies diagnostic invariants, function signatures, and return constraints.\n  - *Gote*: Synthesizes minimal-diff corrective AST patches with 0 collateral regressions.\n- **Verified Benchmark Performance**:\n  - **LiveCodeBench & Codeforces**: **15 / 15 (100.00% Pass@1)** across AtCoder, Codeforces, and LeetCode hard instances.\n  - **Fuzzed Test Suites**: Passed **937 / 937 fuzzed test cases** with zero runtime panics.\n  - **SWE-bench Verified**: Competitive zero-regression automated program repair under strict single-attempt dual-gate conditions (PR: [SWE-bench/experiments#487](https://github.com/SWE-bench/experiments/pull/487)).\n  - **HumanEval & MBPP**: 100.0% Pass@1 (164/164 HumanEval).\n\n---\n\n## 3. API Inference Endpoint Configuration\nLiveCodeBench's runner (`lcb_runner`) can evaluate Jesse directly via its public OpenAI-compatible endpoint:\n\n- **API Base URL**: `https://jesse.solidsf.com/v1`\n- **Model Name**: `jesse`\n- **API Key**: `dummy` (any non-empty bearer token is accepted)\n- **Supported Routes**:\n  - `GET https://jesse.solidsf.com/v1/models`\n  - `POST https://jesse.solidsf.com/v1/chat/completions` (JSON & SSE streaming)\n- **Rate Limits**: 24/7 globally distributed Cloudflare edge workers with zero rate throttling.\n\n### Reproduction Command:\n```bash\npython -m lcb_runner.runner.main \\\n  --model jesse \\\n  --openai_api_base https://jesse.solidsf.com/v1 \\\n  --openai_api_key dummy \\\n  --scenario codegeneration \\\n  --evaluate\n```\n\n---\n\n## 4. Technical Whitepapers & Citation\n- **SWE-bench Technical Report**: [https://solidsf.com/research/jesse-zero-weight-swebench](https://solidsf.com/research/jesse-zero-weight-swebench)\n- **Live Interactive Arena**: [https://jesse.solidsf.com](https://jesse.solidsf.com)\n- **Research Mirror**: [https://jesse.solidsf.com/paper](https://jesse.solidsf.com/paper)\n\n```bibtex\n@article{norris2026jesse,\n  title={Jesse: Zero-Weight Empirical Reasoning, Discrete AST Mutation, and Weightless Perception for Autonomous Systems},\n  author={Norris, Andrew and the solidSF Research Team},\n  journal={solidSF Technical Reports},\n  year={2026},\n  url={https://jesse.solidsf.com/paper}\n}\n```\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-19T23:50:46Z",
+  "github_updated_at": "2026-09-19T23:50:46Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. This is a model leaderboard submission for LiveCodeBench, not a benchmark defect report or fix. No current task, dataset, evaluator, packaging, or scoring root cause is identified.",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/157"
+  ],
+  "reviewed_at": "2026-09-20T00:05:06.494Z"
+}

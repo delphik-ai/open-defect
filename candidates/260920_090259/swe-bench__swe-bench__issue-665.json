@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/665",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 665,
+  "title": "Harness reproducibility: boot/env fidelity vs agent-attributed unresolved",
+  "body": "When an instance grades unresolved, how much of that should be treated as **agent failure** vs **boot/env contract** failure?\n\nConcrete shapes we’ve seen across coding-agent evals (not leaderboard-specific):\n\n- Shell / conda / image startup noise on stdout that the harness then treats as part of the run artifact\n- Host/platform quirks (e.g. line endings, proxy inheritance, cache leakage past base commit) that make the same patch look unresolved on one machine and clean on another\n- Timeout or teardown that kills the trial without a clear boundary between *agent loop stopped* and *environment went away*\n\nCurious whether SWE-bench already has a preferred place in reports or docs to mark *harness/boot fidelity* separately from *patch quality* — so builders staging agents in real envs don’t mis-train on false negatives.\n\nWe’re trying to stay precise about that seam publicly: [AgentEtna/how-agents-fail](https://huggingface.co/datasets/AgentEtna/how-agents-fail) (boot / tools / memory / loop / guardrails). Happy to map specific SWE-bench failure shapes if useful, or close this if the distinction is already documented somewhere we missed.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-19T19:15:54Z",
+  "github_updated_at": "2026-09-19T19:15:54Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a general discussion about how to report harness reproducibility and boot/environment fidelity versus agent failure. It gives no concrete SWE-bench Verified or Multilingual task row, source diff, evaluator bug, or reproducible current benchmark root cause to audit.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/665"
+  ],
+  "reviewed_at": "2026-09-20T00:05:06.494Z"
+}
