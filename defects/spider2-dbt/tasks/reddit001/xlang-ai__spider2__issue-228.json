@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-228",
+  "benchmark_name": "spider2-dbt",
+  "scope": "task_specific",
+  "task_names": [
+    "reddit001"
+  ],
+  "resolution": "found",
+  "title": "spider2-dbt: reddit001's reference silently excludes one shipped post with no documented condition",
+  "summary": "Spider2-DBT reddit001 gold reference silently omits one shipped source post despite no documented filter or duplicate/null condition.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/228",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/228",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/examples/reddit001"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-20T03:17:17Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed reddit001 grades prod_posts_ghosts. The public reproduction output shows raw_posts_ghosts has 30,971 rows while gold prod_posts_ghosts has 30,970, missing post_id zgacbl without null or duplicate evidence. This is a task-specific reference-data defect with no existing canonical artifact for reddit001."
+}

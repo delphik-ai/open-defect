@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/227",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 227,
+  "title": "spider2-dbt: zuora001's reference stores a documented Timestamp column as VARCHAR text",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** `examples/zuora001/models/zuora.yml` documents `account_created_at` as\n\"Timestamp of when the account entry was created,\" and the pinned package\n(`fivetran/zuora_source`, `packages.yml` pins `>=0.2.0,<0.3.0`) casts the same underlying field\nto a real `TIMESTAMP` in its own staging model (`stg_zuora__account.sql`:\n`cast(created_date as {{ dbt.type_timestamp() }}) as created_date`). But\n`evaluation_suite/gold/zuora001/zuora.duckdb`'s `zuora__account_overview.account_created_at`\n(a graded column, `spider2_eval.jsonl` line 45) is stored as `VARCHAR`. A delivery that follows\nthe package's own documented convention and produces a proper `TIMESTAMP` fails the comparison;\nonly an undocumented exact-text rendering (6 fractional digits) passes.\n\n**Duplicate check.** No open or closed issue names `zuora001` or this column. Not a duplicate.\n\n**Minimal reproduction.** After cloning the repo and running `spider2-dbt/setup.py`, save as\n`repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs `duckdb`\nand `pandas`.\n\n```python\nimport sys, types\nstub = types.ModuleType(\"google.cloud.bigquery\")\ncloud = types.ModuleType(\"google.cloud\"); cloud.bigquery = stub\ngoogle = types.ModuleType(\"google\"); google.cloud = cloud\nsys.modules.setdefault(\"google\", google)\nsys.modules.setdefault(\"google.cloud\", cloud)\nsys.modules.setdefault(\"google.cloud.bigquery\", stub)\n\nimport duckdb, pandas as pd\nfrom eval_utils import compare_pandas_table\n\nGOLD = \"gold/zuora001/zuora.duckdb\"\ncon = duckdb.connect(GOLD, read_only=True)\nschema = con.execute(\"describe zuora__account_overview\").fetchall()\nprint(\"gold column 1 (account_created_at, graded):\", schema[1])\n\ngold_df = con.execute(\n    \"select account_created_at from zuora__account_overview order by account_created_at limit 3\"\n).fetchdf()\nprint(\"gold text values:\\n\", gold_df.to_string(index=False))\n\n# The pinned package's own staging model:\n#   cast(created_date as {{ dbt.type_timestamp() }}) as created_date\ntyped_df = con.execute(\n    \"select cast(account_created_at as timestamp) as account_created_at \"\n    \"from zuora__account_overview order by account_created_at limit 3\"\n).fetchdf()\nscore_typed = compare_pandas_table(typed_df, gold_df, condition_cols=[0], ignore_order=True)\nprint(\"\\nscore for a properly-typed TIMESTAMP delivery:\", score_typed)\n\nrendered_df = pd.DataFrame({\n    \"account_created_at\": typed_df[\"account_created_at\"].dt.strftime(\"%Y-%m-%d %H:%M:%S.%f\")\n})\nscore_rendered = compare_pandas_table(rendered_df, gold_df, condition_cols=[0], ignore_order=True)\nprint(\"score for the same values rendered back to 6-fractional-digit text:\", score_rendered)\ncon.close()\n```\n\nActual output:\n\n```\ngold column 1 (account_created_at, graded): ('account_created_at', 'VARCHAR', 'YES', None, None, None)\ngold text values:\n         account_created_at\n2016-01-15 16:00:35.000000\n2016-01-15 20:42:32.000000\n2018-12-06 12:07:17.000000\n\nscore for a properly-typed TIMESTAMP delivery: 0\nscore for the same values rendered back to 6-fractional-digit text: 1\n```\n\n**Evaluator code.** `evaluation_suite/eval_utils.py` `compare_pandas_table`, lines 109-149; the\ntype-sensitive branch at line 126 (`elif a != b: return False`) treats a `Timestamp` and a\n`str` of the same instant as unequal. `spider2_eval.jsonl` line 45 names `account_created_at`\n(column index 1) as graded, `ignore_orders: true`.\n\n**Proposed fix.** Regenerate the gold reference with the pinned package so\n`account_created_at` keeps its documented `TIMESTAMP` type. If text is intentionally the\ncontract, `zuora.yml` and the model should say so explicitly with the exact required text\nformat, so a delivery following the package's own documented casting is not penalized for\nfollowing it. A universal string-coercion in the evaluator is not proposed, since it would\nmask genuine type errors on other tasks.\n\n**Effect on published entries.** Every submission scores 0 on this graded column unless it\nindependently reproduces the reference's undocumented text rendering rather than following the\npinned package's own documented `TIMESTAMP` cast — a delivery correct by the task's own stated\ncontract fails.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:16Z",
+  "github_updated_at": "2026-09-20T03:17:16Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-227",
+  "task_names": [
+    "zuora001"
+  ],
+  "resolution": "found",
+  "summary": "Spider2-DBT zuora001 grades a timestamp column stored as VARCHAR, penalizing outputs that follow the documented TIMESTAMP type.",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed zuora001 grades zuora__account_overview with account_created_at included. The public reproduction output shows the gold column is VARCHAR, a TIMESTAMP delivery scores 0, and the same values rendered to six-fraction text score 1. This is a task-specific reference-data/type defect with no existing canonical artifact for zuora001.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/227",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

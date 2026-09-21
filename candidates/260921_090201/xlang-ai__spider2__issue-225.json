@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/225",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 225,
+  "title": "spider2-dbt: numeric tolerance in compare_pandas_table is defeated by its own string-based sort",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** `compare_pandas_table` declares a numeric tolerance (`abs_tol=1e-2`), but when\n`ignore_order=True` it first sorts each column with `sorted(..., key=lambda x: (x is None,\nstr(x), isinstance(x,(int,float))))` — a **string** sort. Two numerically close floats can sort\ninto different relative positions depending on a third, unrelated value's string\nrepresentation, so the tolerant comparison ends up pairing unrelated values instead of the\nnumerically closest ones, and a numerically correct delivery is rejected. `asset001` grades a\n`book_value.value` column (`avg mid price × shares`, a real-valued computation) with\n`ignore_orders: true` (`spider2_eval.jsonl` line 5), so it is exposed to this.\n\n**Duplicate check.** No open or closed issue names `asset001`. Issue\n[#183](https://github.com/xlang-ai/Spider2/issues/183) is titled \"Aligned comparison\" (closed)\nbut its body is empty — there is no content to confirm or rule out overlap with this comparator\nbehavior. Worth a maintainer glance before filing, but nothing here duplicates a visible report.\n\n**Minimal reproduction.** No database is needed; the defect is in `compare_pandas_table` itself.\nSave as `repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs only\n`pandas`.\n\n```python\nimport sys, types\nstub = types.ModuleType(\"google.cloud.bigquery\")\ncloud = types.ModuleType(\"google.cloud\"); cloud.bigquery = stub\ngoogle = types.ModuleType(\"google\"); google.cloud = cloud\nsys.modules.setdefault(\"google\", google)\nsys.modules.setdefault(\"google.cloud\", cloud)\nsys.modules.setdefault(\"google.cloud.bigquery\", stub)\n\nimport pandas\nfrom eval_utils import compare_pandas_table\n\ngold = pandas.DataFrame({\"value\": [999999999999.9999, 2e12]})\npred = pandas.DataFrame({\"value\": [1e12, 2e12]})  # every value within 1e-2 of some gold value\n\nscore = compare_pandas_table(pred, gold, ignore_order=True)\nprint(\"gold:\", gold[\"value\"].tolist())\nprint(\"pred:\", pred[\"value\"].tolist())\nprint(\"score:\", score, \"(evaluator tolerance is abs_tol=1e-2; every pred value is within it)\")\n```\n\nActual output:\n\n```\ngold: [999999999999.9999, 2000000000000.0]\npred: [1000000000000.0, 2000000000000.0]\nscore: 0 (evaluator tolerance is abs_tol=1e-2; every pred value is within it)\n```\n\n`999999999999.9999` and `1e12` differ by `0.0001`, well inside the declared `1e-2` tolerance;\nthe comparator still scores this pair 0, because `str(999999999999.9999)` sorts after\n`str(2000000000000.0)` while `str(1000000000000.0)` sorts before it, so the two values are\ncompared against the wrong neighbour after sorting.\n\n**Evaluator code.** `evaluation_suite/eval_utils.py` `compare_pandas_table`, lines 109-149;\nthe sort key is at lines 116-117.\n\n**Proposed fix.** For numeric columns under `ignore_order`, preserve row count, NULL\nmultiplicity, and numeric multiplicity, then order numeric values numerically (not by `str()`)\nbefore applying the existing tolerance; keep the current typed handling for strings, booleans,\ntimestamps, and mixed columns. A single global numeric sort is not proposed, since it would not\ndefine correct behavior for non-numeric columns or for relations whose row identity spans\nseveral columns together (see the companion `quickbooks002` report on that class of case).\n\n**Effect on published entries.** Every submission scores 0 on any instance and column where\nthis shape occurs, even when its numeric values are correct within the evaluator's own declared\ntolerance. `compare_pandas_table` is the comparator for every `duckdb_match`- and\n`table_match`-graded relation with `ignore_order: true` across the benchmark, so a fix here\naffects verdicts beyond `asset001`; which published entries it flips is not determined by this\nreport.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:14Z",
+  "github_updated_at": "2026-09-20T03:17:14Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-225",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Spider2-DBT compare_pandas_table sorts numeric values as strings before tolerance comparison, rejecting numerically correct unordered outputs.",
+  "decision_note": "L3 source-function audit. Source-read of eval_utils.py at pinned commit cafb8673 confirmed vectors_match sorts ignore_order columns by str(x) before applying math.isclose(abs_tol=1e-2), and spider2_eval.jsonl confirmed asset001 uses ignore_order=true on real-valued columns. The issue provides a minimal reproduction where 999999999999.9999 and 1e12 are within tolerance but score 0 because string sorting pairs values with the wrong neighbor. Local import of the exact evaluator was blocked by missing pandas, but the source logic and public reproduction output match the claim. This root cause is distinct from existing issue #200/#226 row-alignment loss.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/225",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

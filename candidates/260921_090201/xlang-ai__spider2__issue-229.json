@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/229",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 229,
+  "title": "spider2-dbt: flicks001's reference population conflicts with its own declared staging model",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** `examples/flicks001/models/report/report.yml` declares\n`stg_netflix__movies` (which filters `TITLES` to `type = 'MOVIE'`,\n`stg_netflix__movies.sql` line 2) as an input to `actor_rating_by_total_movie`. But the gold\n`actor_rating_by_total_movie` (graded, `spider2_eval.jsonl` line 6) contains one row per\ndistinct `person_id` in the *unfiltered* `credits`/`stg_netflix__credits` table (movies **and**\nshows), not the smaller population that results from joining through its own declared\nmovie-filtered staging model. The gold database ships both `stg_netflix__movies` (correctly\nfiltered) and `stg_netflix__credits` (unfiltered) as materialized tables, so the mismatch is\ncheckable without building anything.\n\n**Duplicate check.** No open or closed issue names `flicks001`. Not a duplicate.\n\n**Minimal reproduction.** After cloning the repo and running `spider2-dbt/setup.py`, save as\n`repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs only\n`duckdb`.\n\n```python\nimport duckdb\n\nGOLD = \"gold/flicks001/flicks.duckdb\"\ncon = duckdb.connect(GOLD, read_only=True)\n\nprint(\"gold stg_netflix__movies row count (TITLES filtered to MOVIE, as the shipped SQL declares):\",\n      con.execute(\"select count(*) from stg_netflix__movies\").fetchone()[0])\nprint(\"gold stg_netflix__movies distinct type values:\",\n      con.execute(\"select distinct type from stg_netflix__movies\").fetchall())\n\nprint(\"gold stg_netflix__credits (unfiltered) distinct person_id:\",\n      con.execute(\"select count(distinct person_id) from stg_netflix__credits\").fetchone()[0])\n\nmovie_only = con.execute(\"\"\"\n    select count(distinct c.person_id) from stg_netflix__credits c\n    join stg_netflix__movies m on c.id = m.id\n\"\"\").fetchone()[0]\nprint(\"distinct person_id after joining credits to the movie-filtered staging model:\", movie_only)\n\nactor_rating_rows = con.execute(\"select count(*) from actor_rating_by_total_movie\").fetchone()[0]\nprint(\"gold actor_rating_by_total_movie row count:\", actor_rating_rows)\n\ndiff = con.execute(\"\"\"\n    select\n        (select count(*) from (select actor_id from actor_rating_by_total_movie\n            except select cast(person_id as decimal(18,3)) from stg_netflix__credits)) as only_in_actor_rating,\n        (select count(*) from (select cast(person_id as decimal(18,3)) from stg_netflix__credits\n            except select actor_id from actor_rating_by_total_movie)) as only_in_credits\n\"\"\").fetchone()\nprint(\"actor_id set vs. UNFILTERED credits person_id set, symmetric diff (0,0 = identical):\", diff)\ncon.close()\n```\n\nActual output:\n\n```\ngold stg_netflix__movies row count (TITLES filtered to MOVIE, as the shipped SQL declares): 3831\ngold stg_netflix__movies distinct type values: [('MOVIE',)]\ngold stg_netflix__credits (unfiltered) distinct person_id: 56754\ndistinct person_id after joining credits to the movie-filtered staging model: 47325\ngold actor_rating_by_total_movie row count: 56754\nactor_id set vs. UNFILTERED credits person_id set, symmetric diff (0,0 = identical): (0, 0)\n```\n\nThe gold table's actor population is exactly the unfiltered credits population (56,754), not\nthe movie-filtered population its own declared staging input produces (47,325) — a difference\nof 9,429 actors, none of whom appeared in a movie by the task's own declared movie filter.\n\n**Evaluator code.** Not an evaluator defect; `compare_pandas_table`\n(`evaluation_suite/eval_utils.py` lines 109-149) applies as documented. This is a\nreference-generation question: the gold table's own declared upstream (`stg_netflix__movies`)\nwas not the one used to build it.\n\n**Proposed fix.** Regenerate `actor_rating_by_total_movie` by joining through the declared\n`stg_netflix__movies` relation, as `report.yml` specifies. If the intended question is actually\nabout actors' movie-and-show credits combined, revise `report.yml`'s `refs` block and the\ntask's description to say so, and regenerate the reference and its documentation together so\nthey agree.\n\n**Effect on published entries.** A delivery that follows the task's own declared staging model\n(join through `stg_netflix__movies`) produces a different actor population than the reference\nand fails the comparison on this table; only a delivery that ignores the declared movie filter\nand uses all credits can match. This report does not claim a fix would flip any full task\nverdict — the task's other graded relation and every column still require the standard\nevaluator.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:17Z",
+  "github_updated_at": "2026-09-20T03:17:17Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-229",
+  "task_names": [
+    "flicks001"
+  ],
+  "resolution": "found",
+  "summary": "Spider2-DBT flicks001 reference uses the unfiltered credits population instead of its own movie-filtered staging model.",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed flicks001 grades actor_rating_by_total_movie. The public reproduction output shows actor_rating_by_total_movie has exactly the unfiltered credits person_id set (56,754) rather than the movie-filtered staging population (47,325). This is a task-specific reference-generation defect with no existing canonical artifact for flicks001.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/229",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/examples/flicks001"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

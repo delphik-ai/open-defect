@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-230",
+  "benchmark_name": "spider2-dbt",
+  "scope": "task_specific",
+  "task_names": [
+    "f1001"
+  ],
+  "resolution": "found",
+  "title": "spider2-dbt: f1001's reference relation most_fastest_laps is itself nondeterministic",
+  "summary": "Spider2-DBT f1001 gold relation most_fastest_laps is a nondeterministic LIMIT view with no tie-breaker.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/230",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/230",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-20T03:17:18Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed f1001 grades most_fastest_laps. The public reproduction output shows the gold view orders by fastest_laps DESC LIMIT 20 without a total tie-breaker, with three drivers competing for two boundary slots and three observed tied-group outcomes across 30 executions. This is a task-specific reference determinism defect with no existing canonical artifact for f1001."
+}

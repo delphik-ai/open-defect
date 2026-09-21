@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/224",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 224,
+  "title": "spider2-dbt: chinook001's gold database does not contain the three tables it is graded on",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** `spider2_eval.jsonl` grades `chinook001` by comparing `dim_customer`,\n`fct_invoice`, and `obt_invoice` in the candidate's database against the same three tables in\n`evaluation_suite/gold/chinook001/chinook.duckdb`. None of those three tables exist in that\ngold file; it contains only the eleven raw Chinook source tables. The gold file is\nbyte-identical (sha256 match) to the shipped starting database in `examples/chinook001/`, so\nthe gold database was never actually built past the task's starting point.\n\n**Duplicate check.** No existing issue names `chinook001`, `dim_customer`, `fct_invoice`, or\n`obt_invoice`. Searches on those terms return only issues about the unrelated `spider2-lite`\ntrack's `postgres_chinook001` (issues [#50](https://github.com/xlang-ai/Spider2/issues/50) and\n[#31](https://github.com/xlang-ai/Spider2/issues/31), both about a download/setup `IndexError`,\nnot the dbt track's gold content). Not a duplicate.\n\n**Minimal reproduction.** After cloning the repo and running `spider2-dbt/setup.py`, save as\n`repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs only\n`duckdb`.\n\n```python\nimport sys, types\nstub = types.ModuleType(\"google.cloud.bigquery\")\ncloud = types.ModuleType(\"google.cloud\"); cloud.bigquery = stub\ngoogle = types.ModuleType(\"google\"); google.cloud = cloud\nsys.modules.setdefault(\"google\", google)\nsys.modules.setdefault(\"google.cloud\", cloud)\nsys.modules.setdefault(\"google.cloud.bigquery\", stub)\n\nimport duckdb\nfrom eval_utils import duckdb_match\n\nGOLD = \"gold/chinook001/chinook.duckdb\"\ncon = duckdb.connect(GOLD, read_only=True)\ntables = sorted(r[0] for r in con.execute(\"SHOW TABLES\").fetchall())\ncon.close()\nprint(\"gold chinook001 tables:\", tables)\nprint(\"graded tables present?\",\n      {t: (t in tables) for t in (\"dim_customer\", \"fct_invoice\", \"obt_invoice\")})\n\n# A \"delivery\" identical to the gold file itself -- the best any submission\n# could possibly do -- scored with evaluate.py's own call for this instance\n# (spider2_eval.jsonl line 9).\ntry:\n    score = duckdb_match(\n        GOLD, GOLD,\n        condition_tabs=[\"dim_customer\", \"fct_invoice\", \"obt_invoice\"],\n        condition_cols=[[0,1,2,3,4,5,6,7,8,9], [0,1,3,4,5,6,7,8],\n                        [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,19]],\n        ignore_orders=[True, True, True],\n    )\n    print(\"score:\", score)\nexcept Exception as e:\n    print(\"duckdb_match raised:\", type(e).__name__, \"-\", str(e).splitlines()[0])\n```\n\nActual output:\n\n```\ngold chinook001 tables: ['album', 'artist', 'customer', 'employee', 'genre', 'invoice', 'invoice_line', 'media_type', 'playlist', 'playlist_track', 'track']\ngraded tables present? {'dim_customer': False, 'fct_invoice': False, 'obt_invoice': False}\nduckdb_match raised: CatalogException - Catalog Error: Table with name dim_customer does not exist!\n```\n\nsha256 of `evaluation_suite/gold/chinook001/chinook.duckdb` and `examples/chinook001/chinook.duckdb`\nare identical (`9a1d785f…90aa9` on this checkout) — the gold copy is the unmodified starting\ndatabase, not a built result.\n\n**Evaluator code.** `spider2_eval.jsonl` line 9 names the three graded tables.\n`evaluation_suite/eval_utils.py` `duckdb_match` (lines 184-243) reads gold tables (line 220)\nbefore candidate tables, so it raises on the gold side regardless of what the candidate built.\n`evaluation_suite/evaluate.py` lines 96-101 catch that raise and record `score = 0`.\n\n**Proposed fix.** Rebuild `evaluation_suite/gold/chinook001/chinook.duckdb` from a correct\nimplementation of the task's instruction (a customer/invoice model combining invoice details,\ncustomer information, and date attributes) so it actually contains `dim_customer`,\n`fct_invoice`, and `obt_invoice`.\n\n**Effect on published entries.** Every submission scores 0 on chinook001 regardless of its\noutput, because the tables the evaluator compares against do not exist in the gold file it\nopens. No perfect delivery can pass this instance as currently shipped.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:14Z",
+  "github_updated_at": "2026-09-20T03:17:14Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-224",
+  "task_names": [
+    "chinook001"
+  ],
+  "resolution": "found",
+  "summary": "Spider2-DBT chinook001 gold database contains only raw Chinook source tables, so all graded model tables are absent.",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673. Source-read of spider2_eval.jsonl confirmed chinook001 grades dim_customer, fct_invoice, and obt_invoice from chinook.duckdb. The public reproduction output shows the gold file contains only raw Chinook tables and duckdb_match raises on dim_customer before any candidate output can pass. This is distinct from the existing missing-directory/mismatched-filename canonical issue #156 because the gold file exists but is an unbuilt starting database. Harbor preflight was not applicable because the audit uses the upstream gold DB/evaluator path directly.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/224",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

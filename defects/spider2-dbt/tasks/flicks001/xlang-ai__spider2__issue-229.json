@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-229",
+  "benchmark_name": "spider2-dbt",
+  "scope": "task_specific",
+  "task_names": [
+    "flicks001"
+  ],
+  "resolution": "found",
+  "title": "spider2-dbt: flicks001's reference population conflicts with its own declared staging model",
+  "summary": "Spider2-DBT flicks001 reference uses the unfiltered credits population instead of its own movie-filtered staging model.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/229",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/229",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/examples/flicks001"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-20T03:17:17Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed flicks001 grades actor_rating_by_total_movie. The public reproduction output shows actor_rating_by_total_movie has exactly the unfiltered credits person_id set (56,754) rather than the movie-filtered staging population (47,325). This is a task-specific reference-generation defect with no existing canonical artifact for flicks001."
+}

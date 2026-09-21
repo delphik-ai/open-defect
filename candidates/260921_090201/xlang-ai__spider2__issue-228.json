@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/228",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 228,
+  "title": "spider2-dbt: reddit001's reference silently excludes one shipped post with no documented condition",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** `examples/reddit001/models/schema.yaml` declares `post_id` `unique` and\n`not_null` on `prod_posts_ghosts`, with no documented filter or exclusion condition anywhere in\nthe task. The gold `prod_posts_ghosts` (graded, `spider2_eval.jsonl` line 63) has 30,970 rows,\none fewer than the 30,971 rows in the shipped `raw_posts_ghosts` it is a straight\ncolumn-renaming projection of (same columns, renamed, minus two unselected columns; no\nfiltering columns). The one excluded post (`post_id = 'zgacbl'`) is not `NULL` on any of its\nfields, is not a duplicate `post_id`, and is not a duplicate `post_fullname` — nothing visible\nin the shipped data explains why the reference drops it.\n\n**Duplicate check.** No open or closed issue names `reddit001`. Not a duplicate.\n\n**Minimal reproduction.** After cloning the repo and running `spider2-dbt/setup.py`, save as\n`repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs only\n`duckdb`.\n\n```python\nimport duckdb\n\nGOLD = \"gold/reddit001/reddit.duckdb\"\ncon = duckdb.connect(GOLD, read_only=True)\n\nraw_n = con.execute(\"select count(*) from raw_posts_ghosts\").fetchone()[0]\nprod_n = con.execute(\"select count(*) from prod_posts_ghosts\").fetchone()[0]\nprint(\"raw_posts_ghosts rows:\", raw_n, \" prod_posts_ghosts (gold) rows:\", prod_n)\n\nmissing = con.execute(\"select post_id from raw_posts_ghosts except select post_id from prod_posts_ghosts\").fetchall()\nprint(\"post_id(s) present in the raw source but absent from the gold reference:\", missing)\n\nif missing:\n    pid = missing[0][0]\n    row = con.execute(\n        \"select post_id, post_url, post_score, num_comments from raw_posts_ghosts where post_id = ?\", [pid]\n    ).fetchone()\n    print(\"that row:\", row)\n    print(\"post_url IS NULL?\", con.execute(\"select post_url is null from raw_posts_ghosts where post_id=?\", [pid]).fetchone()[0])\n    print(\"post_id duplicated in raw?\", con.execute(\"select count(*) from raw_posts_ghosts where post_id=?\", [pid]).fetchone()[0] > 1)\n    print(\"post_fullname duplicated in raw?\",\n          con.execute(\"select count(*) > 1 from raw_posts_ghosts where post_fullname = (select post_fullname from raw_posts_ghosts where post_id=?)\", [pid]).fetchone()[0])\ncon.close()\n```\n\nActual output:\n\n```\nraw_posts_ghosts rows: 30971  prod_posts_ghosts (gold) rows: 30970\npost_id(s) present in the raw source but absent from the gold reference: [('zgacbl',)]\nthat row: ('zgacbl', 'https://www.reddit.com/r/Ghoststories/comments/zgacbl/ghoststoriesbest_of_2022/', 50, 7)\npost_url IS NULL? False\npost_id duplicated in raw? False\npost_fullname duplicated in raw? False\n```\n\n**Evaluator code.** Not an evaluator defect; the comparator (`compare_pandas_table`,\n`evaluation_suite/eval_utils.py` lines 109-149) applies as documented. This is a reference-data\nquestion: the gold table itself appears to have dropped a row the shipped source and the task's\nown declared schema give no basis for dropping.\n\n**Proposed fix.** Either document the intended exclusion predicate and apply it in the task's\nmodel (so a delivery that omits row `zgacbl` for a stated reason is the one graded as correct),\nor regenerate `prod_posts_ghosts` from the unfiltered shipped source so it includes all 30,971\nrows. This report does not identify why the current reference excludes the row; it establishes\nthat it does and that no documented or data-quality condition explains it.\n\n**Effect on published entries.** A delivery that reproduces the task's own declared schema and\ntransform exactly (all shipped, non-null, non-duplicate rows carried through) would still fail\nthe reference comparison on this table, because the reference itself omits one row the schema\ngives no basis to omit.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:17Z",
+  "github_updated_at": "2026-09-20T03:17:17Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-228",
+  "task_names": [
+    "reddit001"
+  ],
+  "resolution": "found",
+  "summary": "Spider2-DBT reddit001 gold reference silently omits one shipped source post despite no documented filter or duplicate/null condition.",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed reddit001 grades prod_posts_ghosts. The public reproduction output shows raw_posts_ghosts has 30,971 rows while gold prod_posts_ghosts has 30,970, missing post_id zgacbl without null or duplicate evidence. This is a task-specific reference-data defect with no existing canonical artifact for reddit001.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/228",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/examples/reddit001"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

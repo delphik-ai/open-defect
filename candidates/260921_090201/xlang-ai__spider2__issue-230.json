@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/230",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 230,
+  "title": "spider2-dbt: f1001's reference relation most_fastest_laps is itself nondeterministic",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** The gold database's `most_fastest_laps` (graded, `spider2_eval.jsonl` line\n10) is itself a SQL **view**, not a materialized table, defined with a non-total `ORDER BY\nfastest_laps DESC LIMIT 20` and no tiebreaker. Eighteen drivers have a strictly higher\n`fastest_laps` count and fill the first 18 of the 20 slots, but three drivers are exactly tied\nfor the value that would occupy the last two slots, so which two of the three the `LIMIT 20`\nkeeps is left to the database engine's unspecified tie-break order — re-running the view's own\ndefining query returns a different pair of drivers on different executions of the *same,\nunmodified gold file*.\n\n**Duplicate check.** No open or closed issue names `f1001`, `most_fastest_laps`, or discusses\nthis specific view's determinism. Issue\n[#215](https://github.com/xlang-ai/Spider2/issues/215) (open, filed by this reporter) asks\nmore broadly about evaluation-clock and underspecified-convention protocol questions but does\nnot name this instance or relation; not a duplicate, but related context.\n\n**Minimal reproduction.** After cloning the repo and running `spider2-dbt/setup.py`, save as\n`repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs only\n`duckdb`.\n\n```python\nimport duckdb, collections\n\nGOLD = \"gold/f1001/f1.duckdb\"\ncon = duckdb.connect(GOLD, read_only=True)\n\nview_sql = con.execute(\n    \"select sql from duckdb_views() where view_name='most_fastest_laps'\"\n).fetchone()[0]\nprint(\"view definition:\\n \", view_sql)\n\nabove = con.execute(\"select count(*) from finishes_by_driver where fastest_laps > 3\").fetchone()[0]\ntied = con.execute(\n    \"select driver_full_name from finishes_by_driver where fastest_laps = 3 order by driver_full_name\"\n).fetchall()\nprint(f\"\\nrows with fastest_laps > 3: {above} (fills {above} of the 20 LIMIT slots)\")\nprint(f\"drivers tied at fastest_laps = 3, competing for the remaining {20 - above} slots: {[t[0] for t in tied]}\")\n\ncounts = collections.Counter()\nfor _ in range(30):\n    rows = con.execute(\n        \"select driver_full_name from most_fastest_laps where fastest_laps = 3 order by driver_full_name\"\n    ).fetchall()\n    counts[tuple(r[0] for r in rows)] += 1\n\nprint(f\"\\n30 executions of the view's own query, tied-group membership observed:\")\nfor combo, n in counts.items():\n    print(f\"  {n:2d}x {combo}\")\nprint(f\"distinct outcomes: {len(counts)}\")\ncon.close()\n```\n\nActual output (DuckDB 1.10, single machine, unmodified gold file, no candidate database\ninvolved):\n\n```\nview definition:\n  CREATE VIEW most_fastest_laps AS WITH finishes_by_driver AS (SELECT * FROM f1.main.finishes_by_driver), final AS (SELECT rank() OVER (ORDER BY fastest_laps DESC) AS rank, driver_full_name, fastest_laps FROM finishes_by_driver ORDER BY fastest_laps DESC LIMIT 20)SELECT * FROM final;\n\nrows with fastest_laps > 3: 18 (fills 18 of the 20 LIMIT slots)\ndrivers tied at fastest_laps = 3, competing for the remaining 2 slots: ['Juan Pablo Montoya', 'Oscar Piastri', 'Pierre Gasly']\n\n30 executions of the view's own query, tied-group membership observed:\n  21x ('Oscar Piastri', 'Pierre Gasly')\n   3x ('Juan Pablo Montoya', 'Oscar Piastri')\n   6x ('Juan Pablo Montoya', 'Pierre Gasly')\ndistinct outcomes: 3\n```\n\n**Evaluator code.** Not an evaluator defect; `duckdb_match`/`compare_pandas_table`\n(`evaluation_suite/eval_utils.py` lines 109-243) read whatever `most_fastest_laps` returns at\nquery time. Because the gold artifact is a view with a non-total order, the reference this\ncomparator is measured against is not itself fixed.\n\n**Proposed fix.** Extend the truncating `ORDER BY fastest_laps DESC` with the remaining output\ncolumns in a stated direction (e.g., `driver_full_name ASC`) so the top-20 row set is fully\ndetermined, and materialize the view as a table (or otherwise freeze one canonical result) so\nthe reference does not vary between reads of the same file.\n\n**Effect on published entries.** This instance's reference answer is not fixed: which two of\nthe three tied drivers appear in `most_fastest_laps` changes between reads of the unmodified\ngold database, so the pass/fail verdict for a delivery that gets the boundary right can differ\nfrom one grading run to the next even with no change to the candidate or the gold file.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:18Z",
+  "github_updated_at": "2026-09-20T03:17:18Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-230",
+  "task_names": [
+    "f1001"
+  ],
+  "resolution": "found",
+  "summary": "Spider2-DBT f1001 gold relation most_fastest_laps is a nondeterministic LIMIT view with no tie-breaker.",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed f1001 grades most_fastest_laps. The public reproduction output shows the gold view orders by fastest_laps DESC LIMIT 20 without a total tie-breaker, with three drivers competing for two boundary slots and three observed tied-group outcomes across 30 executions. This is a task-specific reference determinism defect with no existing canonical artifact for f1001.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/230",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

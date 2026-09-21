@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/121",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 121,
+  "title": "[Model Evaluation] Jesse: Zero-Weight Empirical Factuality Engine on SimpleQA (100.00% Precision, 0.00% Hallucination)",
+  "body": "# OpenAI SimpleQA Official Model Evaluation: Jesse (Zero-Weight Empirical)\n\n*Submission to openai/simple-evals for the OpenAI SimpleQA Factuality & Hallucination Elimination Benchmark.*\n\n---\n\n## 1. General Model Information\n- **Model Name**: Jesse\n- **Display Name**: `Jesse (Zero-Weight Empirical Store)`\n- **Model ID**: `jesse`\n- **Organization**: solidSF Research ([solidsf.com](https://solidsf.com))\n- **Primary Contact**: Andrew Norris, Founder & CEO (`andrew@solidsf.com` / `research@solidsf.com`)\n- **Architecture**: Zero-Weight Discrete Empirical Store (0 Floating-Point Weights, 100% Integer RAM / Empirical Hash Invariants)\n- **Inference Cost**: $0.00 (0 GPU tokens consumed)\n- **Latency**: 0.001 ms / query\n\n---\n\n## 2. Benchmark Scorecard on SimpleQA\nEvaluated across the 500-question OpenAI SimpleQA benchmark:\n\n| Metric | Result | Benchmark Baseline (GPT-4o) | Benchmark Baseline (Claude 3.5 Sonnet) |\n| :--- | :--- | :--- | :--- |\n| **Correct Factual Answers** | **500 / 500 (100.00%)** | 38.2% | 28.4% |\n| **Hallucinated Answers** | **0 / 500 (0.00%)** | 44.4% | 51.2% |\n| **Factual Precision** | **100.00%** | ~46.2% | ~35.7% |\n| **Hallucination Elimination Bar**| **0.00% (Certified Zero)** | N/A | N/A |\n| **Execution Time (500 Queries)** | **0.0005 s total** | ~1,200 s | ~1,500 s |\n| **Cost** | **$0.00** | ~$15.00 | ~$18.00 |\n\n---\n\n## 3. API Inference Endpoint Configuration\nSimpleQA's evaluation harness (`simple-evals`) can evaluate Jesse directly via standard OpenAI-compatible completions:\n\n- **API Base URL**: `https://jesse.solidsf.com/v1`\n- **Model Name**: `jesse`\n- **API Key**: `dummy` (any non-empty bearer token)\n- **Supported Routes**:\n  - `POST https://jesse.solidsf.com/v1/chat/completions`\n\n### Reproduction Command:\n```bash\npython evaluate.py \\\n  --eval simpleqa \\\n  --model jesse \\\n  --api-base https://jesse.solidsf.com/v1 \\\n  --api-key dummy\n```\n\n---\n\n## 4. Technical Whitepapers & Citation\n- **Research Whitepaper**: [https://solidsf.com/research/jesse-zero-weight-swebench](https://solidsf.com/research/jesse-zero-weight-swebench)\n- **Live Interactive Arena**: [https://jesse.solidsf.com](https://jesse.solidsf.com)\n- **Research Mirror**: [https://jesse.solidsf.com/paper](https://jesse.solidsf.com/paper)\n\n```bibtex\n@article{norris2026jesse,\n  title={Jesse: Zero-Weight Empirical Reasoning, Discrete AST Mutation, and Weightless Perception for Autonomous Systems},\n  author={Norris, Andrew and the solidSF Research Team},\n  journal={solidSF Technical Reports},\n  year={2026},\n  url={https://jesse.solidsf.com/paper}\n}\n```\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-19T23:50:56Z",
+  "github_updated_at": "2026-09-19T23:50:56Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread-only audit. The issue is a model evaluation/submission for a claimed SimpleQA model endpoint and scorecard, not a defect report against the SimpleQA benchmark artifact, dataset, harness, or grader.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/121"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-225",
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "spider2-dbt: numeric tolerance in compare_pandas_table is defeated by its own string-based sort",
+  "summary": "Spider2-DBT compare_pandas_table sorts numeric values as strings before tolerance comparison, rejecting numerically correct unordered outputs.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/225",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/225",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-20T03:17:14Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "decision_note": "L3 source-function audit. Source-read of eval_utils.py at pinned commit cafb8673 confirmed vectors_match sorts ignore_order columns by str(x) before applying math.isclose(abs_tol=1e-2), and spider2_eval.jsonl confirmed asset001 uses ignore_order=true on real-valued columns. The issue provides a minimal reproduction where 999999999999.9999 and 1e12 are within tolerance but score 0 because string sorting pairs values with the wrong neighbor. Local import of the exact evaluator was blocked by missing pandas, but the source logic and public reproduction output match the claim. This root cause is distinct from existing issue #200/#226 row-alignment loss."
+}

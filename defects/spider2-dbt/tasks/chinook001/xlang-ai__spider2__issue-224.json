@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-224",
+  "benchmark_name": "spider2-dbt",
+  "scope": "task_specific",
+  "task_names": [
+    "chinook001"
+  ],
+  "resolution": "found",
+  "title": "spider2-dbt: chinook001's gold database does not contain the three tables it is graded on",
+  "summary": "Spider2-DBT chinook001 gold database contains only raw Chinook source tables, so all graded model tables are absent.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/224",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/224",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-20T03:17:14Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673. Source-read of spider2_eval.jsonl confirmed chinook001 grades dim_customer, fct_invoice, and obt_invoice from chinook.duckdb. The public reproduction output shows the gold file contains only raw Chinook tables and duckdb_match raises on dim_customer before any candidate output can pass. This is distinct from the existing missing-directory/mismatched-filename canonical issue #156 because the gold file exists but is an unbuilt starting database. Harbor preflight was not applicable because the audit uses the upstream gold DB/evaluator path directly."
+}

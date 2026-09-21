@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/226",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 226,
+  "title": "spider2-dbt: compare_pandas_table matches columns independently, not rows together",
+  "body": "Public repository: `xlang-ai/Spider2`, commit\n[`cafb8673`](https://github.com/xlang-ai/Spider2/tree/cafb867313aab4e674652054198f383cf4018943).\n\n**What's wrong.** `compare_pandas_table` transposes gold and candidate into per-column vectors\nand, for each gold column, accepts the delivery if *any* candidate column matches it as a\n(sorted, under `ignore_order`) multiset of values. It never checks that the candidate row\nsatisfying column A and the candidate row satisfying column B are the *same* row. A delivery\nwhose column-level value sets are each individually correct, but whose row-to-row pairing\nbetween columns is wrong, scores 1. `quickbooks002` grades `quickbooks__ap_ar_enhanced` with\n`ignore_orders: [true]` across 10 columns (`spider2_eval.jsonl` line 32), so a delivery that\nmismatches, e.g., which amount belongs to which document can still score a perfect 1.\n\n**Duplicate check.** No open or closed issue names `quickbooks002`. Issue\n[#183](https://github.com/xlang-ai/Spider2/issues/183), \"Aligned comparison\" (closed, empty\nbody), is the one existing title that plausibly names this exact class of defect, but there is\nno content in it to confirm. Worth a maintainer glance before filing; nothing visible duplicates\nthis report.\n\n**Minimal reproduction.** No database is needed; the defect is in `compare_pandas_table` itself.\nSave as `repro.py` inside `spider2-dbt/evaluation_suite/` and run `python3 repro.py`. Needs only\n`pandas`.\n\n```python\nimport sys, types\nstub = types.ModuleType(\"google.cloud.bigquery\")\ncloud = types.ModuleType(\"google.cloud\"); cloud.bigquery = stub\ngoogle = types.ModuleType(\"google\"); google.cloud = cloud\nsys.modules.setdefault(\"google\", google)\nsys.modules.setdefault(\"google.cloud\", cloud)\nsys.modules.setdefault(\"google.cloud.bigquery\", stub)\n\nimport pandas\nfrom eval_utils import compare_pandas_table\n\ngold = pandas.DataFrame({\"doc_id\": [101, 102, 103], \"amount\": [10.0, 20.0, 30.0]})\npred_wrong_pairing = pandas.DataFrame({\"doc_id\": [101, 102, 103], \"amount\": [30.0, 10.0, 20.0]})\n\nscore = compare_pandas_table(pred_wrong_pairing, gold, condition_cols=[0, 1], ignore_order=True)\nprint(\"gold:\", gold.to_dict(orient=\"list\"))\nprint(\"delivery (rows deliberately mispaired):\", pred_wrong_pairing.to_dict(orient=\"list\"))\nprint(\"score:\", score)\n\npred_actually_wrong = pandas.DataFrame({\"doc_id\": [101, 102, 103], \"amount\": [10.0, 20.0, 99.0]})\nscore_control = compare_pandas_table(pred_actually_wrong, gold, condition_cols=[0, 1], ignore_order=True)\nprint(\"control (one genuinely wrong value, correctly paired) score:\", score_control)\n```\n\nActual output:\n\n```\ngold: {'doc_id': [101, 102, 103], 'amount': [10.0, 20.0, 30.0]}\ndelivery (rows deliberately mispaired): {'doc_id': [101, 102, 103], 'amount': [30.0, 10.0, 20.0]}\nscore: 1\ncontrol (one genuinely wrong value, correctly paired) score: 0\n```\n\nThe mispaired delivery — where `doc_id 101` is attached to the wrong `amount` — scores the\nsame 1 as a fully correct delivery. Changing any single value (the control) is correctly caught,\nshowing the comparator is not simply lax everywhere; it specifically fails to enforce\nrow-to-row alignment across columns.\n\n**Evaluator code.** `evaluation_suite/eval_utils.py` `compare_pandas_table`, lines 109-149,\nspecifically the per-column independent match at lines 138-147: `t_gold_list` and\n`t_pred_list` are transposed column vectors, and each gold column is matched against *any*\nprediction column with no row-index carried between columns.\n\n**Proposed fix.** Compare rows as tuples (or a chosen row key) rather than comparing each\ncolumn's value multiset independently: for `ignore_order=True`, sort/align whole rows (all\ngraded columns together) between gold and candidate, not each column separately. This is the\ngeneral form of the fix; a column-by-column patch would not close the gap for any relation with\nmore than one graded column.\n\n**Effect on published entries.** A delivery with individually-correct column value sets but\nwrong row-to-row correspondence scores 1 as if fully correct. This does not lower any correct\nentry's score; it can raise an incorrect delivery's score above what it should be. Which\npublished entries this affects is not determined by this report — that requires re-checking\neach entry's own preserved output against its declared row keys.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T03:17:15Z",
+  "github_updated_at": "2026-09-20T03:17:15Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "spider2-dbt",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-200",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "Spider2-DBT quickbooks002 report is duplicate evidence for the existing compare_pandas_table row-alignment defect.",
+  "decision_note": "L3 source-function audit. Source-read of eval_utils.py at pinned commit cafb8673 confirmed compare_pandas_table transposes tables and matches each gold column against any predicted column independently, with no row tuple alignment. This is the same root cause as canonical defect issue #200; the new issue adds quickbooks002-specific exposure and a minimal pandas reproduction where mispaired rows score 1 while a genuinely wrong value scores 0.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/226",
+    "https://github.com/xlang-ai/Spider2/issues/200",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl"
+  ],
+  "reviewed_at": "2026-09-21T00:06:47.199Z"
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "spider2-dbt__xlang-ai__spider2__issue-227",
+  "benchmark_name": "spider2-dbt",
+  "scope": "task_specific",
+  "task_names": [
+    "zuora001"
+  ],
+  "resolution": "found",
+  "title": "spider2-dbt: zuora001's reference stores a documented Timestamp column as VARCHAR text",
+  "summary": "Spider2-DBT zuora001 grades a timestamp column stored as VARCHAR, penalizing outputs that follow the documented TIMESTAMP type.",
+  "canonical_source_url": "https://github.com/xlang-ai/Spider2/issues/227",
+  "evidence_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/227",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/gold/spider2_eval.jsonl",
+    "https://github.com/xlang-ai/Spider2/blob/cafb867313aab4e674652054198f383cf4018943/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-20T03:17:16Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "decision_note": "L3-equivalent source/data audit. The issue is explicitly Spider2-DBT at pinned commit cafb8673 and source-read of spider2_eval.jsonl confirmed zuora001 grades zuora__account_overview with account_created_at included. The public reproduction output shows the gold column is VARCHAR, a TIMESTAMP delivery scores 0, and the same values rendered to six-fraction text score 1. This is a task-specific reference-data/type defect with no existing canonical artifact for zuora001."
+}

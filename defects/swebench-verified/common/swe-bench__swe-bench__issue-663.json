@@ -14,6 +14,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-09-18T20:52:04Z",
-  "last_reviewed_at": "2026-09-20T00:05:06.494Z",
+  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
   "decision_note": "L2 source-thread audit. The issue quotes the grading fallback added for Verified issue #290 and explains that SKIPPED and FAILED are both treated as non-passing although they grade differently for PASS_TO_PASS. This is distinct from the original truncated-id dataset defect because the root cause is the fallback equivalence class. Fix PR #664 is open, so resolution is fixing."
 }
