@@ -1,0 +1,102 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/91",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 91,
+  "title": "DeepSeek V4.1 Flash",
+  "body": "need update",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5614119529",
+      "user": "XiaoXiaoJiangYun",
+      "created_at": "2026-09-10T06:22:11Z",
+      "updated_at": "2026-09-10T06:22:11Z",
+      "body": "<img width=\"1080\" height=\"554\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/263651d4-06e6-4017-b8b2-60c0fa245e33\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5614121150",
+      "user": "XiaoXiaoJiangYun",
+      "created_at": "2026-09-10T06:22:22Z",
+      "updated_at": "2026-09-10T06:22:22Z",
+      "body": "<img width=\"1080\" height=\"1110\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cef80785-3c1f-404d-a1e5-efbfbc0cd89a\" />"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5614662508",
+      "user": "coygeek",
+      "created_at": "2026-09-10T07:15:36Z",
+      "updated_at": "2026-09-10T07:15:36Z",
+      "body": "Published DeepSWE results of 74% is insane.\n\nNeed independent verification!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5619603655",
+      "user": "Perusae",
+      "created_at": "2026-09-10T13:38:51Z",
+      "updated_at": "2026-09-10T13:38:51Z",
+      "body": "> Need independent verification!\n\nNeeds a newer version of DeepSWE (with new data) because it feels like a lot of models are all producing the same scores. The benchmark is starting to lose it meaning."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5628159547",
+      "user": "hexxt-git",
+      "created_at": "2026-09-11T01:44:17Z",
+      "updated_at": "2026-09-11T01:44:17Z",
+      "body": "what effort level is the 74% from?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5628573273",
+      "user": "xzg5101",
+      "created_at": "2026-09-11T02:32:16Z",
+      "updated_at": "2026-09-11T02:32:16Z",
+      "body": "> what effort level is the 74% from?\n\nOn their huggingface model card it says \"max reasoning effort\", so I think it's safe to assume the best scores of this model are all from reasoning effort `100` (yeah, for DeepSeek V4.1 Flash the reasoning effort can be any integer between 1 and 100, interesting design decision)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5649846026",
+      "user": "Trikos",
+      "created_at": "2026-09-13T01:05:37Z",
+      "updated_at": "2026-09-13T01:05:37Z",
+      "body": "When did you post the new 4.1-flash? We are waiting, cmon guys :) I use your bench to guide my chose on which model to use to coding"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5687887691",
+      "user": "soyelmismo",
+      "created_at": "2026-09-15T20:49:36Z",
+      "updated_at": "2026-09-15T20:49:36Z",
+      "body": "1 week and still not added, but anthropic or openai models less than 1 hour and its fully added with all reasoning efforts WTF"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5729807976",
+      "user": "Perusae",
+      "created_at": "2026-09-18T12:12:41Z",
+      "updated_at": "2026-09-18T12:12:41Z",
+      "body": "We are now almost 2 weeks from the preview release. Nada updates ... \n\nIts every time the same issue here. Western models = Fast. Open Weight models = ... 3 days to several weeks.\n\nThere must be some financial motivation linked to this, because it can not be pure bias."
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5733685614",
+      "user": "soyelmismo",
+      "created_at": "2026-09-18T17:26:04Z",
+      "updated_at": "2026-09-18T17:26:04Z",
+      "body": "shame datacurve"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/91#issuecomment-5757055800",
+      "user": "Ho3einWave",
+      "created_at": "2026-09-21T07:39:10Z",
+      "updated_at": "2026-09-21T07:39:10Z",
+      "body": "datacurve doesnt have 20$ openrouter credit?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-10T06:21:28Z",
+  "github_updated_at": "2026-09-21T07:39:10Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread/comments audit. The discussion asks maintainers to add or verify DeepSeek V4.1 Flash model results and debates leaderboard timing; no benchmark artifact defect is claimed.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/91"
+  ],
+  "reviewed_at": "2026-09-22T00:05:46.155Z"
+}

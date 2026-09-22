@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/233",
+  "repo": "alibabaresearch/damo-convai",
+  "source_type": "github_issue",
+  "github_number": 233,
+  "title": "metaretriever项目数据集",
+  "body": "您好，期待您分享metaretriever项目数据集。目前metaretriever/dataset_processing/ours/download_and_preprocess_data_clean.sh里获取数据的链接http://url/to/dataset/out_clean.zip 似乎并不是一个可以下载的链接。期待您的回复。",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-21T03:09:17Z",
+  "github_updated_at": "2026-09-21T03:09:31Z",
+  "candidate_benchmark_names": [
+    "bird-bench"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The thread asks for a MetaRetriever project dataset download link under DAMO-ConvAI; it does not provide BIRD benchmark task/source/evaluator evidence and belongs outside the current bird-bench artifact scope.",
+  "checked_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/233"
+  ],
+  "reviewed_at": "2026-09-22T00:05:46.155Z"
+}

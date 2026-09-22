@@ -4,16 +4,17 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "fixed",
+  "resolution": "found",
   "title": "Make `run_report` more intuitive when using `instance_ids` filter during evaluation",
   "summary": "SWE-bench run_report ignored the instance_ids evaluation filter, producing confusing error_ids and performance accounting for filtered runs.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/207",
   "evidence_urls": [
-    "https://github.com/SWE-bench/SWE-bench/pull/207"
+    "https://github.com/SWE-bench/SWE-bench/pull/207",
+    "https://github.com/SWE-bench/SWE-bench/issues/666"
   ],
   "audit_level": "L2",
   "first_reported_at": "2024-08-15T21:09:26.000Z",
-  "last_reviewed_at": "2026-06-08T15:11:27.143Z",
+  "last_reviewed_at": "2026-09-22T00:05:46.155Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

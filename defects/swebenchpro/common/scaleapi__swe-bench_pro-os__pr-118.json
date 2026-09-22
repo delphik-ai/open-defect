@@ -14,6 +14,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-09-18T07:17:00Z",
-  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "last_reviewed_at": "2026-09-22T00:05:46.155Z",
   "decision_note": "L2 PR/source audit. The PR body says it includes the attempt prefix in each evaluation workspace path so concurrent attempts for the same instance do not share files, with a regression test. Existing swebenchpro artifacts cover other evaluator issues, not concurrent workspace collision. PR is open, so resolution is fixing."
 }

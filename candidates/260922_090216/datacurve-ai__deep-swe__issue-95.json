@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/95",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 95,
+  "title": "Grok 4.7",
+  "body": "![image](https://github.com/user-attachments/assets/34b66e31-c143-4178-ba60-3263a9259b95)\n\nGrok 4.7 self-published results are 71%. \n\nPlease test it.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-21T16:27:54Z",
+  "github_updated_at": "2026-09-21T16:27:54Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests Grok 4.7 model testing from self-published results; it is a leaderboard/model evaluation request, not a DeepSWE benchmark defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/95"
+  ],
+  "reviewed_at": "2026-09-22T00:05:46.155Z"
+}

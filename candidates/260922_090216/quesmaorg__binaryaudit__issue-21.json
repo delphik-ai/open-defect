@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/QuesmaOrg/BinaryAudit/issues/21",
+  "repo": "quesmaorg/binaryaudit",
+  "source_type": "github_issue",
+  "github_number": 21,
+  "title": "Evaluation blockers: license artifact, split manifest, native verifier entry point",
+  "body": "We are evaluating BinaryAudit as a primary suite with a fail-closed harness (pinned rev cbd86c7c, 46 task dirs inventoried). Three items block us that only you can supply:\n\n1. The README claims Apache-2.0 but the revision has no LICENSE file and the GitHub license endpoint returns 404 — could you add the license text at a pinned commit or confirm the authoritative SPDX identifier and digest?\n2. Is there an authoritative train/eval split manifest, or should all 46 tasks be treated as one evaluation set?\n3. Can you confirm the native verifier entry point (we see per-task tests/test.sh) and the reference base image / Harbor setup for isolated execution?\n\nWe will report BLOCKED rather than substitute another benchmark. Thank you.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-20T16:00:39Z",
+  "github_updated_at": "2026-09-20T16:00:39Z",
+  "candidate_benchmark_names": [
+    "binary-audit"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. This is an evaluator-access/support request about license text, split manifest, and verifier entry point. It asks maintainers for authoritative metadata but does not establish a current benchmark defect artifact.",
+  "checked_urls": [
+    "https://github.com/QuesmaOrg/BinaryAudit/issues/21"
+  ],
+  "reviewed_at": "2026-09-22T00:05:46.155Z"
+}

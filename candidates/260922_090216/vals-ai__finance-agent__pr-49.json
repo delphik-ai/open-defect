@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/vals-ai/finance-agent/pull/49",
+  "repo": "vals-ai/finance-agent",
+  "source_type": "github_pr",
+  "github_number": 49,
+  "title": "ci: add advisory Claude security review",
+  "body": "## Context\n\nAdd consistent advisory security review for pull request changes.\n\n## Solution\n\n- Call the pinned [shared workflow](https://github.com/vals-ai/.github/pull/33) for trusted internal PRs; preserve existing CI and branch protection.\n- Pass only the dedicated Anthropic review secret; forks, bots, and drafts skip. Upstream’s optional false-positive filter is currently degraded (retired model); primary analysis works.\n- Validated with actionlint and a live [Valkyrie pilot](https://github.com/vals-ai/Valkyrie/pull/826). The organization secret is configured; merge activates this caller. This draft skips rollout CI.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/.github/workflows/claude-security-review.yml b/.github/workflows/claude-security-review.yml\nnew file mode 100644\nindex 0000000..f158417\n--- /dev/null\n+++ b/.github/workflows/claude-security-review.yml\n@@ -0,0 +1,19 @@\n+name: Claude security review\n+\n+on:\n+  pull_request:\n+    types: [opened, synchronize, reopened, ready_for_review]\n+\n+permissions:\n+  contents: read\n+  pull-requests: write\n+\n+concurrency:\n+  group: claude-security-review-${{ github.event.pull_request.number }}\n+  cancel-in-progress: true\n+\n+jobs:\n+  security-review:\n+    uses: vals-ai/.github/.github/workflows/claude-security-review.yml@039371b70a5b30efb5683ff2cdce237aa16c392b\n+    secrets:\n+      ANTHROPIC_SECURITY_REVIEW_API_KEY: ${{ secrets.ANTHROPIC_SECURITY_REVIEW_API_KEY }}\n",
+  "github_state": "closed",
+  "github_created_at": "2026-09-21T07:10:20Z",
+  "github_updated_at": "2026-09-21T07:17:27Z",
+  "candidate_benchmark_names": [
+    "financeagent"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread/diff audit. The PR adds an advisory Claude security review workflow for CI; it does not affect benchmark tasks, dataset, evaluator, or scoring correctness.",
+  "checked_urls": [
+    "https://github.com/vals-ai/finance-agent/pull/49"
+  ],
+  "reviewed_at": "2026-09-22T00:05:46.155Z"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/96",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 96,
+  "title": "Mimo v2.6 (Flash and Pro)",
+  "body": "Mimo v2.6 Flash and Pro\n\nSelf-reported DeepSWE results:\n<img width=\"325\" height=\"266\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/409a4bf3-e7d7-4f02-8951-d9327a482496\" />\n\nPlease test to verify.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-21T21:32:19Z",
+  "github_updated_at": "2026-09-21T21:32:19Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests Mimo v2.6 Flash/Pro model testing from self-reported scores; it does not identify a benchmark artifact defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/96"
+  ],
+  "reviewed_at": "2026-09-22T00:05:46.155Z"
+}
