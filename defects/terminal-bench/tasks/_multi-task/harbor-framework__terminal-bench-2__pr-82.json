@@ -18,6 +18,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-09-10T14:15:41Z",
-  "last_reviewed_at": "2026-09-11T01:50:58.038Z",
+  "last_reviewed_at": "2026-09-23T00:05:40.557Z",
   "decision_note": "L3-equivalent public PR audit. The PR is for current Terminal-Bench-2.1 tasks qemu-startup and qemu-alpine-ssh, and the diff changes each task environment/Dockerfile plus tests/test.sh to remove the expired bullseye-security suite and use archive.debian.org. The PR body reports Harbor oracle verification on Ray Sandbox: before, both tasks failed in test.sh at apt-get install with expired Release/404 package errors; after the patched verifier, qemu-startup reached reward 1.0 and qemu-alpine-ssh reached pytest but exposed the distinct oracle race fixed by PR #83, with both PRs applied passing 3/3. Existing PR #31 covered a different Modal telnet-session root cause and is not the same canonical defect."
 }

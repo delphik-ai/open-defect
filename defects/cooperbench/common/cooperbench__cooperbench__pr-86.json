@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-86",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "agent: keep enqueue time on exported coop messages",
+  "summary": "CooperBench exported coop conversations can reorder replies before sends because sent_messages omitted enqueue timestamps and ISO timestamps sorted as zero.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/86",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/86",
+    "https://github.com/cooperbench/CooperBench/pull/86/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-22T04:57:13Z",
+  "last_reviewed_at": "2026-09-23T00:05:40.557Z",
+  "decision_note": "L2 PR diff/source audit. The PR is for current CooperBench coop execution. The body explains that sent_messages stored only to/content, so exported conversation rows missed the Redis enqueue timestamp; _message_timestamp_key then treated ISO timestamps as zero, allowing stable sender grouping to put a reply before the message it answered. The diff records last_enqueued_timestamp in MessagingConnector, copies it into sent_messages for plain and blocking sends, parses ISO timestamps, and adds regression tests for enqueue-time propagation and reply ordering. Existing CooperBench artifact pr-49 covers a prior mixed int/string timestamp crash that prevented trajectory export, but not this missing enqueue timestamp / ISO-as-zero conversation-order root cause. The fix PR is open, so resolution is fixing."
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "cooperbench__cooperbench__cooperbench__pr-87",
+  "benchmark_name": "cooperbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "agent: do not point at a peer branch when shared git is off",
+  "summary": "CooperBench coop prompts told agents to fetch origin/<peer> even when shared Git was disabled and origin was only a private submission remote.",
+  "canonical_source_url": "https://github.com/cooperbench/CooperBench/pull/87",
+  "evidence_urls": [
+    "https://github.com/cooperbench/CooperBench/pull/87",
+    "https://github.com/cooperbench/CooperBench/pull/87/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-22T04:57:14Z",
+  "last_reviewed_at": "2026-09-23T00:05:40.557Z",
+  "decision_note": "L2 PR diff/source audit. The PR is for current CooperBench mini_swe_agent_v2 coop runs and reports a messaging-on, shared-Git-off Click run following prompt guidance to fetch origin/<peer>, which failed with unknown revision because each agent origin was a private submission remote. The diff gates peer branch guidance on git_enabled, renders prompts for all Git/messaging configurations, revises gh shim guidance, and adds regression tests for shared-git-off prompt visibility and peer-exit messages. Existing CooperBench artifacts cover peer-liveness/publication and the read-only shared remote prompt, but not this private-origin peer-branch guidance root cause. The fix PR is open, so resolution is fixing."
+}

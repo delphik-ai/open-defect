@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/97",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 97,
+  "title": "[Feature] Persist selected leaderboard configurations locally",
+  "body": "## Summary\n\nAdd a first-party way to save the selected entries in the leaderboard Configs menu and restore them after refreshes and in new tabs.\n\n## Proposed UI\n\nAdd a `Save` button beside the existing `Select all` and `Clear` buttons.\n\nWhen the user clicks `Save`:\n\n- Store the current configuration selection locally.\n- Show brief confirmation such as `Saved`.\n- Keep the current selection unchanged.\n\nOn page load, restore the saved selection after leaderboard configuration data has loaded.\n\n## New models and configurations\n\nNew entries should be selected by default so users do not miss newly added models or effort levels.\n\nThe saved state should track:\n\n- `selected`: entries selected at the last save.\n- `known`: every entry that existed at the last save.\n\nRestore with:\n\n```text\nselected entries + current entries that are not in known\n```\n\nThis keeps existing opt-outs disabled while automatically showing new entries. A user can disable a new entry and click `Save` to make that opt-out persistent.\n\nUse the stable internal configuration ID, such as the existing `config` field, rather than display labels, prices, or scores.\n\n## Suggested localStorage shape\n\n```json\n{\n  \"version\": 1,\n  \"selected\": [\"stable-config-id-1\"],\n  \"known\": [\"stable-config-id-1\", \"stable-config-id-2\"]\n}\n```\n\nUse a site-scoped key such as:\n\n```js\nconst STORAGE_KEY = \"deepswe:leaderboard-configs:v1\";\n```\n\n## Implementation sketch\n\n```js\nfunction restoreConfigs(currentConfigs, defaultSelectedIds) {\n  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || \"null\");\n\n  if (!saved) {\n    return new Set(defaultSelectedIds);\n  }\n\n  const currentIds = currentConfigs.map((config) => config.config);\n  const selected = new Set(saved.selected || []);\n  const known = new Set(saved.known || currentIds);\n\n  return new Set(\n    currentIds.filter((id) => selected.has(id) || !known.has(id))\n  );\n}\n\nfunction saveConfigs(currentConfigs, selectedIds) {\n  localStorage.setItem(STORAGE_KEY, JSON.stringify({\n    version: 1,\n    selected: [...selectedIds],\n    known: currentConfigs.map((config) => config.config),\n  }));\n}\n```\n\n## Acceptance criteria\n\n- Saved selections survive refreshes and new tabs.\n- No saved state preserves the current default behavior.\n- New models and configuration options are selected automatically.\n- A newly added entry can be disabled and permanently saved as an opt-out.\n- Removed entries are ignored safely.\n- Invalid localStorage data does not prevent the leaderboard from loading.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-22T01:05:55Z",
+  "github_updated_at": "2026-09-22T01:05:55Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests a leaderboard UI feature to persist selected configuration filters locally. It is product functionality, not benchmark defect evidence.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/97"
+  ],
+  "reviewed_at": "2026-09-23T00:05:40.557Z"
+}

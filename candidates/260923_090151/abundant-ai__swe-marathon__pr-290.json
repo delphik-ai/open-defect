@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/pull/290",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_pr",
+  "github_number": 290,
+  "title": "Update README.md",
+  "body": "<!-- Complete this template for task additions or task updates. -->\r\n\r\n## Summary\r\n\r\nWhat task are you adding or updating, and what changed?\r\n\r\n## Checklist\r\n\r\n- [ ] This PR updates exactly one task directory.\r\n- [ ] All behavior checked in `tests/` is described in `instruction.md`.\r\n- [ ] All required output files are named in `instruction.md`.\r\n- [ ] `instruction.md` uses absolute paths.\r\n- [ ] `environment/Dockerfile` does not copy `solution/` or `tests/`.\r\n- [ ] `task.toml` has non-placeholder `difficulty_explanation`, `solution_explanation`, and `verification_explanation`.\r\n- [ ] `reward.txt` is binary (0 or 1). Partial scores go to `metrics.json`.\r\n- [ ] `solution/` contains readable code files (no `.patch`/`.diff`; no `patch -p` in `solve.sh`).\r\n- [ ] I ran the local static checks for this task.\r\n- [ ] I ran `harbor run -p tasks/<task> --agent oracle`.\r\n- [ ] I ran `harbor run -p tasks/<task> --agent nop`.\r\n\r\n## Local Validation\r\n\r\nList the commands you ran locally and any notable results.\r\n\r\n## Agent Notes\r\n\r\nIf you ran a strong model on the task, summarize the result here. If not, say so.\r\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Documentation-only README update with no runtime or behavioral impact.\n> \n> **Overview**\n> Adds a **News** entry at the top of `README.md` announcing that SWE-Marathon is featured on the **Grok 4.7** model card (September 2026), with a link to the xAI PDF.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit 8d23c915f539424ce87d2d56b5141311b69447be. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex 673f1fc6b..8b4c051eb 100644\n--- a/README.md\n+++ b/README.md\n@@ -12,6 +12,7 @@\n \n \n ## News\n+- [09/2026] 🔥 Featured on the [Grok 4.7 model card](https://media.x.ai/v1/website/4p7card-5eccc980.pdf)!\n - [09/2026] 🚀 Featured on the [Qwen3.8-Max model card](https://x.com/Alibaba_Qwen/status/2094968708288680276?s=20)!\n - [08/2026] 🔶 Featured on the [Hy4 preview model card](https://hy.tencent.ai/research/hy4-preview)!\n - [08/2026] ⭐ Featured on the [GLM 5.3 model card](https://z.ai/blog/glm-5.3)!\n",
+  "github_state": "closed",
+  "github_created_at": "2026-09-21T23:42:32Z",
+  "github_updated_at": "2026-09-21T23:53:46Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread/diff audit. The PR is a README-only news entry adding a model-card mention for SWE-Marathon. It does not claim a benchmark artifact, task, harness, evaluator, or scoring defect.",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/290",
+    "https://github.com/abundant-ai/swe-marathon/pull/290/files"
+  ],
+  "reviewed_at": "2026-09-23T00:05:40.557Z"
+}

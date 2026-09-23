@@ -14,6 +14,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-02-12T09:12:57Z",
-  "last_reviewed_at": "2026-09-19T00:09:21.964Z",
+  "last_reviewed_at": "2026-09-23T00:05:40.557Z",
   "decision_note": "L2 thread/source audit. The issue provides SWT-Bench log examples where Django emits multiple results on one line and the parser drops tests or mishandles FAIL. Existing swtbench-verified artifacts cover other parser/setup issues, not this Django per-test parsing root cause. Fix PR #50 is open, so resolution is fixing."
 }

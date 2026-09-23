@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1370",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1370,
+  "title": "[BFCL]  Non-English (Chinese) prompts in the \"live\" test categorie",
+  "body": "**Describe the issue**\n\n35 test cases in the user-contributed `live_*` categories have prompts written in\nChinese, while the rest of the dataset is English.\nIs this intended to be part of the `live_*` categories?\n\n**ID datapoint**\n\nHere is an example of the Chinese prompt.\n\nhttps://github.com/ShishirPatil/gorilla/blob/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard/bfcl_eval/data/BFCL_v4_live_simple.json#L14\n\nHere is cases where the whole prompt is non-English\n\n| Category | Count | IDs |\n| --- | --- | --- |\n| `live_irrelevance` | 23 | `34-2-22`, `50-2-38`, `81-2-69`, `88-2-76`, `125-11-0`, `127-11-2`, `128-11-3`, `130-11-5`, `132-11-7`, `133-12-0`, `161-20-0`, `163-20-2`, `283-65-0`, `383-81-44`, `406-88-0`, `765-274-1`, `827-320-0`, `830-323-0`, `834-325-1`, `860-349-0`, `861-349-1`, `862-349-2`, `874-359-0` |\n| `live_simple` | 4 | `13-3-9`, `28-7-1`, `124-80-0`, `165-98-0` |\n| `live_multiple` | 5 | `6-3-1`, `7-3-2`, `186-81-0`, `196-88-0`, `197-89-0` |\n| `live_parallel` | 1 | `0-0-0` |\n| `live_parallel_multiple` | 1 | `1-1-0` |\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-09-22T00:23:29Z",
+  "github_updated_at": "2026-09-22T04:42:26Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L2",
+  "decision_note": "L2 source-read audit. The issue is in-scope for BFCL live categories and names 35 live_* datapoints with Chinese prompts, including a public BFCL_v4_live_simple source line. The source evidence can verify non-English prompt text, but the thread asks whether this is intended and contains no maintainer acknowledgement, fix, scoring failure, task-answer mismatch, or documentation rule proving that user-contributed live prompts must be English. Without that defect-status evidence, it cannot be confirmed or linked as duplicate evidence.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1370",
+    "https://github.com/ShishirPatil/gorilla/blob/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard/bfcl_eval/data/BFCL_v4_live_simple.json#L14"
+  ],
+  "reviewed_at": "2026-09-23T00:05:40.557Z"
+}
