@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/231",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 231,
+  "title": "Request for Spider2 Secure Data Share access — email unanswered",
+  "body": "Hi Spider2 team,\n\nI am currently using Spider 2.0-Lite for research experiments in an ongoing paper.\n\nI submitted the Snowflake access form and also emailed the listed contact for Secure Data Share access, but have not received a response.\n\nI have already created my own Snowflake account in AWS us-west-2 (Oregon), as required by the data hosting guideline.\n\nCould someone from the team please help process the Secure Data Share request?\n\nThank you!",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-23T01:50:00Z",
+  "github_updated_at": "2026-09-23T01:50:00Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue requests Spider2 Secure Data Share / Snowflake access for Spider 2.0-Lite experiments. The watched benchmark artifact here is spider2-dbt, and Snowflake/Secure Data Share access belongs to the Spider2-Snow/Snowflake setup path, not current spider2-dbt defect scope.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/231"
+  ],
+  "reviewed_at": "2026-09-24T00:06:58.055Z"
+}

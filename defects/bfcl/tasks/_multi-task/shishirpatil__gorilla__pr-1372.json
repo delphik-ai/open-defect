@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__pr-1372",
+  "benchmark_name": "bfcl",
+  "scope": "task_specific",
+  "task_names": [
+    "bfcl-live-simple-10-3-6",
+    "bfcl-live-simple-42-17-2",
+    "bfcl-live-simple-45-18-1",
+    "bfcl-simple-python-35"
+  ],
+  "resolution": "fixing",
+  "title": "[BFCL] Fix ground truth that contradicts the user or the schema",
+  "summary": "BFCL v4 simple/live rows contain ground-truth or schema text contradictions for location, dehumidify mode, target temperature, and 24-hour operating hours.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/pull/1372",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1372",
+    "https://github.com/ShishirPatil/gorilla/pull/1372/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-23T16:37:49Z",
+  "last_reviewed_at": "2026-09-24T00:06:58.055Z",
+  "decision_note": "L2 PR/source audit. The PR body and diff map to current BFCL v4 task rows: live_simple_10-3-6 adds Yosemite National Park as an accepted location, live_simple_42-17-2 changes COOL to AIR_DRY and makes coolTargetTemperature optional, live_simple_45-18-1 changes targetTemperature from 22 to 20, and simple_python_35 fixes the 24-hour description from 11 PM to 11 AM. Existing artifact PR #870 covers a different live_simple_45-18-1 root cause (currentJobMode vs airConJobMode), so this multi-task gold/schema contradiction is new. PR is open, so resolution is fixing."
+}

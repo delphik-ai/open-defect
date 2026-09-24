@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/33",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 33,
+  "title": "MMLU answer extraction regex fails with repeated \"Answer: LETTER\" pattern",
+  "body": "# Description\r\n\r\nThe regular expression used to extract answers for MMLU in `common.py` fails when the pattern \"Answer: LETTER\" appears multiple times in the LLM output, affecting model performance.\r\n\r\n# Example\r\n\r\nThe following example demonstrates the issue with a German output. The model correctly selects \"C\", but the regex extracts \"A\" as the answer.\r\n\r\n![unnamed](https://github.com/user-attachments/assets/59fe1617-451f-46fa-8614-913205ae6b3f)\r\n\r\n# Explanation\r\n\r\nThe regular expression mistakenly only considers the first occurrence of \"Answer: LETTER\".\r\n\r\nhttps://github.com/openai/simple-evals/blob/a8e85cc8a5dea497d915f870895250e07f9cc737/common.py#L25-L71\r\n\r\nIn the German example above, it extracts the answer \"A\" from \"Antwort:\\n\\nAntwort: C\" because \"**Antwort:\\n\\nA**ntwort: C\".\r\n\r\n# Impact\r\n\r\nThis bug significantly impacts the evaluation results for certain languages. In my experiments, German experienced this issue with ~20% of the samples, and Indonesian showed a ~4% impact. Other languages seem less affected.",
+  "comments": [
+    {
+      "url": "https://github.com/openai/simple-evals/issues/33#issuecomment-2644069208",
+      "user": "lucasresck",
+      "created_at": "2025-02-07T20:32:17Z",
+      "updated_at": "2025-02-07T20:32:17Z",
+      "body": "A recent commit (https://github.com/openai/simple-evals/commit/18eba9d23d3a2fb39b5e8cf31036ea07148eae84) approached this issue partially by avoiding new lines between \"Answer:\" and the letter. So, \"**Antwort:\\n\\nA**ntwort: C\" is not extracted anymore. However, \"**Antwort: A**ntwort: C\" still is.\n\nI think the issue and the pull request are still valid, although I have not assessed the impact of the new bug. I updated the pull request so it can be merged with no conflicts."
+    },
+    {
+      "url": "https://github.com/openai/simple-evals/issues/33#issuecomment-5799270903",
+      "user": "shaurya416",
+      "created_at": "2026-09-23T17:08:51Z",
+      "updated_at": "2026-09-23T17:08:51Z",
+      "body": "The same missing boundary also gives credit where no option was named, which the last-match change in #34 does not fix. Both `ANSWER_PATTERN_MULTICHOICE` (`common.py:26`, used by `gpqa_eval.py:59-61`) and `MULTILINGUAL_ANSWER_PATTERN_TEMPLATE` (`common.py:28-30`, used by `mmlu_eval.py:108-114`) end at the capture group, so the first letter of whatever word follows `Answer:` becomes the choice. That is also why `Antwort: A|ntwort` is read as `A` in the example here.\n\nRun with the real patterns, `normalize_response` and `normalize_extracted_answer` at `652c89d`. The results are identical for MMLU and GPQA, with or without #34 applied:\n\n| response | gold | extracted | score |\n|---|---|---|---|\n| `Answer: Cannot be determined from the question.` | C | C | **1.0** |\n| `Answer: Definitely the second option` | D | D | **1.0** |\n| `Answer: Both A and C seem plausible` | B | B | **1.0** |\n| `Answer: Choice B` | B | C | 0.0 |\n| `Answer: B` | B | B | 1.0 |\n| `Answer: $C$` | C | C | 1.0 |\n| `Answer: A` | B | A | 0.0 |\n\nA smaller consistency issue on the same line: the pattern is `(?i)`, so `Answer: b` captures `b`, but the comparison with the uppercase gold is case-sensitive, so it scores 0. The prompt does ask for an uppercase letter, so that half is arguable.\n\nA fix that covers both, and the example in this issue: add `(?![A-Za-z])` after the capture group in both patterns and upper-case the capture (`normalize_extracted_answer(m.group(1)).upper()` for MMLU, `m.group(1).upper()` for GPQA). `B`, `$B$`, `B)`, `b` and `Ｂ` still extract B. The refusal, hedge and `Choice B` lines extract nothing. `Antwort: Antwort: C` extracts C. I have not measured how often real model outputs hit this. With the README freezing MMLU/GPQA results, I am offering it as a correctness fix for people who still run the reference extractor, not as a claim about published numbers."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2024-12-10T18:37:25Z",
+  "github_updated_at": "2026-09-23T17:08:51Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue and 2026 comment concern MMLU/GPQA multiple-choice answer extraction regexes. The watched benchmark for openai/simple-evals here is simpleqa, so the defect is outside the current tracked benchmark variant.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/33"
+  ],
+  "reviewed_at": "2026-09-24T00:06:58.055Z"
+}

@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/scaleapi/SWE-bench_Pro-os/issues/120",
+  "repo": "scaleapi/swe-bench_pro-os",
+  "source_type": "github_issue",
+  "github_number": 120,
+  "title": "[Broken task] openlibrary 630221ab (V2): instruction says a reused topic errors only for a different work, but the test uses the same work",
+  "body": "**Task:** `instance_internetarchive__openlibrary-630221ab686c64e75a2ce253c893c033e4814b2e-v93c53c13d5f9b383ebb411ee7750b49dcd1a34c6` (V2, `v2/tasks` at `v2.0.0` / `66f9276`)\n\nThe instruction limits the duplicate-topic error to a topic reused **for a different work**:\n\n> `instruction.md` L29: \"`Bestbook.add` must raise `Bestbook.AwardConditionsError` when the patron has already used the given topic for a different work.\"\n>\n> L53: \"... or reusing a topic the patron has already nominated for a different work, must raise `Bestbook.AwardConditionsError`.\"\n\n`test_bestbook_add_raises_on_duplicate_topic` (its docstring also says \"for a different work\") nominates the **same** work:\n\n```python\npatch('openlibrary.core.bestbook.Bestbook.get_awards',\n      side_effect=lambda **kw: (\n          [web.storage(nomination_id=1, work_id='OL999W', topic='Fiction')]\n          if kw.get('topic') is not None else []\n      )),\n...\nwith pytest.raises(Bestbook.AwardConditionsError):\n    Bestbook.add(username='testuser', work_id='OL999W', topic='Fiction')\n```\n\nThe gold patch raises whenever any nomination exists for the topic (`if awarded_topic:`), whatever the work. An implementation that follows the instruction and compares work ids does not raise here, so it fails the test.\n\n**Suggested fix:** use a different work in the test (e.g. `work_id='OL1000W'` in the `add` call), or drop \"for a different work\" from the instruction (both places) so it matches the gold behaviour.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-23T23:00:48Z",
+  "github_updated_at": "2026-09-23T23:00:48Z",
+  "candidate_benchmark_names": [
+    "swebenchpro"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebenchpro",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "swebenchpro__scaleapi__swe-bench_pro-os__issue-120",
+  "task_names": [
+    "instance_internetarchive__openlibrary-630221ab686c64e75a2ce253c893c033e4814b2e-v93c53c13d5f9b383ebb411ee7750b49dcd1a34c6"
+  ],
+  "resolution": "fixing",
+  "summary": "SWE-bench Pro openlibrary 630221ab tests require a duplicate-topic error on the same work although the instruction limits the error to different works.",
+  "decision_note": "L3-equivalent public source/replay audit. The issue quotes the V2 task instruction and hidden test for instance_internetarchive__openlibrary-630221ab..., showing the instruction says duplicate topics are errors only for a different work while the test reuses the same work id. Fix PR #122 changes the test to a different work and reports fresh-box replay: gold passes before/after, empty fails, and an instruction-following different-work-only patch changes from fail to pass. Existing swebenchpro artifacts cover other task/harness root causes, not this openlibrary instruction/test contradiction. PR #122 is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/scaleapi/SWE-bench_Pro-os/issues/120",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/122",
+    "https://github.com/scaleapi/SWE-bench_Pro-os/pull/122/files"
+  ],
+  "reviewed_at": "2026-09-24T00:06:58.055Z"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/122",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 122,
+  "title": "UnboundLocalError: actual_queried_prompt_messages in mgsm_eval.py when using non-OpenAI sampler",
+  "body": "this command triggered it ; python -m simple_evals.simple_evals --model claude-3-7-sonnet-20250219 --eval mgsm\n\n<img width=\"1920\" height=\"1080\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/c1d87f8c-4ab2-4f66-89d6-f3b29906aaf7\" />",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-23T09:49:32Z",
+  "github_updated_at": "2026-09-23T09:49:32Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The candidate repo maps to the tracked simpleqa benchmark, but this issue concerns MGSM/non-OpenAI sampler plumbing in mgsm_eval.py. It may be a simple-evals bug, but it is outside the current SimpleQA benchmark artifact scope.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/122"
+  ],
+  "reviewed_at": "2026-09-24T00:06:58.055Z"
+}
