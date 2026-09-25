@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Proximal-Labs/frontier-swe/issues/86",
+  "repo": "proximal-labs/frontier-swe",
+  "source_type": "github_issue",
+  "github_number": 86,
+  "title": "Re-running FrontierSWE v1 tasks produces high variance in the results",
+  "body": "Hi there,\n\nThanks for this great project.\n\nWe are trying to run the v1 tasks in this repo to reproduce your results, and are seeing high variance in the results. Can you please confirm if this is expected based on your own evaluations? We suspect this might be the case due to the large published gaps between mean and max scores ([example](https://www.frontierswe.com/v1/granite-mamba2-inference-optimization))\n\nTo give one example of what we are seeing:\n\n**Evaluation**\n- Task: [Granite Mamba2 Inference Optimization task](https://www.frontierswe.com/v1/granite-mamba2-inference-optimization)\n- Agent: Opus 4.8, effort = max, Claude Code used as harness\n\n**Results**\n- For n = 6, we had 5/6 correctness\nFor the 5 correct trials:\n- Mean reward: 0.6966\n- Max reward: 1.106\n- 95% CI: (0.413, 0.981)\n\nYour leaderboard for this task shows mean: 0.793 and max: 1.185. \n\nWould you describe the variance we're seeing as atypical? Would you be able to share your full results (5 values per model/task) for the published v1 leaderboard?\n\nThank you,\n@lucyhe, @stevemessick",
+  "comments": [
+    {
+      "url": "https://github.com/Proximal-Labs/frontier-swe/issues/86#issuecomment-5809654752",
+      "user": "Universeyi",
+      "created_at": "2026-09-24T07:20:30Z",
+      "updated_at": "2026-09-24T07:20:30Z",
+      "body": "A data point that may help with the question of whether this is atypical: the board's mean for this task (0.793) sits inside your 95% interval (0.413–0.981). So your re-run does not contradict the published number. It shows how wide the interval around a 5-trial mean is on this task, and the board does not display that interval. Best@5 and max-over-6 are also not directly comparable, because the maximum of a sample grows with the number of trials.\n\n+1 on the request for the per-trial values. The traces pages already render per-trial rewards, cost, tokens and time for every model × task × trial, but there is no downloadable file. A flat file (model, task, trial index, reward, correctness components, cost, duration) would let anyone compute, per model, how far apart two mean@5 entries must be before the gap is outside what re-running alone produces. That is the number #86 is really asking about.\n\nFor reference, this is the same analysis on tau2-bench's released four-trial files: sierra-research/tau2-bench#540. There, two single runs had to differ by 7 to 11 points before the gap was outside noise. FrontierSWE's scores are continuous and can exceed 1, so the method would need that adaptation. I'm happy to run it and share the results once a file exists.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-04T22:36:23Z",
+  "github_updated_at": "2026-09-24T07:20:30Z",
+  "candidate_benchmark_names": [
+    "frontier-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Thread asks whether observed FrontierSWE v1 re-run variance is expected and requests per-trial leaderboard values. The body/comment do not identify a benchmark artifact, harness, evaluator, task, or data root cause that is wrong; the cited confidence interval contains the published mean. This is a reproducibility/statistical-interpretation discussion, not a benchmark defect artifact.",
+  "checked_urls": [
+    "https://github.com/Proximal-Labs/frontier-swe/issues/86"
+  ],
+  "reviewed_at": "2026-09-25T00:05:30.419Z"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-669",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "task_names": [
+    "scikit-learn__scikit-learn-14710",
+    "django__django-7530",
+    "django__django-10097",
+    "django__django-13023",
+    "django__django-14122",
+    "django__django-14315",
+    "django__django-14404",
+    "django__django-15569",
+    "django__django-15863"
+  ],
+  "resolution": "found",
+  "title": "Nine Verified instances have their solution reachable from problem_statement",
+  "summary": "Nine SWE-bench Verified instances expose their own fix through problem_statement diff text or self-linked gold PRs.",
+  "defect_type_main": "Data contamination",
+  "defect_type_sub": "Problem statement leaks solution",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/669",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/669",
+    "https://github.com/bugyal/skeptic/tree/main/results/swe-bench-verified/2026-09-25-leakage"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-24T19:55:33Z",
+  "last_reviewed_at": "2026-09-25T00:05:30.419Z",
+  "decision_note": "L3-equivalent public static reproduction audit. The issue explicitly attributes to SWE-bench_Verified, names nine current instance ids, and reports loading the current SWE-bench/SWE-bench_Verified split plus running skeptic lint. One task, scikit-learn__scikit-learn-14710, includes a problem_statement diff at the same file/hunk as the gold patch; eight Django tasks include PR URLs whose numbers match their own gold patch instance numbers. The linked public analysis output narrows 69 leakage signals to these nine unambiguous findings. Existing SWE-bench Verified artifacts cover hints filtering, future git state, and stdout/exit-code grading spoofing, but not solution reachability from problem_statement itself. No fix PR is linked, so resolution is found."
+}

@@ -4,7 +4,7 @@
   "benchmark_name": "swebench-verified",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "found",
+  "resolution": "fixing",
   "title": "Exit-code spoof guard (#620) reads the first \">>>>> Test Exit Code:\" marker in the log, so a patch that prints the marker during the test run is scored resolved",
   "summary": "SWE-bench Verified exit-code spoof guard trusts the first agent-controlled Test Exit Code marker, allowing forged pass logs to bypass PR #620.",
   "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/667",
@@ -12,10 +12,11 @@
     "https://github.com/SWE-bench/SWE-bench/issues/667",
     "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/grading.py",
     "https://github.com/SWE-bench/SWE-bench/blob/main/swebench/harness/utils.py",
-    "https://github.com/SWE-bench/SWE-bench/pull/620"
+    "https://github.com/SWE-bench/SWE-bench/pull/620",
+    "https://github.com/SWE-bench/SWE-bench/pull/668"
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-09-23T18:20:36Z",
-  "last_reviewed_at": "2026-09-24T00:06:58.055Z",
-  "decision_note": "L3-equivalent public reproduction audit. The issue targets current SWE-bench harness code after PR #620 and reports running copies of parse_test_exit_code, the START/END slice, parse_log_pytest, get_eval_report, and an end-to-end record_test_exit_code-generated bash script. A forged Test Exit Code: 0 printed inside the agent-controlled region is parsed before the real nonzero marker and grades RESOLVED_FULL; without the forged marker the same failing run is rejected. Existing PR #620 canonical covers the pre-fix absence of any exit-code cross-check; this is a distinct residual first-marker/slice trust bug. The SWE-bench repo also maps to Multilingual, but the thread cites the shared current SWE-bench harness used by Verified and the prior Verified #620 guard, so benchmark attribution is swebench-verified. No fix PR is linked, so resolution is found."
+  "last_reviewed_at": "2026-09-25T00:05:30.419Z",
+  "decision_note": "L3-equivalent public reproduction audit. The issue targets current SWE-bench harness code after PR #620 and reports running copies of parse_test_exit_code, the START/END slice, parse_log_pytest, get_eval_report, and an end-to-end record_test_exit_code-generated bash script. A forged Test Exit Code: 0 printed inside the agent-controlled region is parsed before the real nonzero marker and grades RESOLVED_FULL; without the forged marker the same failing run is rejected. Existing PR #620 canonical covers the pre-fix absence of any exit-code cross-check; this is a distinct residual first-marker/slice trust bug. The SWE-bench repo also maps to Multilingual, but the thread cites the shared current SWE-bench harness used by Verified and the prior Verified #620 guard, so benchmark attribution is swebench-verified. Fix PR #668 is open, so resolution is fixing."
 }

@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1373",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "[BFCL] resolve_ast_by_type decodes every unary operator as negation, so +3 and ~3 are both read as -3",
+  "summary": "BFCL prompt-mode AST decoding treats every unary operator as negation, causing signed numeric calls to be scored or executed incorrectly.",
+  "defect_type_main": "Evaluation correctness",
+  "defect_type_sub": "Parser/decoder bug",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1373",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1373",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/model_handler/utils.py",
+    "https://github.com/ShishirPatil/gorilla/pull/1374",
+    "https://github.com/ShishirPatil/gorilla/pull/1374/files"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-24T17:07:43Z",
+  "last_reviewed_at": "2026-09-25T00:05:30.419Z",
+  "decision_note": "L3-equivalent public reproduction audit. The issue targets current BFCL code in berkeley-function-call-leaderboard/bfcl_eval/model_handler/utils.py and shows resolve_ast_by_type handles ast.UnaryOp as -value.operand.value without reading value.op. It reports executing the extracted decoder/checker source against current BFCL_v4 gold rows: +3 and ~3 are decoded as -3, simple_python_3 accepts b=+3/~3 against negative gold, simple_python_1 rejects +5, prompt-mode execute rewrites amount=+50 to amount=-50, and a sweep shows all 27 negative-only numeric params accept +abs(v) while 2400 positive params reject +v. No existing bfcl canonical covers this shared evaluator decoder root cause. PR #1374 is open as the linked fix, so resolution is fixing."
+}
