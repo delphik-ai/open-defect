@@ -1,0 +1,53 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/98",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 98,
+  "title": "Anthropic Claude Opus 5.5",
+  "body": "Announcement:\nhttps://www.anthropic.com/claude-opus-5-5\n\nNo self-reported DeepSWE results from Anthropic. \n\nPlease test. ",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/98#issuecomment-5784396205",
+      "user": "efemaer",
+      "created_at": "2026-09-22T21:23:50Z",
+      "updated_at": "2026-09-22T21:23:50Z",
+      "body": "> No self-reported DeepSWE results from Anthropic.\n\nThey did, but it's buried in the Opus 5.5 model card: https://www-cdn.anthropic.com/fc1b44717c85dc068bc6ba5024219938094694bd/Claude%20Opus%205.5%20System%20Card.pdf\n\n<img width=\"655\" height=\"142\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/e3ea1290-700f-4e94-a4cc-2f9c176d9964\" />\n"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/98#issuecomment-5787169156",
+      "user": "PsychedelicShayna",
+      "created_at": "2026-09-23T01:02:18Z",
+      "updated_at": "2026-09-23T01:02:18Z",
+      "body": "Once again, 74% same number every single time. I strongly suspect it's the ceiling. I think the reason that no new self-tests are being submitted is because they are likely directing their effort towards coming up with a v1.2 of the Benchmark because v1.1 is no longer representative, just as v1.0 got saturated, v1.1 ran its course. I mean, all the recent models that DID appear, like Astra, or Gemini 3.8 (lol!) and back when the 73/74% trend started with Opus, these were all benchmark results given by the providers. If you try to get the run results from them you'll get a 403. They're not going to *not* publish the figures if a company already ran the tests (Google) and the numbers check out (benchmaxxing to remain relevant) it's not like they're going to refuse, but they're also not going to go out of their way to test Gemini 3.8 themselves meanwhile not test Fable 5.1 this entire time like, at all.\n\nIt's saturated. The frontier is accelerating faster than we can come up with new benchmarks lol. ARC AGI got oneshotted, welp, need a new AGI bench!"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/98#issuecomment-5799893190",
+      "user": "waaeel",
+      "created_at": "2026-09-23T17:43:46Z",
+      "updated_at": "2026-09-23T17:43:46Z",
+      "body": "what about effort levels ?"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/98#issuecomment-5833823694",
+      "user": "elliott-93",
+      "created_at": "2026-09-25T14:11:14Z",
+      "updated_at": "2026-09-25T14:11:14Z",
+      "body": "> Once again, 74% same number every single time. I strongly suspect it's the ceiling. I think the reason that no new self-tests are being submitted is because they are likely directing their effort towards coming up with a v1.2 of the Benchmark because v1.1 is no longer representative, just as v1.0 got saturated, v1.1 ran its course. I mean, all the recent models that DID appear, like Astra, or Gemini 3.8 (lol!) and back when the 73/74% trend started with Opus, these were all benchmark results given by the providers. If you try to get the run results from them you'll get a 403. They're not going to _not_ publish the figures if a company already ran the tests (Google) and the numbers check out (benchmaxxing to remain relevant) it's not like they're going to refuse, but they're also not going to go out of their way to test Gemini 3.8 themselves meanwhile not test Fable 5.1 this entire time like, at all.\n> \n> It's saturated. The frontier is accelerating faster than we can come up with new benchmarks lol. ARC AGI got oneshotted, welp, need a new AGI bench!\n\nHow many people are using Max thinking for Opus as their day driver?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-22T18:22:41Z",
+  "github_updated_at": "2026-09-25T14:11:14Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks maintainers to test Anthropic Claude Opus 5.5 and contains model/news/result discussion, not a concrete DeepSWE task, harness, dataset, evaluator, or scoring defect claim.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/98"
+  ],
+  "reviewed_at": "2026-09-26T00:05:41.796Z"
+}

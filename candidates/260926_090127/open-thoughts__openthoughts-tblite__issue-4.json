@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/4",
+  "repo": "open-thoughts/openthoughts-tblite",
+  "source_type": "github_issue",
+  "github_number": 4,
+  "title": "bloom-filter-cache-penetration-prevention: grader fails for every solution since redis-py 8",
+  "body": "`tests/test.sh` pins `fakeredis==2.25.0` but not `redis`, so the grader venv now resolves `redis==8.1.0`. redis-py 8 sends `HELLO` on connect, which fakeredis 2.25.0 rejects, so every test errors in the `client` fixture before the solution is imported:\n\n```\n/tests/test_outputs.py:85: fakeredis.FakeRedis(server=_FAKEREDIS_SERVER, decode_responses=True).flushall()\nE   redis.exceptions.ResponseError: unknown command `hello`, with args beginning with:\n```\n\nThe task scored 0 in 1,865 of our trials across many models. `redis<8` makes the fixture work again; pinning `redis==5.2.0` in `test.sh`, as the environment's Dockerfile already does, would fix it.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-25T22:56:40Z",
+  "github_updated_at": "2026-09-25T22:56:40Z",
+  "candidate_benchmark_names": [
+    "openthoughts-tblite"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "openthoughts-tblite",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "openthoughts-tblite__open-thoughts__openthoughts-tblite__issue-4",
+  "task_names": [
+    "bloom-filter-cache-penetration-prevention"
+  ],
+  "resolution": "found",
+  "summary": "The bloom-filter-cache-penetration-prevention grader pins fakeredis 2.25.0 but leaves redis unpinned, so current redis-py 8.1.0 makes the shared FakeRedis fixture fail before solutions run.",
+  "decision_note": "L3 minimal dependency reproduction plus source audit. Public test.sh installs fakeredis==2.25.0 without pinning redis, while the task Dockerfile pins redis==5.2.0 only for the application image. Public test_outputs.py calls fakeredis.FakeRedis(...).flushall() in the client fixture before loading a solution. Minimal reproduction command `python3 -m venv /tmp/ot-redis-repro && /tmp/ot-redis-repro/bin/python -m pip install fakeredis==2.25.0 redis==8.1.0 && /tmp/ot-redis-repro/bin/python -c ...flushall()` raised `redis.exceptions.ResponseError: unknown command hello`, matching the issue. No existing OpenThoughts-TBLite artifact covers this task/root cause.",
+  "checked_urls": [
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/4",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/bloom-filter-cache-penetration-prevention/tests/test.sh",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/bloom-filter-cache-penetration-prevention/environment/Dockerfile",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/bloom-filter-cache-penetration-prevention/tests/test_outputs.py"
+  ],
+  "reviewed_at": "2026-09-26T00:05:41.796Z"
+}

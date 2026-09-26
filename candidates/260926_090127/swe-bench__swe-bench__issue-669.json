@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/669",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 669,
+  "title": "Nine Verified instances have their solution reachable from problem_statement",
+  "body": "### Summary\n\nNine instances in `SWE-bench_Verified` have their solution reachable from\n`problem_statement` itself: one contains the gold patch as a diff, and eight\nlink the pull request that is their own gold patch.\n\nThis is adjacent to work already done here, and deliberately scoped to the gap\nbetween it:\n\n- **#12** established that `hints_text` is collected only from before the\n  initial commit, because later comments may leak the fix. That filter is on\n  `hints_text`; the links below are in `problem_statement`, which is derived\n  from the issue body and so is not covered by it.\n- **#465** covered agents reaching future repository state through `git`. This\n  needs no repository access at all — the text handed to the model is enough.\n\nI checked both before filing and do not believe this is a duplicate. Happy to be\ntold otherwise.\n\n### 1. One instance contains its own fix\n\n`scikit-learn__scikit-learn-14710`. Its `problem_statement` carries a unified\ndiff at the same file and hunk as the gold patch.\n\nFrom `problem_statement`:\n\n```diff\n+        if hasattr(self, 'classes_'):\n+            y_small_train = self.classes_[y_small_train.astype(int)]\n         self.train_score_.append(\n             self.scorer_(self, X_binned_small_train, y_small_train)\n         )\n\n         if self._use_validation_data:\n+            if hasattr(self, 'classes_'):\n+                y_val = self.classes_[y_val.astype(int)]\n```\n\nFrom the instance's `patch`:\n\n```diff\n+        if is_classifier(self):\n+            y_small_train = self.classes_[y_small_train.astype(int)]\n         self.train_score_.append(\n             self.scorer_(self, X_binned_small_train, y_small_train)\n         )\n\n         if self._use_validation_data:\n+            if is_classifier(self):\n+                y_val = self.classes_[y_val.astype(int)]\n```\n\nSame file, same hunk at line 426, same added lines. The only difference is the\nguard: `hasattr(self, 'classes_')` versus `is_classifier(self)`.\n\n### 2. Eight instances link the PR that is their gold patch\n\nThe linked PR number equals the instance number in each case.\n\n| `instance_id` | URL in `problem_statement` |\n|---|---|\n| `django__django-7530` | https://github.com/django/django/pull/7530 |\n| `django__django-10097` | https://github.com/django/django/pull/10097 |\n| `django__django-13023` | https://github.com/django/django/pull/13023 |\n| `django__django-14122` | https://github.com/django/django/pull/14122 |\n| `django__django-14315` | https://github.com/django/django/pull/14315 |\n| `django__django-14404` | https://github.com/django/django/pull/14404 |\n| `django__django-15569` | https://github.com/django/django/pull/15569 |\n| `django__django-15863` | https://github.com/django/django/pull/15863 |\n\nVerbatim from `django__django-10097`:\n\n```\nPull request: https://github.com/django/django/pull/10097\n```\n\nAll eight are `django/django`, which is expected rather than suspicious: Django\nis 231 of the 500 Verified instances and its workflow routinely posts the PR\nlink onto the ticket these statements were harvested from.\n\nA further 37 instances link somewhere in their own repository without the\nnumbers matching. Those are weaker and are not claimed here.\n\n### What this does not claim\n\n- **No evidence any model exploited this.** Demonstrating that needs an ablation\n  comparing scores with the text stripped, which I have not run.\n- The category-2 links are only fetchable where a harness allows network access;\n  the official one does not. They remain a contamination signal regardless,\n  since a linked PR indicates the fix was public and discussed.\n- Category 1 needs nothing: the fix is in the text.\n\n### Reproducing\n\n```sh\npython -c \"from datasets import load_dataset; \\\n  load_dataset('SWE-bench/SWE-bench_Verified', split='test').to_json('verified.jsonl')\"\n\ngo install github.com/bugyal/skeptic/cmd/skeptic@latest\nskeptic lint verified.jsonl --json > lint-report.json\n```\n\nStatic: no containers, no model, no API key. 500 instances in about 0.4s. It\nflags 69 instances on leakage signals overall; the nine above are the subset\nwhere the flag is unambiguous, isolated by matching linked PR numbers against\ninstance ids and by diffing `problem_statement` against `patch`.\n\nFull output and analysis:\nhttps://github.com/bugyal/skeptic/tree/main/results/swe-bench-verified/2026-09-25-leakage\n\nA caution on the other 60: they are weak signals, and most are not findings.\nSix instances trip a \"contains a diff\" check and only the scikit-learn one holds\nup — the rest overlap the gold patch on lines like `try:` and `return True`.\n\n### Possible remedies\n\nFor discussion; the trade-offs are yours.\n\n1. Strip or mask same-repository PR and commit URLs in `problem_statement`.\n   Cheap, but edits the artefact away from the issue text as it appeared.\n2. Keep the text and publish the flag as instance metadata, so evaluations can\n   report scores with and without the affected instances.\n3. Document it as a known property and leave the choice to harness authors.\n\nOption 2 preserves the data and lets consumers decide, but that is a judgement\ncall rather than an obvious fix.\n\nVerified against `SWE-bench/SWE-bench_Verified` on 2026-09-25.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-24T19:55:33Z",
+  "github_updated_at": "2026-09-24T19:55:33Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L3",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-669",
+  "task_names": [
+    "scikit-learn__scikit-learn-14710",
+    "django__django-7530",
+    "django__django-10097",
+    "django__django-13023",
+    "django__django-14122",
+    "django__django-14315",
+    "django__django-14404",
+    "django__django-15569",
+    "django__django-15863"
+  ],
+  "resolution": "found",
+  "summary": "Nine SWE-bench Verified instances expose their own fix through problem_statement diff text or self-linked gold PRs.",
+  "decision_note": "L3 duplicate audit. The candidate explicitly names SWE-bench_Verified and the same nine affected current task ids already captured in canonical defect swebench-verified__swe-bench__swe-bench__issue-669 from the prior run. No new root cause or resolution evidence is present, so this is duplicate evidence for the existing canonical artifact.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/669",
+    "https://github.com/bugyal/skeptic/tree/main/results/swe-bench-verified/2026-09-25-leakage"
+  ],
+  "reviewed_at": "2026-09-26T00:05:41.796Z"
+}

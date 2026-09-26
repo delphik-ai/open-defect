@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/stanfordmlgroup/MedAgentBench/issues/10",
+  "repo": "stanfordmlgroup/medagentbench",
+  "source_type": "github_issue",
+  "github_number": 10,
+  "title": "POST tool response and the write-task grader both key off transcript text, not FHIR server state",
+  "body": "Hi — we've been running a study on how agent-benchmark tool interfaces communicate outcomes to\nthe agent, and MedAgentBench turned up something specific we wanted to bring to you directly\nrather than let it surface first in a paper.\n\nFirst, the part that isn't news to you: Sections 2.4 and 2.4.3 of the MedAgentBench paper\nalready explain that POST requests aren't forwarded to the FHIR server — you note the ~90s\nenvironment reinitialization cost and instead run a JSON-loadable sanity check and report\nsuccess. That's a reasonable, documented engineering trade-off, and it isn't what this issue is\nabout.\n\nWhat we noticed is narrower and sits one layer down, in what the agent itself is told.\n`src/server/tasks/medagentbench/__init__.py`, lines 85-91 at commit `9926011`:\n\n    elif r.startswith('POST'):\n        try:\n            payload = json.loads('\\n'.join(r.split('\\n')[1:]))\n        except Exception as e:\n            session.inject({\"role\": \"user\", \"content\": \"Invalid POST request\"})\n        else:\n            session.inject({\"role\": \"user\", \"content\": \"POST request accepted and executed\n                successfully. Please call FINISH if you have got answers for all the questions\n                and finished all the requested tasks\"})\n\n`payload` is parsed and then never read again (it appears nowhere else in the file except inside\na prompt-template string). The string the agent actually receives — \"accepted and executed\nsuccessfully\" — is more definite than your paper's own paraphrase (\"indicate success of\nexecution\"), and nothing on the agent's side (the Appendix A.2 prompt template, the tool schema)\nqualifies it. An agent has no way to tell this response apart from a genuine FHIR\nacknowledgment.\n\nSecond, and we think this is the part worth your attention regardless of what happens to the\nfirst: we obtained `refsol.py` (per the Box link in README.md) and read the write-task grading\npath. `extract_posts` reconstructs \"what was written\" from the conversation transcript itself,\ngated on the literal string \"POST request accepted\" — the same string above:\n\n    def extract_posts(results):\n        posts = []\n        for idx, i in enumerate(results.history):\n            if (i.role == 'agent') and ('POST' in i.content):\n                if (idx<len(results.history)) and (\"POST request accepted\" in results.history[idx+1].content):\n                    ...\n                    posts.append((url, payload))\n\n`task3` and `task8` then grade entirely off that reconstructed payload — no FHIR read occurs\nanywhere in either function. `task5`, `task9`, and `task10` read FHIR state, but only to decide\n*whether* a write is expected, then grade the write itself the same transcript-text way. So for\nat least `task3` and `task8` (60 of 300 cases), the recorded score reflects whether the agent\nemitted a well-formed POST string, not whether any clinical record changed — and it's\nmechanically consistent for it to stay that way even if the underlying write behavior changes,\nsince nothing downstream ever looks at the FHIR server.\n\nWe'd flag that a documentation change resolves this just as completely as a code change would —\nwhichever is cheaper on your end:\n\n  - Return a string that doesn't claim execution, e.g. \"payload validated (not forwarded to\n    FHIR)\" — this alone removes the ambiguity for the agent.\n  - Or, if the response string stays as-is, a one-line note in the README or the paper that\n    task3/task8 scores measure request well-formedness rather than a verified write, since\n    `refsol.py`'s `extract_posts` is keyed on that exact string.\n\nReproduce:\n\n    git clone https://github.com/stanfordmlgroup/MedAgentBench.git && cd MedAgentBench\n    git show 9926011:src/server/tasks/medagentbench/__init__.py | sed -n '85,91p'\n    git grep send_post_request 9926011 ; echo \"exit=$? (1 = no matches)\"\n    # refsol.py is obtained separately per README.md's Box link:\n    sed -n '4,16p;62,83p' refsol.py\n\nWe're preparing a paper describing tool-interface/grader interactions like this one across\nseveral agent benchmarks, and expect to submit it around 2026-09-27. If you're able to respond\nbefore then, we'll report your response's substance alongside this finding; if we don't hear\nback, we'll record that neutrally, with no inference drawn from silence either way. If you think\nwe've mischaracterized anything above, please say so — we'll mark it contested and include your\nreasoning rather than our own.\n\nThanks for MedAgentBench — happy to share more detail on any of the above if useful.\n",
+  "comments": [
+    {
+      "url": "https://github.com/stanfordmlgroup/MedAgentBench/issues/10#issuecomment-5824335597",
+      "user": "rohithreddybc",
+      "created_at": "2026-09-25T00:03:44Z",
+      "updated_at": "2026-09-25T00:03:44Z",
+      "body": "A correction to our original report, found while re-verifying our own claims against your\nsource.\n\nWe wrote that `task3`/`task8` scores reflect \"whether the agent emitted a well-formed POST\nstring\". That understates what `refsol.py` actually does. `refsol.task3` asserts that the\nreconstructed payload's `resourceType` is `\"Observation\"` and that its `subject` is\n`Patient/{eval_MRN}` — content checks against the values the task expects, not a\nwell-formedness check. JSON-loadability is a separate admission check in `__init__.py`.\n\nThe finding is unchanged: those assertions run against a payload reconstructed from the\ntranscript, and no FHIR read confirms that any record changed. Both suggested remedies stand,\nbut the second should read \"...measure the POST payload's content as reconstructed from the\ntranscript, rather than a verified write.\"\n\nSorry for the imprecision in the original report.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-12T21:16:18Z",
+  "github_updated_at": "2026-09-25T00:03:44Z",
+  "candidate_benchmark_names": [
+    "medagentbench"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "medagentbench",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "medagentbench__stanfordmlgroup__medagentbench__issue-6",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "MedAgentBench write-task scoring and POST feedback follow the same transcript/interface shortcut surface already represented by canonical issue #6.",
+  "decision_note": "L2 duplicate audit. The issue is current MedAgentBench evidence and narrows the known shortcut surface: POST payloads are accepted via transcript text and selected write-task graders reconstruct payloads from the transcript instead of verifying FHIR server state. The canonical MedAgentBench issue #6 already records the benchmark-level prefetch/execute shortcut surface and already includes issue #10 in evidence_urls, so this candidate is duplicate evidence rather than a new root cause.",
+  "checked_urls": [
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/10",
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/6"
+  ],
+  "reviewed_at": "2026-09-26T00:05:41.796Z"
+}

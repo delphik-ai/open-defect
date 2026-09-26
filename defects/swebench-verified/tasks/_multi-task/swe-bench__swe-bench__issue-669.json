@@ -26,6 +26,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-09-24T19:55:33Z",
-  "last_reviewed_at": "2026-09-25T00:05:30.419Z",
+  "last_reviewed_at": "2026-09-26T00:05:41.796Z",
   "decision_note": "L3-equivalent public static reproduction audit. The issue explicitly attributes to SWE-bench_Verified, names nine current instance ids, and reports loading the current SWE-bench/SWE-bench_Verified split plus running skeptic lint. One task, scikit-learn__scikit-learn-14710, includes a problem_statement diff at the same file/hunk as the gold patch; eight Django tasks include PR URLs whose numbers match their own gold patch instance numbers. The linked public analysis output narrows 69 leakage signals to these nine unambiguous findings. Existing SWE-bench Verified artifacts cover hints filtering, future git state, and stdout/exit-code grading spoofing, but not solution reachability from problem_statement itself. No fix PR is linked, so resolution is found."
 }

@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "openthoughts-tblite__open-thoughts__openthoughts-tblite__issue-5",
+  "benchmark_name": "openthoughts-tblite",
+  "scope": "task_specific",
+  "task_names": [
+    "etl_checkpoint_resume_bug"
+  ],
+  "resolution": "found",
+  "title": "etl_checkpoint_resume_bug: grader starts pytest before the databases exist",
+  "summary": "The etl_checkpoint_resume_bug grader backgrounds /workspace/start.sh and immediately runs pytest, racing PostgreSQL database creation and data loading before the solution is tested.",
+  "canonical_source_url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/5",
+  "evidence_urls": [
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/5",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/etl_checkpoint_resume_bug/tests/test.sh",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/etl_checkpoint_resume_bug/environment/start.sh",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/etl_checkpoint_resume_bug/environment/start_postgres.sh"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-25T23:46:53Z",
+  "last_reviewed_at": "2026-09-26T00:05:41.796Z",
+  "decision_note": "L2 source-read audit. Public tests/test.sh starts `/workspace/start.sh &` and immediately runs `python -m pytest tests/test_outputs.py` without waiting for readiness. Public environment/start.sh delegates to start_postgres.sh, and start_postgres.sh only later creates legacy_db/new_db, creates schemas, populates legacy data, and prints readiness. That directly matches the issue claim that pytest can start before required databases exist or while data load holds locks. No existing OpenThoughts-TBLite artifact covers this task/root cause."
+}

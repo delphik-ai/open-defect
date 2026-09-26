@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "openthoughts-tblite__open-thoughts__openthoughts-tblite__issue-4",
+  "benchmark_name": "openthoughts-tblite",
+  "scope": "task_specific",
+  "task_names": [
+    "bloom-filter-cache-penetration-prevention"
+  ],
+  "resolution": "found",
+  "title": "bloom-filter-cache-penetration-prevention: grader fails for every solution since redis-py 8",
+  "summary": "The bloom-filter-cache-penetration-prevention grader pins fakeredis 2.25.0 but leaves redis unpinned, so current redis-py 8.1.0 makes the shared FakeRedis fixture fail before solutions run.",
+  "canonical_source_url": "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/4",
+  "evidence_urls": [
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/issues/4",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/bloom-filter-cache-penetration-prevention/tests/test.sh",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/bloom-filter-cache-penetration-prevention/environment/Dockerfile",
+    "https://github.com/open-thoughts/OpenThoughts-TBLite/blob/main/bloom-filter-cache-penetration-prevention/tests/test_outputs.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-09-25T22:56:40Z",
+  "last_reviewed_at": "2026-09-26T00:05:41.796Z",
+  "decision_note": "L3 minimal dependency reproduction plus source audit. Public test.sh installs fakeredis==2.25.0 without pinning redis, while the task Dockerfile pins redis==5.2.0 only for the application image. Public test_outputs.py calls fakeredis.FakeRedis(...).flushall() in the client fixture before loading a solution. Minimal reproduction command `python3 -m venv /tmp/ot-redis-repro && /tmp/ot-redis-repro/bin/python -m pip install fakeredis==2.25.0 redis==8.1.0 && /tmp/ot-redis-repro/bin/python -c ...flushall()` raised `redis.exceptions.ResponseError: unknown command hello`, matching the issue. No existing OpenThoughts-TBLite artifact covers this task/root cause."
+}
