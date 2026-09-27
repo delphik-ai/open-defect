@@ -4,17 +4,18 @@
   "benchmark_name": "medagentbench",
   "scope": "benchmark_level",
   "task_names": [],
-  "resolution": "found",
+  "resolution": "fixing",
   "title": "External evaluation: 300/300 (100%) achieved with prefetch-and-execute architecture",
   "summary": "MedAgentBench external evaluation reports 100 percent by prefetch-and-execute architecture versus much lower raw HTTP scores, suggesting a benchmark shortcut surface.",
   "canonical_source_url": "https://github.com/stanfordmlgroup/MedAgentBench/issues/6",
   "evidence_urls": [
     "https://github.com/stanfordmlgroup/MedAgentBench/issues/6",
-    "https://github.com/stanfordmlgroup/MedAgentBench/issues/10"
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/10",
+    "https://github.com/stanfordmlgroup/MedAgentBench/pull/11"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-04-02T13:12:06.000Z",
-  "last_reviewed_at": "2026-09-26T00:05:41.796Z",
+  "last_reviewed_at": "2026-09-27T00:03:48.592Z",
   "decision_note": "Migrated from the v5 public health sync counted mirror. The legacy DB did not store audit_level separately; L2 marks source-read curation and legacy high-fanout rows are reported for re-audit priority.",
   "affected_task_count": 0,
   "migration": {

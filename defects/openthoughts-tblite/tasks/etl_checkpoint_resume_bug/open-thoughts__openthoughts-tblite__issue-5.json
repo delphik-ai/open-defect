@@ -18,6 +18,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-09-25T23:46:53Z",
-  "last_reviewed_at": "2026-09-26T00:05:41.796Z",
+  "last_reviewed_at": "2026-09-27T00:03:48.592Z",
   "decision_note": "L2 source-read audit. Public tests/test.sh starts `/workspace/start.sh &` and immediately runs `python -m pytest tests/test_outputs.py` without waiting for readiness. Public environment/start.sh delegates to start_postgres.sh, and start_postgres.sh only later creates legacy_db/new_db, creates schemas, populates legacy data, and prints readiness. That directly matches the issue claim that pytest can start before required databases exist or while data load holds locks. No existing OpenThoughts-TBLite artifact covers this task/root cause."
 }

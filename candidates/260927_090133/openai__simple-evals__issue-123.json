@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/123",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 123,
+  "title": "[Bug / Safety False Positive] GRADER_TEMPLATE in simpleqa_eval.py triggers OpenAI Safety Filter (\"Cyber Abuse\" violation)",
+  "body": "### Description\nThe few-shot grading template `GRADER_TEMPLATE` in `simpleqa_eval.py` triggers OpenAI's server-side safety filter (`Invalid prompt: your prompt was flagged as potentially violating our usage policy`). When the template is read or executed repeatedly by local coding agents (such as Codex CLI) or evaluation harnesses, it causes the automated monitoring system to issue policy violation warnings (e.g., categorized as \"Cyber Abuse\") to developer accounts.\n\n### Location of the Issue\n- **File**: `simpleqa_eval.py`\n- **Component**: `GRADER_TEMPLATE`\n- **History**: Present since commit [`1dc42a2`](https://github.com/openai/simple-evals/blob/1dc42a2107a57b507553e29da442237b4df4944e/simpleqa_eval.py) (\"add simpleqa, update demo\").\n\n<img width=\"1560\" height=\"236\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/8f74d3f9-f9e8-45c2-b772-d8aa98160595\" />\n\n### Root Cause Analysis\nThe grader template is designed to instruct an LLM judge to classify model responses as Correct, Incorrect, or Not Attempted. To demonstrate negative and edge cases, it uses real-world biographical data of a living public figure:\n1. High-density repetition of a public figure's name (Barack Obama) across multiple examples.\n2. Real full names and exact birthdates of their family members (`Malia was born on July 4, 1998, and Sasha was born on June 10, 2001`).\n3. Intentionally fabricated counterfactual statements used as negative grading examples (`\"Barack Obama does not have any children\"`, `\"Barack Obama has three children\"`, `\"Susan\"`, `\"Betsy and Olivia\"`).\n\nWhen downstream evaluation benchmarks (such as Chinese-SimpleQA or EvalScope adapters) or automated coding assistants ingest or dispatch this prompt, OpenAI's input classifier flags it as a policy violation. Furthermore, automated agents debugging this error by repeatedly inspecting the local workspace file can result in cascading triggers, leading the safety system to misclassify the rapid file inspection as \"Cyber Abuse\".\n\n### Steps to Reproduce\n1. Ingest `simpleqa_eval.py` (or a downstream adapter inheriting this exact few-shot prompt) in an evaluation workflow or workspace managed by an automated coding agent.\n2. Send the judge prompt or have the agent inspect/read the file via CLI tools.\n3. Observe the server-side rejection:\n   `Invalid prompt: your prompt was flagged as potentially violating our usage policy.`\n\n### Impact\n- **False Positive Violations**: Researchers and developers running official benchmarks risk receiving account warnings or deactivation for running benign evaluation code.\n- **Downstream Ecosystem Blockage**: Downstream translations and implementations (e.g., `Chinese-SimpleQA`, `inspect_evals`) inherit this vulnerability directly.\n\n### Suggested Fix\nSanitize `GRADER_TEMPLATE` by replacing all references to living public figures, specific family names, and real birthdates with synthetic, neutral entities (e.g., \"Person A\", fictional events, or general knowledge questions). This preserves the exact few-shot semantic logic for Correct / Incorrect / Not Attempted classification while completely removing PII and counterfactual assertion risks.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-26T03:54:25Z",
+  "github_updated_at": "2026-09-26T04:03:00Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "The issue alleges an external OpenAI safety-filter false positive caused by the SimpleQA grader template. The current SimpleQA source location is public, but the claimed server-side classifier behavior has no upstream maintainer acknowledgement, fix PR, regression test, or public deterministic reproduction artifact. Because this high-fanout external-service claim would require L3 reproduction and was not reproduced in this run, it remains unverified rather than a counted SimpleQA defect.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/123",
+    "https://github.com/openai/simple-evals/blob/main/simpleqa_eval.py"
+  ],
+  "reviewed_at": "2026-09-27T00:03:48.592Z"
+}

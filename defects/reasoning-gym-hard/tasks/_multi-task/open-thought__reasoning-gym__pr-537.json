@@ -19,6 +19,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-08-24T18:26:21Z",
-  "last_reviewed_at": "2026-08-25T00:07:09.443Z",
+  "last_reviewed_at": "2026-09-27T00:03:48.592Z",
   "decision_note": "L3 deterministic source reproduction. Command: python3 snippet reconstructing current ANIMALS/range/pluralization from reasoning_gym/arithmetic/leg_counting.py. Observed len(ANIMALS)=37 but levels=list(range(1,37)) has only 36 levels/max 36, matching the PR claim that the curriculum cannot select every animal. The same snippet shows current pluralization emits jellyfishs, butterflys, deers, sheeps, and woodlouses for count 2. The PR diff updates the current leg_counting dataset and adds regression tests. No existing reasoning-gym-hard artifact covers this root cause."
 }

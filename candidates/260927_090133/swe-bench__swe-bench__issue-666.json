@@ -1,0 +1,48 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/666",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 666,
+  "title": "Run report: console \"Instances submitted\" disagrees with `submitted_instances` in the JSON when `--instance_ids` is used",
+  "body": "### Describe the bug\n\nWhen `run_evaluation` is restricted with `--instance_ids` and the predictions file contains more predictions than the selected\ninstances, the console summary and the written report JSON give different \"submitted\" numbers for the same run:\n\n- console: `Instances submitted: 2` (predictions ∩ selected instances)\n- JSON: `\"submitted_instances\": 6` and `\"submitted_ids\"` lists all 6 predictions, including the 4 that were not selected and\n  never evaluated.\n\nIn the JSON this also gives `submitted_instances (6) > total_instances (2)`.\n\nThe two lines in `make_run_report` compute it differently (`swebench/harness/reporting.py` on `main` @ 02e7a74):\n\n```python\nprint(f\"Instances submitted: {len(set(predictions.keys()) & dataset_ids)}\")   # L125\n...\n\"submitted_instances\": len(predictions),                                       # L141\n\"submitted_ids\": list(sorted(predictions.keys())),                             # L152\n```\n\n`full_dataset` is already restricted to `--instance_ids` (`load_instances(dataset_name, split, instance_ids, task_repo)`), but\n`predictions` is not (`get_predictions_from_file` only uses `instance_ids` for `\"gold\"`), so the two expressions diverge\nexactly when `--instance_ids` selects a subset of the predictions file.\n\n### Steps to reproduce\n\nWithout Docker, calling `make_run_report` with the same arguments `run_evaluation.main` passes for\n`--instance_ids B E` and a 6-prediction file:\n\n```python\nimport json\nfrom swebench.harness.reporting import make_run_report\nfrom swebench.harness.constants import RUN_EVALUATION_LOG_DIR, LOG_REPORT\n\nids = [f\"pytest-dev__pytest-100{i}\" for i in range(1, 7)]\npreds = {i: {\"instance_id\": i, \"model_name_or_path\": \"m\", \"model_patch\": \"diff --git a/x b/x\\n\"} for i in ids}\nselected = [ids[1], ids[4]]                      # --instance_ids B E\nfull_dataset = [{\"instance_id\": i} for i in selected]\nfor i in selected:                               # pretend both were evaluated\n    d = RUN_EVALUATION_LOG_DIR / \"r\" / \"m\" / i\n    d.mkdir(parents=True, exist_ok=True)\n    (d / LOG_REPORT).write_text(json.dumps({i: {\"resolved\": i == ids[1]}}))\n\nr = json.load(open(make_run_report(preds, full_dataset, \"r\", client=None)))\nprint(r[\"total_instances\"], r[\"submitted_instances\"], len(r[\"submitted_ids\"]))\n```\n\nOutput (swebench 5.0.2):\n\n```\nInstances submitted: 2          <- console\n...\n2 6 6                           <- JSON: total, submitted, len(submitted_ids)\n```\n\nI haven't run the full CLI path (it needs Docker here), but from `run_evaluation.main` the call above receives the same\narguments as `python -m swebench.harness.run_evaluation --predictions_path preds.jsonl --instance_ids <2 of the 6 ids> --run_id r`\n(`full_dataset` from `load_instances(..., instance_ids, ...)`, `predictions` from the whole file).\n\n### Expected behavior\n\nConsole and JSON should agree. I'm not sure which one is intended:\n\n- The docs (`docs/guides/evaluation.md`, from ebb22a0) define **Instances submitted = \"Predictions you gave it\"**, which matches the\n  JSON (6), so perhaps the console line should drop the `& dataset_ids`; or\n- if \"submitted\" is meant relative to the run's selection (as the console computes), then `submitted_instances` /\n  `submitted_ids` should be computed as `set(predictions) & dataset_ids` too.\n\nThe second reading seems more useful for anyone computing a rate from the JSON (e.g. `resolved_instances / submitted_instances`\ngives 1/6 above rather than 1/2), but either fix would remove the inconsistency. Happy to open a PR for whichever you prefer.\n\n### Environment\n\nswebench 5.0.2 (PyPI) and `main` @ 02e7a74 (installed from git; same output), Python 3.11, macOS.\n\n---\n\nFound while running documentation-derived consistency checks against the harness; the report text was drafted with an AI assistant and the reproduction was verified by hand.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/666#issuecomment-5848499311",
+      "user": "Kaustubh1235",
+      "created_at": "2026-09-26T17:53:53Z",
+      "updated_at": "2026-09-26T17:53:53Z",
+      "body": "I had a look at this and can confirm it on current `main`.\n\n`make_run_report` builds `dataset_ids` from `full_dataset` at `reporting.py:123` and intersects with it for the console line at 125, but the two JSON fields at 141 and 152 read `predictions` directly. `full_dataset` is already restricted by `--instance_ids` and `predictions` is not, so the JSON counts predictions that were never evaluated, which is how `submitted_instances` ends up larger than `total_instances`.\n\nOne thing worth adding to the report: `submitted_*` is the only pair in that dict that is not already restricted to the run. `completed_ids`, `incomplete_ids`, `resolved_ids`, `unresolved_ids`, `empty_patch_ids`, `error_ids` and the failure lists are all built from sets accumulated while evaluating, so none of them can contain an instance that `--instance_ids` filtered out. That makes the console line the one consistent with the rest of the report, and the two JSON fields the outliers.\n\nWhat I would do, if you agree with the direction: compute the intersection once, just above the console line, and use it in all three places.\n\n```python\nsubmitted_ids = sorted(set(predictions.keys()) & dataset_ids)\n...\nprint(f\"Instances submitted: {len(submitted_ids)}\")\n...\n    \"submitted_instances\": len(submitted_ids),\n    \"submitted_ids\": submitted_ids,\n```\n\nThat restores `submitted_instances <= total_instances`, makes the console and the JSON agree, and changes nothing for a run that does not pass `--instance_ids`, where the intersection is already the whole of `predictions`.\n\nTwo things I would rather ask than assume:\n\n1. Should the filtered-out predictions leave any trace in the report? With the change above they simply stop appearing in `submitted_ids`. A separate key such as `ignored_ids` would keep them visible, at the cost of one more field.\n2. Narrowing `submitted_ids` is visible to anything that reads the report, and the report carries `schema_version: 2`. Is that a bump, or a bug fix inside the existing schema?\n\nHappy to open the PR with a regression test in `tests/test_reporting.py` covering a predictions file wider than `--instance_ids`. Whichever way you answer those two, the one-line intersection stays the same.\n"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/666#issuecomment-5850010391",
+      "user": "ickma2311",
+      "created_at": "2026-09-26T21:23:59Z",
+      "updated_at": "2026-09-26T21:23:59Z",
+      "body": "Thanks for checking it on current `main`, and for the point about the other fields. That settles the direction for me: every other list in the report is restricted to the run, so the console line is the consistent one and the two JSON fields should follow it.\n\nPlease go ahead and open the PR; I'm glad to review it. On your two questions I'd defer to the maintainers, since both are about what downstream readers of the report rely on. My only view is that the regression test should cover a predictions file wider than `--instance_ids`, which you already have in mind.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-21T23:40:18Z",
+  "github_updated_at": "2026-09-26T21:23:59Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-207",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "SWE-bench run_report still reports submitted predictions inconsistently when instance_ids selects a subset of a larger predictions file.",
+  "decision_note": "L2 thread/source audit. The updated comments independently confirm current main still computes the console submitted count from predictions intersected with dataset_ids while JSON submitted_instances/submitted_ids read the full predictions map. This is same-root-cause follow-up evidence for canonical run_report instance_ids defect swebench-verified__swe-bench__swe-bench__pr-207. The thread targets the SWE-bench harness used for SWE-bench Verified, not Multilingual; no fix PR has been opened yet, so resolution remains found.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/666",
+    "https://github.com/SWE-bench/SWE-bench/pull/207",
+    "https://github.com/SWE-bench/SWE-bench/blob/02e7a74/swebench/harness/reporting.py#L123-L152"
+  ],
+  "reviewed_at": "2026-09-27T00:03:48.592Z"
+}

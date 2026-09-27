@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/stanfordmlgroup/MedAgentBench/pull/11",
+  "repo": "stanfordmlgroup/medagentbench",
+  "source_type": "github_pr",
+  "github_number": 11,
+  "title": "Fix misleading POST write response",
+  "body": "## Summary\\n- Describe POST payloads as parsed JSON without implying they were written to FHIR.\\n- Add focused coverage for valid and invalid POST payloads.\\n\\nCloses #10\\n\\n## Validation\\n- python -m unittest discover -s tests -p test_write_result.py -v (2 passed)\\n- git diff --check",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/src/server/tasks/medagentbench/__init__.py b/src/server/tasks/medagentbench/__init__.py\nindex 3bd2312..f71e1c6 100644\n--- a/src/server/tasks/medagentbench/__init__.py\n+++ b/src/server/tasks/medagentbench/__init__.py\n@@ -88,7 +88,7 @@ async def start_sample(self, index, session: Session):\n                     except Exception as e:\n                         session.inject({\"role\": \"user\", \"content\": \"Invalid POST request\"})\n                     else:\n-                        session.inject({\"role\": \"user\", \"content\": \"POST request accepted and executed successfully. Please call FINISH if you have got answers for all the questions and finished all the requested tasks\"})\n+                        session.inject({\"role\": \"user\", \"content\": \"POST payload parsed as JSON. This benchmark does not forward POST writes to FHIR. Please call FINISH if you have got answers for all the questions and finished all the requested tasks\"})\n                 elif r.startswith('FINISH('):\n                     return TaskOutput(\n                         status=SampleStatus.COMPLETED,\ndiff --git a/tests/test_write_result.py b/tests/test_write_result.py\nnew file mode 100644\nindex 0000000..bd298d0\n--- /dev/null\n+++ b/tests/test_write_result.py\n@@ -0,0 +1,84 @@\n+import asyncio\n+import importlib\n+import types\n+import unittest\n+from unittest.mock import patch\n+\n+\n+_original_import_module = importlib.import_module\n+\n+\n+def _load_medagentbench():\n+    def import_module_with_refsol_stub(name, package=None):\n+        if name == \"src.server.tasks.medagentbench.refsol\":\n+            return types.ModuleType(name)\n+        return _original_import_module(name, package)\n+\n+    with patch.object(importlib, \"import_module\", side_effect=import_module_with_refsol_stub):\n+        module = _original_import_module(\"src.server.tasks.medagentbench\")\n+    return module.MedAgentBench\n+\n+\n+MedAgentBench = _load_medagentbench()\n+\n+\n+class FakeAgentOutput:\n+    def __init__(self, content):\n+        self.content = content\n+        self.status = None\n+\n+\n+class RecordingSession:\n+    def __init__(self, responses):\n+        self.responses = iter(responses)\n+        self.injected = []\n+        self.history = []\n+\n+    async def action(self):\n+        return next(self.responses)\n+\n+    def inject(self, item):\n+        self.injected.append(item)\n+\n+\n+class WriteResultTests(unittest.TestCase):\n+    def setUp(self):\n+        self.task = object.__new__(MedAgentBench)\n+        self.task.max_round = 2\n+        self.task.data = [{\"context\": \"context\", \"instruction\": \"question\"}]\n+        self.task.fhir_api_base = \"http://example.test/\"\n+        self.task.funcs = {}\n+\n+    def test_valid_post_explains_payload_is_not_forwarded_to_fhir(self):\n+        session = RecordingSession(\n+            [\n+                FakeAgentOutput('POST /Patient\\n{\"resourceType\": \"Patient\"}'),\n+                FakeAgentOutput(\"FINISH([])\"),\n+            ]\n+        )\n+\n+        result = asyncio.run(self.task.start_sample(0, session))\n+\n+        self.assertEqual(result.result, \"[]\")\n+        self.assertEqual(\n+            session.injected[1][\"content\"],\n+            \"POST payload parsed as JSON. This benchmark does not forward POST writes \"\n+            \"to FHIR. Please call FINISH if you have got answers for all the questions \"\n+            \"and finished all the requested tasks\",\n+        )\n+\n+    def test_invalid_post_remains_rejected(self):\n+        session = RecordingSession(\n+            [\n+                FakeAgentOutput(\"POST /Patient\\nnot-json\"),\n+                FakeAgentOutput(\"FINISH([])\"),\n+            ]\n+        )\n+\n+        asyncio.run(self.task.start_sample(0, session))\n+\n+        self.assertEqual(session.injected[1][\"content\"], \"Invalid POST request\")\n+\n+\n+if __name__ == \"__main__\":\n+    unittest.main()\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-26T11:38:39Z",
+  "github_updated_at": "2026-09-26T11:38:39Z",
+  "candidate_benchmark_names": [
+    "medagentbench"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "medagentbench",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "medagentbench__stanfordmlgroup__medagentbench__issue-6",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "MedAgentBench POST write tasks expose a transcript-level shortcut surface; open PR #11 changes the POST response so agents are told payloads are parsed but not forwarded to FHIR.",
+  "decision_note": "L2 source/diff audit. PR #11 closes issue #10, which is already evidence on canonical MedAgentBench defect medagentbench__stanfordmlgroup__medagentbench__issue-6. The PR changes the shared task response from claiming a POST was executed successfully to stating that the JSON payload was parsed and not forwarded to FHIR, and adds focused tests. This is duplicate/fix evidence for the existing benchmark-level shortcut/interface defect; the PR is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/stanfordmlgroup/MedAgentBench/pull/11",
+    "https://github.com/stanfordmlgroup/MedAgentBench/issues/10",
+    "https://github.com/stanfordmlgroup/MedAgentBench/pull/11/files"
+  ],
+  "reviewed_at": "2026-09-27T00:03:48.592Z"
+}
