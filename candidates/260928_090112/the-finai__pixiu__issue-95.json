@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/The-FinAI/PIXIU/issues/95",
+  "repo": "the-finai/pixiu",
+  "source_type": "github_issue",
+  "github_number": 95,
+  "title": "EvalPort: portable interchange for FLARE task results",
+  "body": "Hi PIXIU/FLARE team — I maintain EvalPort (https://github.com/adhabnr-ux/evalport), an open JSON-Schema spec for portable LLM eval test cases, graders, and result sets.\n\n`src/tasks/flare.py`'s task classes (e.g. QA, Classification) already separate concerns the way EvalPort's schema does: doc_to_text/doc_to_target → EvalPort TestCase.input/expected_output, and process_results/aggregation → EvalPort GraderResult/ResultSet. Since FLARE spans ~50 financial tasks (FPB, FinQA, ConvFinQA, NER, etc.) each with its own Task subclass, a generic lm_eval.Task → EvalPort TestCase/ResultSet exporter could let all of them emit a common, tool-agnostic result format alongside your existing lm-eval-harness output — useful if downstream users want to compare FLARE results against other benchmarks in one place. Just flagging the overlap, not asking for prioritization.\n\nSchemas: https://github.com/adhabnr-ux/evalport/tree/main/spec/schemas\n\n— Sahi, independent contributor (not affiliated with PIXIU/FLARE)",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-27T01:25:56Z",
+  "github_updated_at": "2026-09-27T01:25:56Z",
+  "candidate_benchmark_names": [
+    "pixiu"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue proposes emitting FLARE/PIXIU task results through EvalPort schemas. It does not report a wrong task, label, grader, dataset, or benchmark harness behavior, so it is outside benchmark defect scope.",
+  "reviewed_at": "2026-09-28T00:02:42.000Z",
+  "checked_urls": [
+    "https://github.com/The-FinAI/PIXIU/issues/95"
+  ]
+}

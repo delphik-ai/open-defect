@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/idavidrein/gpqa/issues/38",
+  "repo": "idavidrein/gpqa",
+  "source_type": "github_issue",
+  "github_number": 38,
+  "title": "EvalPort: portable interchange for the GPQA Example schema",
+  "body": "Hi GPQA team — I maintain EvalPort (https://github.com/adhabnr-ux/evalport), an open JSON-Schema spec for portable LLM eval test cases, graders, and result sets.\n\n`baselines/utils.py`'s Example namedtuple (question, choice1–4, correct_index), loaded straight from the CSV in `load_examples()`, is basically an EvalPort TestCase for a 4-way multiple-choice grader: question → input, choice1–4 → candidate outputs, correct_index → expected_output. A converter from `load_examples()`'s output to EvalPort TestCase[]/ResultSet would let GPQA (and GPQA Diamond) results plug into any EvalPort-consuming eval tool without hand-writing a loader each time — useful given how many benchmark aggregators already re-implement GPQA loading themselves.\n\nSchemas: https://github.com/adhabnr-ux/evalport/tree/main/spec/schemas\n\n— Sahi, independent contributor (not affiliated with GPQA)",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-27T01:26:03Z",
+  "github_updated_at": "2026-09-27T01:26:03Z",
+  "candidate_benchmark_names": [
+    "gpqa-diamond"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue proposes an optional EvalPort interchange/export adapter for the GPQA Example schema. It does not claim an incorrect GPQA-Diamond task, answer key, grader, harness, or current benchmark artifact defect, so it is outside benchmark defect scope.",
+  "reviewed_at": "2026-09-28T00:02:42.000Z",
+  "checked_urls": [
+    "https://github.com/idavidrein/gpqa/issues/38"
+  ]
+}

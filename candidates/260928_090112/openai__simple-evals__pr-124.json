@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/pull/124",
+  "repo": "openai/simple-evals",
+  "source_type": "github_pr",
+  "github_number": 124,
+  "title": "Fix MGSM crash when the sampler raises",
+  "body": "When a sampler raises inside `MGSMEval`, the exception handler sets the response text to empty, but `actual_queried_prompt_messages` is never assigned. Rendering the report then raises `UnboundLocalError`, which aborts the whole eval instead of recording the failed sample.\n\nOn sampler failure, fall back to the original prompt messages. The failed sample is then scored 0 and rendered with its prompt and an empty assistant reply. Successful samples still use the sampler's actual queried message list, including any messages the sampler adds.\n\nFixes #122.\n\nValidation: added `mgsm_eval_test.py`, which runs `MGSMEval` with an offline fake sampler and patched examples, covering both failure and success. Before the fix, the failure case fails with `UnboundLocalError`; after it, both cases pass, including checks on the conversation and HTML report contents. The full repository test suite passes locally (5 tests). The new test makes no model API calls or dataset downloads.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/mgsm_eval.py b/mgsm_eval.py\nindex b9e0b65d..ac468a6f 100644\n--- a/mgsm_eval.py\n+++ b/mgsm_eval.py\n@@ -168,6 +168,7 @@ def fn(example: dict[str, str]):\n                 actual_queried_prompt_messages = sampler_response.actual_queried_message_list\n             except Exception as e:\n                 response_text = \"\"\n+                actual_queried_prompt_messages = prompt_messages\n \n             answer_prefix = LANG_TO_ANSWER_PREFIX[language]\n             extracted_answer = parse_answer(response_text, answer_prefix)\ndiff --git a/mgsm_eval_test.py b/mgsm_eval_test.py\nnew file mode 100644\nindex 00000000..7670e054\n--- /dev/null\n+++ b/mgsm_eval_test.py\n@@ -0,0 +1,44 @@\n+import pytest\n+\n+from . import mgsm_eval\n+from .types import SamplerResponse\n+\n+\n+@pytest.mark.parametrize(\"fails\", [False, True])\n+def test_sampler_error_preserves_prompt_in_report(monkeypatch, fails):\n+    monkeypatch.setattr(\n+        mgsm_eval,\n+        \"get_lang_examples\",\n+        lambda lang: [{\"inputs\": \"What is 1 + 1?\", \"targets\": \"2\", \"lang\": lang}] * 2,\n+    )\n+\n+    class Sampler:\n+        def _pack_message(self, content, role):\n+            return {\"content\": content, \"role\": role}\n+\n+        def __call__(self, messages):\n+            if fails:\n+                raise RuntimeError(\"sampling failed\")\n+            return SamplerResponse(\n+                response_text=\"Answer: 2\",\n+                actual_queried_message_list=[\n+                    {\"role\": \"system\", \"content\": \"Answer the question.\"},\n+                    *messages,\n+                ],\n+                response_metadata={},\n+            )\n+\n+    result = mgsm_eval.MGSMEval(languages=[\"en\"])(Sampler())\n+\n+    assert result.score == (0 if fails else 1)\n+    assert len(result.convos) == 2\n+    for convo, html in zip(result.convos, result.htmls):\n+        assert convo[-2][\"role\"] == \"user\"\n+        assert \"What is 1 + 1?\" in convo[-2][\"content\"]\n+        assert convo[-1] == {\n+            \"role\": \"assistant\",\n+            \"content\": \"\" if fails else \"Answer: 2\",\n+        }\n+        assert \"What is 1 + 1?\" in html\n+        if not fails:\n+            assert convo[0] == {\"role\": \"system\", \"content\": \"Answer the question.\"}\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-27T06:39:49Z",
+  "github_updated_at": "2026-09-27T06:39:49Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "L2 PR diff audit. The PR fixes MGSMEval error-reporting when a sampler raises and references MGSM issue #122. The repo-watch candidate is simpleqa, but the changed file and validation are MGSM-specific, so this may be a real simple-evals bug but is outside the current SimpleQA benchmark variant.",
+  "reviewed_at": "2026-09-28T00:02:42.000Z",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/pull/124",
+    "https://github.com/openai/simple-evals/pull/124/files"
+  ]
+}

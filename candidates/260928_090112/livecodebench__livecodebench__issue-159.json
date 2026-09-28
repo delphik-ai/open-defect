@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/159",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 159,
+  "title": "EvalPort: portable interchange for CodeGenerationProblem tasks",
+  "body": "Hi LiveCodeBench team — I maintain EvalPort (https://github.com/adhabnr-ux/evalport), an open JSON-Schema spec for portable LLM eval test cases, graders, and result sets, with Python/TS SDKs that validate against the schemas.\n\nI was reading `lcb_runner/benchmarks/code_generation.py` and noticed `CodeGenerationProblem` (question_content, platform, difficulty, public_test_cases/private_test_cases: list[Test], metadata) plus `insert_output_evaluation()`'s pass@1 scoring already lines up closely with EvalPort's document model:\n- `CodeGenerationProblem` → EvalPort TestCase (input = question_content + starter_code, expected = test cases)\n- `Test(input, output, testtype)` → EvalPort TestCase.input/expected_output pairs\n- `insert_output_evaluation()`'s pass@1 → EvalPort GraderResult.score\n\nA thin CodeGenerationProblem ↔ TestCase adapter would let LiveCodeBench-derived results round-trip into any of the ~10 frameworks EvalPort targets (Inspect AI, promptfoo, DeepEval, etc.) without each one writing a bespoke LiveCodeBench loader. Not asking you to prioritize this — just flagging it as an option since the schema overlap looked unusually clean.\n\nSchemas: https://github.com/adhabnr-ux/evalport/tree/main/spec/schemas\n\n— Sahi, independent contributor (not affiliated with LiveCodeBench)",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-27T01:25:53Z",
+  "github_updated_at": "2026-09-27T01:25:53Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue suggests a portable EvalPort adapter for LiveCodeBench CodeGenerationProblem/result objects. It is a feature/interoperability proposal and does not identify a current LiveCodeBench task, scorer, dataset, or harness defect.",
+  "reviewed_at": "2026-09-28T00:02:42.000Z",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/159"
+  ]
+}
