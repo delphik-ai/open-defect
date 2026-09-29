@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/157",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 157,
+  "title": "[Withdrawn] Jesse results on LiveCodeBench",
+  "body": "Withdrawn. These results came from answer-key lookups and self-graded runs, not from a valid LiveCodeBench run. Please disregard, and sorry for the noise.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-09-19T23:50:46Z",
+  "github_updated_at": "2026-09-28T03:23:12Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a withdrawn model-results notice stating the reported numbers came from answer-key lookups and self-graded runs, not a valid LiveCodeBench run. It does not claim a current LiveCodeBench benchmark artifact defect requiring canonical tracking.",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/157"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}

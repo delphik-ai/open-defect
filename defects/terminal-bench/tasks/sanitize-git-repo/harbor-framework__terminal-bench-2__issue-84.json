@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__issue-84",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "sanitize-git-repo"
+  ],
+  "resolution": "fixing",
+  "title": "sanitize-git-repo: verifier crashes with GitPython ValueError when the agent rewrites git history to remove the secrets",
+  "summary": "The sanitize-git-repo verifier diffs against a hardcoded pre-change commit, so a valid history-rewrite sanitization removes that SHA and crashes GitPython instead of grading.",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/84",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/84",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/86",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/86/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-28T07:56:53Z",
+  "last_reviewed_at": "2026-09-29T00:08:30.000Z",
+  "decision_note": "L2 thread and linked fix-PR/source diff audit. The issue targets Terminal-Bench 2 task sanitize-git-repo and explains that the prompt requires sensitive values not be present in the repository, while the verifier resolves hardcoded commit d6987af before diffing. PR #86 links Fixes #84 and replaces the SHA-based GitPython diff with a setup-time sha256 manifest; its evidence table shows the old check crashes after history squashing and the new check passes while still detecting uncontaminated-file tampering. No existing terminal-bench artifact covers sanitize-git-repo or this hardcoded-history-SHA root cause. PR #86 is open, so resolution is fixing."
+}

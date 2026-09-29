@@ -1,0 +1,23 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "terminal-bench__harbor-framework__terminal-bench-2__issue-85",
+  "benchmark_name": "terminal-bench",
+  "scope": "task_specific",
+  "task_names": [
+    "raman-fitting"
+  ],
+  "resolution": "found",
+  "title": "raman-fitting: verifier locks unstated conventions (data format, unit conversion, peak model, gamma definition)",
+  "summary": "The raman-fitting prompt omits required data-format, unit-conversion, Lorentzian model, gamma, and offset conventions that the verifier’s tight tolerances assume.",
+  "canonical_source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/85",
+  "evidence_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/85",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/87",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/87/files",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/87#issuecomment-5866399920"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-28T07:57:12Z",
+  "last_reviewed_at": "2026-09-29T00:08:30.000Z",
+  "decision_note": "L2 thread and linked PR diff audit. The issue targets Terminal-Bench 2 task raman-fitting and identifies unstated conventions required by tests: comma decimal/tab-separated input, wavelength-to-Raman-shift conversion, Lorentzian HWHM gamma, and independent offsets. PR #87 shows an instruction-only patch adding exactly those conventions while leaving tests and expected values unchanged, confirming the verifier expected information hidden in the reference solution. The PR was withdrawn for maintainer decision rather than merged, so the defect remains found. No existing terminal-bench artifact covers raman-fitting or this hidden-convention root cause."
+}

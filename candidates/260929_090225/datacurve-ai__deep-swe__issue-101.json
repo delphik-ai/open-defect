@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/101",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 101,
+  "title": "Anthropic Sonnet 5.5",
+  "body": "As per Anthropic's system card:\nhttps://www-cdn.anthropic.com/870c8f525702625d2c62fc6dd04c857e3250bec1/Claude%20Sonnet%205.5%20System%20Card.pdf\n\nSonnet 5.5 scored an average of 71.0% over five trials.\n\nPlease test. ",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-28T19:12:50Z",
+  "github_updated_at": "2026-09-28T19:12:50Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks maintainers to test/report Anthropic Sonnet 5.5 scores on DeepSWE. It does not identify an incorrect task, answer key, grader, harness behavior, or current benchmark artifact defect, so it is outside benchmark defect scope.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/101"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}

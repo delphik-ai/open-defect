@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__pr-671",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix: defer legacy Anthropic prompt imports",
+  "summary": "Fresh SWE-bench inference installs can fail importing run_api because top-level legacy Anthropic prompt constants were removed from current Anthropic SDKs.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/pull/671",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/671",
+    "https://github.com/SWE-bench/SWE-bench/pull/671/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-28T02:38:35Z",
+  "last_reviewed_at": "2026-09-29T00:08:30.000Z",
+  "decision_note": "L2 PR diff and regression-test audit. PR #671 states that declared dataset/inference dependencies install Anthropic SDK 1.8.0, where HUMAN_PROMPT and AI_PROMPT are no longer exported, making `from swebench.inference import run_api` fail before any provider is selected, including OpenAI and LiteLLM routes. The diff defers those imports into the legacy Anthropic branch and adds tests/test_inference_imports.py, which removes the optional constants from an Anthropic module and verifies current API routes still import. No existing swebench-verified artifact covers this top-level inference import failure. The SWE-bench repo also maps to Multilingual, but the evidence is for the shared SWE-bench inference/API route used by the standard current benchmark harness rather than a Multilingual task dataset; attribution is swebench-verified. The PR is open, so resolution is fixing."
+}

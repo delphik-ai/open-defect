@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/671",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 671,
+  "title": "fix: defer legacy Anthropic prompt imports",
+  "body": "#### Reference Issues/PRs\n\nRelated to the API routing introduced in #639 and #649. No existing issue or PR\nfor the removed `HUMAN_PROMPT` export was found in the repository search.\n\n#### What does this implement/fix? Explain your changes.\n\nA fresh install of the declared dataset/inference dependencies installs Anthropic\nSDK 1.8.0, which no longer exports `HUMAN_PROMPT` or `AI_PROMPT`. Importing\n`swebench.inference.run_api` then raises ImportError before any provider is\nselected, including for OpenAI and LiteLLM requests.\n\nMove those prompt imports into the legacy Anthropic branch that uses them. This\nkeeps current API routes importable without changing their requests or pretending\nthe removed legacy Anthropic API is still supported. A subprocess regression test\nchecks importing the real runner without those optional legacy exports; it skips\nwhen the optional API dependencies are not installed.\n\n#### Any other comments?\n\n- The regression fails before the fix and passes afterward.\n- The inference import, LiteLLM, and usage tests pass: 9 tests.\n- Configured pre-commit hooks pass on both changed files.\n- A real LiteLLM/OpenAI SDK fixture exercised the runner’s main entry point with\n  a local dataset, custom endpoint and model IDs, explicit pricing, length\n  filtering, output files, and `max_cost`. Four serialized requests passed the\n  endpoint’s actual request-schema and admission-budget checks.\n- Full `pytest --exitfirst --cov` was attempted. It stopped in the existing\n  `test_cli.py::test_one_instance`, which requires downloading SWE-bench_Lite and\n  running the evaluation environment; that external workflow was unavailable in\n  the isolated offline check. No tests were changed or skipped to hide that limit.\n\nNo live hosted-model or benchmark score is claimed. OpenAI Codex assisted with\nthe reproduction, patch, and tests.\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/inference/run_api.py b/swebench/inference/run_api.py\nindex d65afe25d..6e9374531 100755\n--- a/swebench/inference/run_api.py\n+++ b/swebench/inference/run_api.py\n@@ -14,7 +14,7 @@\n import numpy as np\n import tiktoken\n import openai\n-from anthropic import HUMAN_PROMPT, AI_PROMPT, Anthropic\n+from anthropic import Anthropic\n from tenacity import (\n     retry,\n     stop_after_attempt,\n@@ -383,6 +383,8 @@ def anthropic_inference(\n     if \"claude-3\" in model_name_or_path.lower():\n         call_api = call_anthropic_v2\n     else:\n+        from anthropic import HUMAN_PROMPT, AI_PROMPT\n+\n         call_api = call_anthropic\n     with open(output_file, \"a+\") as f:\n         for datum in tqdm(test_dataset, desc=f\"Inference for {model_name_or_path}\"):\ndiff --git a/tests/test_inference_imports.py b/tests/test_inference_imports.py\nnew file mode 100644\nindex 000000000..288cda50e\n--- /dev/null\n+++ b/tests/test_inference_imports.py\n@@ -0,0 +1,29 @@\n+\"\"\"Optional legacy SDK exports must not prevent importing current API routes.\"\"\"\n+\n+import subprocess\n+import sys\n+\n+import pytest\n+\n+pytest.importorskip(\"anthropic\")\n+pytest.importorskip(\"openai\")\n+pytest.importorskip(\"tiktoken\")\n+\n+\n+def test_run_api_imports_without_legacy_anthropic_prompt_constants():\n+    result = subprocess.run(\n+        [\n+            sys.executable,\n+            \"-c\",\n+            \"import anthropic; \"\n+            \"[delattr(anthropic, name) for name in ('HUMAN_PROMPT', 'AI_PROMPT') \"\n+            \"if hasattr(anthropic, name)]; \"\n+            \"from swebench.inference import run_api; \"\n+            \"assert callable(run_api.call_chat); \"\n+            \"assert callable(run_api.call_litellm)\",\n+        ],\n+        capture_output=True,\n+        text=True,\n+        check=False,\n+    )\n+    assert result.returncode == 0, result.stderr\n",
+  "github_state": "open",
+  "github_created_at": "2026-09-28T02:38:35Z",
+  "github_updated_at": "2026-09-28T02:38:35Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swebench-verified",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__pr-671",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "Fresh SWE-bench inference installs can fail importing run_api because top-level legacy Anthropic prompt constants were removed from current Anthropic SDKs.",
+  "decision_note": "L2 PR diff and regression-test audit. PR #671 states that declared dataset/inference dependencies install Anthropic SDK 1.8.0, where HUMAN_PROMPT and AI_PROMPT are no longer exported, making `from swebench.inference import run_api` fail before any provider is selected, including OpenAI and LiteLLM routes. The diff defers those imports into the legacy Anthropic branch and adds tests/test_inference_imports.py, which removes the optional constants from an Anthropic module and verifies current API routes still import. No existing swebench-verified artifact covers this top-level inference import failure. The SWE-bench repo also maps to Multilingual, but the evidence is for the shared SWE-bench inference/API route used by the standard current benchmark harness rather than a Multilingual task dataset; attribution is swebench-verified. The PR is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/671",
+    "https://github.com/SWE-bench/SWE-bench/pull/671/files"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}

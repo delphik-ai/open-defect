@@ -1,0 +1,35 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/85",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 85,
+  "title": "raman-fitting: verifier locks unstated conventions (data format, unit conversion, peak model, gamma definition)",
+  "body": "**Task:** `raman-fitting` (image `alexgshaw/raman-fitting:20251031`)\n\n**Problem**\n\nThe instruction says only:\n\n> Fit the G and 2D Peak of the spectrum and return the x0, gamma, amplitude and\n> offset of the peaks\n\nwith a JSON schema. It does not state:\n\n- that `graphene.dat` uses **comma decimal separators and tab-separated columns**;\n- the unit of the x-axis, or that a unit conversion is needed at all — the\n  reference solution treats the first column as wavelength (nm) and converts to\n  wavenumbers via `x = 1e7 / x`;\n- the peak model — the tolerances are only satisfiable with a Lorentzian\n  `A·γ²/((x−x0)²+γ²) + offset`, i.e. **γ is the HWHM**, with an independent\n  additive offset per peak.\n\n`tests/test_outputs.py` then checks tight tolerances against reference-solution\nvalues (γ ±1, amplitude ±5%, offset ±10%, x0 within a few cm⁻¹ of 1580.3/2670.08).\nA physically correct fit that reports the FWHM instead of the HWHM, uses a Voigt\nprofile, fits a shared baseline, or converts units differently fails every assert —\neven though nothing in the prompt rules those choices out. The intended convention\nis only discoverable by reading the reference solution.\n\n**Suggested fix** (either):\n\n1. State the conventions in `instruction.md`: file format, x-axis unit and\n   conversion, the Lorentzian form with γ as HWHM, per-peak offset.\n2. Or relax the verifier to convention-independent invariants (peak center within\n   tolerance of 1580/2670 cm⁻¹, HWHM or FWHM both accepted, integrated area\n   within tolerance).\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-28T07:57:12Z",
+  "github_updated_at": "2026-09-28T07:57:12Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "terminal-bench",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__issue-85",
+  "task_names": [
+    "raman-fitting"
+  ],
+  "resolution": "found",
+  "summary": "The raman-fitting prompt omits required data-format, unit-conversion, Lorentzian model, gamma, and offset conventions that the verifier’s tight tolerances assume.",
+  "decision_note": "L2 thread and linked PR diff audit. The issue targets Terminal-Bench 2 task raman-fitting and identifies unstated conventions required by tests: comma decimal/tab-separated input, wavelength-to-Raman-shift conversion, Lorentzian HWHM gamma, and independent offsets. PR #87 shows an instruction-only patch adding exactly those conventions while leaving tests and expected values unchanged, confirming the verifier expected information hidden in the reference solution. The PR was withdrawn for maintainer decision rather than merged, so the defect remains found. No existing terminal-bench artifact covers raman-fitting or this hidden-convention root cause.",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/85",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/87",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/87/files",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/87#issuecomment-5866399920"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}

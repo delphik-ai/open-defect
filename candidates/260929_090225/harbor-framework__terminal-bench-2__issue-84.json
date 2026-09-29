@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/84",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 84,
+  "title": "sanitize-git-repo: verifier crashes with GitPython ValueError when the agent rewrites git history to remove the secrets",
+  "body": "**Task:** `sanitize-git-repo` (image `alexgshaw/sanitize-git-repo:20251031`)\n\n**Problem**\n\nThe instruction says:\n\n> Please ensure that the sensitive values are not present in the repository after the sanitization.\n\nThe secrets are committed in the repository's history (`environment/setup.sh` clones\na repo at `8df3c81f…` with the keys in past commits), so the literal reading of\n\"not present in the repository\" includes history — and the standard tool for that\nis `git filter-repo`.\n\nBut `tests/test_outputs.py` hardcodes a pre-change commit SHA:\n\n```python\ndef test_no_other_files_changed():\n    repo = git.Repo(\"/app/dclm\")\n    commit = repo.commit(\"d6987af002b122fef54bc0be402062c76488a4d9\")\n    diff = commit.diff(None)\n```\n\nAfter any history rewrite, `d6987af…` no longer exists, so `repo.commit()` raises\nan unhandled `ValueError` (\"SHA … could not be resolved\") instead of an assertion —\nthe verifier errors out rather than grading the repo. The task is double-bound:\n\n- Rewrite history (the thorough reading of the instruction) → verifier crash.\n- Edit only the working-tree files, leaving the secrets fully recoverable in\n  history → all three tests pass.\n\nThe verifier rewards the weaker interpretation and crashes on the stronger one.\n\n**Suggested fix** (either direction works):\n\n1. Make the test independent of a fixed SHA — e.g. check the working tree against\n   expected content shipped in `tests/` (a reference already exists for the three\n   contaminated files; the remaining files could be hash-checked against a\n   manifest), so a rewritten history with a clean working tree still passes.\n2. Or narrow the instruction to \"not present in the working tree files\", making\n   history rewriting explicitly out of scope.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-28T07:56:53Z",
+  "github_updated_at": "2026-09-28T07:56:53Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "terminal-bench",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__issue-84",
+  "task_names": [
+    "sanitize-git-repo"
+  ],
+  "resolution": "fixing",
+  "summary": "The sanitize-git-repo verifier diffs against a hardcoded pre-change commit, so a valid history-rewrite sanitization removes that SHA and crashes GitPython instead of grading.",
+  "decision_note": "L2 thread and linked fix-PR/source diff audit. The issue targets Terminal-Bench 2 task sanitize-git-repo and explains that the prompt requires sensitive values not be present in the repository, while the verifier resolves hardcoded commit d6987af before diffing. PR #86 links Fixes #84 and replaces the SHA-based GitPython diff with a setup-time sha256 manifest; its evidence table shows the old check crashes after history squashing and the new check passes while still detecting uncontaminated-file tampering. No existing terminal-bench artifact covers sanitize-git-repo or this hardcoded-history-SHA root cause. PR #86 is open, so resolution is fixing.",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/84",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/86",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/86/files"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}

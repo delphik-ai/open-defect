@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/121",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 121,
+  "title": "[Withdrawn] Jesse results on SimpleQA",
+  "body": "Withdrawn. The harness stored the reference answers before asking the questions, so these results do not reflect a valid SimpleQA run. Please disregard, and sorry for the noise.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2026-09-19T23:50:56Z",
+  "github_updated_at": "2026-09-28T03:23:13Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a withdrawn model-results notice, not a SimpleQA benchmark defect report. It says the submitter’s run was invalid because it used answer-key lookups/self-grading, and asks maintainers to disregard the results.",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/121"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}

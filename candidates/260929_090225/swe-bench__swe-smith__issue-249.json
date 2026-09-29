@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/issues/249",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_issue",
+  "github_number": 249,
+  "title": "[Question] Missing `tool` definitions in trajectories",
+  "body": "## Background ##\nI am working on coding-specific model compression as part of work on [vLLM/LLM-Compressor](https://github.com/vllm-project/llm-compressor). I'd like to use the `SWE-bench/SWE-smith-trajectories` dataset to calibrate a model for coding-specific use cases.\n\n## Question ##\nAs I understand it, `SWE-bench/SWE-smith-trajectories` is a dataset meant to be used for finetuning models on coding tasks. While the dataset contains examples of agentic tool calling, it does not seem to include any information about the tool call definitions that are being invoked. Moreover, the tool call ids seem to be obfuscated. For example:\n\n```json\n  {\n    \"role\": \"tool\",\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"OBSERVATION:\\n/testbed/djmoney/forms/widgets.py\"\n      }\n    ],\n    \"agent\": \"main\",\n    \"message_type\": \"observation\",\n    \"tool_call_ids\": [\n      \"toolu_01XKYqFuYqE5bZHTBfh8VGFP\"\n    ]\n  },\n```\n\nHow is one meant to fine tune a model when the tool call definitions are not provided, and the tool call ids are obfuscated? Thanks in advance.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-28T19:47:49Z",
+  "github_updated_at": "2026-09-28T19:47:49Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue asks about missing tool definitions in the separate SWE-smith trajectories dataset for model compression/calibration. It does not claim a SWE-smith benchmark task, grader, harness, or generated-instance defect in the tracked benchmark artifacts.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/issues/249"
+  ],
+  "reviewed_at": "2026-09-29T00:08:30.000Z"
+}
