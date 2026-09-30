@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/issues/249",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_issue",
+  "github_number": 249,
+  "title": "[Question] Missing `tool` definitions in trajectories",
+  "body": "## Background ##\nI am working on coding-specific model compression as part of work on [vLLM/LLM-Compressor](https://github.com/vllm-project/llm-compressor). I'd like to use the `SWE-bench/SWE-smith-trajectories` dataset to calibrate a model for coding-specific use cases.\n\nRelated to https://github.com/SWE-bench/SWE-smith/issues/58#issuecomment-3581150788\n\n## Question ##\nAs I understand it, `SWE-bench/SWE-smith-trajectories` is a dataset meant to be used for finetuning models on coding tasks. While the dataset contains examples of agentic tool calling, it does not seem to include any information about the tool call definitions that are being invoked. Moreover, the tool call ids seem to be obfuscated. For example:\n\n```json\n  {\n    \"role\": \"tool\",\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"OBSERVATION:\\n/testbed/djmoney/forms/widgets.py\"\n      }\n    ],\n    \"agent\": \"main\",\n    \"message_type\": \"observation\",\n    \"tool_call_ids\": [\n      \"toolu_01XKYqFuYqE5bZHTBfh8VGFP\"\n    ]\n  },\n```\n\nHow is one meant to fine tune a model when the tool call definitions are not provided, and the tool call ids are obfuscated? Thanks in advance.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-28T19:47:49Z",
+  "github_updated_at": "2026-09-29T17:23:41Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The thread asks how to fine-tune from SWE-smith trajectories when tool definitions/obfuscated tool call ids are missing. It is a dataset-use/support question, not a defect in the tracked SWE-smith benchmark tasks, harness, evaluator, or gold data.",
+  "reviewed_at": "2026-09-30T00:07:42.000Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/issues/249"
+  ]
+}

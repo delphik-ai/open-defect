@@ -14,6 +14,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-09-28T19:30:07Z",
-  "last_reviewed_at": "2026-09-29T00:08:30.000Z",
+  "last_reviewed_at": "2026-09-30T00:07:42.000Z",
   "decision_note": "L2 maintainer-authored merged PR and diff audit. PR #5 was authored and merged by a HIL-Bench maintainer, states that Claude Sonnet 5 ask-human support was broken by the deprecated temperature parameter, republished the shared ask-human image, updated all 200 public ask-human task packages, refreshed all 600 public Harbor task pins, and published scale-ai/hil-bench@v2.1.4. The diff changes every public task digest in harbor_release_scale_ai/dataset.toml. Existing HIL-Bench canonical issue #4 is a different shallow-copy _agent_config aliasing root cause, so this is a new benchmark-level defect. The PR is merged, so resolution is fixed."
 }

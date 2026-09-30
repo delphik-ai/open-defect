@@ -1,0 +1,36 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1375",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1375,
+  "title": "[BFCL] Commutative math_gcd/math_lcm calls can be falsely rejected due to argument-order-sensitive ground truth",
+  "body": "### Describe the issue\n\nSome BFCL v3 executable examples use `math_gcd(a, b)` and `math_lcm(a, b)`, whose implementations and mathematical semantics are commutative, but the ground truth/evaluator treats swapped arguments as different calls.\n\nFor example, `exec_parallel_multiple_10` is annotated as:\n\n```python\nmath_lcm(a=12, b=18)\n```\n\nA model may reasonably emit:\n\n```python\nmath_lcm(a=18, b=12)\n```\n\nBoth calls return `36`, but an argument-exact evaluator can mark the second call as incorrect.\n\n### Evidence\n\nThe tool descriptions say that `a` \"should be the larger number\", while several ground-truth entries do not follow that guidance:\n\n- `exec_parallel_multiple_10`: `math_lcm(a=12, b=18)`\n- `exec_parallel_multiple_12`: `math_gcd(a=36, b=48)`\n- `exec_parallel_multiple_16`: `math_gcd(a=1200, b=21406)`\n- `exec_parallel_multiple_34`: `math_lcm(a=15, b=25)`\n- `exec_parallel_33`: `math_gcd(a=45, b=60)`\n- `exec_parallel_34` includes multiple `math_lcm` calls with `a < b`\n\nOther entries place the larger value in `a`, so the dataset is not consistent about argument ordering.\n\n### Expected behavior\n\nSemantically equivalent argument permutations for commutative functions should be accepted.\n\nPossible fixes:\n\n1. Normalize arguments before comparison for known commutative functions such as `math_gcd` and `math_lcm`.\n2. Alternatively, allow multiple equivalent ground truths without interpreting them as multiple required calls.\n3. Remove or clarify the misleading \"a should be the larger number\" parameter description if ordering is not a real runtime requirement.\n\n### Additional context\n\nThe standard Euclidean GCD implementation works regardless of whether `a >= b`, and LCM is likewise symmetric. Strict parameter-order matching therefore creates false negatives without reflecting tool-use correctness.",
+  "comments": [
+    {
+      "url": "https://github.com/ShishirPatil/gorilla/issues/1375#issuecomment-5887262130",
+      "user": "AugustLHHHHH",
+      "created_at": "2026-09-29T09:16:13Z",
+      "updated_at": "2026-09-29T09:16:13Z",
+      "body": "We understand that the BFCL executable datasets are legacy and no longer actively maintained, but we still need this subset for recent experiments. Would it be acceptable to locally adjust the ground truth/evaluator so that equivalent argument orders for commutative functions such as `math_gcd` and `math_lcm` are both accepted?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-29T09:09:08Z",
+  "github_updated_at": "2026-09-29T09:16:13Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L2",
+  "decision_note": "L2 source-data audit. The issue names BFCL v3 executable examples such as exec_parallel_multiple_10 and exec_parallel_33. Current public source evidence places these rows under berkeley-function-call-leaderboard/bfcl_eval/data/unused_datasets/possible_answer and unused_datasets/question, where the math_gcd/math_lcm ground truth and descriptions match the claim. The active tracked BFCL v4 data files do not contain those exec_* task ids; the thread itself calls the executable datasets legacy/no longer maintained. Because current benchmark task evidence is only for the unused legacy executable subset, this cannot be counted against the tracked BFCL benchmark artifact.",
+  "reviewed_at": "2026-09-30T00:07:42.000Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1375",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/unused_datasets/possible_answer/BFCL_v4_exec_parallel_multiple.json",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/unused_datasets/possible_answer/BFCL_v4_exec_parallel.json",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/data/unused_datasets/question/BFCL_v4_exec_parallel_multiple.json",
+    "https://github.com/ShishirPatil/gorilla/blob/main/berkeley-function-call-leaderboard/bfcl_eval/eval_checker/ast_eval/ast_checker.py"
+  ]
+}

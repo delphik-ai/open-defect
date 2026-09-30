@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "gso__gso-bench__gso__pr-36",
+  "benchmark_name": "gso",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "feat: update grading and reward hack detection for v0.1.9",
+  "summary": "GSO v0.1.9 fixed benchmark-level grading/reporting issues: cached HTTP responses were not marked consumed and opt-at-k report merging omitted empty/error attempts from final status sets.",
+  "canonical_source_url": "https://github.com/gso-bench/gso/pull/36",
+  "evidence_urls": [
+    "https://github.com/gso-bench/gso/pull/36",
+    "https://github.com/gso-bench/gso/pull/36/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-29T06:38:56Z",
+  "last_reviewed_at": "2026-09-30T00:07:42.000Z",
+  "decision_note": "L2 merged PR/source diff audit. PR #36 is merged and explicitly updates the grading behavior used for latest GSO results. The diff marks cached/fallback HTTP response bodies as _content_consumed in environment patches, adds incomplete_ids and submitted status handling to opt_at_k report merging so empty patches and infrastructure errors are retained, and tightens reward-hack detector coverage to require complete selected-prediction votes before publishing adjusted scores. Existing GSO canonical artifacts cover HF/setuptools/import/patch-application root causes, not this grading/report completeness root cause. The PR is merged, so resolution is fixed."
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/99",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 99,
+  "title": "OpenAI GPT 6 (Sol and Luna)",
+  "body": "Announcement:\nhttps://openai.com/index/introducing-gpt-6-sol-and-luna/\n\nSelf-reported results:\nGPT‑6 Sol at max effort scores 68.8%\nGPT‑6 Luna at max effort scores 66.6%\n\n<img width=\"593\" height=\"622\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/5d9242f8-b6cf-4c48-8761-8c6fa1ee4d0b\" />\n\nPlease test.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/99#issuecomment-5782877247",
+      "user": "Omzig",
+      "created_at": "2026-09-22T19:44:03Z",
+      "updated_at": "2026-09-22T19:44:03Z",
+      "body": "SMASH IT, lets compare ;)"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/99#issuecomment-5896684360",
+      "user": "coygeek",
+      "created_at": "2026-09-29T18:58:53Z",
+      "updated_at": "2026-09-29T18:58:53Z",
+      "body": "Less than a week passed, by OpenAI replaced **GPT-6 Sol** with **GPT-6.1 Sol**. \nhttps://openai.com/index/introducing-gpt-6-1-sol/"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-22T18:24:25Z",
+  "github_updated_at": "2026-09-29T18:58:53Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. This is a model-result/request discussion for OpenAI GPT 6 results on DeepSWE and a later model replacement note. It does not identify a concrete benchmark artifact, harness, evaluator, dataset, or task defect.",
+  "reviewed_at": "2026-09-30T00:07:42.000Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/99"
+  ]
+}
