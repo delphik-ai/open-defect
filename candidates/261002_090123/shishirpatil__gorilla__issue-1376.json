@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/issues/1376",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_issue",
+  "github_number": 1376,
+  "title": "邀请 gorilla 加入 GithubStarMate，让更多人发现你的作品",
+  "body": "你好，想邀请你把 gorilla 分享到 [GithubStarMate](https://www.githubstarmate.com/?utm_source=github&utm_medium=issue&utm_campaign=community_invitation&utm_content=shishirpatil%2Fgorilla)。你已经投入时间把项目做出来了，它值得被更多开发者发现。\n\n很多好项目，只差一个被更多人看到的机会。如果你正在为 gorilla 寻找推广渠道，欢迎免费加入。也许下一位愿意使用它、为它点亮 Star 的开发者，就从这里认识你。\n\nGithubStarMate 是一个面向 GitHub 开发者的项目发现与互助平台。你可以展示自己的仓库、浏览其他开发者的项目，并通过 Star、Watch 和 Fork 参与互动，在支持其他项目的同时，为自己的作品积累关注。\n\n👉 **[免费加入 GithubStarMate，让更多人发现 gorilla](https://www.githubstarmate.com/zh-Hans/register?utm_source=github&utm_medium=issue&utm_campaign=community_invitation&utm_content=shishirpatil%2Fgorilla)**\n\n说明一下：这条邀请来自平台的积分奖励推广活动，我会因参与活动获得相应积分，你没有注册或参与的义务。\n\n如果这类邀请不适合你的项目，直接关闭此 Issue 即可。感谢你维护和分享 gorilla，抱歉打扰\n\n<!-- githubstarmate:community:scheduled:falcon1891 -->",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-30T15:02:13Z",
+  "github_updated_at": "2026-09-30T15:02:13Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue is a promotional invitation/spam-like project-discovery message and contains no BFCL benchmark defect claim.",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1376"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

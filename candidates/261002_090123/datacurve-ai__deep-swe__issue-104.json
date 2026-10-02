@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/104",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 104,
+  "title": "Independent verification of GPT-6.1 Sol’s reported DeepSWE score",
+  "body": "Would love to see an independent GPT-6.1 Sol run added to the leaderboard, especially at high effort.\nOpenAI reports ~75% on DeepSWE v1.1 at high effort, which would put it around the current top results while apparently using substantially less compute/cost than some of the existing entries.\nIt'd be interesting to see whether the DataCurve run reproduces that result, particularly across medium/high/xhigh/max.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/104#issuecomment-5915871402",
+      "user": "TheBit",
+      "created_at": "2026-09-30T16:59:06Z",
+      "updated_at": "2026-09-30T16:59:06Z",
+      "body": "@SK108045 Duplicate of https://github.com/datacurve-ai/deep-swe/issues/102.\nAnd they won't do it in the current version: https://github.com/datacurve-ai/deep-swe/issues/103"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-30T12:19:45Z",
+  "github_updated_at": "2026-09-30T16:59:06Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: thread is a model result, release, or independent-run discussion and does not identify a benchmark artifact, evaluator, harness, or task defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/104"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

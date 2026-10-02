@@ -19,6 +19,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-09-13T19:18:24Z",
-  "last_reviewed_at": "2026-09-14T00:36:06.962Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
   "decision_note": "L2 PR/source audit with social proof from related maintainer thread. PR #659 explicitly targets SWE-bench v5 and Verified, references #520/#523, and its diff adds --arch plumbing, ImageSpec architecture normalization/retargeting, platform= on image pull/container creation, run arch recording, unavailable_image_ids reporting, and task checks that accept both image families. Current public source confirms ImageSpec defaults arch to amd64 and names sweb.eval.x86_64 images by default, run_evaluation pulls and creates containers from test_spec.image without platform=, and task/checks.py derives only sweb.eval.x86_64 names. Related issue #520 was closed by a SWE-bench member after noting the v5 refactor was finished, harness side was only partly there, nothing auto-detected host architecture, and a fresh PR would be reviewed. Existing swebench-verified artifacts cover other image/build issues, seccomp/stdout spoofing, docs, and git-history leakage, but not this v5 non-amd64 image selection/reporting root cause. Attribution is swebench-verified rather than multilingual because the PR body quantifies Verified 500 images and related #520/#523 track v5 Verified/local harness ARM64 support."
 }

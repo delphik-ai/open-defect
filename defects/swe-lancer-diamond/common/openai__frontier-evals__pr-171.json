@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__pr-171",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Make nanoeval global concurrency check atomic",
+  "summary": "Frontier Evals nanoeval workers checked global concurrency outside the exclusive task-claim transaction, allowing parallel workers to oversubscribe the configured limit.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/pull/171",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/pull/171",
+    "https://github.com/openai/frontier-evals/pull/171/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-17T22:26:23Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current swe-lancer-diamond benchmark_level defect; no existing canonical artifact with the same root cause was found."
+}

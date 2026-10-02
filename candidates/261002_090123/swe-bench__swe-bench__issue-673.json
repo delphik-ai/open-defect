@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/673",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 673,
+  "title": "SWE-bench Multilingual: tasks shared with Multi-SWE-bench, SWE-PolyBench and the SWE-rebench-V2 training set (and a note on lowercase repo names)",
+  "body": "Hi SWE-bench team,\n\nWhile checking SWE benchmarks and open training data for shared tasks, I matched tasks on the pull request itself: the same PR in the same repo, with repo names compared case-insensitively. Some SWE-bench Multilingual tasks turn up elsewhere. I'm sharing this in case it's useful to people who use it. It isn't a defect in the benchmark, and it doesn't show that any reported score is inflated.\n\n**Other benchmarks.** 23 of Multilingual's 300 tasks (7.7%) are the same PR as a task in another benchmark. Every pair has the same fix: identical git blobs on every file both patches touch for Multi-SWE-bench, and identical changed lines in every shared file for SWE-PolyBench, whose patches in these pairs have no blob hashes.\n- **Multi-SWE-bench:** 19 tasks, in fmt 8, jq 4, ripgrep 2, and gson, axios, nushell, bat and vue 1 each. 9 are at the same base commit, and 10 at a different base commit with identical fix blobs.\n  - In 2 of the 19 (axios #5085 and nushell #12901), the two benchmarks attached a different issue to the same PR, so their texts barely overlap.\n- **SWE-PolyBench:** 4 tasks, all `google/gson`.\n- **SWE-bench (test) and SWE-bench Pro:** none; they share no repo with Multilingual. None of SWE-bench's 12 test repos is in SWE-rebench-V2 either.\n\n**An open training set.** In [SWE-rebench-V2](https://huggingface.co/datasets/nebius/SWE-rebench-V2), 12 of the 300 tasks (4.0%) are the same PR at the same base commit as a training task: Carbon 6, PHP-CS-Fixer 3, PhpSpreadsheet 3. Its companion V2-PRs adds 11 more by repo and PR, 6 of them at the same base commit. I raised this with V2's maintainers [here](https://huggingface.co/datasets/nebius/SWE-rebench-V2/discussions/5).\n\n**A note on repo names.** Multilingual stores every repo name in lowercase, e.g. `briannesbitt/carbon` for `briannesbitt/Carbon`. An exact join on repo name therefore misses all 12 V2 overlaps and 2 of the 19 Multi-SWE-bench ones. Keeping GitHub's canonical names, or adding a field with them, would help anyone who checks for overlap.\n\n**What this does not show:**\n- how any of these datasets chose its tasks, or that anyone copied from anyone. There is no chance baseline: we did not test whether the overlap is more than expected for datasets built from the same repos;\n- that any model's scores are affected;\n- every overlap: the same issue fixed in a different PR is not counted.\n\nThe pair lists, scripts and pinned dataset revisions are in [case 3](https://github.com/raimondasl/agentleak#case-3-swe-rebench-v2-vs-multilingual-swe-benchmarks) and [case 4](https://github.com/raimondasl/agentleak#case-4-the-swe-benchmarks-themselves) of this repo (`out/swerebench_v2/overlap_v2.csv`, `out/swe_benchmarks/overlap_pairs.csv`).\n\nHappy to correct anything I've misread.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-01T19:18:16Z",
+  "github_updated_at": "2026-10-01T19:18:16Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue explicitly describes overlap observations for SWE-bench Multilingual and says it is not a defect or evidence of inflated scores.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/673"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

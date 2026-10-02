@@ -17,9 +17,9 @@
     "ade-bench-airbnb012",
     "ade-bench-airbnb013"
   ],
-  "resolution": "fixing",
+  "resolution": "fixed",
   "title": "fix(airbnb): move misnamed dim_hosts CTE out of the shared project into airbnb006 setup",
-  "summary": "ADE-Bench shared Airbnb dbt project leaked a misnamed dim_hosts CTE into non-airbnb006 tasks; open PR #156 moves that intentional defect into airbnb006 setup only.",
+  "summary": "ADE-Bench shared Airbnb dbt project leaked a misnamed dim_hosts CTE into non-airbnb006 tasks; merged PR #156 moved that intentional defect into airbnb006 setup only.",
   "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/156",
   "evidence_urls": [
     "https://github.com/dbt-labs/ade-bench/pull/156",
@@ -28,6 +28,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-09-29T22:08:20Z",
-  "last_reviewed_at": "2026-09-30T00:07:42.000Z",
-  "decision_note": "L2 PR/source diff audit with clear upstream dataset diff. PR #156 states that shared/projects/dbt/airbnb/models/dim/dim_hosts.sql incorrectly named the src_hosts CTE as src_listings_cte, although only airbnb006 intentionally tests misnamed CTEs. The diff renames the shared CTE, adds the misnaming to tasks/airbnb006/setup/changes.patch, and adjusts airbnb007 solution output. Public task directory listing shows airbnb001 through airbnb013; airbnb006 keeps the intentional setup defect, so the unintended shared-project leak affects the other 12 current Airbnb tasks. Existing ADE-Bench artifacts cover different root causes. The PR is open, so resolution is fixing."
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "decision_note": "L2 PR/source diff audit with clear upstream dataset diff. PR #156 states that shared/projects/dbt/airbnb/models/dim/dim_hosts.sql incorrectly named the src_hosts CTE as src_listings_cte, although only airbnb006 intentionally tests misnamed CTEs. The diff renames the shared CTE, adds the misnaming to tasks/airbnb006/setup/changes.patch, and adjusts airbnb007 solution output. Public task directory listing shows airbnb001 through airbnb013; airbnb006 keeps the intentional setup defect, so the unintended shared-project leak affects the other 12 current Airbnb tasks. Existing ADE-Bench artifacts cover different root causes. PR #156 was merged on 2026-09-30, so resolution is fixed."
 }

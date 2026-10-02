@@ -15,6 +15,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-16T15:01:41Z",
-  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
   "decision_note": "L2 source-read audit. Issue #139 quotes SWELancerEval.get_full_summary initializing all token totals to 1, and PR #148 changes them to 0 with regression coverage. Existing SWE-Lancer artifacts do not cover token accounting totals."
 }

@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/168",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 168,
+  "title": "Apply default nanoeval recorder sample context",
+  "body": "## Summary\n\n- make the default `LibraryConfig.set_recorder_context()` delegate to the recorder's `as_default_recorder()` context manager\n- ensure the default JSON recorder receives the sample and group IDs supplied by `set_default_recorder()`\n- leave custom `LibraryConfig` overrides unchanged\n\nNanoeval's normal execution path calls `set_default_recorder(recorder, sample_id=..., group_id=...)`, which in turn delegates sample scoping to `LibraryConfig.set_recorder_context()`. The default hook is currently a no-op, even though `RecorderProtocol` defines `as_default_recorder()` and the default `JsonRecorder` uses that context to populate `sample_id` and `group_id` on emitted records.\n\nAs a result, the default recorder can write records without the sample/group identity that the executor supplied.\n\nThe fix makes the default library hook use the recorder's own context manager. Custom library configurations can still override the hook as before.\n\nRegression coverage exercises the normal `set_default_recorder()` path and verifies that recorder context is applied and cleaned up.",
+  "comments": [
+    {
+      "url": "https://github.com/openai/frontier-evals/pull/168#issuecomment-5928411784",
+      "user": "sylvesterkaczmarek",
+      "created_at": "2026-10-01T09:14:41Z",
+      "updated_at": "2026-10-01T09:14:41Z",
+      "body": "This PR is still current, mergeable, and CLEAN, with no failing/error status or outstanding human review feedback. It has been quiet for more than two weeks. Could a maintainer please review it when convenient, or let me know if anything further is needed?"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/project/common/nanoeval/nanoeval/library_config.py b/project/common/nanoeval/nanoeval/library_config.py\nindex 09b5f42a..adc619fd 100644\n--- a/project/common/nanoeval/nanoeval/library_config.py\n+++ b/project/common/nanoeval/nanoeval/library_config.py\n@@ -203,7 +203,8 @@ def setup_logging(self) -> None:\n     def set_recorder_context(\n         self, rec: RecorderProtocol, sample_id: str, group_id: str\n     ) -> Generator[None, None, None]:\n-        yield\n+        with rec.as_default_recorder(sample_id, group_id):\n+            yield\n \n     def get_dummy_recorder(self, log: bool) -> RecorderConfig:\n         return _DummyRecorderConfig()\ndiff --git a/project/common/nanoeval/nanoeval/library_config_test.py b/project/common/nanoeval/nanoeval/library_config_test.py\nnew file mode 100644\nindex 00000000..abd49ec3\n--- /dev/null\n+++ b/project/common/nanoeval/nanoeval/library_config_test.py\n@@ -0,0 +1,34 @@\n+from contextlib import contextmanager\n+from typing import Any, Iterator\n+\n+from nanoeval.library_config import LibraryConfig, get_library_config, set_library_config\n+from nanoeval.recorder import set_default_recorder\n+\n+\n+class ContextRecorder:\n+    def __init__(self) -> None:\n+        self.context: tuple[str, str | None] | None = None\n+\n+    @contextmanager\n+    def as_default_recorder(\n+        self, sample_id: str, group_id: str | None = None\n+    ) -> Iterator[None]:\n+        self.context = (sample_id, group_id)\n+        try:\n+            yield\n+        finally:\n+            self.context = None\n+\n+\n+def test_default_library_config_applies_recorder_sample_context() -> None:\n+    original_config = get_library_config()\n+    recorder: Any = ContextRecorder()\n+    set_library_config(LibraryConfig())\n+\n+    try:\n+        with set_default_recorder(recorder, sample_id=\"sample\", group_id=\"group\"):\n+            assert recorder.context == (\"sample\", \"group\")\n+    finally:\n+        set_library_config(original_config)\n+\n+    assert recorder.context is None\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T22:13:17Z",
+  "github_updated_at": "2026-10-01T09:14:41Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swe-lancer-diamond__openai__frontier-evals__pr-168",
+  "resolution": "fixing",
+  "summary": "Frontier Evals default nanoeval recorder context ignored executor-supplied sample and group IDs, allowing records without the intended sample identity.",
+  "audit_level": "L2",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current swe-lancer-diamond benchmark_level defect; no existing canonical artifact with the same root cause was found.",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/168",
+    "https://github.com/openai/frontier-evals/pull/168/files"
+  ],
+  "task_names": [],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

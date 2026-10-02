@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/frontier-evals/pull/159",
+  "repo": "openai/frontier-evals",
+  "source_type": "github_pr",
+  "github_number": 159,
+  "title": "Reject zero nanoeval multiprocessing workers",
+  "body": "## Summary\n\n- reject `RunnerArgs(num_processes=0)` during configuration validation\n- keep `None` as the default automatic worker-count mode\n- preserve the existing requirement that an explicit worker count enables multiprocessing\n\n`_validate_multiprocessing_options()` currently checks `if self.num_processes`, so zero skips both validation checks. The value can then reach the multiprocessing executor even though an explicit process count must be positive.\n\nThe fix distinguishes `None` from an explicit integer and validates zero the same way as any other non-positive worker count.\n\nRegression coverage verifies that zero is rejected.",
+  "comments": [
+    {
+      "url": "https://github.com/openai/frontier-evals/pull/159#issuecomment-5928413801",
+      "user": "sylvesterkaczmarek",
+      "created_at": "2026-10-01T09:14:49Z",
+      "updated_at": "2026-10-01T09:14:49Z",
+      "body": "This PR is still current, mergeable, and CLEAN, with no failing/error status or outstanding human review feedback. It has been quiet for more than two weeks. Could a maintainer please review it when convenient, or let me know if anything further is needed?"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/project/common/nanoeval/nanoeval/eval.py b/project/common/nanoeval/nanoeval/eval.py\nindex 4cee7b1d..4aa8288f 100644\n--- a/project/common/nanoeval/nanoeval/eval.py\n+++ b/project/common/nanoeval/nanoeval/eval.py\n@@ -250,7 +250,7 @@ def _validate_slackbot_options(self) -> None:\n \n     @chz.validate\n     def _validate_multiprocessing_options(self) -> None:\n-        if self.num_processes:\n+        if self.num_processes is not None:\n             assert self.num_processes > 0\n             assert self.experimental_use_multiprocessing, (\n                 \"num_processes requires experimental_use_multiprocessing\"\ndiff --git a/project/common/nanoeval/nanoeval/eval_test.py b/project/common/nanoeval/nanoeval/eval_test.py\nnew file mode 100644\nindex 00000000..e71510cf\n--- /dev/null\n+++ b/project/common/nanoeval/nanoeval/eval_test.py\n@@ -0,0 +1,11 @@\n+import pytest\n+\n+from nanoeval.eval import RunnerArgs\n+\n+\n+def test_runner_args_reject_zero_num_processes() -> None:\n+    with pytest.raises(AssertionError):\n+        RunnerArgs(\n+            experimental_use_multiprocessing=True,\n+            num_processes=0,\n+        )\n",
+  "github_state": "open",
+  "github_created_at": "2026-08-17T21:46:44Z",
+  "github_updated_at": "2026-10-01T09:14:49Z",
+  "candidate_benchmark_names": [
+    "swe-lancer-diamond"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L2",
+  "decision_note": "L2 audit: PR rejects an invalid explicit nanoeval worker-count configuration; no evidence ties this API validation issue to a current benchmark artifact, seed, split, or default run path.",
+  "checked_urls": [
+    "https://github.com/openai/frontier-evals/pull/159",
+    "https://github.com/openai/frontier-evals/pull/159/files"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

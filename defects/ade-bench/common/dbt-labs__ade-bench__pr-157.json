@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "ade-bench__dbt-labs__ade-bench__pr-157",
+  "benchmark_name": "ade-bench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "fix(parser): recognise dbt Fusion 2.x test output so CI can go green again",
+  "summary": "ADE-Bench dbt Fusion parser regexes failed after Fusion 2.0.6 changed console output, causing dbt-fusion tasks to report no test results until merged PR #157 updated the parser.",
+  "canonical_source_url": "https://github.com/dbt-labs/ade-bench/pull/157",
+  "evidence_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/157",
+    "https://github.com/dbt-labs/ade-bench/pull/157/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-30T00:17:29Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current ade-bench benchmark_level defect; no existing canonical artifact with the same root cause was found."
+}

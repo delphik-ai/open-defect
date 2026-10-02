@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/200",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 200,
+  "title": "spider2-dbt: duckdb_match with ignore_order=true accepts row-scrambled tables (cross-column alignment never checked)",
+  "body": "## Summary\n\nIn `evaluation_suite/eval_utils.py`, `compare_pandas_table` → `vectors_match` sorts the two vectors **independently** when `ignore_order` is set (L116-117), and gold columns are matched one at a time against *any* column of the predicted table (L141-142). The combined effect: the scorer verifies that each required column contains the right multiset of values, but never verifies that values line up into the right rows.\n\nA submission with every column correct but the rows scrambled — i.e., every row-level fact wrong — scores 1.\n\n## Reproduction\n\nRun from `spider2-dbt/evaluation_suite/` (the stubs neutralize unrelated cloud imports; only `duckdb` and `pandas` are needed):\n\n```python\nimport duckdb, tempfile, os, types, sys, importlib\nfor m in ['google','google.cloud','google.cloud.bigquery','google.oauth2',\n          'snowflake','snowflake.connector','psycopg2','mysql','mysql.connector']:\n    sys.modules.setdefault(m, types.ModuleType(m))\nsys.path.insert(0, '.')\neval_utils = importlib.import_module('eval_utils')\n\nd = tempfile.mkdtemp()\ngold_db, pred_db = os.path.join(d,'gold.duckdb'), os.path.join(d,'pred.duckdb')\n\ncon = duckdb.connect(gold_db)\ncon.execute(\"CREATE TABLE report AS SELECT * FROM (VALUES ('alice', 100.0), ('bob', 250.0), ('carol', 375.0)) t(customer, revenue)\")\ncon.close()\n# same values, every pairing wrong\ncon = duckdb.connect(pred_db)\ncon.execute(\"CREATE TABLE report AS SELECT * FROM (VALUES ('alice', 375.0), ('bob', 100.0), ('carol', 250.0)) t(customer, revenue)\")\ncon.close()\n\nprint(eval_utils.duckdb_match(pred_db, gold_db, condition_tabs=['report'], condition_cols=[[0,1]], ignore_orders=[True]))   # -> 1\nprint(eval_utils.duckdb_match(pred_db, gold_db, condition_tabs=['report'], condition_cols=[[0,1]], ignore_orders=[False]))  # -> 0\n```\n\n## Scope\n\nAll **119 table comparisons across all 68 instances** in `evaluation_suite/gold/spider2_eval.jsonl` set `ignore_order: true`, so the strict path is never exercised in the dbt suite. The lax path is the only path.\n\nRelated: the inner `for j, pred ... break` loop (asked about in #71) also never sets aside matched predicted columns, so a single predicted column can satisfy several gold columns.\n\n## Suggestion\n\nWith `ignore_order=true`, sort **row tuples** (restricted to `condition_cols`) rather than sorting each column independently — this keeps order-insensitivity while preserving row structure. If the current semantics are intentional, documenting them would help; agents can currently pass with tables whose row-level facts are wrong.\n\nFound while reproducing the evaluation for a training project; fuller notes: https://teilo.xyz/posts/quaero-spider2-negative-result/#2-reproducing-the-spider-20-dbt-evaluation",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/200#issuecomment-5920731289",
+      "user": "shaurya416",
+      "created_at": "2026-09-30T22:20:32Z",
+      "updated_at": "2026-09-30T22:20:32Z",
+      "body": "The same comparator is also used by the other two suites: `spider2-lite/evaluation_suite/evaluate.py:84-130` and `spider2-snow/evaluation_suite/evaluate.py:88-144`. In both, `vectors_match` sorts each column vector independently under `ignore_order` (lite lines 97-98, snow lines 111-112), and each gold column is accepted if any predicted column matches it.\n\nRunning the three copies of `compare_pandas_table` unmodified on gold rows `(1,10),(2,20)` against predicted rows `(1,20),(2,10)` with `ignore_order=True` scores 1 in all of them. The same input scores 0 with `ignore_order=False`, and a whole-row reorder `(2,20),(1,10)` correctly scores 1. Every instance in `spider2lite_eval.jsonl` and `spider2snow_eval.jsonl` (547 each) sets `ignore_order: true`, so a fix here would need to cover all three copies to change the lite and snow scores too.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-07-09T23:36:44Z",
+  "github_updated_at": "2026-09-30T22:20:32Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "spider2-dbt",
+  "scope": "benchmark_level",
+  "linked_defect_id": "spider2-dbt__xlang-ai__spider2__issue-200",
+  "resolution": "found",
+  "summary": "Issue #200 is the existing canonical Spider2-DBT duckdb_match row-scrambling defect and remains open evidence.",
+  "audit_level": "L2",
+  "decision_note": "L2 audit: this thread is follow-up/fix evidence for existing canonical defect spider2-dbt__xlang-ai__spider2__issue-200, not a separate root cause.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/200",
+    "https://github.com/xlang-ai/Spider2/blob/main/spider2-dbt/evaluation_suite/eval_utils.py"
+  ],
+  "task_names": [],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

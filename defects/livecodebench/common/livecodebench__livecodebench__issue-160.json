@@ -1,0 +1,21 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "livecodebench__livecodebench__livecodebench__issue-160",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Code-generation judge rejects valid solutions using sys.stdin.buffer.readline() or sys.stdout.buffer",
+  "summary": "LiveCodeBench code-generation judge mocks mishandle Python binary stdin/stdout: buffer readline does not advance and stdout.buffer is absent, rejecting valid binary-I/O solutions.",
+  "canonical_source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/160",
+  "evidence_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/160",
+    "https://github.com/LiveCodeBench/LiveCodeBench/blob/main/lcb_runner/evaluation/testing_util.py",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/161/files",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/161"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-09-30T05:59:24Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current livecodebench benchmark_level defect; no existing canonical artifact with the same root cause was found."
+}

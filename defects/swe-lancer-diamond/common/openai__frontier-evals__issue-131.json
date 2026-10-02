@@ -15,6 +15,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-16T14:26:14Z",
-  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
   "decision_note": "L2 source-read audit. Issue #131 describes the off-by-one in LimitsHelper.enforce_rollout_limits, and PR #132 changes the shared computer-task limit from >= to > with a regression test. SWE-Lancer Diamond uses computer-task rollouts, so the defect affects the current benchmark at harness level. No existing swe-lancer-diamond artifact covers this action-limit boundary root cause."
 }

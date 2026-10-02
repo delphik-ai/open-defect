@@ -17,6 +17,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-07-09T23:36:44Z",
-  "last_reviewed_at": "2026-09-21T00:06:47.199Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
   "decision_note": "L3 source-function reproduction. Harbor preflight was not applicable because this audit directly exercised the upstream Spider2-DBT evaluator function rather than a Harbor adapter. Command: temp venv with duckdb/pandas, curl upstream spider2-dbt/evaluation_suite/eval_utils.py from GitHub, create gold table (alice=100,bob=250,carol=375) and predicted table with the same column values but all revenue pairings shifted, then call duckdb_match on condition_cols [[0,1]]. Observed ignore_order_true=1 and ignore_order_false=0, matching the claim that the order-insensitive path loses row alignment. No sampled task rows were needed because this is benchmark-level evaluator behavior."
 }

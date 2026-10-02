@@ -15,6 +15,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-16T20:06:31Z",
-  "last_reviewed_at": "2026-08-22T00:07:09.734Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
   "decision_note": "L2 source-read audit. Issue #151 explains that _grade_swe_ic records -1.0 for missing pytest_exit_code and the old post-retry guard only checked whether test_results was empty. PR #153 changes the guard to require at least one real 0.0 or 1.0 pytest result. Existing artifacts do not cover this invalid-pytest sentinel root cause."
 }

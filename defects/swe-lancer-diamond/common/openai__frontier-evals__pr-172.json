@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__pr-172",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "fix(nanoeval): respect host file descriptor hard limits",
+  "summary": "Frontier Evals nanoeval startup tried to raise both soft and hard open-file limits to 131072, which can fail unprivileged startup on constrained hosts.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/pull/172",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/pull/172",
+    "https://github.com/openai/frontier-evals/pull/172/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-19T23:50:39Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current swe-lancer-diamond benchmark_level defect; no existing canonical artifact with the same root cause was found."
+}

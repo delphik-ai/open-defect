@@ -1,0 +1,52 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/dbt-labs/ade-bench/pull/156",
+  "repo": "dbt-labs/ade-bench",
+  "source_type": "github_pr",
+  "github_number": 156,
+  "title": "fix(airbnb): move misnamed dim_hosts CTE out of the shared project into airbnb006 setup",
+  "body": "## Problem\n\nThe shared airbnb project (`shared/projects/dbt/airbnb/models/dim/dim_hosts.sql`) ships with its CTE named `src_listings_cte` even though it selects from `src_hosts`. Only `airbnb006` (\"Update misnamed CTEs\") intends this defect to exist, and it relied on the pre-existing misnaming plus the `fct_reviews` misnaming injected by its own setup patch.\n\nBecause the shared project is the starting point for every airbnb task, the misnamed CTE leaked into all 13 airbnb tasks as unintended noise. Since #139 the convention is that task-specific defects live in each task's `setup/changes.patch`, so this one should too.\n\nSurfaced while doing a task-by-task review of the benchmark for the dbt Wizard evals.\n\n## Changes\n\n- **`shared/projects/dbt/airbnb/models/dim/dim_hosts.sql`**: rename `src_listings_cte` to `src_hosts_cte`.\n- **`tasks/airbnb006/setup/changes.patch`**: add a hunk that injects the `src_listings_cte` misnaming into `dim_hosts.sql`, so the task still presents two models to fix. The solution patch and the `dim_hosts_named_correctly` / `dim_listings_named_correctly` / `fct_reviews_named_correctly` tests are unchanged.\n- **`tasks/airbnb007/solutions/changes.patch`**: rename the CTE in the `dim_hosts.sql` it recreates. That task deletes and rebuilds the dim models from `schema.yml`, and its solution had copied the misnaming. It has no CTE-name test, so this is cosmetic.\n\n## Verification\n\nApplied `migration.patch` (where applicable) → `airbnb006/setup/changes.patch` → `airbnb006/solutions/changes.patch` on a scratch copy of the shared project for the duckdb, `airbnb__duckdb_to_snowflake`, and `airbnb__duckdb_to_snowflake_dbtf` variants. All patches apply cleanly. After setup, `dim_hosts` and `fct_reviews` each contain `src_listings_cte`; after solution neither does, `dim_listings` still does, and `dim_hosts.sql` matches the fixed shared file apart from the migration's schema change. The `airbnb007` solution patch also applies cleanly against an emptied models directory.\n\nThe migration patches only touch the `config()` block of `dim_hosts.sql`, so there is no hunk overlap with the CTE rename.\n\nI have not run the full Docker harness for these tasks locally; a CI or sage-agent run of `airbnb006` and `airbnb007` would be the final confirmation.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+  "comments": [
+    {
+      "url": "https://github.com/dbt-labs/ade-bench/pull/156#issuecomment-5901822773",
+      "user": "alsnkline",
+      "created_at": "2026-09-30T00:44:28Z",
+      "updated_at": "2026-09-30T00:44:28Z",
+      "body": "CI status on this PR is misleading, so a note for whoever reviews it.\n\nThe red `dbt-fusion / Sage agent always passes` job is not caused by this change. The Docker image pulls the latest dbt Fusion, and 2.0.6 changed its console output so the parser's regexes no longer match; every task then reports `ERROR - no dbt test results found` even though the tests pass inside the container. The same job has been red on every PR since April, including #144. Because the matrix uses fail-fast, that failure also cancels the plain `dbt / Sage` and `dbt / None` jobs before they finish, so this PR's actual change to airbnb006 and airbnb007 has not yet been exercised by CI.\n\n#157 fixes the parser and has a green run across all five checks. Once it lands on `main` I will rebase this branch so CI can run properly here.\n\nVerification done outside CI is in the description above: migration, setup, and solution patches applied in sequence on a scratch copy for the duckdb and both Snowflake variants.\n"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/shared/projects/dbt/airbnb/models/dim/dim_hosts.sql b/shared/projects/dbt/airbnb/models/dim/dim_hosts.sql\nindex af11cce6..bfc31943 100644\n--- a/shared/projects/dbt/airbnb/models/dim/dim_hosts.sql\n+++ b/shared/projects/dbt/airbnb/models/dim/dim_hosts.sql\n@@ -7,7 +7,7 @@\n \t)\n }}\n \n-WITH src_listings_cte AS (\n+WITH src_hosts_cte AS (\n \tSELECT *\n \tFROM {{ref('src_hosts')}}\n )\n@@ -19,6 +19,6 @@ SELECT\n \tCREATED_AT ,\n \tUPDATED_AT\n FROM\n-\tsrc_listings_cte\n+\tsrc_hosts_cte\n \n \t\n\\ No newline at end of file\ndiff --git a/tasks/airbnb006/setup/changes.patch b/tasks/airbnb006/setup/changes.patch\nindex 322a3a04..a201b867 100644\n--- a/tasks/airbnb006/setup/changes.patch\n+++ b/tasks/airbnb006/setup/changes.patch\n@@ -16,3 +16,23 @@\n  WHERE REVIEW_TEXT IS NOT NULL\n  \n  {% if is_incremental() %}\n+--- a/models/dim/dim_hosts.sql\n++++ b/models/dim/dim_hosts.sql\n+@@ -7,7 +7,7 @@\n+ \t)\n+ }}\n+ \n+-WITH src_hosts_cte AS (\n++WITH src_listings_cte AS (\n+ \tSELECT *\n+ \tFROM {{ref('src_hosts')}}\n+ )\n+@@ -19,6 +19,6 @@\n+ \tCREATED_AT ,\n+ \tUPDATED_AT\n+ FROM\n+-\tsrc_hosts_cte\n++\tsrc_listings_cte\n+ \n+ \t\n+\\ No newline at end of file\ndiff --git a/tasks/airbnb007/solutions/changes.patch b/tasks/airbnb007/solutions/changes.patch\nindex 0e9e7103..fbdc1786 100644\n--- a/tasks/airbnb007/solutions/changes.patch\n+++ b/tasks/airbnb007/solutions/changes.patch\n@@ -10,7 +10,7 @@\n +\t)\n +}}\n +\n-+WITH src_listings_cte AS (\n++WITH src_hosts_cte AS (\n +\tSELECT *\n +\tFROM {{ref('src_hosts')}}\n +)\n@@ -22,7 +22,7 @@\n +\tCREATED_AT ,\n +\tUPDATED_AT\n +FROM\n-+\tsrc_listings_cte\n++\tsrc_hosts_cte\n +\n +\t\n \\ No newline at end of file\n",
+  "github_state": "closed",
+  "github_created_at": "2026-09-29T22:08:20Z",
+  "github_updated_at": "2026-09-30T03:44:54Z",
+  "candidate_benchmark_names": [
+    "ade-bench"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "ade-bench",
+  "scope": "task_specific",
+  "linked_defect_id": "ade-bench__dbt-labs__ade-bench__pr-156",
+  "resolution": "fixed",
+  "summary": "ADE-Bench shared Airbnb dbt project leaked a misnamed dim_hosts CTE into non-airbnb006 tasks; merged PR #156 is fix evidence for the existing canonical defect.",
+  "audit_level": "L2",
+  "decision_note": "L2 audit: this thread is follow-up/fix evidence for existing canonical defect ade-bench__dbt-labs__ade-bench__pr-156, not a separate root cause.",
+  "checked_urls": [
+    "https://github.com/dbt-labs/ade-bench/pull/156",
+    "https://github.com/dbt-labs/ade-bench/pull/156/files"
+  ],
+  "task_names": [
+    "ade-bench-airbnb001",
+    "ade-bench-airbnb002",
+    "ade-bench-airbnb003",
+    "ade-bench-airbnb004",
+    "ade-bench-airbnb005",
+    "ade-bench-airbnb007",
+    "ade-bench-airbnb008",
+    "ade-bench-airbnb009",
+    "ade-bench-airbnb010",
+    "ade-bench-airbnb011",
+    "ade-bench-airbnb012",
+    "ade-bench-airbnb013"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

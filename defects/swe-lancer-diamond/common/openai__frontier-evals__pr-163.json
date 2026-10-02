@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swe-lancer-diamond__openai__frontier-evals__pr-163",
+  "benchmark_name": "swe-lancer-diamond",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Preserve nanoeval max concurrency when resuming run sets",
+  "summary": "Frontier Evals reopened nanoeval run-set databases reset stored max_concurrency to the default, silently discarding configured concurrency limits on resume.",
+  "canonical_source_url": "https://github.com/openai/frontier-evals/pull/163",
+  "evidence_urls": [
+    "https://github.com/openai/frontier-evals/pull/163",
+    "https://github.com/openai/frontier-evals/pull/163/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-08-17T21:54:47Z",
+  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current swe-lancer-diamond benchmark_level defect; no existing canonical artifact with the same root cause was found."
+}

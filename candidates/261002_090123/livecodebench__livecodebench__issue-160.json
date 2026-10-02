@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/LiveCodeBench/LiveCodeBench/issues/160",
+  "repo": "livecodebench/livecodebench",
+  "source_type": "github_issue",
+  "github_number": 160,
+  "title": "Code-generation judge rejects valid solutions using sys.stdin.buffer.readline() or sys.stdout.buffer",
+  "body": "## Problem\n\nThe standard-I/O mocks in `lcb_runner/evaluation/testing_util.py` do not fully support Python binary I/O:\n\n- `MockBuffer.readline()` always returns the first input line instead of advancing to the next line.\n- `Capturing` replaces `sys.stdout` with `StringIO`, which has no `.buffer` attribute. Consequently, `sys.stdout.buffer.write(...)` raises `AttributeError`.\n\nSource: https://github.com/LiveCodeBench/LiveCodeBench/blob/28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24/lcb_runner/evaluation/testing_util.py\n\n## Minimal reproductions\n\n```python\nmock = MockStdinWithBuffer(\"1\\n2\\n\")\nassert mock.buffer.readline() == b\"1\\n\"\nassert mock.buffer.readline() == b\"2\\n\"  # Actually returns b\"1\\n\"\n```\n\n```python\nwith Capturing():\n    sys.stdout.buffer.write(b\"hello\\n\")\n# AttributeError: '_io.StringIO' object has no attribute 'buffer'\n```\n\n## Impact observed with real benchmark results\n\nI checked the current official `main` branch (commit `28fef95ea8c9f7a547c8329f2cd3d32b92c1fa24`). Using its unmodified `run_test`, I rejudged the same extracted solutions and test cases from a full 175-problem LiveCodeBench v6 run.\n\nFour solutions that passed with a binary-I/O-capable judge failed with the official judge:\n\n| Problem | Result with official judge | Cause |\n| --- | --- | --- |\n| `abc391_f` | Wrong answer | Repeated `stdin.buffer.readline()` calls receive the first line repeatedly. |\n| `abc393_e` | Runtime error | `stdout.buffer` is unavailable. |\n| `abc398_f` | Runtime error | `stdout.buffer` is unavailable. |\n| `arc191_a` | Runtime error | `stdout.buffer` is unavailable. |\n\nAs a control, changing only the stdin mock to a cursor-backed byte stream made `abc391_f` pass. Changing only stdout capture to support `.buffer` made the other three solutions pass. The generated solutions and test cases were otherwise unchanged.\n\nFor example, `abc391_f` received this input:\n\n```text\n2 5\n1 2\n3 4\n5 6\n```\n\nThe expected output is `31`, but the official judge obtained `24` because the solution repeatedly read the first line.\n\n## Expected behavior\n\nConsecutive `sys.stdin.buffer.readline()` calls should consume consecutive lines, and bytes written to `sys.stdout.buffer` should be captured and compared as program output. Text and binary input methods should share a consistent input position.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-30T05:59:24Z",
+  "github_updated_at": "2026-09-30T05:59:24Z",
+  "candidate_benchmark_names": [
+    "livecodebench"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "livecodebench",
+  "scope": "benchmark_level",
+  "linked_defect_id": "livecodebench__livecodebench__livecodebench__issue-160",
+  "resolution": "fixing",
+  "summary": "LiveCodeBench code-generation judge mocks mishandle Python binary stdin/stdout: buffer readline does not advance and stdout.buffer is absent, rejecting valid binary-I/O solutions.",
+  "audit_level": "L2",
+  "decision_note": "L2 audit: source thread and public GitHub evidence verify a current livecodebench benchmark_level defect; no existing canonical artifact with the same root cause was found.",
+  "checked_urls": [
+    "https://github.com/LiveCodeBench/LiveCodeBench/issues/160",
+    "https://github.com/LiveCodeBench/LiveCodeBench/blob/main/lcb_runner/evaluation/testing_util.py",
+    "https://github.com/LiveCodeBench/LiveCodeBench/pull/161/files"
+  ],
+  "task_names": [],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

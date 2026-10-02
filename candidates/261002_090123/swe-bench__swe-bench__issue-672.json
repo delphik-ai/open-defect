@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/672",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 672,
+  "title": "Code Quality Evaluation?",
+  "body": "### Describe the issue\n\nI understand that this benchmark is mainly focused on \"Fail-to-Pass\" but after reviewing several implementations I must say that I find that we should evaluate the proposed code not only with the eyes of \"does it solve the problem?\" but also \"does it create other problems?\" and \"How efficient is the code proposed?\".\n\nLet me give you an example:  \nGiven the task \"fix the test ABC\",  \nLLM-A proposes:\n```\nfor i in array_of_employee_ids:\n        column_index1_value = await fetch_column_index1_from_tableX_by_index(i)\n        column_index2_value = await fetch_column_index2_from_tableX_by_index(i)\n        column_index3_value = await fetch_column_index3_from_tableX_by_index(i)\n        staff_members[i] = User(name = column_index1_value, birthday = column_index2_value, hometown = column_index3_value)\n```\nand `fetch_column_index1_from_tableX_by_index(i)` simply executes a `select name/birthday/hometown from Employees where id=@id` on the database.\n\nMeanwhile LLM-B offers:\n```\nraw_members = await fetch_name_birthday_hometown_from_Employees(array_of_employee_ids)\nfor member in raw_members:\n        staff_members[i] = User(name = member.name, birthday = member.birthday, hometown = member.hometown)\n```\nand `fetch_name_birthday_hometown_from_Employees` goes to the database once and pulls everything.\n\nGiven the scenario above, since both LLMs solved the problem, they will be awarded the same amount of points, despite LLM-B suggestion being significantly better (more readable, understandable, sustainable, efficient).\n\nIn my opinion:\n- We should list bad practices that will receive penalty if detected\n- Determine how many points each violation incurs\n- Then create checkers that will assess if a violation occurred\n\nOut here in the field, I've been seeing agent implementations that are jr/intern quality. The last straw for me, which lead me here, is that I saw an LLM opening a database connection every time a certain non-hot-path event happened but not closing it! and I only saw it because the software crashed on production!\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-01T01:05:09Z",
+  "github_updated_at": "2026-10-01T01:05:09Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue proposes broader code-quality/efficiency evaluation beyond fail-to-pass, a feature/scope discussion rather than a current SWE-bench Verified or Multilingual defect.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/672"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

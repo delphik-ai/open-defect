@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/103",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 103,
+  "title": "Next version of DeepSWE",
+  "body": "It looks like DeepSWE is cooking the next generation of DeepSWE:\n\n<img width=\"749\" height=\"605\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/f1506742-2baf-4246-aa6d-9e8fce497bad\" />\n\nhttps://x.com/serenaa_ge/status/2101911256135340532\n\nThey officially stopped releasing benchmark results for models since Sep 03:\nhttps://deepswe.datacurve.ai/changelog\n\nDiscuss!",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/103#issuecomment-5902099836",
+      "user": "Limwin94",
+      "created_at": "2026-09-30T01:12:22Z",
+      "updated_at": "2026-09-30T01:12:22Z",
+      "body": "None of this is on the website. DeepSWE said it published every task and grading result for open collaboration, but the review and the team's response exist on X. People who check the benchmark on the official site have no idea any of this happened.\n\nA one-liner like \"working on the next version, updates paused for now\" would've been enough. That's not hard."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-29T21:15:49Z",
+  "github_updated_at": "2026-09-30T01:12:22Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: thread is a model result, release, or independent-run discussion and does not identify a benchmark artifact, evaluator, harness, or task defect.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/103"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}

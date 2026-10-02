@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/dbt-labs/ade-bench/issues/158",
+  "repo": "dbt-labs/ade-bench",
+  "source_type": "github_issue",
+  "github_number": 158,
+  "title": "Stop dbt Fusion console-format drift from breaking the test parser: JSON logs, and pin the Fusion version",
+  "body": "Follow-up from #157, which patched `DbtParser` after dbt Fusion 2.0.6 changed its console output and every CI task started reporting `ERROR - no dbt test results found`. That fix keeps the regex-scraping approach working for the 1.x and 2.x shapes, but the underlying fragility remains: the harness parses human-readable console text captured from a tmux pane, and that text is not a stable contract.\n\nTwo changes would remove the problem rather than patch around it. They are independent and can land separately.\n\n## 1. Parse JSON-formatted logs instead of console text\n\nSuggested by @joellabes on #157. dbt (Core and Fusion) supports [`--log-format json`](https://docs.getdbt.com/reference/global-configs/logs?version=2), which emits one structured JSON event per line, including a per-node event carrying each test's status. Parsing that is a schema-backed contract instead of a regex over renderer output that changes between minors.\n\nRough shape:\n\n- `shared/scripts/run-dbt-test.sh`: run `dbt test --select \"test_type:singular\" --log-format json` (or set `DBT_LOG_FORMAT=json`), so the pane the harness already captures contains JSON lines.\n- `ade_bench/parsers/dbt_parser.py`: for both parser types, pick out the node-finished events for tests, read the status field, and derive the summary from those rather than from a summary line. Keep the current text regexes as a fallback while both are validated side by side.\n- Validate the same way #157 was: replay the new parser over the `post-agent.txt` panes in the CI artifacts and check it reproduces the workflow's expectations (all pass for the sage agent, all fail except `ALLOWED_TO_PASS` for the none agent).\n\nThings to check before committing to this: whether Fusion's JSON event names and fields match Core's closely enough for one code path, and whether the JSON output is still readable enough in the HTML transcript reports (`scripts_python/generate_results_html.py`) or needs a rendering tweak there.\n\n## 2. Pin the dbt Fusion version in the Docker image\n\n`docker/base/Dockerfile.duckdb-dbtf` (and the Snowflake dbtf image) installs Fusion with `install.sh --update`, so every CI run and every local build picks up whatever shipped that day. That is how the 2.0.6 change reached CI silently and stayed red for months. The installer supports `--version VER`.\n\n- Pin to a known-good version (2.0.6 is what the current parser is validated against) via a build arg, so bumping is a one-line PR that gets its own CI run.\n- Print `dbtf --version` in the CI \"Pre-build Docker image\" step so the version in use is visible in the log.\n\nThis is small enough to be its own PR and is worth doing even if (1) lands, since it also protects the benchmark's reproducibility: results from two runs should not differ because Fusion changed underneath them.\n\n## Context\n\n- #157: the regex fix and the parser tests, with the replay validation described in its body.\n- #156: the PR whose red CI surfaced all of this.\n- The Fusion formatter source that defines the console strings: `crates/dbt-common/src/tracing/formatters/{node,invocation}.rs` in the (now archived) `dbt-labs/dbt-fusion` repo.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-30T03:19:38Z",
+  "github_updated_at": "2026-09-30T03:19:38Z",
+  "candidate_benchmark_names": [
+    "ade-bench"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit: issue is a follow-up robustness/design proposal after #157 patched the concrete dbt Fusion parser break; it does not establish a separate current failing artifact.",
+  "checked_urls": [
+    "https://github.com/dbt-labs/ade-bench/issues/158"
+  ],
+  "reviewed_at": "2026-10-02T00:07:07.736Z"
+}
