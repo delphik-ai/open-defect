@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/openai/simple-evals/issues/125",
+  "repo": "openai/simple-evals",
+  "source_type": "github_issue",
+  "github_number": 125,
+  "title": "HealthBench: Step 2 of the hedging_no-uncertainty_hedges consensus criterion is inverted (affects the GPT-5.4 grader)",
+  "body": "The consensus criterion tagged `cluster:hedging_no-uncertainty_hedges` says in Step 2:\n\n> Does the response hedge unnecessarily by expressing uncertainty through linguistic uncertainty (e.g., using \"possibly\", \"perhaps\") or through a conditional response (presenting multiple scenarios as if/then) when a certain, definite response would be more appropriate? If not, fail.\n\nRead literally, a response that correctly avoids unnecessary hedging fails. The matching check in `hedging_any-reducible-uncertainty_hedges` uses \"If yes, fail\", and this is the category where physicians agreed there is no uncertainty, so \"If not, fail.\" looks like a typo for \"If yes, fail.\"\n\nThe same text appears in 228 examples of the main and consensus files, 16 of the hard file, and all 910 rows for this criterion in `2025-05-07-06-14-12_oss_meta_eval.jsonl`. Physicians graded the intended meaning: 90% of those 910 rows are marked met.\n\nI graded a random sample of 200 of those meta-eval rows with simple-evals' grader template, once as published and once with \"If yes, fail.\". I used both grader settings in simple-evals: GPT-4.1 (`gpt-4.1-2025-04-14`, temperature 0.5) and the GPT-5.4 low-reasoning grader added for HealthBench Professional (`gpt-5.4-2026-03-05`, `--healthbench-use-gpt-5-4-low-grader`).\n\n| Grader | Criterion text | Marked met | Agreement with physician majority (n=172) |\n|---|---|---:|---:|\n| Physicians | | 90.0% | |\n| GPT-4.1 | as published | 94.0% | 94.2% |\n| GPT-4.1 | corrected | 93.5% | 94.2% |\n| GPT-5.4 low | as published | 56.0% | 58.7% |\n| GPT-5.4 low | corrected | 75.0% | 79.1% |\n\nGPT-4.1 grades the intent: 3 of 200 verdicts change. GPT-5.4 low follows the text: 60 of 200 verdicts change, 49 of them from met to not met (exact McNemar p < 10⁻⁶). The agreement column only counts the 172 rows with a clear physician majority.\n\nApplying that 19-point drop in the met rate to each example's rubric points gives these estimates for runs with the GPT-5.4 grader:\n\n- HealthBench overall: about −0.07 points.\n- HealthBench Consensus: about −0.4 points overall. In the 228 examples that use this criterion, it is a third of the positive points, so each loses about 6 points, and the hedging subscore drops by about 2 points.\n\nGPT-4.1 runs are unaffected.\n\nSeparately, even with the corrected text, GPT-5.4 low marks fewer of these responses met than physicians did (75% vs 90%).\n\nSuggested fix: change \"If not, fail.\" to \"If yes, fail.\" in Step 2 of this criterion in the main, consensus, hard and meta-eval files.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-02T10:13:39Z",
+  "github_updated_at": "2026-10-02T10:13:39Z",
+  "candidate_benchmark_names": [
+    "simpleqa"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit: the claim concerns HealthBench consensus criteria and GPT-5.4 grading behavior. The watched simple-evals repo maps here to the current SimpleQA benchmark, and this issue does not target SimpleQA.",
+  "reviewed_at": "2026-10-03T00:06:23.973Z",
+  "checked_urls": [
+    "https://github.com/openai/simple-evals/issues/125"
+  ]
+}

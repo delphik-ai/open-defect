@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bfcl__shishirpatil__gorilla__issue-1377",
+  "benchmark_name": "bfcl",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "[BFCL] v4 grader defects with reproducible inputs",
+  "summary": "BFCL v4 multi-turn checking skips validation on empty-ground-truth turns, so premature actions can pass when later state matches.",
+  "canonical_source_url": "https://github.com/ShishirPatil/gorilla/issues/1377",
+  "evidence_urls": [
+    "https://github.com/ShishirPatil/gorilla/issues/1377",
+    "https://github.com/tokenless-ai/envcheck-findings/tree/post/2026-10-grader-defects/posts/2026-10-grader-defects",
+    "https://github.com/tokenless-ai/envcheck-findings/blob/post/2026-10-grader-defects/posts/2026-10-grader-defects/findings/multi-turn-empty-ground-truth-skips-validation/README.md",
+    "https://github.com/tokenless-ai/envcheck-findings/blob/post/2026-10-grader-defects/posts/2026-10-grader-defects/findings/multi-turn-empty-ground-truth-skips-validation/REPRODUCE.md",
+    "https://github.com/ShishirPatil/gorilla/blob/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard/bfcl_eval/data/BFCL_v4_multi_turn_miss_param.json",
+    "https://github.com/ShishirPatil/gorilla/blob/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard/bfcl_eval/data/possible_answer/BFCL_v4_multi_turn_miss_param.json",
+    "https://github.com/ShishirPatil/gorilla/blob/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard/bfcl_eval/eval_checker/multi_turn_eval/multi_turn_checker.py#L94-L98",
+    "https://github.com/ShishirPatil/gorilla/blob/6ea57973c7a6097fd7c5915698c54c17c5b1b6c8/berkeley-function-call-leaderboard/bfcl_eval/eval_checker/eval_runner.py#L239-L245"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-10-02T20:27:42Z",
+  "last_reviewed_at": "2026-10-03T00:06:23.973Z",
+  "decision_note": "L3-equivalent public reproduction audit. The issue targets current BFCL v4 commit 6ea57973c7a6097fd7c5915698c54c17c5b1b6c8 and the lead multi_turn_miss_param_0 datapoint. It links the BFCL data row, answer key, multi_turn_checker empty-ground-truth skip, and eval_runner path that calls the checker without the separate irrelevance check. The public reproduction grades stored trajectories with BFCL's own evaluate_task: acts-before-asking receives reward 1, asks-then-acts receives reward 1, calls-before-asking receives reward 1, and wrong-guess receives reward 0. This run counts only the shared empty-ground-truth multi-turn validation root cause from the aggregate issue; the other indexed BFCL findings are not separately counted from this candidate, and the nested-number item remains covered by existing PR #1371."
+}

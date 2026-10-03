@@ -18,6 +18,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-06-29T14:28:04Z",
-  "last_reviewed_at": "2026-10-02T00:07:07.736Z",
+  "last_reviewed_at": "2026-10-03T00:06:23.973Z",
   "decision_note": "L2 source-read audit. The PR body describes current SWE-smith harness/container creation paths get_container(), run_patch_in_container(), and run_command_in_container() hardcoding platform=\"linux/x86_64\" despite existing RepoProfile.pltf architecture detection. The linked PR diff replaces those hardcoded values in swesmith/profiles/base.py, swesmith/harness/utils.py, and swesmith/issue_gen/get_from_tests.py with self.pltf/rp.pltf. Existing canonical PR 198 covers image build architecture handling; this root cause is the later container execution path, so it is a distinct benchmark-level SWE-smith defect. PR is open, so resolution is fixing."
 }

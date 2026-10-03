@@ -1,0 +1,60 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/102",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 102,
+  "title": "GPT 6.1 Sol dropped",
+  "body": "https://openai.com/index/introducing-gpt-6-1-sol/\n\ni think they are coming out with new models faster than you can test them.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/102#issuecomment-5896764274",
+      "user": "coygeek",
+      "created_at": "2026-09-29T19:03:44Z",
+      "updated_at": "2026-09-29T19:03:44Z",
+      "body": "Self-reported DeepSWE from OpenAI:\n\nMax 71%\nXhigh 71%\nHigh 75%\nMedium 73%\nLow 64%"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/102#issuecomment-5898528504",
+      "user": "TheBit",
+      "created_at": "2026-09-29T20:45:56Z",
+      "updated_at": "2026-09-29T20:45:56Z",
+      "body": "Looks like this project is abandoned :("
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/102#issuecomment-5898819348",
+      "user": "Omzig",
+      "created_at": "2026-09-29T21:02:05Z",
+      "updated_at": "2026-09-29T21:02:05Z",
+      "body": "> Looks like this project is abandoned :(\n\nmaybe they took a vacation"
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/102#issuecomment-5910144686",
+      "user": "sg6",
+      "created_at": "2026-09-30T11:21:48Z",
+      "updated_at": "2026-09-30T11:21:48Z",
+      "body": "> Looks like this project is abandoned :(\n\nThey updated something on Sept 22, at least the website says so. And on #103 it looks like they are working on a new version! I'm stoked for it! "
+    },
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/102#issuecomment-5944554898",
+      "user": "VM8gkAs",
+      "created_at": "2026-10-02T02:35:52Z",
+      "updated_at": "2026-10-02T02:35:52Z",
+      "body": "I use a browser-side JavaScript userscript to improve my local chart viewing experience:\n\n- Configurable settings persisted with localStorage\n- Data-driven SVG chart overlays with configurable model entries\n- Adjustable minimum visible Y-axis score threshold\n\nThis helps me visualize additional model data locally.\n(It only affects the local browser visualization and does not modify official benchmark results.)\n\nExample of a local visualization overlay:\n<img width=\"342\" height=\"243\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/37ef9981-0e9f-4d6b-ad7a-74d6d49e0720\" />"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-09-29T18:35:49Z",
+  "github_updated_at": "2026-10-02T02:35:52Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit: this asks about testing a newly released OpenAI model and contains model/leaderboard logistics discussion only; no benchmark artifact defect is claimed.",
+  "reviewed_at": "2026-10-03T00:06:23.973Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/102"
+  ]
+}
