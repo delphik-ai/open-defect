@@ -1,0 +1,28 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/88",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 88,
+  "title": "torch-pipeline-parallelism pins outdated transformers version",
+  "body": "For `torch-pipeline-parallelism`, the verifier pins `transformers==4.15.0`. However, the current `pip install` version for transformers is `5.18.0` which has some name changes in the attributes.\nSpecifically, `input_embeds` has become `inputs_embeds` which unfairly penalizes models that are pip installing the current transformers version since there are no instructions to use a particular transformers version",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-03T18:02:10Z",
+  "github_updated_at": "2026-10-03T18:02:10Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L2",
+  "decision_note": "The thread is attributed to current Terminal-Bench task terminal-bench/torch-pipeline-parallelism, but the specific claimed root cause was not present in the audited public source. The issue says the verifier pins transformers==4.15.0; current main test runner for this task installs transformers==4.55.0, and the task instructions do not mention 4.15.0. The source audit did find a fixed verifier dependency, but not the claimed 4.15.0 pin or maintainer/source evidence that current benchmark scoring is wrong under the published verifier. Without L3 reproduction of a current mismatch against the verifier, this remains not_present for the claimed root cause.",
+  "reviewed_at": "2026-10-04T00:05:19Z",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/88",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/main/torch-pipeline-parallelism/task.toml",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/main/torch-pipeline-parallelism/instruction.md",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/main/torch-pipeline-parallelism/tests/test.sh",
+    "https://github.com/harbor-framework/terminal-bench-2/blob/main/torch-pipeline-parallelism/tests/test_outputs.py"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/234",
+  "repo": "alibabaresearch/damo-convai",
+  "source_type": "github_issue",
+  "github_number": 234,
+  "title": "Potential Inconsistencies in BIRD Dev Gold SQL and Evidence",
+  "body": "Hi BIRD team,\n\nDuring our testing, we identified several potential inconsistencies in the gold SQL and/or evidence. We have attached a list of the cases we found.\n\nWe understand that some may already have been reported in other issues or fixed in new_dev. We also appreciate that testing robustness against dirty data is one of BIRD’s goals, though we are unsure whether incorrect evidence or gold SQL falls within that scope.\n\n[bird_benchmark_issues.csv](https://github.com/user-attachments/files/33013353/bird_benchmark_issues.csv)\n\nThank you for maintaining this valuable benchmark and for taking the time to review these cases.\n\nTomer.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-03T23:07:53Z",
+  "github_updated_at": "2026-10-03T23:07:53Z",
+  "candidate_benchmark_names": [
+    "bird-bench"
+  ],
+  "terminal_status": "unverified",
+  "audit_level": "L3",
+  "decision_note": "BIRD attribution is plausible because the source issue explicitly targets BIRD dev gold SQL/evidence and the attached CSV lists many question_id rows, but the source is a high-fanout set of 159 potential inconsistencies with no maintainer acknowledgement, merged fix, regression test, or upstream dataset diff. The runbook requires L3 for high-fanout claims without social proof. I read the public GitHub attachment and confirmed it contains row-level claims, but did not reproduce the SQL/evidence mismatches against the current BIRD dev database/task artifact, so this cannot be counted as confirmed or duplicate_evidence in this run.",
+  "reviewed_at": "2026-10-04T00:05:19Z",
+  "checked_urls": [
+    "https://github.com/AlibabaResearch/DAMO-ConvAI/issues/234",
+    "https://github.com/user-attachments/files/33013353/bird_benchmark_issues.csv"
+  ]
+}

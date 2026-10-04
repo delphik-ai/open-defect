@@ -1,0 +1,69 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/294",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 294,
+  "title": "How stable is run_evaluation.py with gold patch for SWE-bench_Verified?",
+  "body": "### Describe the issue\n\nI have run the evaluation script with `--predictions_path gold` on the 500 tasks in SWE-bench_Verified and 14 of them are failing.\n\nI'm using the current main branch of swebench: c63a11369d6e2d5c2d11d8cdd50d2e39f93d9f3d\n\nThis is the exact command:\n\n    python -m swebench.harness.run_evaluation --predictions_path gold --max_workers 25 --run_id validate-gold-verified --dataset_name princeton-nlp/SWE-bench_Verified --cache_level instance\n\nThose are the unresolved task ids:\n\n```json\n    \"unresolved_ids\": [\n        \"astropy__astropy-7166\",\n        \"astropy__astropy-7336\",\n        \"astropy__astropy-7606\",\n        \"astropy__astropy-7671\",\n        \"astropy__astropy-8707\",\n        \"astropy__astropy-8872\",\n        \"django__django-10097\",\n        \"matplotlib__matplotlib-20488\",\n        \"psf__requests-2317\",\n        \"pylint-dev__pylint-6528\",\n        \"pylint-dev__pylint-7080\",\n        \"pylint-dev__pylint-7277\",\n        \"sphinx-doc__sphinx-10323\",\n        \"sphinx-doc__sphinx-10435\"\n    ],\n```\nThen, I ran it a second time, and got 15 unresolved tasks:\n\n```json\n    \"unresolved_ids\": [\n        \"astropy__astropy-7166\",\n        \"astropy__astropy-7336\",\n        \"astropy__astropy-7606\",\n        \"astropy__astropy-7671\",\n        \"astropy__astropy-8707\",\n        \"astropy__astropy-8872\",\n        \"django__django-10097\",\n        \"matplotlib__matplotlib-20488\",\n        \"psf__requests-1766\",\n        \"psf__requests-2317\",\n        \"pylint-dev__pylint-6528\",\n        \"pylint-dev__pylint-7080\",\n        \"pylint-dev__pylint-7277\",\n        \"sphinx-doc__sphinx-10323\",\n        \"sphinx-doc__sphinx-10435\"\n    ],\n```\n\n\n### Suggest an improvement to documentation\n\n_No response_",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/294#issuecomment-2603233716",
+      "user": "MarcCote",
+      "created_at": "2025-01-20T21:10:50Z",
+      "updated_at": "2025-01-20T21:10:50Z",
+      "body": "This might be related to SWE-bench/SWE-bench#225, SWE-bench/SWE-bench#167, SWE-bench/swe-bench-dockerfiles#14, SWE-bench/SWE-bench#267, and SWE-bench/SWE-bench#274"
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/294#issuecomment-5295408110",
+      "user": "john-b-yang",
+      "created_at": "2026-08-14T15:58:04Z",
+      "updated_at": "2026-08-14T15:58:04Z",
+      "body": "Resolved. The SWE-bench Verified gold run now passes 500 of 500 on current main, so the 14 failures reported here are gone. This came from a series of environment and grading repairs rather than one commit, so there is no single hash to point at."
+    },
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/294#issuecomment-5968262122",
+      "user": "tedinoue",
+      "created_at": "2026-10-03T10:26:00Z",
+      "updated_at": "2026-10-03T10:26:00Z",
+      "body": "**sphinx-doc__sphinx-10435 — cause of the gold-patch failure.** In the environment we built, the newest Pygments (2.21.0) was installed for Sphinx 5.0. `test_latex_code_role` asserts exact Pygments LaTeX output and fails with the gold patch. With Pygments 2.12.0 and 2.14.0 the same gold patch passes (75 passed). Suggestion: pin Pygments (2.12 to 2.14) in this task's environment spec so rebuilds are reproducible.\n\nCaveat: measured 2026-10-03 in a locally rebuilt arm64 image with the task's eval script; official images built earlier may not show it.\n\nPosted by Ted Inoue. The measurement comes from his automated SWE-bench evaluation setup, with Claude's assistance; logs available on request.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "closed",
+  "github_created_at": "2025-01-20T21:09:58Z",
+  "github_updated_at": "2026-10-03T10:26:00Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "swebench-verified",
+  "scope": "task_specific",
+  "linked_defect_id": "swebench-verified__swe-bench__swe-bench__issue-294",
+  "task_names": [
+    "astropy__astropy-7166",
+    "astropy__astropy-7336",
+    "astropy__astropy-7606",
+    "astropy__astropy-7671",
+    "astropy__astropy-8707",
+    "astropy__astropy-8872",
+    "django__django-10097",
+    "matplotlib__matplotlib-20488",
+    "psf__requests-1766",
+    "psf__requests-2317",
+    "pylint-dev__pylint-6528",
+    "pylint-dev__pylint-7080",
+    "pylint-dev__pylint-7277",
+    "sphinx-doc__sphinx-10323",
+    "sphinx-doc__sphinx-10435"
+  ],
+  "resolution": "fixed",
+  "summary": "SWE-bench Verified gold-patch evaluation is unstable across the 15 task ids reported in issue #294; L3 reproduced the defect with 6 failures in one full run.",
+  "audit_level": "L1",
+  "decision_note": "Updated thread evidence for the existing SWE-bench Verified issue #294 canonical artifact. The thread is the canonical source itself; it now includes maintainer confirmation that current main gold passes 500/500 after environment and grading repairs, plus a later caveated local arm64 observation for sphinx-doc__sphinx-10435. No new distinct current root cause was counted from the caveated local rebuild comment; the existing canonical remains the matching root cause and resolution stays fixed.",
+  "reviewed_at": "2026-10-04T00:05:19Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/294"
+  ]
+}

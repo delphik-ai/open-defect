@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/674",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 674,
+  "title": "django__django-16145: test_honor_umask fails with the gold patch when the image commits `chmod -R 777 /testbed`",
+  "body": "**Observed.** In an image built from the SWE-bench generated Dockerfile (`spec_build`; the line is `chmod -R 777 /testbed`, line 95 in our build), `admin_scripts.tests.StartProject.test_honor_umask` fails with the gold patch and with no patch at all. The task's FAIL_TO_PASS passes; this PASS_TO_PASS test is the only failure, so the task is \"not resolved\" even for the gold patch.\n\n**Cause.** The image commits the chmod as HEAD, so every tracked file is mode 100755 (HEAD~1 keeps the upstream 100644). `test_honor_umask` copies the project template under umask 077 and expects mode 0o600; with the template at 755 it gets 0o700 (448 != 384).\n\n**Check.** In a throwaway container with the template modes restored from HEAD~1, the test goes FAIL → OK; the gold patch then resolves and a no-op patch does not.\n\n**Suggestion.** Do not commit the chmod into the base commit (or run it before the base commit is taken), or drop mode-dependent tests from PASS_TO_PASS. Any task whose tests depend on file modes is affected.\n\nCaveat: observed in a locally built arm64 image on 2026-10-03; please confirm whether the official x86 image shows it.\n\nPosted by Ted Inoue. The measurement comes from his automated SWE-bench evaluation setup, with Claude's assistance; logs available on request.\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-bench/issues/674#issuecomment-5968597986",
+      "user": "tedinoue",
+      "created_at": "2026-10-03T11:11:03Z",
+      "updated_at": "2026-10-03T11:11:03Z",
+      "body": "**Correction to this report.** After checking `SWE-bench/swe-bench-tasks`, I believe the `chmod -R 777` ordering described above comes from our own locally built arm64 images, not from upstream. On main (swe-bench-tasks `dockerfile_gen/utils.py`, commit c3fd2c76, 2026-08-14, \"Move chmod after git reset so restored files stay writable\"), the chmod runs after `git reset --hard` and nothing is committed after it, so HEAD keeps the upstream modes. In our arm64 build the chmod was the last repo step before the base commit was recorded, which put every file at mode 100755 in HEAD and broke `test_honor_umask` for the gold patch. We have not tested whether upstream's x86 image shows the failure. Sorry for the noise if it does not; please close this if so.\n\nPosted by Ted Inoue, with Claude's assistance.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-03T10:27:24Z",
+  "github_updated_at": "2026-10-03T11:11:03Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "not_present",
+  "audit_level": "L1",
+  "decision_note": "The source issue initially claimed django__django-16145 fails because chmod -R 777 /testbed is committed into the image HEAD, but the reporter corrected the finding in the only comment: the ordering came from their own locally built arm64 images, while upstream swe-bench-tasks main runs chmod after git reset so HEAD keeps upstream file modes. The reporter has not shown the failure on official x86 images. This is therefore not present in the current upstream benchmark artifact as described.",
+  "reviewed_at": "2026-10-04T00:05:19Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/674",
+    "https://github.com/SWE-bench/SWE-bench/issues/674#issuecomment-5968597986"
+  ]
+}

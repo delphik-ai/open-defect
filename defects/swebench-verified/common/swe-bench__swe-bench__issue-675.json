@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-675",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Saved-log report replay selects gold artifacts for model runs and still requires Docker",
+  "summary": "SWE-bench report replay selects gold artifacts instead of saved model artifacts and still initializes Docker, so regenerated reports can become empty or fail offline.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/675",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/675",
+    "https://github.com/SWE-bench/SWE-bench/pull/676",
+    "https://github.com/SWE-bench/SWE-bench/pull/676/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-03T10:58:54Z",
+  "last_reviewed_at": "2026-10-04T00:05:19Z",
+  "decision_note": "L2 source/PR audit. Issue #675 is attributed to SWE-bench current main and the Verified-compatible saved-log report path, not Multilingual-specific data. It reports that swebench report always passes predictions_path=\"gold\", causing model runs to look under logs/evaluation/<run_id>/gold instead of the saved model directory, and that replay still initializes Docker despite using saved logs. PR #676 independently encodes the same root cause in code: it reconstructs predictions from selected model patch.diff files, avoids substituting gold patches, skips Docker clients in rewrite_reports mode, preserves metadata, rejects stale/missing logs, and adds 25 regression cases. Existing swebench-verified common defects cover Docker reliability, image architecture, and prior report/gold issues, but not this saved-log replay artifact-selection/offline-replay root cause. PR #676 is closed unmerged and issue #675 remains open, so resolution is found."
+}

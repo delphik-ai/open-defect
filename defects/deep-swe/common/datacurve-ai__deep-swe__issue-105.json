@@ -18,6 +18,6 @@
   ],
   "audit_level": "L3",
   "first_reported_at": "2026-10-02T20:27:50Z",
-  "last_reviewed_at": "2026-10-03T00:06:23.973Z",
+  "last_reviewed_at": "2026-10-04T00:05:19Z",
   "decision_note": "L3-equivalent public reproduction audit. The issue is attributed to current DeepSWE commit 0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea and provides stored inputs, expected outputs, and reproduction commands. The representative mutable-test-hooks finding runs DeepSWE's own verifier for adaptix-name-mapping-aliases with a submitted tests/conftest.py report hook: the hook patch receives reward 1 with 44/44 feature tests while an empty control receives reward 0. The same shared trust-boundary mechanism is shown for LangChain, Scriggo, and sql-formatter examples. This run counts only that shared mutable test infrastructure/report-hook root cause as a benchmark-level DeepSWE defect; the other indexed write-ups are not separately counted from this aggregate issue."
 }
