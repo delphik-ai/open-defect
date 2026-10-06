@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "hil-bench__hilbenchauthors__hil-bench__pr-7",
+  "benchmark_name": "hil-bench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Add canonical rewards and v2.1.6 ask-human subsets",
+  "summary": "HIL-Bench public task verifiers lacked the canonical reward key across the 600-task public release; merged PR #7 republishes v2.1.6 task digests with reward preserved alongside solve/resolved.",
+  "canonical_source_url": "https://github.com/hilbenchauthors/hil-bench/pull/7",
+  "evidence_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/pull/7",
+    "https://github.com/hilbenchauthors/hil-bench/pull/7/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-04T23:36:36Z",
+  "last_reviewed_at": "2026-10-06T02:53:56.739Z",
+  "decision_note": "L2 merged maintainer PR and diff audit. PR #7 was authored and merged by the HIL-Bench maintainer/release owner, states that it adds canonical reward to all 600 public task verifiers while preserving solve/resolved, and repins the full public manifest for coordinated v2.1.6. The diff modifies harbor_sql/templates/test_verify.py and harbor_swe/fix_harbor_tasks.py to write reward, updates public SQL/SWE verifier files, and rewrites harbor_release_scale_ai/dataset.toml digests. Existing HIL-Bench artifacts cover _agent_config aliasing and Claude Sonnet 5 ask-human temperature support, not canonical reward-field compatibility. PR is merged, so resolution is fixed."
+}

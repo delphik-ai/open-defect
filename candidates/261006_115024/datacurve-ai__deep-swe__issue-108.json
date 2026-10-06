@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/108",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 108,
+  "title": "[Bug] claude-code-by-agents-recursive-delegation: instruction doesn't say where the tool_result goes; tests require `context`",
+  "body": "On `claude-code-by-agents-recursive-delegation`, the instruction doesn't say where the delegated `tool_result` goes when the orchestrator is re-invoked, but five of the seven hidden tests require it in `context`.\n\nThe instruction:\n\n> The delegating agent must see this tool_result when it is re-invoked. The feed-back is a JSON string with type, is_error, content, and tool_use_id ...\n\nThe tests (`tests/test.patch:156-170`, used at `:269-276`, `:337`, `:395`, `:532`, `:596`):\n\n```ts\nconst continuationCall = orchestratorCalls[1];\nexpect(continuationCall?.context).toBeDefined();\nconst toolResult = findToolResultInContext(continuationCall.context as unknown[]);\nexpect(toolResult).not.toBeNull();\n```\n\nA `tool_result` sent in `message` is never looked at.\n\nBoth places are reasonable:\n- `message` works with every provider. The Anthropic and OpenAI providers send prior turns from `context` and then `message` as the new user turn (`anthropic.ts:43-76`, `openai.ts:57-97`), and a `tool_result` is the next user turn. The claude-code provider, which the orchestrator falls back to when no Anthropic provider is configured (`registry.ts:124`), ignores `context` and only sends `message` (`claude-code.ts:94-101`).\n- `context` is what the reference uses. It also changes the Anthropic provider to turn JSON `tool_use`/`tool_result` entries in `context` into real content blocks (`solution/solution.patch:720-776`), which is a cleaner design for that provider. But nothing in the instruction or the base code points there: no handler at the base commit writes `context`, and the reference sends an empty `message`, which, reading the code, the claude-code provider would pass on as an empty prompt.\n\nThe conversation history is a different matter. The Anthropic provider only sees earlier turns through `context`, so a solution that sends just the `tool_result` and drops the history arguably deserves to fail. But the tests don't check for the history. They only check where the `tool_result` is.\n\nPublished claude-opus-5 trials show the effect. Three of its four trials put the history in `context` and the `tool_result` in `message`, which is how the repo's providers build a conversation. They fail all five tests. Adding the `tool_result` as one more `context` entry, with no other change, makes each of them pass 7/7.\n\nThe reverse also holds. gpt-5-6-sol `iPptKvE` sends no history. Adding the same single `context` entry to it also gives 7/7, even though the orchestrator still never sees the original request.\n\nThe \"no text\" test has the same problem on a smaller scale. The instruction asks for \"a suitable placeholder\", and the test requires the text to match `/no output|completed|placeholder|task/` (`tests/test.patch:602`).\n\nPossible fixes:\n- Check that both the original request and the `tool_result` reach the orchestrator, wherever the solution puts them. This would match the README's \"accepts any solution whose observable behavior is correct, regardless of internal symbol names or structure\".\n- Or say in the instruction that the `tool_result` goes back as a `context` entry.\n\nChecked against commit `0b9fabbb63b9104d678fe965e1632f2dd9eaa2ea`. The trial results above are from local runs of each `model.patch` against the hidden test file.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-05T00:41:32Z",
+  "github_updated_at": "2026-10-05T00:41:32Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-108",
+  "task_names": [
+    "claude-code-by-agents-recursive-delegation"
+  ],
+  "resolution": "fixing",
+  "summary": "DeepSWE claude-code-by-agents-recursive-delegation hidden tests require delegated tool_result only in context even though the instruction and providers allow it in the next message.",
+  "decision_note": "L2 source/diff audit. Issue #108 names the current DeepSWE task and cites tests/test.patch assertions that inspect orchestratorCalls[1].context only, while the instruction merely says the delegating agent must see the tool_result and the repo providers can carry it in message or context. The issue reports local hidden-test runs where moving the same tool_result into context flips affected published trials to pass. Open PR #111 changes the hidden tests to inspect both message and context and to require the original request, confirming the root cause. Existing claude-code-by-agents-recursive-delegation defect #60 and issue #107 cover different verifier hang/crash-grading behavior. PR #111 is open, so resolution is fixing.",
+  "reviewed_at": "2026-10-06T02:53:56.739Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/108",
+    "https://github.com/datacurve-ai/deep-swe/pull/111",
+    "https://github.com/datacurve-ai/deep-swe/pull/111/files"
+  ]
+}

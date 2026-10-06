@@ -1,0 +1,34 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/112",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 112,
+  "title": "csstree-shorthand-expansion-compression: accept auto as the initial background-size",
+  "body": "Fixes #109.\n\nA one-value `background-size` sets the second value to `auto`, so `auto` and `auto auto` are the same initial value. The spec writes it `auto`, and the bundled `mdn-data` writes it `auto auto`. The five background tests now accept either spelling: both sides of the comparison go through one helper that rewrites `auto auto` as `auto`, in the three expansion tests (via `assertExpand`, only when both objects have a `background-size`) and in the two round-trip tests.\n\nNothing else changes. Other `background-size` values, such as `cover` or `10px`, are compared exactly as before.\n\nResults, running published `model.patch` files and the reference locally against `lib/__tests/shorthand.js`:\n\n| Submission | Before | After |\n|---|---|---|\n| reference | 79/79 | 79/79 |\n| gpt-5-6-sol `CaZKJws`, `HAq7tTg`, `ZDYwQqW`, `xZtyDsE` | 79/79 | 79/79 |\n| claude-opus-5 `KTV7k9c`, `YzuUD8R`, `iMmh4VC` (use `auto`) | 74/79 | 79/79 |\n| claude-opus-5 `qH87Bac` (uses `auto`, plus a `list-style` bug) | 73/79 | 78/79, still fails `list-style: inside square (reordered)` |\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/tasks/csstree-shorthand-expansion-compression/tests/test.patch b/tasks/csstree-shorthand-expansion-compression/tests/test.patch\nindex 0d42c86b..b04d6fdc 100644\n--- a/tasks/csstree-shorthand-expansion-compression/tests/test.patch\n+++ b/tasks/csstree-shorthand-expansion-compression/tests/test.patch\n@@ -1,14 +1,22 @@\n diff --git a/lib/__tests/shorthand.js b/lib/__tests/shorthand.js\n new file mode 100644\n-index 0000000..7473d9f\n+index 0000000..c34f1b7\n --- /dev/null\n +++ b/lib/__tests/shorthand.js\n-@@ -0,0 +1,695 @@\n+@@ -0,0 +1,703 @@\n +import assert from 'assert';\n +import { lexer, fork } from 'css-tree';\n +import { cssWideKeywords } from './helpers/index.js';\n +\n++// A one-value <bg-size> sets the second value to auto, so `auto` and\n++// `auto auto` are the same initial value; accept either spelling.\n++const sameAutoSize = value => value.replace(/\\bauto auto\\b/g, 'auto');\n++\n +function assertExpand(actual, expected) {\n++    if (typeof actual?.['background-size'] === 'string' && typeof expected?.['background-size'] === 'string') {\n++        actual = { ...actual, 'background-size': sameAutoSize(actual['background-size']) };\n++        expected = { ...expected, 'background-size': sameAutoSize(expected['background-size']) };\n++    }\n +    assert.deepStrictEqual(actual === null ? null : Object.assign({}, actual), expected);\n +}\n +\n@@ -654,13 +662,13 @@ index 0000000..7473d9f\n +    it('background', () => {\n +        const expanded = lexer.expandShorthand('background', 'red');\n +        const compressed = lexer.compressShorthand('background', expanded);\n-+        assert.strictEqual(compressed, 'none 0% 0%/auto auto repeat padding-box border-box scroll red');\n++        assert.strictEqual(sameAutoSize(compressed), sameAutoSize('none 0% 0%/auto auto repeat padding-box border-box scroll red'));\n +    });\n +\n +    it('background (multi-layer)', () => {\n +        const expanded = lexer.expandShorthand('background', 'url(a.png) no-repeat, red');\n +        const compressed = lexer.compressShorthand('background', expanded);\n-+        assert.strictEqual(compressed, 'url(a.png) 0% 0%/auto auto no-repeat padding-box border-box scroll, none 0% 0%/auto auto repeat padding-box border-box scroll red');\n++        assert.strictEqual(sameAutoSize(compressed), sameAutoSize('url(a.png) 0% 0%/auto auto no-repeat padding-box border-box scroll, none 0% 0%/auto auto repeat padding-box border-box scroll red'));\n +    });\n +\n +    it('font', () => {\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-05T01:00:37Z",
+  "github_updated_at": "2026-10-05T01:54:04Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-109",
+  "task_names": [
+    "csstree-shorthand-expansion-compression"
+  ],
+  "resolution": "fixing",
+  "summary": "PR #112 is the open fix for DeepSWE csstree-shorthand-expansion-compression accepting auto and auto auto as equivalent background-size initial values.",
+  "decision_note": "L2 PR body/diff audit. PR #112 explicitly fixes #109 and updates tasks/csstree-shorthand-expansion-compression/tests/test.patch with sameAutoSize normalization for the expansion and round-trip assertions that previously required auto auto. Same root cause as canonical issue #109; open PR keeps resolution fixing.",
+  "reviewed_at": "2026-10-06T02:53:56.739Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/112",
+    "https://github.com/datacurve-ai/deep-swe/pull/112/files",
+    "https://github.com/datacurve-ai/deep-swe/issues/109"
+  ]
+}

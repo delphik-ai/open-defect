@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/ShishirPatil/gorilla/pull/1379",
+  "repo": "shishirpatil/gorilla",
+  "source_type": "github_pr",
+  "github_number": 1379,
+  "title": "Add Sifr 0.8B v3.3 handler (calibrated typed-decision engine)",
+  "body": "Adds the Sifr 0.8B v3.3 handler for the BFCL leaderboard.\r\n\r\nSifr is a 0.8B typed-decision engine (Qwen3.5-0.8B base) that scores candidate options with calibrated probabilities rather than generating free-text tool calls. The handler inherits the standard OSSHandler path; the model must be served via a decision server that speaks /v1/chat/completions and handles BFCL-style function-schema prompts.\r\n\r\nModel: https://huggingface.co/mohamedlotfy50/sifr-0.8b-v33\r\nDecision Index: 36.96 (sub-1B SOTA), median latency ~47 ms\r\nRun: REMOTE_OPENAI_BASE_URL=http://127.0.0.1:8100/v1 REMOTE_OPENAI_API_KEY=dummy bfcl generate --model sifr-0.8b-v33 --skip-server-setup",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/berkeley-function-call-leaderboard/bfcl_eval/model_handler/local_inference/sifr.py b/berkeley-function-call-leaderboard/bfcl_eval/model_handler/local_inference/sifr.py\nnew file mode 100644\nindex 000000000000..b74d7e6fa357\n--- /dev/null\n+++ b/berkeley-function-call-leaderboard/bfcl_eval/model_handler/local_inference/sifr.py\n@@ -0,0 +1,27 @@\n+\"\"\"BFCL handler for Sifr — a calibrated typed-decision engine (0.8B).\n+\n+The model does not generate tool calls; it scores every candidate option\n+(length-normalized key log-probabilities, acc_norm convention) and returns\n+the argmax with calibrated probabilities. When pointed at a Sifr decision\n+endpoint (REMOTE_OPENAI_BASE_URL), function-calling prompts are answered by\n+tool selection via the engine + type-based argument extraction, emitted in\n+the standard `func(a=1, b='x')` text the default decoders parse.\n+\n+Run: start the decision server, then evaluate with\n+    REMOTE_OPENAI_BASE_URL=http://127.0.0.1:8100/v1 REMOTE_OPENAI_API_KEY=dummy \\\n+    bfcl generate --model sifr-0.8b-v33 --skip-server-setup ...\n+\"\"\"\n+\n+from bfcl_eval.model_handler.local_inference.base_oss_handler import OSSHandler\n+\n+\n+class SifrHandler(OSSHandler):\n+    \"\"\"\n+    Sifr decision engine via an OpenAI-compatible decision endpoint.\n+\n+    Inherits the standard prompting/decoding path: the base handler posts the\n+    rendered prompt to the configured OpenAI-compatible endpoint and the\n+    default `decode_ast`/`decode_execute` parse the returned `func(...)`\n+    text. The endpoint performs tool selection with calibrated option\n+    scoring and type-based argument extraction.\n+    \"\"\"\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-04T22:11:48Z",
+  "github_updated_at": "2026-10-04T22:11:48Z",
+  "candidate_benchmark_names": [
+    "bfcl"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 PR audit. The PR adds a Sifr model handler for BFCL leaderboard submissions. It is a model-support integration, not evidence of a current BFCL benchmark task, oracle, dataset, or evaluator defect.",
+  "reviewed_at": "2026-10-06T02:53:56.739Z",
+  "checked_urls": [
+    "https://github.com/ShishirPatil/gorilla/pull/1379"
+  ]
+}
