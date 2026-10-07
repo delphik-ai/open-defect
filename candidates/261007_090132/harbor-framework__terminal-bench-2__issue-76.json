@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/harbor-framework/terminal-bench-2/issues/76",
+  "repo": "harbor-framework/terminal-bench-2",
+  "source_type": "github_issue",
+  "github_number": 76,
+  "title": "build-pov-ray: oracle solve.sh fails — povray.org now returns HTTP 403 (Cloudflare) to the source downloads",
+  "body": "## Summary\n\nThe `build-pov-ray` reference solution can no longer fetch the POV-Ray 2.2 source archives. `povray.org` is now fronted by Cloudflare and returns **HTTP 403** to the direct `wget`s in `build-pov-ray/solution/solve.sh`, so the oracle build never starts and the task scores **reward 0**.\n\n## Reproduction\n\nRun the oracle on `build-pov-ray` (any environment, open network):\n\n```\nharbor run -p build-pov-ray -a oracle -n 1\n```\n\nThe first download fails:\n\n```\nConnecting to www.povray.org (www.povray.org)|172.67.69.229|:443... connected.\nHTTP request sent, awaiting response... 403 Forbidden\nERROR 403: Forbidden.\n```\n\n`set -e` aborts at the first `wget`; the verifier then fails (`3 failed` — no `/app/povray-2.2`, no `povray` binary).\n\n## Notes\n\n- The TCP/TLS connection to Cloudflare **succeeds** — this is an origin/WAF refusal, **not** a network or egress problem. It reproduces on a fully open network (verified on local Docker).\n- All three archives are affected: `POVDOC.TAR.Z`, `POVSCN.TAR.Z`, `POVSRC.TAR.Z`.\n\n## Proposed fix\n\nFetch the **identical** archives from a stable mirror — the Internet Archive Wayback Machine `id_` (identity) snapshots of the original `povray.org` URLs — pinned by SHA-256 so any content drift fails the build loudly. Only the download step changes; the build stays byte-identical below it. PR to follow.\n",
+  "comments": [
+    {
+      "url": "https://github.com/harbor-framework/terminal-bench-2/issues/76#issuecomment-6026730267",
+      "user": "chris20",
+      "created_at": "2026-10-06T22:37:47Z",
+      "updated_at": "2026-10-06T22:37:47Z",
+      "body": "Direct download of the sources from povray.org will now work. Also be way faster as they are cached by Cloudflare.\n\nRather than trying to find a way around the issue, all it would have taken is someone asking us - I was not aware of the reason for the v2.2 traffic. The Cloudflare challenges were not aimed at these downloads, it was to protect the site as a whole. I have no problem with allowing access in this case as the files are static."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-10T16:07:02Z",
+  "github_updated_at": "2026-10-06T22:37:47Z",
+  "candidate_benchmark_names": [
+    "terminal-bench"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "terminal-bench",
+  "audit_level": "L1",
+  "scope": "task_specific",
+  "linked_defect_id": "terminal-bench__harbor-framework__terminal-bench-2__issue-76",
+  "task_names": [
+    "build-pov-ray"
+  ],
+  "resolution": "fixed",
+  "summary": "Follow-up comment states direct povray.org downloads for build-pov-ray now work without the Cloudflare challenge.",
+  "decision_note": "L1 follow-up audit. This is the already-canonical Terminal-Bench build-pov-ray defect, not a new root cause. The issue comment from the povray.org operator says direct source downloads now work and explains the Cloudflare challenge was lifted for these static files, so the existing external-download defect is now fixed.",
+  "checked_urls": [
+    "https://github.com/harbor-framework/terminal-bench-2/issues/76",
+    "https://github.com/harbor-framework/terminal-bench-2/issues/76#issuecomment-6026730267",
+    "https://github.com/harbor-framework/terminal-bench-2/pull/77"
+  ],
+  "reviewed_at": "2026-10-07T00:03:37Z"
+}

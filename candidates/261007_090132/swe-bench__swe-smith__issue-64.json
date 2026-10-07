@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/issues/64",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_issue",
+  "github_number": 64,
+  "title": "Have SWE-smith challenge the model to generate *tests*",
+  "body": "Right now we only get the model to generate bug-fixes/feature-requests.\n\nWhat if we could also get it to generate tests?\n\nI think we should use an approach similar to SWT-bench https://swtbench.com/\n\nwhere we have it generate a test and then test it by making sure the test fails before a gold-patch is applied and passes after the gold-patch is applied. \n\nTesting is one of the most important aspects of SWE, so this enhancement could really drive up performance a lot. ",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/issues/64#issuecomment-6015299897",
+      "user": "liehaoli",
+      "created_at": "2026-10-06T11:29:38Z",
+      "updated_at": "2026-10-06T11:29:38Z",
+      "body": "Hi @ofirpress, I'm interested in working on this issue. Before I start implementing it, I'd like to check whether test-generation tasks are still something you'd like to add to SWE-smith, since this issue was opened a while ago and the codebase has evolved since then.\n\nIf so, is the SWT-bench-style validation described here still the preferred direction — i.e., generate a test that fails on the buggy state and passes after applying the gold patch?\n\nI'd be happy to first trace the current bug-generation and validation pipeline and propose a small, focused implementation before making larger changes."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2025-06-23T18:59:20Z",
+  "github_updated_at": "2026-10-06T11:29:38Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue proposes adding SWE-smith tasks where models generate tests, with a later contributor asking whether that enhancement is still wanted. It is a feature request/roadmap discussion, not evidence of a defect in current SWE-smith benchmark artifacts.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/issues/64"
+  ],
+  "reviewed_at": "2026-10-07T00:03:37Z"
+}
