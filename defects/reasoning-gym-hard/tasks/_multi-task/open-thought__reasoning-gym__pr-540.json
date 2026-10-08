@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-540",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-0",
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-1",
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "title": "Fix reversed in-law relationship answers",
+  "summary": "Reasoning Gym family_relationships reverses in-law answers, returning parent-in-law labels when the subject is the spouse of the child.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/540",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/540",
+    "https://github.com/open-thought/reasoning-gym/pull/540/files",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/graphs/family_relationships.py"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-07T08:20:43Z",
+  "last_reviewed_at": "2026-10-08T00:05:25Z",
+  "decision_note": "L2 PR diff audit. The PR targets reasoning_gym/graphs/family_relationships.py, which maps to current reasoning-gym-hard family_relationships task rows. The body gives a deterministic failing example: when Sarah is married to Elizabeth's child, the generated answer is mother-in-law instead of daughter-in-law. The diff changes the relationship direction logic and adds eight deterministic regression cases covering both parent/spouse gender and question directions; the body states all eight fail before the fix and pass after. Existing reasoning-gym-hard defects cover other family_relationships or graph tasks/root causes, not reversed in-law direction labels. PR #540 is open, so resolution is fixing."
+}

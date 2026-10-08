@@ -1,0 +1,42 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/pull/114",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_pr",
+  "github_number": 114,
+  "title": "fix(drizzle-orm-window-function-builders): resolve yanked drizzle-kit canary to published 0.25.0",
+  "body": "npm unpublished the canary `drizzle-kit@0.25.0-b1faa33`, so `pnpm install --frozen-lockfile` in this task's environment 404s on every build — deterministic failure for all models since ~Oct 6 (0/5 valid attempts on every cell that runs this task).\n\nSwap the workspace pin and the pnpm-lock integrity to the **published 0.25.0** release and allow lockfile re-resolution (`--no-frozen-lockfile`).\n\n**Validated**: full 8-step image build succeeds on Cloud Build in 8m16s (previously: `ERR_PNPM_FETCH_404` at step 5 on every attempt).",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/pull/114#issuecomment-6037673554",
+      "user": "astronautas",
+      "created_at": "2026-10-07T12:14:27Z",
+      "updated_at": "2026-10-07T12:29:43Z",
+      "body": "@Ynng Had this weird image build issue in our fork of the repo of yours. We run on GKE, building task images via CloudBuild. npm apparently 404s on one of the dependencies, the suggestion is to bump, but since we cannot affect the source, nor I want to mess with git history to avoid solution leaking, just replacing inline."
+    }
+  ],
+  "linked_pr_diff": "diff --git a/tasks/drizzle-orm-window-function-builders/environment/Dockerfile b/tasks/drizzle-orm-window-function-builders/environment/Dockerfile\nindex d935dbaa..7bd5ddb6 100644\n--- a/tasks/drizzle-orm-window-function-builders/environment/Dockerfile\n+++ b/tasks/drizzle-orm-window-function-builders/environment/Dockerfile\n@@ -16,7 +16,13 @@ RUN git clone https://github.com/drizzle-team/drizzle-orm . \\\n  && git gc --prune=now \\\n  && (git submodule update --init --recursive || true)\n \n-RUN pnpm install --frozen-lockfile\n+# rca-patch: npm yanked drizzle-kit@0.25.0-b1faa33 (canary unpublished from the\n+# registry), so --frozen-lockfile 404s on every build. Resolve the workspace\n+# pin to the published 0.25.0 release and swap the lockfile integrity to match.\n+# MUST run BEFORE pnpm install.\n+RUN sed -i \"s/0\\.25\\.0-b1faa33/0.25.0/g\" drizzle-kit/package.json pnpm-lock.yaml \\\n+ && sed -i \"s|sha512-WMRuEgxt1oTc62EPVQhGD+pGs6LiqzT8UqxuI6mKfA5SCeCEIt87nFzzJ5WlwsqbuoSgXBXc5zhsHvqXRD03DA==|sha512-Rcf0nYCAKizwjWQCY+d3zytyuTbDb81NcaPor+8NebESlUz1+9W3uGl0+r9FhU4Qal5Zv9j/7neXCSCe7DHzjA==|\" pnpm-lock.yaml\n+RUN pnpm install --no-frozen-lockfile\n \n # v1.1 node-id scoring (CTRF route): vitest's built-in JUnit reporter is used\n # at verify time (`--reporter=junit --outputFile=...`) and the XML is converted\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-07T10:20:14Z",
+  "github_updated_at": "2026-10-07T12:29:43Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "duplicate_evidence",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-51",
+  "task_names": [
+    "drizzle-orm-window-function-builders"
+  ],
+  "resolution": "fixing",
+  "summary": "PR #114 is an additional open fix for the existing DeepSWE drizzle-orm-window-function-builders yanked drizzle-kit build defect.",
+  "decision_note": "L2 PR diff audit. The PR is specific to current DeepSWE task drizzle-orm-window-function-builders and changes the task Dockerfile to rewrite drizzle-kit@0.25.0-b1faa33 to the published 0.25.0 release before pnpm install. That is the same root cause already captured by canonical defect deep-swe__datacurve-ai__deep-swe__issue-51, which records the unpublished/yanked drizzle-kit snapshot causing deterministic image build 404s. PR #114 is open, so resolution remains fixing.",
+  "reviewed_at": "2026-10-08T00:05:25Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/pull/114",
+    "https://github.com/datacurve-ai/deep-swe/pull/114/files",
+    "https://github.com/datacurve-ai/deep-swe/issues/51"
+  ]
+}

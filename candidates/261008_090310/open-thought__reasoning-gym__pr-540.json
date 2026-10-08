@@ -1,0 +1,37 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/open-thought/reasoning-gym/pull/540",
+  "repo": "open-thought/reasoning-gym",
+  "source_type": "github_pr",
+  "github_number": 540,
+  "title": "Fix reversed in-law relationship answers",
+  "body": "For “What is Sarah to Elizabeth?”, when Sarah is married to Elizabeth's child, the generator returned `mother-in-law` rather than `daughter-in-law`. Return daughter/son-in-law according to the subject's gender, and recognize the reverse direction as mother/father-in-law.\r\nAdd eight deterministic cases covering both directions and all parent/spouse gender combinations, checking the generated answer and metadata. All eight fail before the fix. Afterward, the family, graph-color and curriculum-experiment tests pass (19 cases); `pre-commit run -a` also passes.\r\nAI assistance was used for implementation and tests. No model inference was required or run.",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/reasoning_gym/graphs/family_relationships.py b/reasoning_gym/graphs/family_relationships.py\nindex 1de0c1c8..7802d0e1 100644\n--- a/reasoning_gym/graphs/family_relationships.py\n+++ b/reasoning_gym/graphs/family_relationships.py\n@@ -32,6 +32,8 @@ class Relationship(StrEnum):\n     NEPHEW = \"nephew\"\n     MOTHER_IN_LAW = \"mother-in-law\"\n     FATHER_IN_LAW = \"father-in-law\"\n+    DAUGHTER_IN_LAW = \"daughter-in-law\"\n+    SON_IN_LAW = \"son-in-law\"\n \n \n @dataclass\n@@ -326,7 +328,10 @@ def _get_relationship_question(\n         # Check for in-law relationships through spouse\n         elif person1.spouse and person2 in person1.spouse.parents:\n             # person2 is person1's spouse's parent\n-            relationship = Relationship.MOTHER_IN_LAW if person2.gender == Gender.FEMALE else Relationship.FATHER_IN_LAW\n+            relationship = Relationship.DAUGHTER_IN_LAW if person1.gender == Gender.FEMALE else Relationship.SON_IN_LAW\n+        elif person2.spouse and person1 in person2.spouse.parents:\n+            # person1 is person2's spouse's parent\n+            relationship = Relationship.MOTHER_IN_LAW if person1.gender == Gender.FEMALE else Relationship.FATHER_IN_LAW\n         else:\n             # Try again with different people if no relationship found\n             return self._get_relationship_question(rng, family)\ndiff --git a/tests/test_family_relationships.py b/tests/test_family_relationships.py\nindex b3793e99..ba5f3dd1 100644\n--- a/tests/test_family_relationships.py\n+++ b/tests/test_family_relationships.py\n@@ -5,6 +5,8 @@\n     FamilyRelationshipsConfig,\n     FamilyRelationshipsCurriculum,\n     FamilyRelationshipsDataset,\n+    Gender,\n+    Person,\n     Relationship,\n )\n \n@@ -51,6 +53,34 @@ def test_family_relationships_config():\n         dataset = create_dataset(\"family_relationships\", female_names=[])\n \n \n+@pytest.mark.parametrize(\"parent_gender\", [Gender.FEMALE, Gender.MALE])\n+@pytest.mark.parametrize(\"spouse_gender\", [Gender.FEMALE, Gender.MALE])\n+@pytest.mark.parametrize(\"parent_first\", [False, True])\n+def test_in_law_relationship_direction(monkeypatch, parent_gender, spouse_gender, parent_first):\n+    dataset = FamilyRelationshipsDataset(FamilyRelationshipsConfig(seed=0, size=1))\n+    parent = Person(\"Elizabeth\" if parent_gender == Gender.FEMALE else \"Jayden\", parent_gender, 0)\n+    child = Person(\"Edward\", Gender.MALE, 1)\n+    spouse = Person(\"Sarah\" if spouse_gender == Gender.FEMALE else \"Sam\", spouse_gender, 2)\n+    parent.add_child(child)\n+    child.add_spouse(spouse)\n+    family = {parent, child, spouse}\n+    person1, person2 = (parent, spouse) if parent_first else (spouse, parent)\n+    expected = (\n+        (\"mother-in-law\" if parent_gender == Gender.FEMALE else \"father-in-law\")\n+        if parent_first\n+        else (\"daughter-in-law\" if spouse_gender == Gender.FEMALE else \"son-in-law\")\n+    )\n+\n+    monkeypatch.setattr(dataset, \"_generate_family\", lambda rng, family_size: family)\n+    monkeypatch.setattr(\"random.Random.sample\", lambda self, population, k: [person1, person2])\n+\n+    item = dataset[0]\n+    assert item[\"answer\"] == expected\n+    assert item[\"metadata\"][\"relationship\"] == expected\n+    assert item[\"metadata\"][\"person1\"] == person1.name\n+    assert item[\"metadata\"][\"person2\"] == person2.name\n+\n+\n def test_deterministic_generation():\n     dataset1 = create_dataset(\"family_relationships\", seed=42, size=5)\n     dataset2 = create_dataset(\"family_relationships\", seed=42, size=5)\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-07T08:20:43Z",
+  "github_updated_at": "2026-10-07T08:20:43Z",
+  "candidate_benchmark_names": [
+    "reasoning-gym-easy",
+    "reasoning-gym-hard"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "reasoning-gym-hard",
+  "audit_level": "L2",
+  "scope": "task_specific",
+  "linked_defect_id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-540",
+  "task_names": [
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-0",
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-1",
+    "reasoning-gym-graphs-family-relationships-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "summary": "Reasoning Gym family_relationships reverses in-law answers, returning parent-in-law labels when the subject is the spouse of the child.",
+  "decision_note": "L2 PR diff audit. The PR targets reasoning_gym/graphs/family_relationships.py, which maps to current reasoning-gym-hard family_relationships task rows. The body gives a deterministic failing example: when Sarah is married to Elizabeth's child, the generated answer is mother-in-law instead of daughter-in-law. The diff changes the relationship direction logic and adds eight deterministic regression cases covering both parent/spouse gender and question directions; the body states all eight fail before the fix and pass after. Existing reasoning-gym-hard defects cover other family_relationships or graph tasks/root causes, not reversed in-law direction labels. PR #540 is open, so resolution is fixing.",
+  "reviewed_at": "2026-10-08T00:05:25Z",
+  "checked_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/540",
+    "https://github.com/open-thought/reasoning-gym/pull/540/files",
+    "https://github.com/open-thought/reasoning-gym/blob/main/reasoning_gym/graphs/family_relationships.py"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/113",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 113,
+  "title": "deepswe-mini (Python 5) on a local model: Qwen3.8-Flash-Next IQ3_S vs UD-IQ4_XS via Strata",
+  "body": "Community data point: deepswe-mini's Python tasks run on a **fully local** Qwen3.8-Flash-Next (MoE, hybrid CPU+GPU inference via [Strata](https://github.com/Niko1221/Strata) 0.1.40), driven by **pier 0.3.1 + mini-swe-agent 2.4.6** in docker sandboxes (no-network, official verifier). Hardware: RTX 5090 Laptop 24 GB + Core Ultra 9 275HX + 188 GiB RAM. One rollout per task; scores from reward.json.\n\n| Task (all-configs pass rate) | IQ3_S (3.5 bpw) | UD-IQ4_XS (~4 bpw) |\n|---|---|---|\n| aiomonitor (76.3%) | ✅ 53/53 f2p | ✅ 53/53 |\n| ipython (63.8%) | ✅ 17/17 | ✅ 17/17 |\n| narwhals (90.0%) | ✗ 87/103 | ✅ **103/103** |\n| textual (42.9%) | ✗ 18/23 | ✗ 22/23 |\n| bandit (6.8%) | ✗ 68/69 | ✗ **69/69** f2p (1 p2p broke) |\n| **solved / mean f2p** | **2/5, 92.3%** | **3/5, 99.1%** |\n\nNotes:\n\n- **bandit is a heartbreaker for both:** both runs fail the same single p2p test, `test_058_region_unioned_across_statement_lines` (the 'region-end inside a multi-line statement still suppresses the whole statement' rule). UD-IQ4_XS passes all 69 f2p tests and still scores 0. Two independent agents converging on the same failure might be worth a glance at that test's spec clarity.\n- The ~4-bit quant looks meaningfully stronger than 3.5 bpw on long-horizon work (f2p 99.1% vs 92.3%), at about half the decode speed on this hardware (22–33 vs 53–59 tok/s; ~46 tok/s during long agent turns with high prefix reuse).\n- Scope caveats: Python subset only (5 of the mini 16), one rollout per task, so treat the 2/5 vs 3/5 as directional, not a ranking. Job artifacts (trajectories, verifier outputs) can be shared if useful.\n\nThanks for the benchmark and the mini subset — the task container setup (git-history-stripped images, separate verifier) made a local run like this straightforward.",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/113#issuecomment-6031134186",
+      "user": "ManfredCh",
+      "created_at": "2026-10-07T04:47:38Z",
+      "updated_at": "2026-10-07T04:47:38Z",
+      "body": "One correction to the speed note above (capability results stand): raising Strata's --spec 4 to 6 roughly doubles decode on this machine — UD-IQ4_XS measures 62–70 tok/s and IQ3_S 99–108 tok/s warm on short prompts, so the real speed gap between the two quants here is ~65–70%, not 2x."
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-07T04:30:45Z",
+  "github_updated_at": "2026-10-07T04:47:38Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a community model-result report for deepswe-mini local Qwen runs, including task scores, speed notes, and one possible p2p test clarity aside. It does not identify a concrete current DeepSWE dataset, task, verifier, harness, or artifact defect that should be counted.",
+  "reviewed_at": "2026-10-08T00:05:25Z",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/113"
+  ]
+}

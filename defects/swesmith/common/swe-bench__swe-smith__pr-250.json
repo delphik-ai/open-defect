@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__pr-250",
+  "benchmark_name": "swesmith",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "collect_trajs: read each run's patch from its .pred (fixes #162)",
+  "summary": "SWE-smith collect_trajs reads patches from misplaced .patch files, so multi-worker trajectories can store another run's model patch instead of the run's own .pred patch.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/pull/250",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/250",
+    "https://github.com/SWE-bench/SWE-smith/pull/250/files",
+    "https://github.com/SWE-bench/SWE-smith/issues/162"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-07T20:08:26Z",
+  "last_reviewed_at": "2026-10-08T00:05:25Z",
+  "decision_note": "L2 PR diff audit. The PR is benchmark-level SWE-smith trajectory collection code and links the root cause to SWE-agent SaveApplyPatchHook writing .patch files into another instance folder during multi-worker run-batch. The diff changes collect_trajs.py to read model_patch from each run's own .pred file first and adds a synthetic regression test with swapped .patch files plus correct .pred files; the body reports the new test fails on current main and passes with the change. Existing SWE-smith artifacts cover container/platform/setup/gold-eval issues, not trajectory patch-column corruption from collecting .patch instead of .pred. PR #250 is open, so resolution is fixing."
+}
