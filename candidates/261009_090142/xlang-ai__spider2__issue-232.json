@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/232",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 232,
+  "title": "Spider 2.0-DBT leaderboard submission (JamLabs, 2026-09-25) not yet listed",
+  "body": "Hi Fangyu, we emailed a Spider 2.0-DBT submission on 2026-09-25 (follow-up 2026-10-01) from charlie@jamlabs.com: Jitto Build (JamLabs), 41/68 = 60.29% (41/64 = 64.06%) under the official evaluator, with predictions, one trace per task and timestamped logs.\n\nCould you confirm you received it, or tell us if anything is missing? Thanks.",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-08T09:35:30Z",
+  "github_updated_at": "2026-10-08T09:35:30Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue is a Spider 2.0-DBT leaderboard/submission-status request asking maintainers to confirm receipt of a JamLabs submission. It does not identify a benchmark artifact, task, evaluator, dataset, or harness defect, so it is outside benchmark defect scope.",
+  "reviewed_at": "2026-10-09T00:21:00Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/232"
+  ]
+}

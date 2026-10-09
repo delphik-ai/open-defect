@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "scale-ai__swe-atlas-qna__scaleapi__swe-atlas__pr-25",
+  "benchmark_name": "scale-ai__swe-atlas-qna",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Fixed Debian and infra issues; unify run_config; pin agent versions",
+  "summary": "SWE-Atlas QnA task images and run configs depended on mutable old images and runtime apt/agent setup that broke on end-of-life Debian bases until merged PR #25 rebuilt digest-pinned images and unified Harbor run scripts.",
+  "canonical_source_url": "https://github.com/scaleapi/SWE-Atlas/pull/25",
+  "evidence_urls": [
+    "https://github.com/scaleapi/SWE-Atlas/pull/25",
+    "https://github.com/scaleapi/SWE-Atlas/pull/25/files",
+    "https://github.com/scaleapi/SWE-Atlas/pull/25#issuecomment-6071174053"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-08T21:26:30Z",
+  "last_reviewed_at": "2026-10-09T00:21:00Z",
+  "decision_note": "L2 source-read audit. PR #25 is merged and its body says Harbor agent setup failed on the original images because missing binaries sent setup to apt-get at runtime on end-of-life Debian 11 bases. The diff changes data/qa/dataset.toml digests, QnA task Dockerfile FROM lines, QnA task.toml docker_image values, and replaces run_config/qa scripts with shared Harbor 0.22.0/pinned-agent scripts. Existing QnA artifacts cover gold answers, rubric polarity, keepalive, hardcoded Harbor path, and judge JSON parsing, not this all-task image/runtime setup root cause. The same PR also touches TW, but the v5 candidate schema records one benchmark per source candidate; this artifact records the QnA variant."
+}

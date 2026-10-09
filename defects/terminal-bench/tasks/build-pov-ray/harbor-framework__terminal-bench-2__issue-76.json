@@ -19,6 +19,6 @@
   ],
   "audit_level": "L2",
   "first_reported_at": "2026-08-10T16:07:02Z",
-  "last_reviewed_at": "2026-10-08T00:05:25Z",
-  "decision_note": "L2 source-read audit. The issue provides a concrete Harbor oracle command and HTTP 403 failure for build-pov-ray. The paired PR #77 changes build-pov-ray/solution/solve.sh from direct povray.org wget URLs to SHA-pinned Internet Archive snapshots and states only the download source changed. This proves current Terminal-Bench task attribution and a task-specific oracle dependency defect; PR #77 is open, so resolution is fixing."
+  "last_reviewed_at": "2026-10-09T00:21:00Z",
+  "decision_note": "L2 source-read audit. The issue provides a concrete Harbor oracle command and HTTP 403 failure for build-pov-ray. The paired PR #77 changes build-pov-ray/solution/solve.sh from direct povray.org wget URLs to SHA-pinned Internet Archive snapshots and states only the download source changed. Follow-up comments from the povray.org operator say direct downloads now work again and are cached by Cloudflare, so the canonical defect remains fixed."
 }
