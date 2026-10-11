@@ -1,0 +1,41 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/205",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 205,
+  "title": "Spider 2 Snow credential account - Your account is suspended due to lack of payment method",
+  "body": "Hi, I wanted to evaluate on the Snowflake instance, however the Computing Instances on Snowflake seem to be suspended. Can you please fix that?",
+  "comments": [
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/205#issuecomment-5291022133",
+      "user": "antonio-veezoo",
+      "created_at": "2026-08-14T08:06:24Z",
+      "updated_at": "2026-08-14T08:06:24Z",
+      "body": "It has been more than a week, can we at least get a mirror to just download the data, what is going on?"
+    },
+    {
+      "url": "https://github.com/xlang-ai/Spider2/issues/205#issuecomment-6096226832",
+      "user": "wrenevens",
+      "created_at": "2026-10-10T09:42:03Z",
+      "updated_at": "2026-10-10T09:42:03Z",
+      "body": "same issue here. How can I resolve this?"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-08-05T07:19:20Z",
+  "github_updated_at": "2026-10-10T09:42:04Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. The issue title/body/comments are about Spider2-Snow/Snowflake compute credentials being suspended or unavailable. The watched xlang-ai/spider2 benchmark in this repo is spider2-dbt; the prompt explicitly excludes Spider2-Snow/Snowflake credential problems from spider2-dbt counting. No current spider2-dbt task/evaluator defect is evidenced.",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/205",
+    "https://github.com/xlang-ai/Spider2/issues/205#issuecomment-5291022133",
+    "https://github.com/xlang-ai/Spider2/issues/205#issuecomment-6096226832"
+  ],
+  "reviewed_at": "2026-10-11T00:06:27.211Z"
+}
