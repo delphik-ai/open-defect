@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/idavidrein/gpqa/pull/39",
+  "repo": "idavidrein/gpqa",
+  "source_type": "github_pr",
+  "github_number": 39,
+  "title": "Create SECURITY.md for security policy",
+  "body": "Add a security policy document outlining supported versions and vulnerability reporting.\n\nf615b44c19553806394abf8d3043eaa467de7667",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/SECURITY.md b/SECURITY.md\nnew file mode 100644\nindex 000000000..034e84803\n--- /dev/null\n+++ b/SECURITY.md\n@@ -0,0 +1,21 @@\n+# Security Policy\n+\n+## Supported Versions\n+\n+Use this section to tell people about which versions of your project are\n+currently being supported with security updates.\n+\n+| Version | Supported          |\n+| ------- | ------------------ |\n+| 5.1.x   | :white_check_mark: |\n+| 5.0.x   | :x:                |\n+| 4.0.x   | :white_check_mark: |\n+| < 4.0   | :x:                |\n+\n+## Reporting a Vulnerability\n+\n+Use this section to tell people how to report a vulnerability.\n+\n+Tell them where to go, how often they can expect to get an update on a\n+reported vulnerability, what to expect if the vulnerability is accepted or\n+declined, etc.\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-11T10:03:33Z",
+  "github_updated_at": "2026-10-11T10:03:45Z",
+  "candidate_benchmark_names": [
+    "gpqa-diamond"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 audit. The PR only adds a generic SECURITY.md vulnerability reporting policy to the GPQA repository. It contains no GPQA Diamond benchmark attribution evidence and no benchmark artifact, scoring, dataset, task, or evaluation defect claim.",
+  "reviewed_at": "2026-10-12T00:04:23.842Z",
+  "checked_urls": [
+    "https://github.com/idavidrein/gpqa/pull/39",
+    "https://github.com/idavidrein/gpqa/pull/39/files"
+  ]
+}
