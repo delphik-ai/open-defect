@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "reasoning-gym-hard__open-thought__reasoning-gym__pr-541",
+  "benchmark_name": "reasoning-gym-hard",
+  "scope": "task_specific",
+  "task_names": [
+    "reasoning-gym-logic-propositional-logic-hard0292e21f-seed45-0",
+    "reasoning-gym-logic-propositional-logic-hard0292e21f-seed45-1",
+    "reasoning-gym-logic-propositional-logic-hard0292e21f-seed45-2"
+  ],
+  "resolution": "fixing",
+  "title": "Fix contradictory premises in propositional_logic (#528)",
+  "summary": "Reasoning-gym propositional_logic can generate contradictory premises, letting trivial contradictions receive full reward on current hard task rows.",
+  "canonical_source_url": "https://github.com/open-thought/reasoning-gym/pull/541",
+  "evidence_urls": [
+    "https://github.com/open-thought/reasoning-gym/pull/541",
+    "https://github.com/open-thought/reasoning-gym/pull/541/files",
+    "https://github.com/open-thought/reasoning-gym/issues/528"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-12T19:04:31Z",
+  "last_reviewed_at": "2026-10-13T00:06:41.670Z",
+  "decision_note": "L2 PR/source audit with regression-test social proof. PR #541 targets reasoning_gym/logic/propositional_logic.py and adds test_propositional_logic_dataset_score_answer_contradiction, documenting that contradictory premise sets make score_answer return 1.0 for arbitrary well-formed contradictions. Current artifacts include reasoning-gym-hard propositional_logic task rows; no reasoning-gym-easy artifact set exists in this repo. Existing canonical PR #179 covers an earlier propositional_logic parser/scoring refactor, not the generator accepting unsatisfiable premise sets, so this is a new task-specific root cause. PR #541 is open, so resolution is fixing."
+}

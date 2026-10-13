@@ -1,0 +1,25 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/issues/681",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_issue",
+  "github_number": 681,
+  "title": "pvlib__pvlib-python-1606 gold patch evaluates UNRESOLVED due to NumPy 2.0 np.Inf incompatibility",
+  "body": "### Describe the bug\n\nThe SWE-Bench Lite instance `pvlib__pvlib-python-1606` appears to be unevaluable with the current evaluation image.\n\nWhen the official SWE-Bench_Lite gold patch is evaluated directly, the instance is reported as UNRESOLVED even though the patch applied is identical to the dataset gold patch.\n\nThe failure happens before the target tests run. During pytest collection, importing pvlib fails because the evaluation environment contains NumPy 2.0.2, while this pvlib revision still uses `np.Inf`, which was removed in NumPy 2.0.\n\nThe relevant error is:\n\npvlib/singlediode.py:59:\n    NsVbi=np.Inf\n\nAttributeError:\n    `np.Inf` was removed in the NumPy 2.0 release.\n    Use `np.inf` instead.\n\nThe evaluator still classifies the run as:\n\nresolved: false\ninfra_failure: false\n\nThis can cause valid or gold-equivalent submissions for this instance to be scored as UNRESOLVED because of an evaluation-environment compatibility issue rather than the submitted patch.\n\nRelated issue: #274\n\nI found #274 after reproducing this independently. That issue appears to describe the same NumPy 2.0 / `np.Inf` failure for pvlib gold-patch evaluation and was reported with swebench 2.1.7.\n\nI am reproducing the issue on swebench 5.0.2 / repository commit\n02e7a74ffd0b707aab73d203fe87bdc7c76afc8e, so the problem appears to still be present in the current evaluation stack.\n\n### Steps/Code to Reproduce\n\n1. Use the SWE-Bench Lite dev instance:\n\n   pvlib__pvlib-python-1606\n\n2. Construct a predictions file containing the official dataset gold patch for that instance.\n\n3. Run the evaluator using:\n\nswebench eval lite \\\n  --split dev \\\n  --predictions <gold-patch-preds.json> \\\n  --run-id <run-id> \\\n  --workers 1 \\\n  --timeout 1800 \\\n  -i pvlib__pvlib-python-1606\n\n4. Inspect the resulting evaluation output.\n\nIn my reproduction, the evaluator-side patch was mechanically verified against the dataset gold patch:\n\nevaluator patch bytes: 2258\ngold patch bytes:      2258\nnormalized equality:   True\n\nThe evaluator then runs:\n\npytest -rA pvlib/tests/test_tools.py\n\nbut pytest fails during test collection with:\n\nAttributeError:\n    `np.Inf` was removed in the NumPy 2.0 release.\n    Use `np.inf` instead.\n\nThe evaluation environment reports NumPy 2.0.2.\n\n### Expected Results\n\nThe official gold patch for `pvlib__pvlib-python-1606` should be evaluable in the provided SWE-Bench environment.\n\nPytest should successfully import pvlib, run the target tests, and the gold patch should be reported as RESOLVED if it satisfies the instance's test criteria.\n\nIf the environment itself prevents the test suite from running, the failure should be classified as an infrastructure/environment failure rather than as an ordinary UNRESOLVED submission.\n\n### Actual Results\n\nThe gold patch is reported as UNRESOLVED.\n\nThe run completes with no reported infrastructure failure:\n\nresolved: false\ninfra_failure: false\n\nHowever, pytest never reaches the target tests. It fails during test collection while importing pvlib:\n\npvlib/singlediode.py:59:\n    NsVbi=np.Inf\n\nAttributeError:\n    `np.Inf` was removed in the NumPy 2.0 release.\n    Use `np.inf` instead.\n\nThe environment contains NumPy 2.0.2.\n\nThe test process exits with code 4.\n\nThe evaluator-side patch was confirmed to be identical to the official dataset gold patch:\n\nevaluator patch bytes: 2258\ngold patch bytes:      2258\nnormalized equality:   True\n\n### System Information\n\nOS: Fedora Server 44 x86_64\n\nPython: 3.12.14 (SWE-Bench virtual environment)\nHost Python: 3.14.7\n\nswebench package version: 5.0.2\n\nSWE-Bench repository revision:\nv5.0.1-24-g02e7a74\nCommit: 02e7a74ffd0b707aab73d203fe87bdc7c76afc8e",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-12T01:24:08Z",
+  "github_updated_at": "2026-10-12T01:24:08Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "out_of_scope",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. Issue #681 explicitly names the SWE-Bench Lite dev instance pvlib__pvlib-python-1606. The watched SWE-bench repo candidates for this artifact set are swebench-verified and swebench_multilingual, and the thread provides no evidence that the current Verified or Multilingual variants include this Lite instance/root cause. Therefore it is outside the current benchmark variant scope.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/681"
+  ],
+  "reviewed_at": "2026-10-13T00:06:41.670Z"
+}

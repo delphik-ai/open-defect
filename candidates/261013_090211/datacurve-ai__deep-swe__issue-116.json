@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/116",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 116,
+  "title": "Muse Wonder",
+  "body": "Not sure if this is still relevant, but Muse Wonder Full (max) (released 1 hour ago by Meta), just self-reported DeepSWE of 79%.\n\nSource: \nhttps://research.meta.ai/static/muse-wonder-model-card",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-12T19:24:00Z",
+  "github_updated_at": "2026-10-12T19:24:00Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "L1 thread audit. Issue #116 reports a newly released model self-reporting a DeepSWE score. It is benchmark/news discussion, not a defect claim about the current DeepSWE artifact, harness, oracle, or task semantics.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/116"
+  ],
+  "reviewed_at": "2026-10-13T00:06:41.670Z"
+}

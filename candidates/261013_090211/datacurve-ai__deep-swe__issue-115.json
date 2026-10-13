@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/datacurve-ai/deep-swe/issues/115",
+  "repo": "datacurve-ai/deep-swe",
+  "source_type": "github_issue",
+  "github_number": 115,
+  "title": "Task scripts fail on Windows: no .gitattributes, so test.sh is checked out with CRLF",
+  "body": "## Summary\n\nOn Windows, cloning this repo with Git's default `core.autocrlf=true` (the Git for Windows installer default) checks out every text file with CRLF line endings. Task scripts then fail inside the Linux containers, and every trial ends with `RewardFileNotFoundError`.\n\nThe verifier output (`verifier/test-stdout.txt`) for each failed trial contains only:\n\n```\nbash: line 1: /tests/test.sh: cannot execute: required file not found\n```\n\nThe shebang becomes `#!/bin/bash\\r`, so the kernel looks for an interpreter named `/bin/bash\\r`. The test never runs and never writes `reward.txt`, and pier reports:\n\n```\npier.verifier.verifier.RewardFileNotFoundError: No reward file found at .../verifier/reward.txt or .../verifier/reward.json\n```\n\nThe files are stored with LF in the repository. Only the working tree is converted:\n\n```\n$ git ls-files --eol -- 'tasks/*/tests/test.sh' | head -2\ni/lf    w/crlf  attr/    tasks/abs-module-cache-flags/tests/test.sh\ni/lf    w/crlf  attr/    tasks/abs-stepped-slices/tests/test.sh\n```\n\nOn a fresh clone at `0b9fabb`, 1,137 files are affected, including all 226 `tests/test.sh` and 226 `.patch` files. The CRLF patches are likely to break as well when applied to LF sources.\n\n## Suggested fix\n\nAdd a `.gitattributes` at the repo root so checkouts use LF regardless of the user's Git config:\n\n```\n* text=auto eol=lf\n```\n\n## Workaround\n\nInside an existing clone, with no local changes:\n\n```\ngit config core.autocrlf false\ngit rm -rq --cached .\ngit reset --hard HEAD\n```\n\nAfter this, `git ls-files --eol` shows `i/lf w/lf` for every file.\n\n## Environment\n\n- Windows 11 Pro (10.0.26200), Docker Desktop, Git for Windows (`core.autocrlf=true` in the system gitconfig)\n- Run with pier 0.3.1: `pier run -p deep-swe/tasks --agent mini-swe-agent --n-tasks 10 --sample-seed 0 --model anthropic/claude-opus-5-5`\n- Related, on the pier side: datacurve-ai/pier#56 (pier's generated egress-proxy files also get CRLF on Windows)\n",
+  "comments": [
+    {
+      "url": "https://github.com/datacurve-ai/deep-swe/issues/115#issuecomment-6120628776",
+      "user": "dhyannirav",
+      "created_at": "2026-10-12T08:31:41Z",
+      "updated_at": "2026-10-12T08:31:41Z",
+      "body": "Confirmed: the workaround fixes it.\n\nAfter re-checking out the clone with LF line endings (`git ls-files --eol` → `i/lf w/lf` everywhere), I re-ran the same tasks that had failed with `RewardFileNotFoundError`:\n\n| Task | Before (CRLF checkout) | After (LF checkout) |\n|---|---|---|\n| `true-myth-iterable-collection-combinators` | `RewardFileNotFoundError` | reward 1.0 (f2p 96/96, p2p 561/561), run twice |\n| `testem-per-launcher-reports` | `RewardFileNotFoundError` | reward 1.0 (f2p 65/65, p2p 469/469) |\n\n`tests/test.sh` now runs in the container and writes `verifier/reward.json`. The `.gitattributes` change suggested above should make this work for Windows users without any manual step.\n"
+    }
+  ],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-12T06:38:40Z",
+  "github_updated_at": "2026-10-12T08:31:41Z",
+  "candidate_benchmark_names": [
+    "deep-swe"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "deep-swe",
+  "audit_level": "L3",
+  "scope": "benchmark_level",
+  "linked_defect_id": "deep-swe__datacurve-ai__deep-swe__issue-115",
+  "task_names": [],
+  "resolution": "found",
+  "summary": "DeepSWE lacks a root .gitattributes guard, so Windows CRLF checkouts can make container-bound task scripts fail before writing reward output.",
+  "decision_note": "L3-equivalent signature audit. Issue #115 attributes the claim to current DeepSWE commit 0b9fabb and reports that Windows Git autocrlf converts all 226 task tests/test.sh files to CRLF, causing Linux containers to fail with /bin/bash^M and RewardFileNotFoundError; its follow-up comment reports the LF checkout workaround fixing two named tasks. I reproduced the core failure signature locally with an executable CRLF-shebang script: /tmp/deepswe-crlf-test.sh exits with bad interpreter: /bin/bash^M: no such file or directory. Existing DeepSWE common artifacts cover return-code grading, network mode, many-core OOM, and v1.1 grading/test bypasses, not repository line-ending poisoning across task scripts. No merged fix is present, so resolution is found.",
+  "checked_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/115",
+    "https://github.com/datacurve-ai/deep-swe/issues/115#issuecomment-6120628776"
+  ],
+  "reviewed_at": "2026-10-13T00:06:41.670Z"
+}

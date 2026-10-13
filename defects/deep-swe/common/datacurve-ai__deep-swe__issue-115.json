@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "deep-swe__datacurve-ai__deep-swe__issue-115",
+  "benchmark_name": "deep-swe",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "Task scripts fail on Windows: no .gitattributes, so test.sh is checked out with CRLF",
+  "summary": "DeepSWE lacks a root .gitattributes guard, so Windows CRLF checkouts can make container-bound task scripts fail before writing reward output.",
+  "canonical_source_url": "https://github.com/datacurve-ai/deep-swe/issues/115",
+  "evidence_urls": [
+    "https://github.com/datacurve-ai/deep-swe/issues/115",
+    "https://github.com/datacurve-ai/deep-swe/issues/115#issuecomment-6120628776"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-10-12T06:38:40Z",
+  "last_reviewed_at": "2026-10-13T00:06:41.670Z",
+  "decision_note": "L3-equivalent signature audit. Issue #115 attributes the claim to current DeepSWE commit 0b9fabb and reports that Windows Git autocrlf converts all 226 task tests/test.sh files to CRLF, causing Linux containers to fail with /bin/bash^M and RewardFileNotFoundError; its follow-up comment reports the LF checkout workaround fixing two named tasks. I reproduced the core failure signature locally with an executable CRLF-shebang script: /tmp/deepswe-crlf-test.sh exits with bad interpreter: /bin/bash^M: no such file or directory. Existing DeepSWE common artifacts cover return-code grading, network mode, many-core OOM, and v1.1 grading/test bypasses, not repository line-ending poisoning across task scripts. No merged fix is present, so resolution is found."
+}

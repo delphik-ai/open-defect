@@ -1,0 +1,26 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-bench/pull/682",
+  "repo": "swe-bench/swe-bench",
+  "source_type": "github_pr",
+  "github_number": 682,
+  "title": "Use token= instead of removed use_auth_token= in push_to_hub",
+  "body": "## What\n\n`swebench/inference/make_datasets/create_text_dataset.py` and `tokenize_dataset.py` call `push_to_hub(..., use_auth_token=hub_token)`. The `use_auth_token` argument was removed from `Dataset.push_to_hub` / `DatasetDict.push_to_hub` in `datasets` 3.0, and `push_to_hub` does not accept `**kwargs`, so with any current `datasets` release, passing `--push_to_hub_user` makes both scripts fail with:\n\n```\nTypeError: DatasetDict.push_to_hub() got an unexpected keyword argument 'use_auth_token'\n```\n\nThe failure happens only at the very end, after the full text/tokenized dataset has been built.\n\nThis PR switches both calls to `token=hub_token`, which `datasets` has supported since 2.14.\n\n## How I verified\n\nWith `datasets` 5.1.0 (the version `pip install -e .[inference]` resolves today):\n\n- the old call `DatasetDict(...).push_to_hub(\"user/x\", use_auth_token=\"hf_x\")` raises the `TypeError` above;\n- the new call `push_to_hub(\"user/x\", token=\"hf_x\")` is accepted, and the token is forwarded to `HfApi(token=\"hf_x\", ...)` (checked by mocking `HfApi`, so nothing was uploaded).\n\nThese were the only `use_auth_token` occurrences in the repo.\n\nThis fix was prepared with AI assistance (Claude Code), then reviewed and verified as described above.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/swebench/inference/make_datasets/create_text_dataset.py b/swebench/inference/make_datasets/create_text_dataset.py\nindex ffb27bd6b2..237bddc78c 100755\n--- a/swebench/inference/make_datasets/create_text_dataset.py\n+++ b/swebench/inference/make_datasets/create_text_dataset.py\n@@ -240,7 +240,7 @@ def main(\n     # Save dataset\n     if push_to_hub_user is not None:\n         final_dataset.push_to_hub(\n-            f\"{push_to_hub_user}/{output_file.name}\", use_auth_token=hub_token\n+            f\"{push_to_hub_user}/{output_file.name}\", token=hub_token\n         )\n     else:\n         final_dataset.save_to_disk(output_file)\ndiff --git a/swebench/inference/make_datasets/tokenize_dataset.py b/swebench/inference/make_datasets/tokenize_dataset.py\nindex c02ec3f3ba..494932ee9c 100755\n--- a/swebench/inference/make_datasets/tokenize_dataset.py\n+++ b/swebench/inference/make_datasets/tokenize_dataset.py\n@@ -200,7 +200,7 @@ def main(\n     output_file = Path(dataset_name_or_path).name + f\"__tok-{tokenizer_name}\"\n     if push_to_hub_user is not None:\n         output_file = f\"{push_to_hub_user}/{output_file}\"\n-        dataset.push_to_hub(output_file, use_auth_token=hub_token)\n+        dataset.push_to_hub(output_file, token=hub_token)\n     else:\n         output_file = Path(output_dir) / output_file\n         dataset.save_to_disk(output_file)\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-12T06:31:47Z",
+  "github_updated_at": "2026-10-12T07:23:07Z",
+  "candidate_benchmark_names": [
+    "swebench-verified",
+    "swebench_multilingual"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L2",
+  "decision_note": "L2 PR body/diff audit. PR #682 fixes inference dataset publishing scripts by replacing the removed datasets push_to_hub use_auth_token argument with token. This is repository tooling for pushing generated datasets to Hugging Face, not a defect in the current SWE-bench Verified/Multilingual benchmark tasks, evaluator correctness, or benchmark health artifacts.",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-bench/pull/682",
+    "https://github.com/SWE-bench/SWE-bench/pull/682/files"
+  ],
+  "reviewed_at": "2026-10-13T00:06:41.670Z"
+}
