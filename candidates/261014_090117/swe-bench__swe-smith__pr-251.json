@@ -1,0 +1,39 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/SWE-bench/SWE-smith/pull/251",
+  "repo": "swe-bench/swe-smith",
+  "source_type": "github_pr",
+  "github_number": 251,
+  "title": "Pin ghapi<2: ghapi 2.x makes API calls return coroutines",
+  "body": "### Problem\nghapi 2.0.0 (released 2026-07-08) changed `GhApi` endpoint calls to return coroutines. SWE-smith calls them synchronously, so a fresh install, which today resolves to ghapi 2.1.4, breaks quietly:\n\n- `RepoProfile._mirror_exists()` never raises, so it returns `True` for mirrors that don't exist, and `create_mirror()` skips creating them. Later steps then fail on a missing mirror.\n- The other call sites (`branches`, `create_mirror`, `bug_gen/mirror/collect/utils.py`) receive coroutine objects instead of data.\n\nRepro (no token needed):\n\n```python\nfrom ghapi.all import GhApi\nr = GhApi().repos.get(owner=\"SWE-bench\", repo=\"this-repo-does-not-exist\")\nprint(type(r))\n# ghapi 1.1.1        -> raises HTTP404NotFoundError (expected)\n# ghapi 2.0.0, 2.1.4 -> <class 'coroutine'>, no exception\n```\n\n### Fix\nPin `ghapi<2` in the `all`, `validate` and `generate` extras. Moving to ghapi 2.x's async API (or its sync transport, if it fits) could be a follow-up.\n\n### Testing\n- `pytest tests` (excluding `tests/test_modal`): 995 passed with ghapi 1.1.1 (macOS arm64, Python 3.12).\n- Repro above checked on ghapi 1.1.1, 2.0.0 and 2.1.4.\n- `uv pip compile pyproject.toml --extra validate` resolves `ghapi==1.1.1`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n",
+  "comments": [
+    {
+      "url": "https://github.com/SWE-bench/SWE-smith/pull/251#issuecomment-6147896990",
+      "user": "chatgpt-codex-connector[bot]",
+      "created_at": "2026-10-13T14:30:07Z",
+      "updated_at": "2026-10-13T14:31:33Z",
+      "body": "<!-- codex-pull-request-review-summary -->\n\n## Codex Review Summary\n\nThis comment shows the latest Codex review activity on this pull request.\n\n| Review | Status | Commit | Review trigger |\n| --- | --- | --- | --- |\n| 📝 **Code Review** | ⚠️ **Failed** <relative-time datetime=\"2026-10-13T14:31:32.343217Z\">2026-10-13T14:31:32.343217Z</relative-time> | `7718dda` | PR opened |\n\n\n\n<details> <summary>ℹ️ About Codex in GitHub</summary>\n<br/>\n\n[Your team has set up Codex to review pull requests in this repo](https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you\n- Open a pull request for review\n- Mark a draft as ready\n- Comment \"@codex review\" or \"@codex security review\".\n\nCodex reacts with 👀 while any review is running, comments if it has suggestions, and reacts with 👍 once all reviews finish with no findings.\n\n</details>"
+    }
+  ],
+  "linked_pr_diff": "diff --git a/pyproject.toml b/pyproject.toml\nindex df856940..d3ee303a 100644\n--- a/pyproject.toml\n+++ b/pyproject.toml\n@@ -29,7 +29,7 @@ all = [\n     \"astor\",\n     \"datasets\",\n     \"docker\",\n-    \"ghapi\",\n+    \"ghapi<2\",\n     \"jinja2\",\n     \"libcst\",\n     \"litellm\",\n@@ -73,7 +73,7 @@ test = [\n ]\n # Minimal dependencies for remote validation (no sglang, litellm, openai, docker, etc.)\n validate = [\n-    \"ghapi\",\n+    \"ghapi<2\",\n     \"python-dotenv\",\n     \"rich\",\n     \"swebench\",\n@@ -84,7 +84,7 @@ validate = [\n generate = [\n     \"astor\",\n     \"docker\",\n-    \"ghapi\",\n+    \"ghapi<2\",\n     \"jinja2\",\n     \"libcst\",\n     \"portkey-ai\",\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-13T14:29:53Z",
+  "github_updated_at": "2026-10-13T14:31:33Z",
+  "candidate_benchmark_names": [
+    "swesmith"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "swesmith",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "swesmith__swe-bench__swe-smith__pr-251",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "SWE-smith fresh installs can resolve ghapi 2.x, whose async-returning endpoint calls break synchronous mirror-existence and repository API flows.",
+  "decision_note": "L2 source-read audit checked PR #251 body and diff. The PR demonstrates that ghapi 2.0/2.1 endpoint calls return coroutine objects instead of raising/returning sync results, so RepoProfile._mirror_exists can incorrectly return true for missing mirrors and other branch/mirror collection call sites receive coroutine objects. The diff pins ghapi<2 in the all, validate, and generate extras. Existing SWE-smith common artifacts cover platform/container/setup/pip/trajectory issues, but not ghapi 2.x async API incompatibility. PR is open, so resolution is fixing.",
+  "reviewed_at": "2026-10-14T00:06:51.622Z",
+  "checked_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/251",
+    "https://github.com/SWE-bench/SWE-smith/pull/251/files"
+  ]
+}

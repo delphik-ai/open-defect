@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swesmith__swe-bench__swe-smith__pr-251",
+  "benchmark_name": "swesmith",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "Pin ghapi<2: ghapi 2.x makes API calls return coroutines",
+  "summary": "SWE-smith fresh installs can resolve ghapi 2.x, whose async-returning endpoint calls break synchronous mirror-existence and repository API flows.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-smith/pull/251",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-smith/pull/251",
+    "https://github.com/SWE-bench/SWE-smith/pull/251/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-13T14:29:53Z",
+  "last_reviewed_at": "2026-10-14T00:06:51.622Z",
+  "decision_note": "L2 source-read audit checked PR #251 body and diff. The PR demonstrates that ghapi 2.0/2.1 endpoint calls return coroutine objects instead of raising/returning sync results, so RepoProfile._mirror_exists can incorrectly return true for missing mirrors and other branch/mirror collection call sites receive coroutine objects. The diff pins ghapi<2 in the all, validate, and generate extras. Existing SWE-smith common artifacts cover platform/container/setup/pip/trajectory issues, but not ghapi 2.x async API incompatibility. PR is open, so resolution is fixing."
+}

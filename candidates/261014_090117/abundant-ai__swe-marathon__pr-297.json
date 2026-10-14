@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/abundant-ai/swe-marathon/pull/297",
+  "repo": "abundant-ai/swe-marathon",
+  "source_type": "github_pr",
+  "github_number": 297,
+  "title": "Update README.md",
+  "body": "<!-- Complete this template for task additions or task updates. -->\n\n## Summary\n\nWhat task are you adding or updating, and what changed?\n\n## Checklist\n\n- [ ] This PR updates exactly one task directory.\n- [ ] All behavior checked in `tests/` is described in `instruction.md`.\n- [ ] All required output files are named in `instruction.md`.\n- [ ] `instruction.md` uses absolute paths.\n- [ ] `environment/Dockerfile` does not copy `solution/` or `tests/`.\n- [ ] `task.toml` has non-placeholder `difficulty_explanation`, `solution_explanation`, and `verification_explanation`.\n- [ ] `reward.txt` is binary (0 or 1). Partial scores go to `metrics.json`.\n- [ ] `solution/` contains readable code files (no `.patch`/`.diff`; no `patch -p` in `solve.sh`).\n- [ ] I ran the local static checks for this task.\n- [ ] I ran `harbor run -p tasks/<task> --agent oracle`.\n- [ ] I ran `harbor run -p tasks/<task> --agent nop`.\n\n## Local Validation\n\nList the commands you ran locally and any notable results.\n\n## Agent Notes\n\nIf you ran a strong model on the task, summarize the result here. If not, say so.\n\n<!-- CURSOR_SUMMARY -->\n---\n\n> [!NOTE]\n> **Low Risk**\n> Documentation-only README change with no runtime or security impact.\n> \n> **Overview**\n> Adds a **10/2026** News bullet at the top of the README **News** section announcing that SWE-Marathon is featured on the Muse Wonder model card, with a link to Meta’s blog post.\n> \n> The new line follows the same “Featured on the … model card” pattern as the existing entries; note the link uses `[text] (url)` spacing unlike the other bullets, which may prevent the URL from rendering as a clickable link in Markdown.\n> \n> <sup>Reviewed by [Cursor Bugbot](https://cursor.com/bugbot) for commit ae59d9836d4bd225c62a43aa5a514f12ab430564. Bugbot is set up for automated code reviews on this repo. Configure [here](https://www.cursor.com/dashboard/bugbot).</sup>\n<!-- /CURSOR_SUMMARY -->",
+  "comments": [],
+  "linked_pr_diff": "diff --git a/README.md b/README.md\nindex 47f47fce8..50da51e22 100644\n--- a/README.md\n+++ b/README.md\n@@ -12,6 +12,7 @@\n \n \n ## News\n+- [10/2026] 🥇 Featured on the [Muse Wonder model card] (https://research.meta.ai/blog/muse-wonder/)!\n - [09/2026] 🎉 SWE-Marathon accepted to the [NeurIPS 2026 Evaluations and Datasets Track](https://neurips.cc/)!\n - [09/2026] 🔥 Featured on the [Grok 4.7 model card](https://media.x.ai/v1/website/4p7card-5eccc980.pdf)!\n - [09/2026] ⭐ Featured on the [Stepfun 5 model card](https://www.stepfun.com/step-5-preview)!\n",
+  "github_state": "open",
+  "github_created_at": "2026-10-13T12:40:31Z",
+  "github_updated_at": "2026-10-13T12:40:50Z",
+  "candidate_benchmark_names": [
+    "swe-marathon"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "PR #297 changes only README news text and contains no task, verifier, dataset, harness, or benchmark scoring defect evidence. The linked diff is documentation-only, so it is outside benchmark defect scope.",
+  "reviewed_at": "2026-10-14T00:06:51.622Z",
+  "checked_urls": [
+    "https://github.com/abundant-ai/swe-marathon/pull/297"
+  ]
+}

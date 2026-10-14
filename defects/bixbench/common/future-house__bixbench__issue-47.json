@@ -1,0 +1,20 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "bixbench__future-house__bixbench__issue-47",
+  "benchmark_name": "bixbench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixing",
+  "title": "str_verifier accepts unequal numeric answers after removing signs and decimal points",
+  "summary": "BixBench str_verifier strips decimal points, signs, and exponent signs before deterministic matching, so unequal numeric answers can be graded correct for open-ended rows using str_verifier.",
+  "canonical_source_url": "https://github.com/Future-House/BixBench/issues/47",
+  "evidence_urls": [
+    "https://github.com/Future-House/BixBench/issues/47",
+    "https://github.com/Future-House/BixBench/pull/48",
+    "https://github.com/Future-House/BixBench/pull/48/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-13T12:50:59Z",
+  "last_reviewed_at": "2026-10-14T00:06:51.622Z",
+  "decision_note": "Candidate maps to core BixBench rather than bixbench-cli because the claim and follow-up fix PR change bixbench/graders.py and released open-ended CSV grading behavior. L2 audit checked issue #47 and PR #48 diff: the issue gives deterministic reproductions where -4.96/4.96, 0.0002/00002, and 1.9E-05/1.9E05 normalize to matching alphanumeric strings before LLM fallback; PR #48 fixes the same path by adding exact Decimal comparison for complete scalar numbers and avoiding numeric substring acceptance. Existing BixBench artifacts cover MCQ refusal, missing evaluation_mode, zip extraction, range_verifier, and refused-verdict parsing, not this numeric punctuation/sign stripping root cause. PR #48 is open, so resolution is fixing."
+}

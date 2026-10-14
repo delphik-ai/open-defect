@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "hil-bench__hilbenchauthors__hil-bench__pr-9",
+  "benchmark_name": "hil-bench",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "fixed",
+  "title": "Align SQL grader timeouts with agent queries",
+  "summary": "HIL-Bench SQL verifier timeouts were shorter than the SQL tool server and agent query window, causing long valid queries to be killed before the agent-side limit.",
+  "canonical_source_url": "https://github.com/hilbenchauthors/hil-bench/pull/9",
+  "evidence_urls": [
+    "https://github.com/hilbenchauthors/hil-bench/pull/9",
+    "https://github.com/hilbenchauthors/hil-bench/pull/9/files"
+  ],
+  "audit_level": "L2",
+  "first_reported_at": "2026-10-13T20:34:17Z",
+  "last_reviewed_at": "2026-10-14T00:06:51.622Z",
+  "decision_note": "L2 merged maintainer PR audit. PR #9 was authored and merged by the HIL-Bench maintainer/release owner on 2026-10-13 and states it raises the SQL grader query-execution limit from 300 to 1200 seconds and the outer verifier timeout from 300 to 1380 seconds while preserving the 1230-second agent SQL client timeout. The diff repins public task digests in harbor_release_scale_ai/dataset.toml. Existing HIL-Bench artifacts cover _agent_config aliasing, Claude Sonnet 5 ask-human temperature support, and canonical reward-field compatibility, not SQL verifier timeout alignment. PR is merged, so resolution is fixed."
+}

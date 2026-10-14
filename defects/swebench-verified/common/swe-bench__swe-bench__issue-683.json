@@ -1,0 +1,19 @@
+{
+  "schema_version": "v5.defect-artifact.1",
+  "id": "swebench-verified__swe-bench__swe-bench__issue-683",
+  "benchmark_name": "swebench-verified",
+  "scope": "benchmark_level",
+  "task_names": [],
+  "resolution": "found",
+  "title": "False no_tests_collected advisory from nested pytest output despite completed outer tests",
+  "summary": "SWE-bench infra_failure classification can report no_tests_collected from nested pytest output even when the outer Verified evaluation collected and ran tests.",
+  "canonical_source_url": "https://github.com/SWE-bench/SWE-bench/issues/683",
+  "evidence_urls": [
+    "https://github.com/SWE-bench/SWE-bench/issues/683",
+    "https://github.com/SWE-bench/SWE-bench/blob/02e7a74ffd0b707aab73d203fe87bdc7c76afc8e/swebench/harness/infra_failure.py"
+  ],
+  "audit_level": "L3",
+  "first_reported_at": "2026-10-13T11:23:13Z",
+  "last_reviewed_at": "2026-10-14T00:06:51.622Z",
+  "decision_note": "Benchmark attribution is SWE-bench Verified because issue #683 names dataset SWE-bench/SWE-bench_Verified and instance pytest-dev__pytest-10051. L3-equivalent audit checked upstream infra_failure.py at commit 02e7a74ffd0b707aab73d203fe87bdc7c76afc8e and reproduced the classifier behavior with the issue-provided nested-pytest pattern: a local Python reproduction of the public regex order returned no_tests_collected/ambiguous for text containing collected 16 items, nested collected 0 items/no tests ran, and a later 1 failed, 15 passed summary. The classifier is benchmark-level advisory/reporting code, not task content. Existing SWE-bench Verified common artifacts cover saved-log replay, Docker/report, image and harness issues, but not nested pytest false no_tests_collected classification. Issue remains open with no merged fix, so resolution is found."
+}

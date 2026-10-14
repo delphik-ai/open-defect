@@ -1,0 +1,33 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/Future-House/BixBench/issues/47",
+  "repo": "future-house/bixbench",
+  "source_type": "github_issue",
+  "github_number": 47,
+  "title": "str_verifier accepts unequal numeric answers after removing signs and decimal points",
+  "body": "I found an offline-reproducible numeric-answer collision in `str_verifier` at commit `49311180bdacb324c596f2e07596c126f2004008`.\n\n`_grade_str_verifier` removes all non-alphanumeric characters before equality/substring checks. This drops decimal points and minus signs, including exponent signs. Unequal numeric answers can therefore return `grade=1, correct=True`, before the LLM fallback.\n\n```python\nimport asyncio\nfrom bixbench.graders import GradingFunction\n\nasync def check():\n    grader = GradingFunction()\n    for target, prediction in [\n        (\"-4.96\", \"4.96\"),\n        (\"0.0002\", \"00002\"),\n        (\"1.9E-05\", \"1.9E05\"),\n    ]:\n        result = await grader._grade_str_verifier(\n            target=target, predicted=prediction,\n            partial_match=True, llm_match=True,\n        )\n        print(target, prediction, result.to_dict())\n\nasyncio.run(check())\n```\n\nAll three return `{'grade': 1, 'correct': True, 'refusal': False}`. Their numeric values differ. The released open-ended CSV contains these target values with `evaluation_mode=str_verifier`; `grade_outputs.py` forwards that mode with `partial_match=True, llm_match=True`.\n\nI replayed the original grader classes with import-only dependency stubs and a client that raises if called. The full `GradeAnswer` → `OpenEndedGrader` → `_grade_str_verifier` route accepts these inputs without calling the client. This is an offline control, **not a full environment/agent rerun**.\n\nIn the committed v1.5 GPT-4o open-ended CSV, there are 205 rows, of which 44 have a numeric target and `str_verifier`. A bounded set of sign/decimal/exponent mutations produced 65 accepted value-changing inputs spanning 41 of those target UUIDs. Those predictions were constructed controls, **not 65 observed historical mistakes**. I have not established an impact on the Nature Finch 170-question evaluation or on published aggregate accuracy.\n\nThere is also a separate recorded case: `bix-53-q4` stores prediction `5`, target `4.25E-04`, and `correct=True`. It is accepted through the partial substring path. However, the question asks for a count while the target resembles a p-value, so the question/target pairing needs source review; I cannot determine the scientifically correct answer from this row alone.\n\nThis appears distinct from #44 (out-of-range grading) and #46 (refused verdict parsing). I am not proposing to duplicate those fixes. Would you prefer an explicit numeric comparator/mode, or preserving numeric punctuation and avoiding numeric substring matches within `str_verifier`? Either choice needs regression coverage for ordinary textual answers and MCQ labels.\n\nFei Yang. AI assistance was used for code inspection and deterministic reproduction; an isolated AI reviewer independently reproduced the behavior. No new theorem, human peer review, collaboration or biological result is claimed.\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-13T12:50:59Z",
+  "github_updated_at": "2026-10-13T12:50:59Z",
+  "candidate_benchmark_names": [
+    "bixbench",
+    "bixbench-cli"
+  ],
+  "terminal_status": "confirmed",
+  "benchmark_name": "bixbench",
+  "audit_level": "L2",
+  "scope": "benchmark_level",
+  "linked_defect_id": "bixbench__future-house__bixbench__issue-47",
+  "task_names": [],
+  "resolution": "fixing",
+  "summary": "BixBench str_verifier strips decimal points, signs, and exponent signs before deterministic matching, so unequal numeric answers can be graded correct for open-ended rows using str_verifier.",
+  "decision_note": "Candidate maps to core BixBench rather than bixbench-cli because the claim and follow-up fix PR change bixbench/graders.py and released open-ended CSV grading behavior. L2 audit checked issue #47 and PR #48 diff: the issue gives deterministic reproductions where -4.96/4.96, 0.0002/00002, and 1.9E-05/1.9E05 normalize to matching alphanumeric strings before LLM fallback; PR #48 fixes the same path by adding exact Decimal comparison for complete scalar numbers and avoiding numeric substring acceptance. Existing BixBench artifacts cover MCQ refusal, missing evaluation_mode, zip extraction, range_verifier, and refused-verdict parsing, not this numeric punctuation/sign stripping root cause. PR #48 is open, so resolution is fixing.",
+  "reviewed_at": "2026-10-14T00:06:51.622Z",
+  "checked_urls": [
+    "https://github.com/Future-House/BixBench/issues/47",
+    "https://github.com/Future-House/BixBench/pull/48",
+    "https://github.com/Future-House/BixBench/pull/48/files"
+  ]
+}

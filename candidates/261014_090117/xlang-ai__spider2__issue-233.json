@@ -1,0 +1,24 @@
+{
+  "schema_version": "v5.source-candidate.1",
+  "source_url": "https://github.com/xlang-ai/Spider2/issues/233",
+  "repo": "xlang-ai/spider2",
+  "source_type": "github_issue",
+  "github_number": 233,
+  "title": "Request for Spider2 Secure Data Share access",
+  "body": "Hi Spider2 team,\n\nI am currently conducting research experiments based on Spider 2.0. I would like to self-host a database for my own evaluation and experiments. Could you please share some guidance or suggestions on how to do this and how to get the data?\n\nAny help would be greatly appreciated. Thank you!\n\n",
+  "comments": [],
+  "linked_pr_diff": null,
+  "github_state": "open",
+  "github_created_at": "2026-10-13T07:18:18Z",
+  "github_updated_at": "2026-10-13T07:18:18Z",
+  "candidate_benchmark_names": [
+    "spider2-dbt"
+  ],
+  "terminal_status": "rejected",
+  "audit_level": "L1",
+  "decision_note": "Issue #233 asks for Spider 2.0 Secure Data Share/self-hosting access guidance. It does not identify a Spider2-DBT current benchmark seed/split/version defect or any evaluator/data artifact root cause, so it is outside benchmark defect scope.",
+  "reviewed_at": "2026-10-14T00:06:51.622Z",
+  "checked_urls": [
+    "https://github.com/xlang-ai/Spider2/issues/233"
+  ]
+}
